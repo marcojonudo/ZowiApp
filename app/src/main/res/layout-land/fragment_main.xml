@@ -21,20 +21,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/choosGameTypeText"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:background="@color/red"
         android:gravity="center">
-
+        
         <zowiapp.zowi.marco.zowiapp.layout.SquareButton
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            style="@style/squareButton"
             android:id="@+id/freeGameButton"
             android:text="@string/free_game_button_text" />
 
         <zowiapp.zowi.marco.zowiapp.layout.SquareButton
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            style="@style/squareButton"
             android:id="@+id/guidedGameButton"
             android:text="@string/guided_game_button_text"/>
 
