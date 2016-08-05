@@ -1,9 +1,12 @@
 <resources>
+    <color name="red">#FF0000</color>
+    <color name="blue">#0000FF</color>
+
     <string name="app_name">ZowiApp</string>
     <string name="action_settings">Settings</string>
     <string name="choose_game_type_text">¿Cómo quieres jugar con Zowi?</string>
     <string name="free_game_button_text">JUEGO LIBRE\nJuego libre</string>
     <string name="guided_game_button_text">JUEGO DIRIGIDO\nJuego dirigido</string>
 
-    <color name="red">#FF0000</color>
+    <string name="title_activity_guided_game">GuidedGameActivity</string>
 </resources>

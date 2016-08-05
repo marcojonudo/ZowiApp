@@ -23,12 +23,14 @@ public class SquareButton extends Button {
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
-        int size = width > height ? height : width;
-        setMeasuredDimension(size, size); // make it square
-
+        int size;
+        if (widthMeasureSpec > heightMeasureSpec) {
+            size = widthMeasureSpec;
+        }
+        else {
+            size = heightMeasureSpec;
+        }
+        super.onMeasure(size, size);
     }
 
 }
