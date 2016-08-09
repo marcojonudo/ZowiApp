@@ -1,21 +1,31 @@
 package zowiapp.zowi.marco.zowiapp;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ViewGroup rootView;
+    private View redButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        rootView = (ViewGroup) findViewById(R.id.placeholder);
+        redButton = findViewById(R.id.guidedGameButton);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.placeholder, new MainActivityFragment(), "MainActivityFragment");
+        ft.commit();
     }
 
     @Override
@@ -43,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
     public void toGuidedGame(View v) {
         Toast.makeText(getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
 
-        GuidedGameActivityFragment guidedGameFragment = new NextFragment();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+        GuidedGameFragment guidedGameFragment = new GuidedGameFragment();
+        ft.replace(R.id.placeholder, guidedGameFragment, "GuidedGameFragment");
+        ft.commit();
     }
+
 }
