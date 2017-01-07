@@ -7,10 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context="zowiapp.zowi.marco.zowiapp.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/placeholder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
+    <include layout="@layout/content_main" />
 
 </android.support.design.widget.CoordinatorLayout>

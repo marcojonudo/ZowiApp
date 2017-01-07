@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:drawable="@drawable/fondo_rojo"/>
+        android:drawable="@drawable/red_circular_button"/>
 
     <item android:state_pressed="true"
-        android:drawable="@drawable/fondo_verde" />
+        android:drawable="@drawable/green_circular_button" />
 
 </selector>

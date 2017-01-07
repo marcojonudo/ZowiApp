@@ -1,6 +1,7 @@
 package zowiapp.zowi.marco.zowiapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -24,17 +25,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Escolar_N.ttf")
-                .setFontAttrId(R.attr.fontPath)
-                .build()
-        );
-
-        rootView = (ViewGroup) findViewById(R.id.placeholder);
+        /*rootView = (ViewGroup) findViewById(R.id.placeholder);
         redButton = findViewById(R.id.guidedGameButton);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.placeholder, new MainActivityFragment(), "MainActivityFragment");
-        ft.commit();
+        ft.commit();*/
     }
 
     @Override
@@ -67,11 +62,14 @@ public class MainActivity extends AppCompatActivity {
     public void toGuidedGame(View v) {
         Toast.makeText(getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
 
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         GuidedGameFragment guidedGameFragment = new GuidedGameFragment();
         ft.replace(R.id.placeholder, guidedGameFragment, "GuidedGameFragment");
-        ft.commit();
+        ft.commit();*/
+
+        Intent intent = new Intent(getApplicationContext(), GuidedGameActivity.class);
+        startActivity(intent);
     }
 
 }

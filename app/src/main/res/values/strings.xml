@@ -9,4 +9,5 @@
     <string name="guided_game_button_text">JUEGO DIRIGIDO\nJuego dirigido</string>
 
     <string name="title_activity_guided_game">GuidedGameActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

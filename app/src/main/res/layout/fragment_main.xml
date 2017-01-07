@@ -35,7 +35,7 @@
         <zowiapp.zowi.marco.zowiapp.layout.SquareButton
             style="@style/squareButton"
             android:layout_margin="20dp"
-            android:background="@drawable/red_circular_button2"
+            android:background="@drawable/red_circular_button"
             android:id="@+id/guidedGameButton"
             android:text="@string/guided_game_button_text"
             android:onClick="toGuidedGame"/>
