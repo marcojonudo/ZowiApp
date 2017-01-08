@@ -62,12 +62,6 @@ public class MainActivity extends AppCompatActivity {
     public void toGuidedGame(View v) {
         Toast.makeText(getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
 
-        /*FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-        GuidedGameFragment guidedGameFragment = new GuidedGameFragment();
-        ft.replace(R.id.placeholder, guidedGameFragment, "GuidedGameFragment");
-        ft.commit();*/
-
         Intent intent = new Intent(getApplicationContext(), GuidedGameActivity.class);
         startActivity(intent);
     }
