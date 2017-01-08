@@ -1,9 +1,12 @@
 package zowiapp.zowi.marco.zowiapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
+
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class GuidedGameActivity extends AppCompatActivity {
 
@@ -33,6 +36,11 @@ public class GuidedGameActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.list_guided_activities);
         listView.setAdapter(new CustomListAdapter(this, unitsTitles, activitiesTitles, activitiesImages));
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
 }
