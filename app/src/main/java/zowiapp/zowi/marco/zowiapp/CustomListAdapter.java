@@ -12,6 +12,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Marco on 09/08/2016.
@@ -75,7 +76,7 @@ public class CustomListAdapter extends BaseAdapter {
         return unitTitleView;
     }
 
-    private View generateActivitiesLayout(ViewGroup viewGroup, int position) {
+    private View generateActivitiesLayout(ViewGroup viewGroup, final int position) {
         View tableLayoutView = inflater.inflate(R.layout.activities_table_layout, viewGroup, false);
         TableLayout tableLayout = (TableLayout) tableLayoutView.findViewById(R.id.unit_activities_layout);
 
@@ -94,6 +95,14 @@ public class CustomListAdapter extends BaseAdapter {
                 image.setImageResource(context.getResources().getIdentifier(activitiesImages[position][currentActivity], "drawable", context.getPackageName()));
 
                 gridItemView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+
+                gridItemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(context, "Actividad " + position, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 tableRow.addView(gridItemView);
 
                 currentActivity++;
