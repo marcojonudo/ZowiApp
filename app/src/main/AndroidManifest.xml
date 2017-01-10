@@ -23,10 +23,6 @@
             android:name=".GuidedGameActivity"
             android:label="@string/title_activity_guided_game"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".aaa"
-            android:label="@string/title_activity_aaa"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
