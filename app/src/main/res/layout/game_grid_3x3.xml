@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/red"
+    android:id="@+id/game_grid_3x3">
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="3"
+        android:rowCount="3"
+        android:background="@color/black"
+        android:layout_centerInParent="true"
+        android:id="@+id/game_grid">
+
+        <TextView
+            android:layout_width="@dimen/cell_side"
+            android:layout_height="@dimen/cell_side"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_margin="@dimen/cell_margin"/>
+
+        <FrameLayout
+            android:layout_width="@dimen/cell_side"
+            android:layout_height="@dimen/cell_side"
+            android:gravity="center"
+            android:layout_margin="@dimen/cell_margin"
+            android:background="@color/white">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/casa_destino"
+                android:scaleX="0.7"
+                android:scaleY="0.7"/>
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="@dimen/cell_side"
+            android:layout_height="@dimen/cell_side"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_margin="@dimen/cell_margin"/>
+
+        <TextView
+            android:layout_width="@dimen/cell_side"
+            android:layout_height="@dimen/cell_side"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_margin="@dimen/cell_margin"/>
+
+        <TextView
+            android:layout_width="@dimen/cell_side"
+            android:layout_height="@dimen/cell_side"
+            android:gravity="center"
+            android:layout_margin="@dimen/cell_margin"
+            android:background="@color/white"/>
+
+        <TextView
+            android:layout_width="@dimen/cell_side"
+            android:layout_height="@dimen/cell_side"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_margin="@dimen/cell_margin"/>
+
+        <TextView
+            android:layout_width="@dimen/cell_side"
+            android:layout_height="@dimen/cell_side"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_margin="@dimen/cell_margin"/>
+
+        <TextView
+            android:layout_width="@dimen/cell_side"
+            android:layout_height="@dimen/cell_side"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_margin="@dimen/cell_margin"/>
+
+        <TextView
+            android:layout_width="@dimen/cell_side"
+            android:layout_height="@dimen/cell_side"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_margin="@dimen/cell_margin"/>
+
+    </GridLayout>
+
+</RelativeLayout>
