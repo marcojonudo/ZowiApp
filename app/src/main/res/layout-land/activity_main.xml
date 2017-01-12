@@ -23,7 +23,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:gravity="center">
-        
+
         <zowiapp.zowi.marco.zowiapp.layout.SquareButton
             style="@style/squareButton"
             android:layout_margin="30dp"
