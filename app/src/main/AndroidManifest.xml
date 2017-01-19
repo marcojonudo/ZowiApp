@@ -23,6 +23,9 @@
             android:name=".GuidedGameActivity"
             android:label="@string/title_activity_guided_game"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".GameParameters"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

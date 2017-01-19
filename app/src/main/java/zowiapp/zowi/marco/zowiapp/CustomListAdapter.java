@@ -25,6 +25,7 @@ public class CustomListAdapter extends BaseAdapter {
     private String[][] activitiesTitles, activitiesImages;
 
     private final int UNITS_NUMBER = 5;
+    private static int activity = 1;
 
     public CustomListAdapter(Context context, String[] unitsTitles, String[][] titles, String[][] pictures) {
         this.context = context;
@@ -100,13 +101,18 @@ public class CustomListAdapter extends BaseAdapter {
                 gridItemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(context, "Actividad " + position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Actividad " + activity, Toast.LENGTH_SHORT).show();
+                        /*Intent intent = new Intent(context, GameParameters.class);
+                        intent.putExtra("grid", R.id.game_grid_3x3);
+                        context.startActivity(intent);*/
                     }
                 });
 
                 tableRow.addView(gridItemView);
 
                 currentActivity++;
+                activity++;
+                Log.i("generateView", String.valueOf(activity));
             }
             elementsPerRow = 2;
             tableLayout.addView(tableRowView);
@@ -132,6 +138,8 @@ public class CustomListAdapter extends BaseAdapter {
                 activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[position][currentActivity], "drawable", context.getPackageName()));
 
                 currentActivity++;
+                activity++;
+                Log.i("updateView", String.valueOf(activity));
             }
         }
     }

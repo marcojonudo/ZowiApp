@@ -48,44 +48,44 @@
     <string-array name="unit1_activities_image">
         <item>lightred_circular_button</item>
         <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
+        <item>green_circular_button</item>
+        <item>red_circular_button</item>
+        <item>red_circular_button</item>
+        <item>red_circular_button</item>
     </string-array>
 
     <string-array name="unit2_activities_image">
         <item>lightred_circular_button</item>
+        <item>green_circular_button</item>
         <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
+        <item>red_circular_button</item>
+        <item>green_circular_button</item>
         <item>lightred_circular_button</item>
     </string-array>
 
     <string-array name="unit3_activities_image">
+        <item>red_circular_button</item>
         <item>lightred_circular_button</item>
+        <item>green_circular_button</item>
+        <item>red_circular_button</item>
         <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
+        <item>green_circular_button</item>
     </string-array>
 
     <string-array name="unit4_activities_image">
+        <item>green_circular_button</item>
         <item>lightred_circular_button</item>
+        <item>green_circular_button</item>
+        <item>green_circular_button</item>
         <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
+        <item>green_circular_button</item>
     </string-array>
 
     <string-array name="unit5_activities_image">
+        <item>red_circular_button</item>
         <item>lightred_circular_button</item>
         <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
+        <item>red_circular_button</item>
         <item>lightred_circular_button</item>
         <item>lightred_circular_button</item>
     </string-array>
