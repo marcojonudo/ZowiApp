@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toGuidedGame(View v) {
-        Toast.makeText(getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
-
         Intent intent = new Intent(getApplicationContext(), GuidedGameActivity.class);
         startActivity(intent);
     }
