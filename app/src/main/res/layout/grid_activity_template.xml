@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/grid_template_container">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:id="@+id/controls_back_layout">
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/controls"
+            android:text="¡Go!"
+            android:id="@+id/controls"
+            android:layout_centerVertical="true" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/controls">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/back_arrow"
+                android:scaleX="0.6"
+                android:scaleY="0.6"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Atrás"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/grid"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp">
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="1"
+            android:rowCount="7"
+            android:background="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="20dp"
+            android:id="@+id/movements_grid">
+
+            <View
+                android:layout_width="@dimen/movement_cell_side"
+                android:layout_height="@dimen/movement_cell_side"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_margin="@dimen/movement_cell_margin"/>
+
+            <View
+                android:layout_width="@dimen/movement_cell_side"
+                android:layout_height="@dimen/movement_cell_side"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_margin="@dimen/movement_cell_margin"/>
+
+            <View
+                android:layout_width="@dimen/movement_cell_side"
+                android:layout_height="@dimen/movement_cell_side"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_margin="@dimen/movement_cell_margin"/>
+
+            <View
+                android:layout_width="@dimen/movement_cell_side"
+                android:layout_height="@dimen/movement_cell_side"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_margin="@dimen/movement_cell_margin"/>
+
+            <View
+                android:layout_width="@dimen/movement_cell_side"
+                android:layout_height="@dimen/movement_cell_side"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_margin="@dimen/movement_cell_margin"/>
+
+            <View
+                android:layout_width="@dimen/movement_cell_side"
+                android:layout_height="@dimen/movement_cell_side"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_margin="@dimen/movement_cell_margin"/>
+
+            <View
+                android:layout_width="@dimen/movement_cell_side"
+                android:layout_height="@dimen/movement_cell_side"
+                android:gravity="center"
+                android:background="@color/white"
+                android:layout_margin="@dimen/movement_cell_margin"/>
+
+        </GridLayout>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/paper_bin"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/movements_grid"
+            android:id="@+id/paper_bin"
+            android:onClick="deleteMovement"/>
+    </RelativeLayout>
+
+</RelativeLayout>

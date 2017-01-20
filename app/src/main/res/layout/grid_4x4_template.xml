@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:columnCount="4"
+    android:rowCount="4"
+    android:background="@color/black"
+    android:layout_centerInParent="true"
+    android:id="@+id/grid_4x4">
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:layout_margin="@dimen/cell_margin"
+        android:background="@color/white"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:layout_margin="@dimen/cell_margin"
+        android:background="@color/white"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+    <View
+        android:layout_width="@dimen/cell_side"
+        android:layout_height="@dimen/cell_side"
+        android:gravity="center"
+        android:background="@color/white"
+        android:layout_margin="@dimen/cell_margin"/>
+
+</GridLayout>
