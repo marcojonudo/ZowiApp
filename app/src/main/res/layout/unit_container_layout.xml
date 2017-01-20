@@ -23,8 +23,7 @@
         <TableRow
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:id="@+id/table_row_1">
+            android:paddingBottom="@dimen/activity_vertical_margin">
 
             <include layout="@layout/grid_item"/>
 
@@ -39,8 +38,7 @@
         <TableRow
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:id="@+id/table_row_2">
+            android:paddingBottom="@dimen/activity_vertical_margin">
 
             <include layout="@layout/grid_item"/>
 

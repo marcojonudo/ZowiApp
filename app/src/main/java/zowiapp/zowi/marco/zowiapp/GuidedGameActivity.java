@@ -77,10 +77,12 @@ public class GuidedGameActivity extends AppCompatActivity {
         for (int i=0; i<unitActivitiesTable.getChildCount(); i++) {
             TableRow unitActivitiesRow = (TableRow) unitActivitiesTable.getChildAt(i);
             for (int j=0; j<unitActivitiesRow.getChildCount(); j++) {
-                TextView activityTitle = (TextView) unitContainerView.findViewById(R.id.activity_title);
+                LinearLayout gridItem = (LinearLayout) unitActivitiesRow.getChildAt(j);
+
+                TextView activityTitle = (TextView) gridItem.getChildAt(0);
                 activityTitle.setText(activitiesTitles[currentActivity]);
 
-                ImageView activityImage = (ImageView) unitContainerView.findViewById(R.id.activity_image);
+                ImageView activityImage = (ImageView) gridItem.getChildAt(1);
                 activityImage.setImageResource(getResources().getIdentifier(activitiesImages[currentActivity], "drawable", getPackageName()));
 
                 currentActivity++;
