@@ -1,7 +1,6 @@
 package zowiapp.zowi.marco.zowiapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,8 +50,8 @@ public class CustomListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
 
-        if (view == null) {
-            View containerView = inflater.inflate(R.layout.guided_game_layout, viewGroup, false);
+        /*if (view == null) {
+            View containerView = inflater.inflate(R.layout.unit_container_layout, viewGroup, false);
             LinearLayout container = (LinearLayout) containerView.findViewById(R.id.guided_game_layout);
 
             View unitTitleView = generateTitleLayout(viewGroup, position);
@@ -66,7 +65,7 @@ public class CustomListAdapter extends BaseAdapter {
         else {
             updateView(view, position);
         }
-
+*/
         return view;
     }
 

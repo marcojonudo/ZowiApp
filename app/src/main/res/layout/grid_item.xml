@@ -7,18 +7,17 @@
     android:id="@+id/grid_item">
 
     <TextView
-        android:id="@+id/activity_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lines="2"
         android:maxLines="2"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:id="@+id/activity_title"/>
 
     <ImageView
-        android:id="@+id/activity_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerInside"
-        android:src="@drawable/lightred_circular_button" />
+        android:id="@+id/activity_image"/>
 
 </LinearLayout>
