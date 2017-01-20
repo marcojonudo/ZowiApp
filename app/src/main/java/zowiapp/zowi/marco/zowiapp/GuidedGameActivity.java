@@ -1,8 +1,11 @@
 package zowiapp.zowi.marco.zowiapp;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +14,12 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -18,7 +27,7 @@ public class GuidedGameActivity extends AppCompatActivity {
 
     private LayoutInflater inflater;
     private LinearLayout container;
-    private ListView listView;
+    private GuidedGameActivity context = this;
     private String[] unitsTitles, activitiesTitles, activitiesImages;
 
     private final int TOTAL_UNITS = 5;
@@ -32,6 +41,8 @@ public class GuidedGameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guided_game);
+
+        context = this;
 
         container = (LinearLayout) findViewById(R.id.guided_game_container);
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -49,21 +60,6 @@ public class GuidedGameActivity extends AppCompatActivity {
             container.addView(unitContainerView);
         }
 
-        /*String[][] activitiesTitles = new String[TOTAL_UNITS][TOTAL_ACTIVITIES];
-        String[][] activitiesImages = new String[TOTAL_UNITS][TOTAL_ACTIVITIES];
-        for (int i=0; i<TOTAL_UNITS; i++) {
-            String title = UNIT + (i+1) + ACTIVITIES_TITLE;
-            String image = UNIT + (i+1) + ACTIVITIES_IMAGE;
-
-            activitiesTitles[i] = getResources().getStringArray(getResources().getIdentifier(title, "array", getPackageName()));
-            activitiesImages[i] = getResources().getStringArray(getResources().getIdentifier(image, "array", getPackageName()));
-        }
-
-        String[] unitsTitles = getResources().getStringArray(R.array.units_title);
-
-        listView = (ListView) findViewById(R.id.list_guided_activities);
-        listView.setAdapter(new CustomListAdapter(this, unitsTitles, activitiesTitles, activitiesImages));
-        */
     }
 
     private void setUnitTitle(View unitContainerView, int i) {
@@ -77,13 +73,29 @@ public class GuidedGameActivity extends AppCompatActivity {
         for (int i=0; i<unitActivitiesTable.getChildCount(); i++) {
             TableRow unitActivitiesRow = (TableRow) unitActivitiesTable.getChildAt(i);
             for (int j=0; j<unitActivitiesRow.getChildCount(); j++) {
-                LinearLayout gridItem = (LinearLayout) unitActivitiesRow.getChildAt(j);
+                LinearLayout activity = (LinearLayout) unitActivitiesRow.getChildAt(j);
 
-                TextView activityTitle = (TextView) gridItem.getChildAt(0);
+                TextView activityTitle = (TextView) activity.getChildAt(0);
                 activityTitle.setText(activitiesTitles[currentActivity]);
+                activityTitle.setTag(currentActivity);
 
-                ImageView activityImage = (ImageView) gridItem.getChildAt(1);
+                ImageView activityImage = (ImageView) activity.getChildAt(1);
                 activityImage.setImageResource(getResources().getIdentifier(activitiesImages[currentActivity], "drawable", getPackageName()));
+
+                activity.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        TextView activity = (TextView) view.findViewById(R.id.activity_title);
+                        int activityTag = (int) activity.getTag();
+                        String activityTitle = activity.getText().toString();
+
+                        Intent intent = new Intent(context, GameParameters.class);
+                        intent.putExtra("activityTitle", activityTitle);
+                        intent.putExtra("activityNumber", activityTag);
+
+                        startActivity(intent);
+                    }
+                });
 
                 currentActivity++;
             }
