@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,22 +19,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 public class GameParameters extends AppCompatActivity {
 
     private LayoutInflater inflater;
+    private GameParameters context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.basic_activity_template);
 
+        context = this;
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         Bundle parameter = getIntent().getExtras();
         String activityTitle = parameter.getString("activityTitle");
         int activityNumber = parameter.getInt("activityNumber");
-
-        Toast.makeText(this, String.valueOf(activityNumber), Toast.LENGTH_SHORT).show();
 
         String[] activitiesDetails = getResources().getStringArray(R.array.activities_details);
 
@@ -89,6 +94,65 @@ public class GameParameters extends AppCompatActivity {
                 break;
         }
 
+        setEvents(gridActivityTemplate);
+
         contentContainer.addView(gridActivityTemplate);
+    }
+
+    private void setEvents(View gridActivityTemplate) {
+        Button controls = (Button) gridActivityTemplate.findViewById(R.id.controls);
+
+        controls.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        float x = event.getX();
+                        float y = event.getY();
+                        float rightCorner = v.getWidth();
+                        float center = rightCorner/2;
+                        /* The control's width is 500px, and the diameter of the circumference is 150px */
+                        double circumferenceRadius = rightCorner/6.66;
+
+                        double distanceToCenter = Math.sqrt(Math.pow(x-center, 2)+Math.pow(y-center, 2));
+
+                        /* If coordinates are inside the circumference */
+                        if (distanceToCenter < circumferenceRadius) {
+                            Toast.makeText(context, "Go!", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            /* Lines ecuations are used to determine where the user has touched the control */
+                            if (x>y) {
+                                if (y < (rightCorner-x)) {
+                                    Toast.makeText(context, "Zona 1", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Toast.makeText(context, "Zona 2", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                if (y > (rightCorner-x)) {
+                                    Toast.makeText(context, "Zona 3", Toast.LENGTH_SHORT).show();
+                                }
+                                else {
+                                    Toast.makeText(context, "Zona 4", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                return true;
+            }
+        });
+
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }
