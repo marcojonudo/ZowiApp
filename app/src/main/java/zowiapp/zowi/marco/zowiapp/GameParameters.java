@@ -8,8 +8,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +23,6 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -26,6 +31,7 @@ public class GameParameters extends AppCompatActivity {
     private LayoutInflater inflater;
     private GameParameters context;
 
+    private int[][] coordinates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +52,24 @@ public class GameParameters extends AppCompatActivity {
             JSONObject activityDetails = new JSONObject(json);
             String activityDescription = activityDetails.getString("description");
 
+            /* Set the title and the description of the activity */
             setTitleDescription(activityTitle, activityDescription);
 
             switch (activityDetails.getInt("type")) {
+                /* Grid activity */
                 case 1:
                     int gridSize = activityDetails.getInt("gridSize");
-                    JSONArray jsonCoordinates = activityDetails.getJSONArray("coordinates");
-                    int[] coordinates = new int[jsonCoordinates.length()];
-                    for (int i=0; i<jsonCoordinates.length(); i++) {
-                        coordinates[i] = (int) jsonCoordinates.get(i);
+                    JSONArray jsonCells = activityDetails.getJSONArray("cells");
+                    JSONArray jsonImages = activityDetails.getJSONArray("images");
+                    int[] cells = new int[jsonCells.length()];
+                    String[] images = new String[jsonImages.length()];
+
+                    for (int i=0; i<jsonCells.length(); i++) {
+                        cells[i] = jsonCells.getInt(i);
+                        images[i] = jsonImages.getString(i);
                     }
 
-                    generateGridActivity(gridSize, coordinates);
+                    generateGridActivity(gridSize, cells, images);
                     break;
                 default:
                     break;
@@ -76,27 +88,91 @@ public class GameParameters extends AppCompatActivity {
         description.setText(activityDescription);
     }
 
-    private void generateGridActivity(int gridSize, int[] coordinates) {
+    private void generateGridActivity(int gridSize, int[] cells, String[] images) {
         RelativeLayout contentContainer = (RelativeLayout) findViewById(R.id.content_container);
         RelativeLayout gridActivityTemplate = (RelativeLayout) inflater.inflate(R.layout.grid_activity_template, contentContainer, false);
+        GridLayout grid = (GridLayout) gridActivityTemplate.findViewById(R.id.grid);
 
         switch (gridSize) {
             /* 3x3 */
             case 1:
-                /* The grid is added automatically to gridActivityTemplate because the third parameter is 'true' */
-                inflater.inflate(R.layout.grid_3x3_template, gridActivityTemplate, true);
+                /* The grid is added automatically to 'grid' because the third parameter is 'true' */
+                inflater.inflate(R.layout.grid_3x3_template, grid, true);
+                coordinates = new int[10][2];
                 break;
             /* 4x4 */
             case 2:
-                inflater.inflate(R.layout.grid_4x4_template, gridActivityTemplate, true);
+                inflater.inflate(R.layout.grid_4x4_template, grid, true);
+                coordinates = new int[17][2];
                 break;
             default:
                 break;
         }
 
+        /* Set onTouchListener on 'controls' */
         setEvents(gridActivityTemplate);
+        /* Listener for saving the coordinates of the cells */
+        setLayoutListener(gridActivityTemplate, gridSize, cells, images);
 
         contentContainer.addView(gridActivityTemplate);
+    }
+
+    private void setLayoutListener(final RelativeLayout gridActivityTemplate, final int gridSize, final int[] cells, final String[] images) {
+        GridLayout grid = (GridLayout) gridActivityTemplate.findViewById(R.id.grid);
+
+        /* This observer saves the coordinates of the cells, once they are loaded into the layout */
+        grid.getViewTreeObserver().addOnGlobalLayoutListener(
+            new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                GridLayout grid = (GridLayout) findViewById(R.id.grid);
+                /* 'grid' contains the 3x3 or 4x4 grid */
+                GridLayout gameGrid = (GridLayout) grid.getChildAt(0);
+
+                coordinates[0][0] = grid.getLeft();
+                coordinates[0][1] = grid.getTop();
+
+                /* Values used to calculate the center of the cells */
+                int halfCell = 0, rows = 0;
+                switch (gridSize) {
+                    case 1:
+                        halfCell = grid.getWidth()/6;
+                        rows = 3;
+                        break;
+                    case 2:
+                        halfCell = grid.getWidth()/8;
+                        rows = 4;
+                        break;
+                    default:
+                        break;
+                }
+
+                /* Cell center coordinates are calculated based on the upper left corner of the grid */
+                for (int i=0; i<gameGrid.getChildCount(); i++) {
+                    coordinates[i+1][0] = coordinates[0][0] + (((i%rows)*2 + 1)*halfCell);
+                    coordinates[i+1][1] = coordinates[0][1] + (((i/rows)*2 + 1)*halfCell);
+                }
+                gameGrid.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                placeElements(gridActivityTemplate, cells, images);
+            }
+        });
+    }
+
+    private void placeElements(RelativeLayout gridActivityTemplate, int[] cells, String[] images) {
+
+        /* 'cells' contains a number between 1 and 9 or 16 that indicates the cells that will contain an image */
+        /* 'images' contains the name of the resources */
+        for (int i=0; i<cells.length; i++) {
+            ImageView image = new ImageView(this);
+            image.setImageResource(getResources().getIdentifier(images[i], "drawable", getPackageName()));
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(150, 150);
+            image.setLayoutParams(layoutParams);
+            image.setX(coordinates[cells[i]][0]-75);
+            image.setY(coordinates[cells[i]][1]-75);
+
+            gridActivityTemplate.addView(image);
+        }
     }
 
     private void setEvents(View gridActivityTemplate) {
