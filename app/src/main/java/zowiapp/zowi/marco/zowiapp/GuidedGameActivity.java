@@ -2,24 +2,15 @@ package zowiapp.zowi.marco.zowiapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -52,7 +43,7 @@ public class GuidedGameActivity extends AppCompatActivity {
         activitiesImages = getResources().getStringArray(R.array.activities_images);
 
         for (int i=0; i<TOTAL_UNITS; i++) {
-            View unitContainerView = inflater.inflate(R.layout.unit_container_layout, container, false);
+            View unitContainerView = inflater.inflate(R.layout.menu_unit_container_layout, container, false);
 
             setUnitTitle(unitContainerView, i);
             setUnitActivities(unitContainerView);
