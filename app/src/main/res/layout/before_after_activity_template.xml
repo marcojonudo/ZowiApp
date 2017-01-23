@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="ANTES"/>
+            android:id="@+id/left_title"/>
 
         <View
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="DESPUÉS"/>
+            android:id="@+id/right_title"/>
 
         <View
             android:layout_width="match_parent"

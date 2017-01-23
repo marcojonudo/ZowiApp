@@ -2,7 +2,7 @@
 <resources>
     <string-array name="activities_details">
         <item>{"description": \"Descripcion 1\", "type": 1, "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, casa_destino]}</item>
-        <item>{"description": \"Descripcion 2\", "type": 2, "images": [zowi_pointer, green_circular_button, paper_bin, red_circular_button, casa_destino]}</item>
+        <item>{"description": \"Descripcion 2\", "type": 2, "leftTitle": "Antes", "rightTitle": "Después", "images": [zowi_pointer, green_circular_button, paper_bin, red_circular_button, casa_destino]}</item>
         <item>{"description": \"Descripcion 3\", "type": 1, "gridSize": 1, "cells": [9, 1], "images": [zowi_pointer, casa_destino]}</item>
     </string-array>
 </resources>

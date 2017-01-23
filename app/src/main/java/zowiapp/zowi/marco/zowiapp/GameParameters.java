@@ -70,6 +70,8 @@ public class GameParameters extends AppCompatActivity {
                     break;
                 /* Before and after activity */
                 case 2:
+                    String leftTitle = activityDetails.getString("leftTitle");
+                    String rightTitle = activityDetails.getString("rightTitle");
                     JSONArray jsonBAImages = activityDetails.getJSONArray("images");
                     String[] BAImages = new String[jsonBAImages.length()];
 
@@ -77,7 +79,7 @@ public class GameParameters extends AppCompatActivity {
                         BAImages[i] = jsonBAImages.getString(i);
                     }
 
-                    generateBAActivity(BAImages);
+                    generateBAActivity(BAImages, leftTitle, rightTitle);
                     break;
                 default:
                     break;
@@ -96,9 +98,14 @@ public class GameParameters extends AppCompatActivity {
         description.setText(activityDescription);
     }
 
-    private void generateBAActivity(final String[] images) {
+    private void generateBAActivity(final String[] images, String leftTitle, String rightTitle) {
         final RelativeLayout contentContainer = (RelativeLayout) findViewById(R.id.content_container);
         final LinearLayout beforeAfterActivityTemplate = (LinearLayout) inflater.inflate(R.layout.before_after_activity_template, contentContainer, false);
+
+        TextView lTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.left_title);
+        TextView rTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.right_title);
+        lTitle.setText(leftTitle);
+        rTitle.setText(rightTitle);
 
         beforeAfterActivityTemplate.getViewTreeObserver().addOnGlobalLayoutListener(
             new ViewTreeObserver.OnGlobalLayoutListener() {
