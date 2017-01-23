@@ -3,6 +3,7 @@ package zowiapp.zowi.marco.zowiapp;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,8 +26,7 @@ public class GameParameters extends AppCompatActivity {
 
     private LayoutInflater inflater;
     private GameParameters context;
-    int draggedElementsPosition = 1;
-    float startX, startY;
+    float startX, startY, upperLimit = 0;
 
     private int[][] coordinates, baCoordinates;
 
@@ -203,8 +203,19 @@ public class GameParameters extends AppCompatActivity {
                         float distanceX = event.getRawX() - startX;
                         float distanceY = event.getRawY() - startY;
 
-                        view.setX(baCoordinates[(int)view.getTag()][0]-75+distanceX);
-                        view.setY(baCoordinates[(int)view.getTag()][1]-75+distanceY);
+                        /* Mechanism to avoid the element to move behind the title and description */
+                        /* It is only moved when it is in 'contentContainer' */
+                        if (event.getRawY() > upperLimit) {
+                            view.setX(baCoordinates[(int)view.getTag()][0]-75+distanceX);
+                            view.setY(baCoordinates[(int)view.getTag()][1]-75+distanceY);
+
+                            if (view.getY()<=0) {
+                                upperLimit = event.getRawY();
+                            }
+                        }
+                        else {
+                            view.setX(baCoordinates[(int)view.getTag()][0]-75+distanceX);
+                        }
                         break;
                     default:
                         break;
