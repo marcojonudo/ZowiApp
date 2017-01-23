@@ -20,7 +20,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:background="@drawable/border"
+            android:id="@+id/left_column"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -44,7 +46,9 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:background="@drawable/border"
+            android:id="@+id/right_column"/>
 
     </LinearLayout>
 

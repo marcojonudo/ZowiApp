@@ -25,7 +25,7 @@ public class GameParameters extends AppCompatActivity {
 
     private LayoutInflater inflater;
     private GameParameters context;
-    int _xDelta =0, _yDelta = 0;
+    int draggedElementsPosition = 1;
     float startX, startY;
 
     private int[][] coordinates, baCoordinates;
@@ -114,8 +114,11 @@ public class GameParameters extends AppCompatActivity {
                     beforeAfterActivityTemplate.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     RelativeLayout imagesContainer = (RelativeLayout) findViewById(R.id.images_container);
 
-                    baCoordinates = new int[images.length][2];
+                    /* baCoordinates will contain the images' coordinates, and the ones from the corners of the
+                       columns */
+                    baCoordinates = new int[images.length+8][2];
 
+                    /* The first coordinates are the ones from the element in the center */
                     int centerX = imagesContainer.getLeft() + imagesContainer.getWidth()/2;
                     int centerY = imagesContainer.getTop() + imagesContainer.getHeight()/2;
                     baCoordinates[0][0] = centerX;
@@ -130,6 +133,29 @@ public class GameParameters extends AppCompatActivity {
 
                         baCoordinates[i][0] = x;
                         baCoordinates[i][1] = y;
+                    }
+
+                    View leftColumn = beforeAfterActivityTemplate.findViewById(R.id.left_column);
+                    View rightColumn = beforeAfterActivityTemplate.findViewById(R.id.right_column);
+
+                    /* Coordinates of the corners of the columns */
+                    baCoordinates[baCoordinates.length-8][0] = leftColumn.getLeft() + leftColumn.getWidth();
+                    baCoordinates[baCoordinates.length-8][1] = leftColumn.getTop();
+                    baCoordinates[baCoordinates.length-7][0] = leftColumn.getLeft() + leftColumn.getWidth() + imagesContainer.getWidth();
+                    baCoordinates[baCoordinates.length-7][1] = rightColumn.getTop();
+
+                    int halfColumnWidth = leftColumn.getWidth()/2;
+                    /* The '4' is used to get 3 'lines' between the top and the bottom of the container */
+                    int topToElement = leftColumn.getHeight()/4;
+
+                    for (int i=1; i<4; i++) {
+                        baCoordinates[baCoordinates.length-i][0] = halfColumnWidth;
+                        baCoordinates[baCoordinates.length-i][1] = topToElement*i;
+                    }
+
+                    for (int i=1; i<4; i++) {
+                        baCoordinates[baCoordinates.length-i-3][0] = imagesContainer.getLeft() + imagesContainer.getWidth() + rightColumn.getLeft() + halfColumnWidth;
+                        baCoordinates[baCoordinates.length-i-3][1] = topToElement*i;
                     }
 
                     placeBAImages(contentContainer, images);
@@ -156,9 +182,6 @@ public class GameParameters extends AppCompatActivity {
         image.setY(y-75);
         image.setTag(i);
 
-        float a = image.getX();
-        float b = image.getY();
-
         image.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
@@ -169,9 +192,24 @@ public class GameParameters extends AppCompatActivity {
                         startY = event.getRawY();
                         break;
                     case MotionEvent.ACTION_UP:
+                        /* The view is placed inside the left column */
+                        if ((view.getX() < baCoordinates[baCoordinates.length-8][0])
+                                &&((view.getY()+view.getHeight()) > baCoordinates[baCoordinates.length-8][1])) {
+                            view.setX(baCoordinates[baCoordinates.length-draggedElementsPosition][0]-75);
+                            view.setY(baCoordinates[baCoordinates.length-draggedElementsPosition][1]-75);
+                            draggedElementsPosition++;
+                            Toast.makeText(context, "Columna izquierda", Toast.LENGTH_SHORT).show();
+                        }
+                        /* The view is placed inside the right column */
+                        else if (((view.getX()+view.getWidth()) > baCoordinates[baCoordinates.length-7][0])
+                                &&((view.getY()+view.getHeight()) > baCoordinates[baCoordinates.length-7][1])) {
+                            Toast.makeText(context, "Columna derecha", Toast.LENGTH_SHORT).show();
+                        }
                         /* The element goes back to the original position */
-                        view.setX(baCoordinates[(int)view.getTag()][0]-75);
-                        view.setY(baCoordinates[(int)view.getTag()][1]-75);
+                        else {
+                            view.setX(baCoordinates[(int)view.getTag()][0]-75);
+                            view.setY(baCoordinates[(int)view.getTag()][1]-75);
+                        }
                         break;
                     case MotionEvent.ACTION_MOVE:
                         /* The distance of the element to the start point is calculated when the user
