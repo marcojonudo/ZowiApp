@@ -3,15 +3,10 @@ package zowiapp.zowi.marco.zowiapp;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -30,8 +25,10 @@ public class GameParameters extends AppCompatActivity {
 
     private LayoutInflater inflater;
     private GameParameters context;
+    int _xDelta =0, _yDelta = 0;
+    float startX, startY;
 
-    private int[][] coordinates;
+    private int[][] coordinates, baCoordinates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +68,17 @@ public class GameParameters extends AppCompatActivity {
 
                     generateGridActivity(gridSize, cells, images);
                     break;
+                /* Before and after activity */
+                case 2:
+                    JSONArray jsonBAImages = activityDetails.getJSONArray("images");
+                    String[] BAImages = new String[jsonBAImages.length()];
+
+                    for (int i=0; i<jsonBAImages.length(); i++) {
+                        BAImages[i] = jsonBAImages.getString(i);
+                    }
+
+                    generateBAActivity(BAImages);
+                    break;
                 default:
                     break;
             }
@@ -86,6 +94,112 @@ public class GameParameters extends AppCompatActivity {
 
         title.setText(activityTitle);
         description.setText(activityDescription);
+    }
+
+    private void generateBAActivity(final String[] images) {
+        final RelativeLayout contentContainer = (RelativeLayout) findViewById(R.id.content_container);
+        final LinearLayout beforeAfterActivityTemplate = (LinearLayout) inflater.inflate(R.layout.before_after_activity_template, contentContainer, false);
+
+        beforeAfterActivityTemplate.getViewTreeObserver().addOnGlobalLayoutListener(
+            new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    beforeAfterActivityTemplate.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    RelativeLayout imagesContainer = (RelativeLayout) findViewById(R.id.images_container);
+
+                    baCoordinates = new int[images.length][2];
+
+                    int centerX = imagesContainer.getLeft() + imagesContainer.getWidth()/2;
+                    int centerY = imagesContainer.getTop() + imagesContainer.getHeight()/2;
+                    baCoordinates[0][0] = centerX;
+                    baCoordinates[0][1] = centerY;
+
+                    /* Place the other images on the corners of a square */
+                    /* 'distance' is a intermediate distance between the center and the limits of the container */
+                    int distance = (imagesContainer.getWidth()/6)*2;
+                    for (int i=1; i<5; i++) {
+                        int x = (int) Math.round(centerX + distance*Math.cos(45*(Math.PI/180) + 90*(Math.PI/180)*(i-1)));
+                        int y = (int) Math.round(centerY + distance*Math.sin(45*(Math.PI/180) + 90*(Math.PI/180)*(i-1)));
+
+                        baCoordinates[i][0] = x;
+                        baCoordinates[i][1] = y;
+                    }
+
+                    placeBAImages(contentContainer, images);
+                }
+            });
+
+        contentContainer.addView(beforeAfterActivityTemplate);
+    }
+
+    private void placeBAImages(RelativeLayout contentContainer, String[] images) {
+        /* Place the first image in the center of imagesContainer */
+        for (int i=0; i<images.length; i++) {
+            placeImage(contentContainer, images[i], baCoordinates[i][0], baCoordinates[i][1], i);
+        }
+
+    }
+
+    private void placeImage(RelativeLayout container, String imageName, int x, int y, int i) {
+        ImageView image = new ImageView(this);
+        image.setImageResource(getResources().getIdentifier(imageName, "drawable", getPackageName()));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(150, 150);
+        image.setLayoutParams(layoutParams);
+        image.setX(x-75);
+        image.setY(y-75);
+        image.setTag(i);
+
+        float a = image.getX();
+        float b = image.getY();
+
+        image.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        /* Values used to calculate de distance to move the element */
+                        startX = event.getRawX();
+                        startY = event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        /* The element goes back to the original position */
+                        view.setX(baCoordinates[(int)view.getTag()][0]-75);
+                        view.setY(baCoordinates[(int)view.getTag()][1]-75);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        /* The distance of the element to the start point is calculated when the user
+                           moves it */
+                        float distanceX = event.getRawX() - startX;
+                        float distanceY = event.getRawY() - startY;
+
+                        view.setX(baCoordinates[(int)view.getTag()][0]-75+distanceX);
+                        view.setY(baCoordinates[(int)view.getTag()][1]-75+distanceY);
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+
+        /*image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                AnimationSet set = new AnimationSet(true);
+
+                TranslateAnimation translateAnimation = new TranslateAnimation(0, 300, 0, 0);
+                translateAnimation.setDuration(1000);
+
+                set.addAnimation(translateAnimation);
+
+                set.setFillAfter(true);
+
+                v.startAnimation(set);
+            }
+        });*/
+
+        container.addView(image);
     }
 
     private void generateGridActivity(int gridSize, int[] cells, String[] images) {
