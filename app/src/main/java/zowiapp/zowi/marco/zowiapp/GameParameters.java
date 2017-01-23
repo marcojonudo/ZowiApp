@@ -168,9 +168,6 @@ public class GameParameters extends AppCompatActivity {
         image.setY(y-75);
         image.setTag(i);
 
-        float a = image.getX();
-        float b = image.getY();
-
         image.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
@@ -185,11 +182,35 @@ public class GameParameters extends AppCompatActivity {
                         if ((view.getX() < baCoordinates[baCoordinates.length-2][0])
                                 &&((view.getY()+view.getHeight()) > baCoordinates[baCoordinates.length-2][1])) {
                             Toast.makeText(context, "Columna izquierda", Toast.LENGTH_SHORT).show();
+
+                            if ((view.getX()+view.getWidth()) > baCoordinates[baCoordinates.length-2][0]) {
+                                view.setX(baCoordinates[baCoordinates.length-2][0]-view.getWidth());
+                            }
+                            else if (view.getY() < baCoordinates[baCoordinates.length-2][1]) {
+                                view.setY(baCoordinates[baCoordinates.length-2][1]);
+                            }
+                            else if (((view.getX()+view.getWidth()) > baCoordinates[baCoordinates.length-2][0])
+                                    &&(view.getY() < baCoordinates[baCoordinates.length-2][1])) {
+                                view.setX(baCoordinates[baCoordinates.length-2][0]-view.getWidth());
+                                view.setY(baCoordinates[baCoordinates.length-2][1]);
+                            }
                         }
                         /* The view is placed inside the right column */
                         else if (((view.getX()+view.getWidth()) > baCoordinates[baCoordinates.length-1][0])
                                 &&((view.getY()+view.getHeight()) > baCoordinates[baCoordinates.length-1][1])) {
                             Toast.makeText(context, "Columna derecha", Toast.LENGTH_SHORT).show();
+
+                            if (view.getX() < baCoordinates[baCoordinates.length-1][0]) {
+                                view.setX(baCoordinates[baCoordinates.length-1][0]);
+                            }
+                            else if (view.getY() < baCoordinates[baCoordinates.length-1][1]) {
+                                view.setY(baCoordinates[baCoordinates.length-1][1]);
+                            }
+                            else if ((view.getX() < baCoordinates[baCoordinates.length-1][0])
+                                    &&(view.getY() < baCoordinates[baCoordinates.length-1][1])) {
+                                view.setX(baCoordinates[baCoordinates.length-1][0]);
+                                view.setY(baCoordinates[baCoordinates.length-1][1]);
+                            }
                         }
                         /* The element goes back to the original position */
                         else {
@@ -203,8 +224,8 @@ public class GameParameters extends AppCompatActivity {
                         float distanceX = event.getRawX() - startX;
                         float distanceY = event.getRawY() - startY;
 
-                        /* Mechanism to avoid the element to move behind the title and description */
-                        /* It is only moved when it is in 'contentContainer' */
+                        /* Mechanism to avoid the element to move behind the title and description
+                           It is only moved when it is in 'contentContainer' */
                         if (event.getRawY() > upperLimit) {
                             view.setX(baCoordinates[(int)view.getTag()][0]-75+distanceX);
                             view.setY(baCoordinates[(int)view.getTag()][1]-75+distanceY);
