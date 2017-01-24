@@ -27,6 +27,7 @@ public class GameParameters extends AppCompatActivity {
 
     private LayoutInflater inflater;
     private GameParameters context;
+    private ActivityType activityType;
     float startX, startY, upperLimit = 0;
 
     private int[][] coordinates, baCoordinates;
@@ -40,25 +41,32 @@ public class GameParameters extends AppCompatActivity {
         inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         Bundle parameter = getIntent().getExtras();
-        String activityTitle = parameter.getString("activityTitle");
-        int activityNumber = parameter.getInt("activityNumber");
+        String activityTitle = parameter.getString(CommonConstants.INTENT_PARAMETER_TITLE);
+        int activityNumber = parameter.getInt(CommonConstants.INTENT_PARAMETER_NUMBER);
 
+        /* Array with all the details needed to create the activity */
         String[] activitiesDetails = getResources().getStringArray(R.array.activities_details);
 
+        chooseActivityType(activityTitle, activityNumber, activitiesDetails);
+    }
+
+    private void chooseActivityType(String activityTitle, int activityNumber, String[] activitiesDetails) {
         try {
             String json = activitiesDetails[activityNumber];
             JSONObject activityDetails = new JSONObject(json);
-            String activityDescription = activityDetails.getString("description");
+            String activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
 
             /* Set the title and the description of the activity */
             setTitleDescription(activityTitle, activityDescription);
 
-            switch (activityDetails.getInt("type")) {
+            activityType = ActivityType.valueOf(activityDetails.getString(CommonConstants.JSON_PARAMETER_TYPE));
+
+            switch (activityType) {
                 /* Grid activity */
-                case 1:
-                    int gridSize = activityDetails.getInt("gridSize");
-                    JSONArray jsonCells = activityDetails.getJSONArray("cells");
-                    JSONArray jsonImages = activityDetails.getJSONArray("images");
+                case GRID:
+                    int gridSize = activityDetails.getInt(GridConstants.JSON_PARAMETER_GRIDSIZE);
+                    JSONArray jsonCells = activityDetails.getJSONArray(GridConstants.JSON_PARAMETER_CELLS);
+                    JSONArray jsonImages = activityDetails.getJSONArray(GridConstants.JSON_PARAMETER_IMAGES);
                     int[] cells = new int[jsonCells.length()];
                     String[] images = new String[jsonImages.length()];
 
@@ -66,14 +74,13 @@ public class GameParameters extends AppCompatActivity {
                         cells[i] = jsonCells.getInt(i);
                         images[i] = jsonImages.getString(i);
                     }
-
                     generateGridActivity(gridSize, cells, images);
                     break;
                 /* Before and after activity */
-                case 2:
-                    String leftTitle = activityDetails.getString("leftTitle");
-                    String rightTitle = activityDetails.getString("rightTitle");
-                    JSONArray jsonBAImages = activityDetails.getJSONArray("images");
+                case COLUMNS:
+                    String leftTitle = activityDetails.getString(ColumnsConstants.JSON_PARAMETER_LEFTTITLE);
+                    String rightTitle = activityDetails.getString(ColumnsConstants.JSON_PARAMETER_RIGHTTITLE);
+                    JSONArray jsonBAImages = activityDetails.getJSONArray(ColumnsConstants.JSON_PARAMETER_IMAGES);
                     String[] BAImages = new String[jsonBAImages.length()];
 
                     for (int i=0; i<jsonBAImages.length(); i++) {
@@ -99,20 +106,30 @@ public class GameParameters extends AppCompatActivity {
         description.setText(activityDescription);
     }
 
+    protected void hola() {
+
+    }
+
     private void generateBAActivity(final String[] images, String leftTitle, String rightTitle) {
         final RelativeLayout contentContainer = (RelativeLayout) findViewById(R.id.content_container);
-        final LinearLayout beforeAfterActivityTemplate = (LinearLayout) inflater.inflate(R.layout.before_after_activity_template, contentContainer, false);
+        LinearLayout beforeAfterActivityTemplate = (LinearLayout) inflater.inflate(R.layout.before_after_activity_template, contentContainer, false);
+        contentContainer.addView(beforeAfterActivityTemplate);
 
-        TextView lTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.left_title);
-        TextView rTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.right_title);
+        TextView lTitle = (TextView) findViewById(R.id.left_title);
+        TextView rTitle = (TextView) findViewById(R.id.right_title);
         lTitle.setText(leftTitle);
         rTitle.setText(rightTitle);
 
-        beforeAfterActivityTemplate.getViewTreeObserver().addOnGlobalLayoutListener(
+        LayoutListener layoutListener = new LayoutListener(activityType, contentContainer, context, images);
+
+        contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
+
+        contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(
             new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    beforeAfterActivityTemplate.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                    contentContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     RelativeLayout imagesContainer = (RelativeLayout) findViewById(R.id.images_container);
 
                     /* baCoordinates will contain the images' coordinates, and the ones from the corners of the
@@ -136,8 +153,8 @@ public class GameParameters extends AppCompatActivity {
                         baCoordinates[i][1] = y - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
                     }
 
-                    View leftColumn = beforeAfterActivityTemplate.findViewById(R.id.left_column);
-                    View rightColumn = beforeAfterActivityTemplate.findViewById(R.id.right_column);
+                    View leftColumn = findViewById(R.id.left_column);
+                    View rightColumn = findViewById(R.id.right_column);
 
                     /* Coordinates of the corners of the columns */
                     baCoordinates[baCoordinates.length-ColumnsConstants.LEFT_COL_INDEX_ADJUSTMENT][0] = leftColumn.getLeft() + leftColumn.getWidth();
@@ -148,8 +165,45 @@ public class GameParameters extends AppCompatActivity {
                     placeBAImages(contentContainer, images);
                 }
             });
+    }
 
-        contentContainer.addView(beforeAfterActivityTemplate);
+    protected void getElementsCoordinates() {
+        switch (activityType) {
+            case COLUMNS:
+                RelativeLayout imagesContainer = (RelativeLayout) findViewById(R.id.images_container);
+
+                    /* baCoordinates will contain the images' coordinates, and the ones from the corners of the
+                       columns */
+                baCoordinates = new int[images.length+ColumnsConstants.COLUMNS_INCREMENT][CommonConstants.AXIS_NUMBER];
+
+                    /* The first coordinates are the ones from the element in the center */
+                int centerX = imagesContainer.getLeft() + imagesContainer.getWidth()/2;
+                int centerY = imagesContainer.getTop() + imagesContainer.getHeight()/2;
+                baCoordinates[0][0] = centerX - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
+                baCoordinates[0][1] = centerY - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
+
+                    /* Place the other images on the corners of a square */
+                    /* 'distance' is a intermediate distance between the center and the limits of the container */
+                int distance = (imagesContainer.getWidth()/6)*2;
+                for (int i=1; i<5; i++) {
+                    int x = (int) Math.round(centerX + distance*Math.cos(ColumnsConstants.CIRCUMFERENCE_INITIAL_POS*(Math.PI/180) + ColumnsConstants.CIRCUMFERENCE_INCREMENT*(Math.PI/180)*(i-1)));
+                    int y = (int) Math.round(centerY + distance*Math.sin(ColumnsConstants.CIRCUMFERENCE_INITIAL_POS*(Math.PI/180) + ColumnsConstants.CIRCUMFERENCE_INCREMENT*(Math.PI/180)*(i-1)));
+
+                    baCoordinates[i][0] = x - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
+                    baCoordinates[i][1] = y - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
+                }
+
+                View leftColumn = findViewById(R.id.left_column);
+                View rightColumn = findViewById(R.id.right_column);
+
+                    /* Coordinates of the corners of the columns */
+                baCoordinates[baCoordinates.length-ColumnsConstants.LEFT_COL_INDEX_ADJUSTMENT][0] = leftColumn.getLeft() + leftColumn.getWidth();
+                baCoordinates[baCoordinates.length-ColumnsConstants.LEFT_COL_INDEX_ADJUSTMENT][1] = leftColumn.getTop();
+                baCoordinates[baCoordinates.length-ColumnsConstants.RIGHT_COL_INDEX_ADJUSTMENT][0] = leftColumn.getLeft() + leftColumn.getWidth() + imagesContainer.getWidth();
+                baCoordinates[baCoordinates.length-ColumnsConstants.RIGHT_COL_INDEX_ADJUSTMENT][1] = rightColumn.getTop();
+
+                placeBAImages(contentContainer, images);
+        }
     }
 
     private void placeBAImages(RelativeLayout contentContainer, String[] images) {
@@ -423,5 +477,30 @@ public class GameParameters extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    interface CreationStep {
+        void setEvents();
+        void setLayoutListener(RelativeLayout relativeLayout);
+    }
+
+    private CreationStep[] creationSteps = new CreationStep[] {
+            new CreationStep() {
+                @Override
+                public void setEvents() {
+                    Toast.makeText(context, "setEvents", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void setLayoutListener(RelativeLayout relativeLayout) {
+                    Toast.makeText(context, "setEvents", Toast.LENGTH_SHORT).show();
+                }
+            }
+    };
+
+    private void create() {
+        for (int i=0; i<creationSteps.length; i++) {
+            creationSteps[i].setEvents();
+        }
     }
 }
