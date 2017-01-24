@@ -3,7 +3,6 @@ package zowiapp.zowi.marco.zowiapp;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +20,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import zowiapp.zowi.marco.zowiapp.ActivityConstants.*;
 
 public class GameParameters extends AppCompatActivity {
 
@@ -116,33 +117,33 @@ public class GameParameters extends AppCompatActivity {
 
                     /* baCoordinates will contain the images' coordinates, and the ones from the corners of the
                        columns */
-                    baCoordinates = new int[images.length+2][2];
+                    baCoordinates = new int[images.length+ColumnsConstants.COLUMNS_INCREMENT][CommonConstants.AXIS_NUMBER];
 
                     /* The first coordinates are the ones from the element in the center */
                     int centerX = imagesContainer.getLeft() + imagesContainer.getWidth()/2;
                     int centerY = imagesContainer.getTop() + imagesContainer.getHeight()/2;
-                    baCoordinates[0][0] = centerX;
-                    baCoordinates[0][1] = centerY;
+                    baCoordinates[0][0] = centerX - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
+                    baCoordinates[0][1] = centerY - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
 
                     /* Place the other images on the corners of a square */
                     /* 'distance' is a intermediate distance between the center and the limits of the container */
                     int distance = (imagesContainer.getWidth()/6)*2;
                     for (int i=1; i<5; i++) {
-                        int x = (int) Math.round(centerX + distance*Math.cos(45*(Math.PI/180) + 90*(Math.PI/180)*(i-1)));
-                        int y = (int) Math.round(centerY + distance*Math.sin(45*(Math.PI/180) + 90*(Math.PI/180)*(i-1)));
+                        int x = (int) Math.round(centerX + distance*Math.cos(ColumnsConstants.CIRCUMFERENCE_INITIAL_POS*(Math.PI/180) + ColumnsConstants.CIRCUMFERENCE_INCREMENT*(Math.PI/180)*(i-1)));
+                        int y = (int) Math.round(centerY + distance*Math.sin(ColumnsConstants.CIRCUMFERENCE_INITIAL_POS*(Math.PI/180) + ColumnsConstants.CIRCUMFERENCE_INCREMENT*(Math.PI/180)*(i-1)));
 
-                        baCoordinates[i][0] = x;
-                        baCoordinates[i][1] = y;
+                        baCoordinates[i][0] = x - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
+                        baCoordinates[i][1] = y - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
                     }
 
                     View leftColumn = beforeAfterActivityTemplate.findViewById(R.id.left_column);
                     View rightColumn = beforeAfterActivityTemplate.findViewById(R.id.right_column);
 
                     /* Coordinates of the corners of the columns */
-                    baCoordinates[baCoordinates.length-2][0] = leftColumn.getLeft() + leftColumn.getWidth();
-                    baCoordinates[baCoordinates.length-2][1] = leftColumn.getTop();
-                    baCoordinates[baCoordinates.length-1][0] = leftColumn.getLeft() + leftColumn.getWidth() + imagesContainer.getWidth();
-                    baCoordinates[baCoordinates.length-1][1] = rightColumn.getTop();
+                    baCoordinates[baCoordinates.length-ColumnsConstants.LEFT_COL_INDEX_ADJUSTMENT][0] = leftColumn.getLeft() + leftColumn.getWidth();
+                    baCoordinates[baCoordinates.length-ColumnsConstants.LEFT_COL_INDEX_ADJUSTMENT][1] = leftColumn.getTop();
+                    baCoordinates[baCoordinates.length-ColumnsConstants.RIGHT_COL_INDEX_ADJUSTMENT][0] = leftColumn.getLeft() + leftColumn.getWidth() + imagesContainer.getWidth();
+                    baCoordinates[baCoordinates.length-ColumnsConstants.RIGHT_COL_INDEX_ADJUSTMENT][1] = rightColumn.getTop();
 
                     placeBAImages(contentContainer, images);
                 }
@@ -162,10 +163,10 @@ public class GameParameters extends AppCompatActivity {
     private void placeImage(RelativeLayout container, String imageName, int x, int y, int i) {
         ImageView image = new ImageView(this);
         image.setImageResource(getResources().getIdentifier(imageName, "drawable", getPackageName()));
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(150, 150);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ColumnsConstants.COLUMNS_IMAGE_WIDTH_PX, ColumnsConstants.COLUMNS_IMAGE_WIDTH_PX);
         image.setLayoutParams(layoutParams);
-        image.setX(x-75);
-        image.setY(y-75);
+        image.setX(x);
+        image.setY(y);
         image.setTag(i);
 
         image.setOnTouchListener(new View.OnTouchListener() {
@@ -179,43 +180,57 @@ public class GameParameters extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_UP:
                         /* The view is placed inside the left column */
-                        if ((view.getX() < baCoordinates[baCoordinates.length-2][0])
-                                &&((view.getY()+view.getHeight()) > baCoordinates[baCoordinates.length-2][1])) {
+                        int leftColumnIndex = baCoordinates.length-ColumnsConstants.LEFT_COL_INDEX_ADJUSTMENT;
+                        int rightColumnIndex = baCoordinates.length-ColumnsConstants.RIGHT_COL_INDEX_ADJUSTMENT;
+                        float topLeftCornerX = view.getX();
+                        float topRightCornerX = view.getX() + view.getWidth();
+                        float topLeftCornerY = view.getY();
+                        float bottomLeftCornerY = view.getY() + view.getHeight();
+
+                        if ((topLeftCornerX < baCoordinates[leftColumnIndex][0])
+                                &&(bottomLeftCornerY > baCoordinates[leftColumnIndex][1])) {
                             Toast.makeText(context, "Columna izquierda", Toast.LENGTH_SHORT).show();
 
-                            if ((view.getX()+view.getWidth()) > baCoordinates[baCoordinates.length-2][0]) {
-                                view.setX(baCoordinates[baCoordinates.length-2][0]-view.getWidth());
+                            /* Actions to do if the image is not completely inside the column */
+                            /* The image is on the corner */
+                            if ((topRightCornerX > baCoordinates[leftColumnIndex][0])
+                                    &&(topLeftCornerY < baCoordinates[leftColumnIndex][1])) {
+                                view.setX(baCoordinates[leftColumnIndex][0]-view.getWidth());
+                                view.setY(baCoordinates[leftColumnIndex][1]);
                             }
-                            else if (view.getY() < baCoordinates[baCoordinates.length-2][1]) {
-                                view.setY(baCoordinates[baCoordinates.length-2][1]);
+                            /* The image is on the top edge */
+                            else if (topLeftCornerY < baCoordinates[leftColumnIndex][1]) {
+                                view.setY(baCoordinates[leftColumnIndex][1]);
                             }
-                            else if (((view.getX()+view.getWidth()) > baCoordinates[baCoordinates.length-2][0])
-                                    &&(view.getY() < baCoordinates[baCoordinates.length-2][1])) {
-                                view.setX(baCoordinates[baCoordinates.length-2][0]-view.getWidth());
-                                view.setY(baCoordinates[baCoordinates.length-2][1]);
+                            /* The image is on the right edge */
+                            else if (topRightCornerX > baCoordinates[leftColumnIndex][0]) {
+                                view.setX(baCoordinates[leftColumnIndex][0]-view.getWidth());
                             }
                         }
                         /* The view is placed inside the right column */
-                        else if (((view.getX()+view.getWidth()) > baCoordinates[baCoordinates.length-1][0])
-                                &&((view.getY()+view.getHeight()) > baCoordinates[baCoordinates.length-1][1])) {
+                        else if ((topRightCornerX > baCoordinates[rightColumnIndex][0])
+                                &&((view.getY()+view.getHeight()) > baCoordinates[rightColumnIndex][1])) {
                             Toast.makeText(context, "Columna derecha", Toast.LENGTH_SHORT).show();
 
-                            if (view.getX() < baCoordinates[baCoordinates.length-1][0]) {
-                                view.setX(baCoordinates[baCoordinates.length-1][0]);
+                            /* The image is on the corner */
+                            if ((topLeftCornerX < baCoordinates[rightColumnIndex][0])
+                                    &&(topLeftCornerY < baCoordinates[rightColumnIndex][1])) {
+                                view.setX(baCoordinates[rightColumnIndex][0]);
+                                view.setY(baCoordinates[rightColumnIndex][1]);
                             }
-                            else if (view.getY() < baCoordinates[baCoordinates.length-1][1]) {
-                                view.setY(baCoordinates[baCoordinates.length-1][1]);
+                            /* The image is on the top edge */
+                            else if (topLeftCornerY < baCoordinates[rightColumnIndex][1]) {
+                                view.setY(baCoordinates[rightColumnIndex][1]);
                             }
-                            else if ((view.getX() < baCoordinates[baCoordinates.length-1][0])
-                                    &&(view.getY() < baCoordinates[baCoordinates.length-1][1])) {
-                                view.setX(baCoordinates[baCoordinates.length-1][0]);
-                                view.setY(baCoordinates[baCoordinates.length-1][1]);
+                            /* The image is on the left edge */
+                            else if (topLeftCornerX < baCoordinates[rightColumnIndex][0]) {
+                                view.setX(baCoordinates[rightColumnIndex][0]);
                             }
                         }
                         /* The element goes back to the original position */
                         else {
-                            view.setX(baCoordinates[(int)view.getTag()][0]-75);
-                            view.setY(baCoordinates[(int)view.getTag()][1]-75);
+                            view.setX(baCoordinates[(int)view.getTag()][0]);
+                            view.setY(baCoordinates[(int)view.getTag()][1]);
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:
@@ -227,15 +242,15 @@ public class GameParameters extends AppCompatActivity {
                         /* Mechanism to avoid the element to move behind the title and description
                            It is only moved when it is in 'contentContainer' */
                         if (event.getRawY() > upperLimit) {
-                            view.setX(baCoordinates[(int)view.getTag()][0]-75+distanceX);
-                            view.setY(baCoordinates[(int)view.getTag()][1]-75+distanceY);
+                            view.setX(baCoordinates[(int)view.getTag()][0]+distanceX);
+                            view.setY(baCoordinates[(int)view.getTag()][1]+distanceY);
 
                             if (view.getY()<=0) {
                                 upperLimit = event.getRawY();
                             }
                         }
                         else {
-                            view.setX(baCoordinates[(int)view.getTag()][0]-75+distanceX);
+                            view.setX(baCoordinates[(int)view.getTag()][0]+distanceX);
                         }
                         break;
                     default:
@@ -275,12 +290,12 @@ public class GameParameters extends AppCompatActivity {
             case 1:
                 /* The grid is added automatically to 'grid' because the third parameter is 'true' */
                 inflater.inflate(R.layout.grid_3x3_template, grid, true);
-                coordinates = new int[10][2];
+                coordinates = new int[GridConstants.COORDINATES_3X3_LENGTH][CommonConstants.AXIS_NUMBER];
                 break;
             /* 4x4 */
             case 2:
                 inflater.inflate(R.layout.grid_4x4_template, grid, true);
-                coordinates = new int[17][2];
+                coordinates = new int[GridConstants.COORDINATES_4X4_LENGTH][CommonConstants.AXIS_NUMBER];
                 break;
             default:
                 break;
@@ -326,9 +341,10 @@ public class GameParameters extends AppCompatActivity {
 
                 /* Cell center coordinates are calculated based on the upper left corner of the grid */
                 for (int i=0; i<gameGrid.getChildCount(); i++) {
-                    coordinates[i+1][0] = coordinates[0][0] + (((i%rows)*2 + 1)*halfCell);
-                    coordinates[i+1][1] = coordinates[0][1] + (((i/rows)*2 + 1)*halfCell);
+                    coordinates[i+1][0] = coordinates[0][0] + (((i%rows)*2 + 1)*halfCell) - GridConstants.GRID_TRANSLATION_TO_CENTER;
+                    coordinates[i+1][1] = coordinates[0][1] + (((i/rows)*2 + 1)*halfCell) - GridConstants.GRID_TRANSLATION_TO_CENTER;
                 }
+
                 gameGrid.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                 placeElements(gridActivityTemplate, cells, images);
@@ -343,10 +359,10 @@ public class GameParameters extends AppCompatActivity {
         for (int i=0; i<cells.length; i++) {
             ImageView image = new ImageView(this);
             image.setImageResource(getResources().getIdentifier(images[i], "drawable", getPackageName()));
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(150, 150);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(GridConstants.GRID_IMAGE_WIDTH_PX, GridConstants.GRID_IMAGE_WIDTH_PX);
             image.setLayoutParams(layoutParams);
-            image.setX(coordinates[cells[i]][0]-75);
-            image.setY(coordinates[cells[i]][1]-75);
+            image.setX(coordinates[cells[i]][0]);
+            image.setY(coordinates[cells[i]][1]);
 
             gridActivityTemplate.addView(image);
         }
@@ -365,8 +381,8 @@ public class GameParameters extends AppCompatActivity {
                         float y = event.getY();
                         float rightCorner = v.getWidth();
                         float center = rightCorner/2;
-                        /* The control's width is 500px, and the diameter of the circumference is 150px */
-                        double circumferenceRadius = rightCorner/6.66;
+                        /* The control's width is 500px, and the diameter of the circumference is 150px (500/(150/2))*/
+                        double circumferenceRadius = rightCorner/GridConstants.CONTROL_RADIUS_FACTOR;
 
                         double distanceToCenter = Math.sqrt(Math.pow(x-center, 2)+Math.pow(y-center, 2));
 
