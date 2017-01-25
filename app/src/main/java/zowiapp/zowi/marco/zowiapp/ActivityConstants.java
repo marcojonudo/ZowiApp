@@ -9,11 +9,12 @@ public class ActivityConstants {
         protected static final String INTENT_PARAMETER_TITLE = "activityTitle";
         protected static final String INTENT_PARAMETER_NUMBER = "activityNumber";
         protected static final String JSON_PARAMETER_DESCRIPTION = "description";
-        protected static final String JSON_PARAMETER_TYPE = "TYPE";
+        protected static final String JSON_PARAMETER_TYPE = "type";
         protected static final int AXIS_NUMBER = 2;
     }
 
     protected static class GridConstants {
+        protected static final ActivityType GRID_TYPE = ActivityType.GRID;
         protected static final String JSON_PARAMETER_GRIDSIZE = "gridSize";
         protected static final String JSON_PARAMETER_CELLS = "cells";
         protected static final String JSON_PARAMETER_IMAGES = "images";
@@ -25,6 +26,7 @@ public class ActivityConstants {
     }
 
     protected static class ColumnsConstants {
+        protected static final ActivityType COLUMNS_TYPE = ActivityType.COLUMNS;
         protected static final String JSON_PARAMETER_LEFTTITLE = "leftTitle";
         protected static final String JSON_PARAMETER_RIGHTTITLE = "rightTitle";
         protected static final String JSON_PARAMETER_IMAGES = "images";
