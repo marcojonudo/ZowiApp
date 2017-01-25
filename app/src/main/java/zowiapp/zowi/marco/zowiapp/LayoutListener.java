@@ -11,20 +11,18 @@ public class LayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
 
     private ActivityType activityType;
     private View listenerElemenet;
-    private GameParameters gameParameters;
-    private String[] images;
+    private ActivityTemplate activity;
 
-    public LayoutListener(ActivityType activityType, View listenerElement, GameParameters gameParameters, String[] images) {
+    public LayoutListener(ActivityType activityType, View listenerElement, ActivityTemplate activity) {
         this.activityType = activityType;
         this.listenerElemenet = listenerElement;
-        this.gameParameters = gameParameters;
-        this.images = images;
+        this.activity = activity;
     }
 
     @Override
     public void onGlobalLayout() {
         listenerElemenet.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-        gameParameters.hola(activityType,);
+        activity.returnFromLayoutListener(activityType, activity);
     }
 }
