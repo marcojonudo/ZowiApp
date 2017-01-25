@@ -1,8 +1,10 @@
-package zowiapp.zowi.marco.zowiapp;
+package zowiapp.zowi.marco.zowiapp.listeners;
 
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
+
+import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityTemplate;
 
 /**
  * Created by Marco on 24/01/2017.

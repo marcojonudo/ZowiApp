@@ -1,4 +1,4 @@
-package zowiapp.zowi.marco.zowiapp;
+package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,15 +9,18 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import zowiapp.zowi.marco.zowiapp.ActivityConstants.GridConstants;
-import zowiapp.zowi.marco.zowiapp.ActivityConstants.CommonConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.GridConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
+import zowiapp.zowi.marco.zowiapp.GameParameters;
+import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
+import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
 /**
  * Created by Marco on 24/01/2017.

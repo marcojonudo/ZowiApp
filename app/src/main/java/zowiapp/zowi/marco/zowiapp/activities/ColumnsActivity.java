@@ -1,4 +1,4 @@
-package zowiapp.zowi.marco.zowiapp;
+package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,8 +14,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import zowiapp.zowi.marco.zowiapp.ActivityConstants.ColumnsConstants;
-import zowiapp.zowi.marco.zowiapp.ActivityConstants.CommonConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColumnsConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
+import zowiapp.zowi.marco.zowiapp.GameParameters;
+import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
+import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -64,7 +68,7 @@ public class ColumnsActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        LinearLayout beforeAfterActivityTemplate = (LinearLayout) inflater.inflate(R.layout.before_after_activity_template, contentContainer, false);
+        LinearLayout beforeAfterActivityTemplate = (LinearLayout) inflater.inflate(R.layout.columns_activity_template, contentContainer, false);
 
         TextView lTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.left_title);
         TextView rTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.right_title);

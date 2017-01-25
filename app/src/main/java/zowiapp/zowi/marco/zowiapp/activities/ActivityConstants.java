@@ -1,15 +1,15 @@
-package zowiapp.zowi.marco.zowiapp;
+package zowiapp.zowi.marco.zowiapp.activities;
 
 /**
  * Created by Marco on 23/01/2017.
  */
 public class ActivityConstants {
 
-    protected static class CommonConstants {
-        protected static final String INTENT_PARAMETER_TITLE = "activityTitle";
-        protected static final String INTENT_PARAMETER_NUMBER = "activityNumber";
+    public static class CommonConstants {
+        public static final String INTENT_PARAMETER_TITLE = "activityTitle";
+        public static final String INTENT_PARAMETER_NUMBER = "activityNumber";
+        public static final String JSON_PARAMETER_TYPE = "type";
         protected static final String JSON_PARAMETER_DESCRIPTION = "description";
-        protected static final String JSON_PARAMETER_TYPE = "type";
         protected static final int AXIS_NUMBER = 2;
     }
 

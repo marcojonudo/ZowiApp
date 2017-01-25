@@ -8,7 +8,10 @@ import org.json.JSONObject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import zowiapp.zowi.marco.zowiapp.ActivityConstants.*;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.*;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
+import zowiapp.zowi.marco.zowiapp.activities.ColumnsActivity;
+import zowiapp.zowi.marco.zowiapp.activities.GridActivity;
 
 public class GameParameters extends AppCompatActivity {
 

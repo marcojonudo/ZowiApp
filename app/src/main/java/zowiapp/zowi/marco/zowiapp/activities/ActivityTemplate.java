@@ -1,8 +1,11 @@
-package zowiapp.zowi.marco.zowiapp;
+package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import zowiapp.zowi.marco.zowiapp.GameParameters;
+import zowiapp.zowi.marco.zowiapp.R;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -21,7 +24,7 @@ public abstract class ActivityTemplate {
         }
     }
 
-    protected void returnFromLayoutListener(ActivityType activityType, ActivityTemplate activity) {
+    public void returnFromLayoutListener(ActivityType activityType, ActivityTemplate activity) {
         switch (activityType) {
             case GRID:
                 GridActivity gridActivity = (GridActivity) activity;
@@ -36,7 +39,7 @@ public abstract class ActivityTemplate {
         }
     }
 
-    protected void returnFromTouchListener(ActivityType activityType, ActivityTemplate activity, View view, MotionEvent event) {
+    public void returnFromTouchListener(ActivityType activityType, ActivityTemplate activity, View view, MotionEvent event) {
         switch (activityType) {
             case GRID:
                 GridActivity gridActivity = (GridActivity) activity;
