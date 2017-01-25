@@ -12,6 +12,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.*;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.ColumnsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GridActivity;
+import zowiapp.zowi.marco.zowiapp.activities.OperationsActivity;
 
 public class GameParameters extends AppCompatActivity {
 
@@ -47,6 +48,8 @@ public class GameParameters extends AppCompatActivity {
                 case COLUMNS:
                     new ColumnsActivity(context, activityTitle, activityDetails);
                     break;
+                case OPERATIONS:
+                    new OperationsActivity(context, activityTitle, activityDetails);
                 default:
                     break;
             }

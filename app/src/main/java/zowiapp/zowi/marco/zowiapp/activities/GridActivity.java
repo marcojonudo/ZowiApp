@@ -35,7 +35,6 @@ public class GridActivity extends ActivityTemplate {
     private int gridSize;
     private JSONObject activityDetails;
     private int[][] coordinates;
-    private RelativeLayout gridActivityTemplate;
 
     public GridActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -73,7 +72,7 @@ public class GridActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        gridActivityTemplate = (RelativeLayout) inflater.inflate(R.layout.grid_activity_template, contentContainer, false);
+        RelativeLayout gridActivityTemplate = (RelativeLayout) inflater.inflate(R.layout.grid_activity_template, contentContainer, false);
         GridLayout grid = (GridLayout) gridActivityTemplate.findViewById(R.id.grid);
 
         switch (gridSize) {
@@ -92,6 +91,7 @@ public class GridActivity extends ActivityTemplate {
                 break;
         }
 
+        /* Set the listener that detects what section of the controls has been touched */
         Button controls = (Button) gridActivityTemplate.findViewById(R.id.controls);
         TouchListener touchListener = new TouchListener(GridConstants.GRID_TYPE, this);
         controls.setOnTouchListener(touchListener);

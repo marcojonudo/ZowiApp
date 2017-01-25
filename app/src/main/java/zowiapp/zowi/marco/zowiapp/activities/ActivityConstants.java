@@ -39,5 +39,10 @@ public class ActivityConstants {
         protected static final int COLUMNS_TRANSLATION_TO_CENTER = COLUMNS_IMAGE_WIDTH_PX /2;
     }
 
-
+    protected static class OperationsConstants {
+        protected static final ActivityType OPERATIONS_TYPE = ActivityType.OPERATIONS;
+        protected static final String JSON_PARAMETER_OPERATIONSTYPE = "operationsType";
+        protected static final String JSON_PARAMETER_IMAGE = "image";
+        protected static final String JSON_PARAMETER_OPERATIONS = "operations";
+    }
 }
