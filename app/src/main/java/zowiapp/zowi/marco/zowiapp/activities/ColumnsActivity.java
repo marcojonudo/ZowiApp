@@ -145,12 +145,12 @@ public class ColumnsActivity extends ActivityTemplate {
     protected void processTouchEvent(View view, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                        /* Values used to calculate de distance to move the element */
+                /* Values used to calculate de distance to move the element */
                 startX = event.getRawX();
                 startY = event.getRawY();
                 break;
             case MotionEvent.ACTION_UP:
-                        /* The view is placed inside the left column */
+                /* The view is placed inside the left column */
                 int leftColumnIndex = coordinates.length-ColumnsConstants.LEFT_COL_INDEX_ADJUSTMENT;
                 int rightColumnIndex = coordinates.length-ColumnsConstants.RIGHT_COL_INDEX_ADJUSTMENT;
                 float topLeftCornerX = view.getX();
@@ -162,56 +162,56 @@ public class ColumnsActivity extends ActivityTemplate {
                         &&(bottomLeftCornerY > coordinates[leftColumnIndex][1])) {
                     Toast.makeText(gameParameters, "Columna izquierda", Toast.LENGTH_SHORT).show();
 
-                            /* Actions to do if the image is not completely inside the column */
-                            /* The image is on the corner */
+                    /* Actions to do if the image is not completely inside the column */
+                    /* The image is on the corner */
                     if ((topRightCornerX > coordinates[leftColumnIndex][0])
                             &&(topLeftCornerY < coordinates[leftColumnIndex][1])) {
                         view.setX(coordinates[leftColumnIndex][0]-view.getWidth());
                         view.setY(coordinates[leftColumnIndex][1]);
                     }
-                            /* The image is on the top edge */
+                    /* The image is on the top edge */
                     else if (topLeftCornerY < coordinates[leftColumnIndex][1]) {
                         view.setY(coordinates[leftColumnIndex][1]);
                     }
-                            /* The image is on the right edge */
+                    /* The image is on the right edge */
                     else if (topRightCornerX > coordinates[leftColumnIndex][0]) {
                         view.setX(coordinates[leftColumnIndex][0]-view.getWidth());
                     }
                 }
-                        /* The view is placed inside the right column */
+                /* The view is placed inside the right column */
                 else if ((topRightCornerX > coordinates[rightColumnIndex][0])
                         &&((view.getY()+view.getHeight()) > coordinates[rightColumnIndex][1])) {
                     Toast.makeText(gameParameters, "Columna derecha", Toast.LENGTH_SHORT).show();
 
-                            /* The image is on the corner */
+                    /* The image is on the corner */
                     if ((topLeftCornerX < coordinates[rightColumnIndex][0])
                             &&(topLeftCornerY < coordinates[rightColumnIndex][1])) {
                         view.setX(coordinates[rightColumnIndex][0]);
                         view.setY(coordinates[rightColumnIndex][1]);
                     }
-                            /* The image is on the top edge */
+                    /* The image is on the top edge */
                     else if (topLeftCornerY < coordinates[rightColumnIndex][1]) {
                         view.setY(coordinates[rightColumnIndex][1]);
                     }
-                            /* The image is on the left edge */
+                    /* The image is on the left edge */
                     else if (topLeftCornerX < coordinates[rightColumnIndex][0]) {
                         view.setX(coordinates[rightColumnIndex][0]);
                     }
                 }
-                        /* The element goes back to the original position */
+                /* The element goes back to the original position */
                 else {
                     view.setX(coordinates[(int)view.getTag()][0]);
                     view.setY(coordinates[(int)view.getTag()][1]);
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                        /* The distance of the element to the start point is calculated when the user
-                           moves it */
+                /* The distance of the element to the start point is calculated when the user
+                   moves it */
                 float distanceX = event.getRawX() - startX;
                 float distanceY = event.getRawY() - startY;
 
-                        /* Mechanism to avoid the element to move behind the title and description
-                           It is only moved when it is in 'contentContainer' */
+                /* Mechanism to avoid the element to move behind the title and description
+                   It is only moved when it is in 'contentContainer' */
                 if (event.getRawY() > upperLimit) {
                     view.setX(coordinates[(int)view.getTag()][0]+distanceX);
                     view.setY(coordinates[(int)view.getTag()][1]+distanceY);

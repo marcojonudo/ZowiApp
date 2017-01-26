@@ -13,6 +13,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.ColumnsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.OperationsActivity;
+import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
 
 public class GameParameters extends AppCompatActivity {
 
@@ -50,6 +51,10 @@ public class GameParameters extends AppCompatActivity {
                     break;
                 case OPERATIONS:
                     new OperationsActivity(context, activityTitle, activityDetails);
+                    break;
+                case PUZZLE:
+                    new PuzzleActivity(context, activityTitle, activityDetails);
+                    break;
                 default:
                     break;
             }

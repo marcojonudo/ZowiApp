@@ -47,4 +47,12 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_OPERATIONSIMAGES = "operationsImages";
         protected static final int OPERATION_IMAGE_WIDTH_PX = 125;
     }
+
+    protected static class PuzzleConstants {
+        protected static final ActivityType PUZZLE_TYPE = ActivityType.PUZZLE;
+        protected static final String JSON_PARAMETER_IMAGE = "image";
+        protected static final String JSON_PARAMETER_SHAPE = "shape";
+        protected static final String JSON_PARAMETER_PIECESNUMBER = "piecesNumber";
+        protected static final int CONTENT_CONTAINER_MARGIN = 100;
+    }
 }

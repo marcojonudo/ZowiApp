@@ -34,6 +34,10 @@ public abstract class ActivityTemplate {
                 ColumnsActivity columnsActivity = (ColumnsActivity) activity;
                 columnsActivity.getElementsCoordinates();
                 break;
+            case PUZZLE:
+                PuzzleActivity puzzleActivity = (PuzzleActivity) activity;
+                puzzleActivity.getElementsCoordinates();
+                break;
             default:
                 break;
         }
@@ -48,6 +52,10 @@ public abstract class ActivityTemplate {
             case COLUMNS:
                 ColumnsActivity columnsActivity = (ColumnsActivity) activity;
                 columnsActivity.processTouchEvent(view, event);
+                break;
+            case PUZZLE:
+                PuzzleActivity puzzleActivity = (PuzzleActivity) activity;
+                puzzleActivity.processTouchEvent(view, event);
                 break;
             default:
                 break;
