@@ -4,7 +4,7 @@
         <item>{"description": \"Descripcion 1\", "type": "GRID", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, casa_destino]}</item>
         <item>{"description": \"Descripcion 2\", "type": "COLUMNS", "leftTitle": "Antes", "rightTitle": "Después", "images": [zowi_pointer, green_circular_button, paper_bin, red_circular_button, casa_destino]}</item>
         <item>{"description": \"Descripcion 3\", "type": "GRID", "gridSize": 2, "cells": [9, 1, 4], "images": [zowi_pointer, casa_destino, red_circular_button]}</item>
-        <item>{"description": \"Descripcion 4\", "type": "OPERATIONS", "operationsType": 1, "image": "zowi_6_teeth", "operations": [[1, +, 2], [5, -, 3], [7, +, 2], [9, -, 6], [5, +, 4], [4, -, 3]]}</item>
+        <item>{"description": \"Descripcion 4\", "type": "OPERATIONS", "operationsType": 1, "image": "zowi_6_teeth", "operations": [[1, +, 2], [5, -, 3], [7, +, 2], [9, -, 6], [5, +, 4], [4, -, 3]], "operationsImages": []}</item>
         <item>{"description": \"Descripcion 5\", "type": "OPERATIONS", "operationsType": 2, "image": "zowi_teeth", "operations": [[1, +, 2], [5, -, 3], [7, +, 2], [9, -, 6], [5, +, 4], [4, -, 3]], "operationsImages": [casa_destino, zowi_pointer, zowi_2_teeth, red_circular_button, zowi_6_teeth, green_circular_button]}</item>
     </string-array>
 </resources>
