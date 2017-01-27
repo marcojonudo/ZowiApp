@@ -98,15 +98,13 @@ public class PuzzleActivity extends ActivityTemplate {
                 BitmapFactory.Options dimensions = new BitmapFactory.Options();
                 dimensions.inJustDecodeBounds = true;
                 BitmapFactory.decodeResource(gameParameters.getResources(), gameParameters.getResources().getIdentifier(image, "drawable", gameParameters.getPackageName()), dimensions);
-                imageHeight = dimensions.outHeight;
-                imageWidth =  dimensions.outWidth;
+                imageHeight = 1555;
+                imageWidth =  1555;
 
                 /* If the image height is bigger than the container's, it is scaled to fit the screen */
-                float scalingFactor = 1;
-                if (imageHeight > (containerHeight-PuzzleConstants.CONTENT_CONTAINER_MARGIN)) {
-                    float difference = imageHeight - (containerHeight-PuzzleConstants.CONTENT_CONTAINER_MARGIN);
-                    scalingFactor = imageHeight/(imageHeight-difference);
-                }
+                float scalingFactor;
+                scalingFactor = (float)imageHeight/(float)(containerHeight-PuzzleConstants.CONTENT_CONTAINER_MARGIN);
+
                 imageHeight /= scalingFactor;
                 imageWidth /= scalingFactor;
 
