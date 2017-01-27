@@ -57,7 +57,7 @@ public class PuzzleActivity extends ActivityTemplate {
             shape = activityDetails.getInt(PuzzleConstants.JSON_PARAMETER_SHAPE);
             int piecesNumber = activityDetails.getInt(PuzzleConstants.JSON_PARAMETER_PIECESNUMBER);
             piecesImages = new String[piecesNumber];
-            coordinates = new int[piecesNumber+1][CommonConstants.AXIS_NUMBER];
+            coordinates = new int[piecesNumber*2][CommonConstants.AXIS_NUMBER];
 
             /* The name of the pieces images is the name of the image followed by '_number' */
             for (int i=0; i<piecesImages.length; i++) {
@@ -121,12 +121,47 @@ public class PuzzleActivity extends ActivityTemplate {
                 contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
                 break;
             case 1:
+                /* Once the puzzle container is loaded, the coordinates are obtained */
                 contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
                 puzzleContainer = (RelativeLayout) gameParameters.findViewById(R.id.puzzle_container);
 
-                /* The first coordinate is the upper left corner of the puzzle container */
-                coordinates[0][0] = puzzleContainer.getLeft();
-                coordinates[0][1] = puzzleContainer.getTop();
+                /* This loop stores the coordinates of the puzzle container in the first 5 position,
+                   and the ones of the pieces in the last 5 */
+                for (int i=0; i<coordinates.length/2; i++) {
+                    switch (i) {
+                        /* Upper left corner coordinates - 1st piece */
+                        case 0:
+                            coordinates[i][0] = puzzleContainer.getLeft();
+                            coordinates[i][1] = puzzleContainer.getTop();
+                            break;
+                        /* Upper left corner coordinates - 2nd piece */
+                        case 1:
+                            coordinates[i][0] = puzzleContainer.getLeft();
+                            coordinates[i][1] = puzzleContainer.getTop();
+                            break;
+                        /* Left, middle height - 3rd piece */
+                        case 2:
+                            coordinates[i][0] = puzzleContainer.getLeft();
+                            coordinates[i][1] = puzzleContainer.getTop() + puzzleContainer.getHeight()/2;
+                            break;
+                        /* Middle width, top - 4th piece */
+                        case 3:
+                            coordinates[i][0] = puzzleContainer.getLeft() + puzzleContainer.getWidth()/2;
+                            coordinates[i][1] = puzzleContainer.getTop();
+                            break;
+                        /* Middle - 5th piece */
+                        case 4:
+                            coordinates[i][0] = puzzleContainer.getLeft() + puzzleContainer.getWidth()/2;
+                            coordinates[i][1] = puzzleContainer.getTop() + puzzleContainer.getHeight()/2;
+                            break;
+                        default:
+                            break;
+                    }
+                    /* The first child is 'puzzleContainer', the rest of them the pieces */
+                    ImageView pieceImage = (ImageView) contentContainer.getChildAt(i+1);
+                    coordinates[coordinates.length-(i+1)][0] = pieceImage.getLeft();
+                    coordinates[coordinates.length-(i+1)][1] = pieceImage.getTop();
+                }
 
                 for (int i=1; i<contentContainer.getChildCount(); i++) {
                     ImageView pieceImage = (ImageView) contentContainer.getChildAt(i);
@@ -204,15 +239,15 @@ public class PuzzleActivity extends ActivityTemplate {
                 /* Mechanism to avoid the element to move behind the title and description
                    It is only moved when it is in 'contentContainer' */
                 if (event.getRawY() > upperLimit) {
-                    view.setX(coordinates[(int)view.getTag()][0]+distanceX);
-                    view.setY(coordinates[(int)view.getTag()][1]+distanceY);
+                    view.setX(coordinates[coordinates.length-(int)view.getTag()][0]+distanceX);
+                    view.setY(coordinates[coordinates.length-(int)view.getTag()][1]+distanceY);
 
                     if (view.getY()<=0) {
                         upperLimit = event.getRawY();
                     }
                 }
                 else {
-                    view.setX(coordinates[(int)view.getTag()][0]+distanceX);
+                    view.setX(coordinates[coordinates.length-(int)view.getTag()][0]+distanceX);
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -226,8 +261,8 @@ public class PuzzleActivity extends ActivityTemplate {
                     view.setY(coordinates[0][1]);
                 }
                 else {
-                    view.setX(coordinates[(int)view.getTag()][0]);
-                    view.setY(coordinates[(int)view.getTag()][1]);
+                    view.setX(coordinates[coordinates.length-(int)view.getTag()][0]);
+                    view.setY(coordinates[coordinates.length-(int)view.getTag()][1]);
                 }
 
                 break;
