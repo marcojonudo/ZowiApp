@@ -56,4 +56,8 @@ public class ActivityConstants {
         protected static final int[][] PIECES_TO_PUZZLE = {{2, 2}, {2, 1}, {2, 2}, {2, 2}, {2, 2}};
         protected static final int DISTANCE_LIMIT = 100;
     }
+    protected static class GuideConstants {
+        protected static final String JSON_PARAMETER_IMAGES = "images";
+        protected static final int IMAGES_MARGIN = 35;
+    }
 }

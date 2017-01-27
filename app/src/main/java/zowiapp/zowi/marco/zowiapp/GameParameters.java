@@ -12,6 +12,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.*;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.ColumnsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GridActivity;
+import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
 import zowiapp.zowi.marco.zowiapp.activities.OperationsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
 
@@ -55,6 +56,8 @@ public class GameParameters extends AppCompatActivity {
                 case PUZZLE:
                     new PuzzleActivity(context, activityTitle, activityDetails);
                     break;
+                case GUIDE:
+                    new GuideActivity(context, activityTitle, activityDetails);
                 default:
                     break;
             }
