@@ -7,7 +7,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +37,7 @@ public class PuzzleActivity extends ActivityTemplate {
     private float piecesScalingFactor;
     private int layoutListenerStep;
     float startX, startY, upperLimit = 0;
+    int puzzleContainerHeight;
 
     public PuzzleActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -93,17 +93,18 @@ public class PuzzleActivity extends ActivityTemplate {
                 RelativeLayout puzzleActivityTemplate = (RelativeLayout) inflater.inflate(R.layout.puzzle_activity_template, contentContainer, false);
                 puzzleContainer = (RelativeLayout) puzzleActivityTemplate.findViewById(R.id.puzzle_container);
                 int containerHeight = contentContainer.getHeight();
+                puzzleContainerHeight = containerHeight-PuzzleConstants.CONTENT_CONTAINER_MARGIN;
 
                 /* Get the height and the width of the image from resource file */
                 BitmapFactory.Options dimensions = new BitmapFactory.Options();
                 dimensions.inJustDecodeBounds = true;
                 BitmapFactory.decodeResource(gameParameters.getResources(), gameParameters.getResources().getIdentifier(image, "drawable", gameParameters.getPackageName()), dimensions);
-                imageHeight = 1555;
-                imageWidth =  1555;
+                imageHeight = dimensions.outHeight;
+                imageWidth =  dimensions.outWidth;
 
                 /* If the image height is bigger than the container's, it is scaled to fit the screen */
                 float scalingFactor;
-                scalingFactor = (float)imageHeight/(float)(containerHeight-PuzzleConstants.CONTENT_CONTAINER_MARGIN);
+                scalingFactor = (float)imageHeight/(float)puzzleContainerHeight;
 
                 imageHeight /= scalingFactor;
                 imageWidth /= scalingFactor;
@@ -162,12 +163,6 @@ public class PuzzleActivity extends ActivityTemplate {
                     coordinates[coordinates.length-(i+1)][0] = pieceImage.getLeft();
                     coordinates[coordinates.length-(i+1)][1] = pieceImage.getTop();
                 }
-
-                for (int i=1; i<contentContainer.getChildCount(); i++) {
-                    ImageView pieceImage = (ImageView) contentContainer.getChildAt(i);
-                    coordinates[i][0] = pieceImage.getLeft();
-                    coordinates[i][1] = pieceImage.getTop();
-                }
                 break;
             default:
                 break;
@@ -183,8 +178,7 @@ public class PuzzleActivity extends ActivityTemplate {
                                 {RelativeLayout.ALIGN_PARENT_END, RelativeLayout.CENTER_VERTICAL}};
         int[] alignmentsRepetition = {0, 0, 0, 0, 0, 0};
 
-        float difference = imageHeight - (containerHeight/3);
-        piecesScalingFactor = imageHeight/(imageHeight-difference);
+        piecesScalingFactor = imageHeight/(float)(containerHeight/3);
 
         /* The position of the pieces is random because of the use of 'alignments' */
         for (int i=0; i<images.length; i++) {
@@ -192,7 +186,7 @@ public class PuzzleActivity extends ActivityTemplate {
             while (alignmentsRepetition[alignmentsIndex] == 1) {
                 alignmentsIndex = new Random().nextInt(alignments.length);
             }
-            alignmentsRepetition[alignmentsIndex] += 1;
+            alignmentsRepetition[alignmentsIndex] = 1;
             placeImage(contentContainer, images[i], alignments[alignmentsIndex], i);
         }
 
@@ -208,7 +202,7 @@ public class PuzzleActivity extends ActivityTemplate {
         layoutParams.addRule(alignments[0], RelativeLayout.TRUE);
         layoutParams.addRule(alignments[1], RelativeLayout.TRUE);
         image.setLayoutParams(layoutParams);
-        /* The first image coordinates starts at index 1 (index 0 corresponds to the puzzle container corner) */
+        /* Pieces coordinates start at index coordinates.length-1 */
         image.setTag(i+1);
 
         container.addView(image);
@@ -224,11 +218,15 @@ public class PuzzleActivity extends ActivityTemplate {
                 startX = event.getRawX();
                 startY = event.getRawY();
 
-                /* Return the image to the original position, in order to fit the puzzle */
-                float originalWidth = view.getWidth()*piecesScalingFactor;
-                float originalHeight = view.getHeight()*piecesScalingFactor;
+                /* Return the image to the original size, in order to fit the puzzle */
+                float scaleFactor = (float)view.getHeight()/(float)puzzleContainerHeight;
+                float originalWidth = (view.getWidth()/scaleFactor)/PuzzleConstants.PIECES_TO_PUZZLE[(int)view.getTag()-1][0];
+                float originalHeight = (view.getHeight()/scaleFactor)/PuzzleConstants.PIECES_TO_PUZZLE[(int)view.getTag()-1][1];
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams((int)originalWidth, (int)originalHeight);
                 view.setLayoutParams(layoutParams);
+                /* Bring the view to the front in order to avoid strange effects when dragging, moving the piece
+                   begind the others */
+                view.bringToFront();
                 break;
             case MotionEvent.ACTION_MOVE:
                 /* The distance of the element to the start point is calculated when the user
@@ -253,12 +251,14 @@ public class PuzzleActivity extends ActivityTemplate {
             case MotionEvent.ACTION_UP:
                 float viewX = view.getX();
                 float viewY = view.getY();
+                /* -1 because the images' tag starts at 1, not at 0 */
+                int index = (int)view.getTag() - 1;
 
-                double distanceToCorner = Math.sqrt(Math.pow(viewX-coordinates[0][0], 2) + Math.pow(viewY-coordinates[0][1], 2));
+                double distanceToPoint = Math.sqrt(Math.pow(viewX-coordinates[index][0], 2) + Math.pow(viewY-coordinates[index][1], 2));
 
-                if (distanceToCorner < 100) {
-                    view.setX(coordinates[0][0]);
-                    view.setY(coordinates[0][1]);
+                if (distanceToPoint < PuzzleConstants.DISTANCE_LIMIT) {
+                    view.setX(coordinates[(int)view.getTag()-1][0]);
+                    view.setY(coordinates[(int)view.getTag()-1][1]);
                 }
                 else {
                     view.setX(coordinates[coordinates.length-(int)view.getTag()][0]);
