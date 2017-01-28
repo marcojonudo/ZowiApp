@@ -70,4 +70,13 @@ public class ActivityConstants {
         protected static final int GRID_IMAGE_WIDTH_PX = 150;
         protected static final int GRID_TRANSLATION_TO_CENTER = GRID_IMAGE_WIDTH_PX /2;
     }
+
+    protected static class MusicConstants {
+        protected static final String JSON_PARAMETER_CELLS = "cells";
+        protected static final String JSON_PARAMETER_COLOUREDCELLS = "colouredCells";
+        protected static final String JSON_PARAMETER_IMAGES = "images";
+        protected static final int COORDINATES_4X4_LENGTH = 17;
+        protected static final int GRID_IMAGE_WIDTH_PX = 150;
+        protected static final int GRID_TRANSLATION_TO_CENTER = GRID_IMAGE_WIDTH_PX /2;
+    }
 }

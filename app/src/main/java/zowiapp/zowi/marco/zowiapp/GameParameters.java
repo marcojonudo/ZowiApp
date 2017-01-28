@@ -14,6 +14,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ColouredGridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.ColumnsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
+import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
 import zowiapp.zowi.marco.zowiapp.activities.OperationsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
 
@@ -62,6 +63,10 @@ public class GameParameters extends AppCompatActivity {
                     break;
                 case COLOURED_GRID:
                     new ColouredGridActivity(context, activityTitle, activityDetails);
+                    break;
+                case MUSIC:
+                    new MusicActivity(context, activityTitle, activityDetails);
+                    break;
                 default:
                     break;
             }
