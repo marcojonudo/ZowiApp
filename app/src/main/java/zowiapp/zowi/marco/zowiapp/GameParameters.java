@@ -10,6 +10,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.*;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
+import zowiapp.zowi.marco.zowiapp.activities.ColouredGridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.ColumnsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
@@ -58,6 +59,9 @@ public class GameParameters extends AppCompatActivity {
                     break;
                 case GUIDE:
                     new GuideActivity(context, activityTitle, activityDetails);
+                    break;
+                case COLOURED_GRID:
+                    new ColouredGridActivity(context, activityTitle, activityDetails);
                 default:
                     break;
             }

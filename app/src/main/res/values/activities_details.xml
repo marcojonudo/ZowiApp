@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="activities_details">
+        <item>{"description": \"Descripcion 3\", "type": "COLOURED_GRID", "cells": [3, 14], "images": [house, zowi_pointer], "colouredCells": [GREEN, GREEN, BLANK, RED, GREEN, BLANK, BLUE, RED, GREEN, BLUE, BLUE, RED, GREEN, BLANK, RED, RED]}</item>
         <item>{"description": \"Descripcion 1\", "type": "GUIDE", "images": [house, house, house, house]}</item>
         <item>{"description": \"Descripcion 1\", "type": "PUZZLE", "image": "zowi_3_teeth", "shape": 1, "piecesNumber": 5}</item>
         <item>{"description": \"Descripcion 1\", "type": "GRID", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>

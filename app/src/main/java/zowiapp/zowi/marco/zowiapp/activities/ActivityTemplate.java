@@ -38,6 +38,9 @@ public abstract class ActivityTemplate {
                 PuzzleActivity puzzleActivity = (PuzzleActivity) activity;
                 puzzleActivity.getElementsCoordinates();
                 break;
+            case COLOURED_GRID:
+                ColouredGridActivity colouredGridActivity = (ColouredGridActivity) activity;
+                colouredGridActivity.getElementsCoordinates();
             default:
                 break;
         }
