@@ -41,6 +41,7 @@ public abstract class ActivityTemplate {
             case COLOURED_GRID:
                 ColouredGridActivity colouredGridActivity = (ColouredGridActivity) activity;
                 colouredGridActivity.getElementsCoordinates();
+                break;
             default:
                 break;
         }
