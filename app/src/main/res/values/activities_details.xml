@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="activities_details">
+        <item>{"description": \"Descripcion 1\", "type": "DRAG", "dragImages": [zowi_pointer, green_circular_button, paper_bin, red_circular_button, house], "containerElements": 5, "containerImages": [], "texts": [\"1ª comida\", \"2ª comida\", \"3ª comida\", \"4ª comida\", \"5ª comida\"]}</item>
         <item>{"description": \"Descripcion 1\", "type": "MUSIC", "images": [dictation_1, dictation_2, dictation_3]}</item>
         <item>{"description": \"Descripcion 3\", "type": "COLOURED_GRID", "cells": [3, 14], "images": [house, zowi_pointer], "colouredCells": [GREEN, GREEN, BLANK, RED, GREEN, BLANK, BLUE, RED, GREEN, BLUE, BLUE, RED, GREEN, BLANK, RED, RED]}</item>
         <item>{"description": \"Descripcion 1\", "type": "GUIDE", "images": [house, house, house, house]}</item>

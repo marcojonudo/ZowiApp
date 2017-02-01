@@ -12,6 +12,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.*;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.ColouredGridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.ColumnsActivity;
+import zowiapp.zowi.marco.zowiapp.activities.DragActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
 import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
@@ -66,6 +67,9 @@ public class GameParameters extends AppCompatActivity {
                     break;
                 case MUSIC:
                     new MusicActivity(context, activityTitle, activityDetails);
+                    break;
+                case DRAG:
+                    new DragActivity(context, activityTitle, activityDetails);
                     break;
                 default:
                     break;

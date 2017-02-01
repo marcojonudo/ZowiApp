@@ -42,6 +42,10 @@ public abstract class ActivityTemplate {
                 ColouredGridActivity colouredGridActivity = (ColouredGridActivity) activity;
                 colouredGridActivity.getElementsCoordinates();
                 break;
+            case DRAG:
+                DragActivity dragActivity = (DragActivity) activity;
+                dragActivity.getElementsCoordinates();
+                break;
             default:
                 break;
         }
@@ -60,6 +64,10 @@ public abstract class ActivityTemplate {
             case PUZZLE:
                 PuzzleActivity puzzleActivity = (PuzzleActivity) activity;
                 puzzleActivity.processTouchEvent(view, event);
+                break;
+            case DRAG:
+                DragActivity dragActivity = (DragActivity) activity;
+                dragActivity.processTouchEvent(view, event);
                 break;
             default:
                 break;

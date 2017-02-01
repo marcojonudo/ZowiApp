@@ -56,6 +56,7 @@ public class ActivityConstants {
         protected static final int[][] PIECES_TO_PUZZLE = {{2, 2}, {2, 1}, {2, 2}, {2, 2}, {2, 2}};
         protected static final int DISTANCE_LIMIT = 100;
     }
+
     protected static class GuideConstants {
         protected static final String JSON_PARAMETER_IMAGES = "images";
         protected static final int IMAGES_MARGIN = 35;
@@ -73,5 +74,15 @@ public class ActivityConstants {
 
     protected static class MusicConstants {
         protected static final String JSON_PARAMETER_IMAGES = "images";
+    }
+
+    protected static class DragConstants {
+        protected static final ActivityType DRAG_TYPE = ActivityType.DRAG;
+        protected static final String JSON_PARAMETER_DRAGIMAGES = "dragImages";
+        protected static final String JSON_PARAMETER_CONTAINERELEMENTS = "containerElements";
+        protected static final String JSON_PARAMETER_TEXTS = "texts";
+        protected static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
+        protected static final int DRAG_IMAGE_WIDTH_PX = 250;
+        protected static final int DISTANCE_LIMIT = 100;
     }
 }

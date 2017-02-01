@@ -13,4 +13,6 @@
 
     <dimen name="button_side">75dp</dimen>
     <dimen name="dictation_width">500dp</dimen>
+
+    <dimen name="drag_cell_side">100dp</dimen>
 </resources>
