@@ -10,6 +10,5 @@
     <include layout="@layout/drag_cell"/>
     <include layout="@layout/drag_cell"/>
     <include layout="@layout/drag_cell"/>
-    <include layout="@layout/drag_cell"/>
     
 </LinearLayout>

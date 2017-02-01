@@ -94,30 +94,33 @@ public class DragActivity extends ActivityTemplate {
 
         RelativeLayout gridContainer = (RelativeLayout) dragActivityTemplate.findViewById(R.id.grid_container);
 
+        LinearLayout gridTemplate = null;
         switch (containerElements) {
+            case 3:
+                gridTemplate = (LinearLayout) inflater.inflate(R.layout.grid_1x3_template, gridContainer, false);
+                break;
             case 4:
-                inflater.inflate(R.layout.grid_1x4_template, gridContainer, true);
+                gridTemplate = (LinearLayout) inflater.inflate(R.layout.grid_1x4_template, gridContainer, false);
                 break;
             case 5:
-                LinearLayout grid1x5Template = (LinearLayout) inflater.inflate(R.layout.grid_1x5_template, gridContainer, false);
-
-                /* Depending on the activity, there can be images, texts or both */
-                for (int i=0; i<containerImages.length; i++) {
-                    LinearLayout element = (LinearLayout) grid1x5Template.getChildAt(i);
-                    ImageView containerImage = (ImageView) element.getChildAt(1);
-                    containerImage.setImageResource(gameParameters.getResources().getIdentifier(containerImages[i], "drawable", gameParameters.getPackageName()));
-                }
-                for (int i=0; i<texts.length; i++) {
-                    LinearLayout element = (LinearLayout) grid1x5Template.getChildAt(i);
-                    TextView containerText = (TextView) element.getChildAt(0);
-                    containerText.setText(texts[i]);
-                }
-
-                gridContainer.addView(grid1x5Template);
+                gridTemplate = (LinearLayout) inflater.inflate(R.layout.grid_1x5_template, gridContainer, false);
                 break;
             default:
                 break;
         }
+        /* Depending on the activity, there can be images, texts or both */
+        for (int i=0; i<containerImages.length; i++) {
+            LinearLayout element = (LinearLayout) gridTemplate.getChildAt(i);
+            ImageView containerImage = (ImageView) element.getChildAt(1);
+            containerImage.setImageResource(gameParameters.getResources().getIdentifier(containerImages[i], "drawable", gameParameters.getPackageName()));
+        }
+        for (int i=0; i<texts.length; i++) {
+            LinearLayout element = (LinearLayout) gridTemplate.getChildAt(i);
+            TextView containerText = (TextView) element.getChildAt(0);
+            containerText.setText(texts[i]);
+        }
+
+        gridContainer.addView(gridTemplate);
 
         if (contentContainer != null) {
             contentContainer.addView(dragActivityTemplate);
