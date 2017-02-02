@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,8 +105,8 @@ public class FoodPyramidActivity extends ActivityTemplate {
         int pyramidHalfWidth = foodPyramidImage.getWidth()/2;
 
         for (int i=0; i<pyramidCoordinates.length; i++) {
-            pyramidCoordinates[i][0] = mainImageContainer.getLeft() + (int)(pyramidHalfWidth * FoodPyramidConstants.PYRAMID_X_COORDINATES_FACTORS[i]);
-            pyramidCoordinates[i][1] = mainImageContainer.getTop() + stepYCoordinate-(halfStepHeight*FoodPyramidConstants.PYRAMID_Y_COORDINATES_FACTORS[i]);
+            pyramidCoordinates[i][0] = mainImageContainer.getLeft() + foodPyramidImage.getLeft() + (int)(pyramidHalfWidth * FoodPyramidConstants.PYRAMID_X_COORDINATES_FACTORS[i]);
+            pyramidCoordinates[i][1] = mainImageContainer.getTop() + foodPyramidImage.getTop() + stepYCoordinate-(halfStepHeight*FoodPyramidConstants.PYRAMID_Y_COORDINATES_FACTORS[i]);
         }
 
         FrameLayout layoutBehindImages = (FrameLayout) gameParameters.findViewById(R.id.layout_behind_images);
@@ -147,7 +149,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
         image.setLayoutParams(layoutParams);
         image.setX(x);
         image.setY(y);
-        image.setTag(i);
+        image.setTag(positionIndex);
 
         container.addView(image);
 
@@ -156,49 +158,54 @@ public class FoodPyramidActivity extends ActivityTemplate {
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                /* Values used to calculate de distance to move the element */
-//                startX = event.getRawX();
-//                startY = event.getRawY();
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                /* The distance of the element to the start point is calculated when the user
-//                   moves it */
-//                float distanceX = event.getRawX() - startX;
-//                float distanceY = event.getRawY() - startY;
-//
-//                /* Mechanism to avoid the element to move behind the title and description
-//                   It is only moved when it is in 'contentContainer' */
-//                if (event.getRawY() > upperLimit) {
-//                    view.setX(dragCoordinates[(int)view.getTag()][0]+distanceX);
-//                    view.setY(dragCoordinates[(int)view.getTag()][1]+distanceY);
-//
-//                    if (view.getY()<=0) {
-//                        upperLimit = event.getRawY();
-//                    }
-//                }
-//                else {
-//                    view.setX(dragCoordinates[(int)view.getTag()][0]+distanceX);
-//                }
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                float viewX = view.getX() + view.getWidth()/2;
-//                float viewY = view.getY() + view.getHeight()/2;
-//
-//                for (int i=0; i<containerElements; i++) {
-//                    double distanceToPoint = Math.sqrt(Math.pow(viewX-containerCoordinates[i][0], 2) + Math.pow(viewY-containerCoordinates[i][1], 2));
-//
-//                    if (distanceToPoint < DragConstants.DISTANCE_LIMIT) {
-//                        view.setX(containerCoordinates[i][0]-DragConstants.DRAG_IMAGE_WIDTH_PX/2);
-//                        view.setY(containerCoordinates[i][1]-DragConstants.DRAG_IMAGE_WIDTH_PX/2);
-//                        break;
-//                    }
-//                }
-//                break;
-//            default:
-//                break;
-//        }
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                /* Values used to calculate de distance to move the element */
+                startX = event.getRawX();
+                startY = event.getRawY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                /* The distance of the element to the start point is calculated when the user
+                   moves it */
+                float distanceX = event.getRawX() - startX;
+                float distanceY = event.getRawY() - startY;
+
+                /* Mechanism to avoid the element to move behind the title and description
+                   It is only moved when it is in 'contentContainer' */
+                if (event.getRawY() > upperLimit) {
+                    view.setX(imagesCoordinates[(int)view.getTag()][0]+distanceX);
+                    view.setY(imagesCoordinates[(int)view.getTag()][1]+distanceY);
+
+                    if (view.getY()<=0) {
+                        upperLimit = event.getRawY();
+                    }
+                }
+                else {
+                    view.setX(imagesCoordinates[(int)view.getTag()][0]+distanceX);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                float viewX = view.getX() + view.getWidth()/2;
+                float viewY = view.getY() + view.getHeight()/2;
+
+                for (int i=0; i<pyramidCoordinates.length; i++) {
+                    double distanceToPoint = Math.sqrt(Math.pow(viewX-pyramidCoordinates[i][0], 2) + Math.pow(viewY-pyramidCoordinates[i][1], 2));
+
+                    if (distanceToPoint < FoodPyramidConstants.DISTANCE_LIMIT) {
+                        Toast.makeText(gameParameters, "Ssssss", Toast.LENGTH_SHORT).show();
+                        view.setX(pyramidCoordinates[i][0]-view.getWidth()/2);
+                        view.setY(pyramidCoordinates[i][1]-view.getHeight()/2);
+                        break;
+                    }
+                    else {
+                        view.setX(imagesCoordinates[(int)view.getTag()][0]);
+                        view.setY(imagesCoordinates[(int)view.getTag()][1]);
+                    }
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 }
