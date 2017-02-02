@@ -69,6 +69,10 @@ public abstract class ActivityTemplate {
                 DragActivity dragActivity = (DragActivity) activity;
                 dragActivity.processTouchEvent(view, event);
                 break;
+            case MEMORY:
+                MemoryActivity memoryActivity = (MemoryActivity) activity;
+                memoryActivity.processTouchEvent(view, event);
+                break;
             default:
                 break;
         }

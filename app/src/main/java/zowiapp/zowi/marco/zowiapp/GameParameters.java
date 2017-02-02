@@ -15,6 +15,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ColumnsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.DragActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
+import zowiapp.zowi.marco.zowiapp.activities.MemoryActivity;
 import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
 import zowiapp.zowi.marco.zowiapp.activities.OperationsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
@@ -71,6 +72,8 @@ public class GameParameters extends AppCompatActivity {
                 case DRAG:
                     new DragActivity(context, activityTitle, activityDetails);
                     break;
+                case MEMORY:
+                    new MemoryActivity(context, activityTitle, activityDetails);
                 default:
                     break;
             }

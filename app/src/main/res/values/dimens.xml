@@ -15,4 +15,6 @@
     <dimen name="dictation_width">500dp</dimen>
 
     <dimen name="drag_cell_side">100dp</dimen>
+
+    <dimen name="memory_image_side">125dp</dimen>
 </resources>
