@@ -89,9 +89,6 @@ public class ActivityConstants {
     protected static class MemoryConstants {
         protected static final ActivityType MEMORY_TYPE = ActivityType.MEMORY;
         protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final String JSON_PARAMETER_CONTAINERELEMENTS = "containerElements";
-        protected static final String JSON_PARAMETER_TEXTS = "texts";
-        protected static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
-        protected static final int DISTANCE_LIMIT = 100;
+
     }
 }
