@@ -13,6 +13,7 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +37,8 @@ public class MemoryActivity extends ActivityTemplate {
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
     private String[] memoryImages;
-
+    private int firstImageID;
+    private View firstImage;
 
     public MemoryActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -105,11 +107,12 @@ public class MemoryActivity extends ActivityTemplate {
         float width = gameParameters.getResources().getDimension(R.dimen.memory_image_side);
 
         ImageView image = new ImageView(gameParameters);
-        image.setBackground(ContextCompat.getDrawable(gameParameters, gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName())));
-        //image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
+        //image.setBackground(ContextCompat.getDrawable(gameParameters, gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName())));
+        int resID = gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName());
+        image.setImageResource(resID);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int)width, (int)width);
         image.setLayoutParams(layoutParams);
-        image.setTag(i);
+        image.setTag(resID);
 
         container.addView(image);
 
@@ -120,6 +123,7 @@ public class MemoryActivity extends ActivityTemplate {
     private void hideImages() {
         GridLayout imagesGrid = (GridLayout) gameParameters.findViewById(R.id.images_grid);
 
+        /* The images are flipped */
         for (int i=0; i<imagesGrid.getChildCount(); i++) {
             ImageView image = (ImageView) imagesGrid.getChildAt(i);
             ObjectAnimator anim = (ObjectAnimator) AnimatorInflater.loadAnimator(gameParameters, R.animator.flip);
@@ -127,11 +131,36 @@ public class MemoryActivity extends ActivityTemplate {
             anim.setDuration(2000);
             anim.start();
         }
+
+        firstImageID = -1;
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                ObjectAnimator anim = (ObjectAnimator) AnimatorInflater.loadAnimator(gameParameters, R.animator.flip);
+                anim.setDuration(1000);
+
+                if (firstImageID == -1) {
+                    firstImageID = (int) view.getTag();
+                    firstImage = view;
+                }
+                else {
+                    if (firstImageID == (int)view.getTag()) {
+                        Toast.makeText(gameParameters, "Bien", Toast.LENGTH_SHORT).show();
+                        firstImageID = -1;
+                    }
+                    else {
+                        Toast.makeText(gameParameters, "Mal", Toast.LENGTH_SHORT).show();
+                        anim.setTarget(view);
+                        anim.start();
+
+                        anim.setTarget(firstImage);
+                        anim.start();
+
+                        firstImageID = -1;
+                    }
+                }
 
                 break;
             default:
