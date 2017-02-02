@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="activities_details">
+        <item>{"description": \"Descripcion 1\", "type": "FOODPYRAMID", "images": [[zowi_pointer, zowi_pointer], [green_circular_button], [red_circular_button], [house], [zowi_teeth], [zowi_5_teeth]]}</item>
         <item>{"description": \"Descripcion 1\", "type": "MEMORY", "images": [zowi_pointer, green_circular_button, red_circular_button, house, zowi_pointer, green_circular_button, red_circular_button, house]}</item>
         <item>{"description": \"Descripcion 1\", "type": "DRAG", "dragImages": [zowi_pointer, green_circular_button, zowi_pointer, paper_bin, red_circular_button, zowi_pointer, house], "containerElements": 3, "containerImages": [], "texts": ["Salón", "Cocina", "Habitación"]}</item>
         <item>{"description": \"Descripcion 1\", "type": "DRAG", "dragImages": [zowi_pointer, green_circular_button, paper_bin, red_circular_button, house], "containerElements": 5, "containerImages": [], "texts": [\"1ª comida\", \"2ª comida\", \"3ª comida\", \"4ª comida\", \"5ª comida\"]}</item>

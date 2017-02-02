@@ -13,6 +13,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.ColouredGridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.ColumnsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.DragActivity;
+import zowiapp.zowi.marco.zowiapp.activities.FoodPyramidActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
 import zowiapp.zowi.marco.zowiapp.activities.MemoryActivity;
@@ -74,6 +75,10 @@ public class GameParameters extends AppCompatActivity {
                     break;
                 case MEMORY:
                     new MemoryActivity(context, activityTitle, activityDetails);
+                    break;
+                case FOODPYRAMID:
+                    new FoodPyramidActivity(context, activityTitle, activityDetails);
+                    break;
                 default:
                     break;
             }

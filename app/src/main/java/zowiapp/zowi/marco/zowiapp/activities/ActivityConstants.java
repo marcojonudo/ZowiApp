@@ -89,6 +89,20 @@ public class ActivityConstants {
     protected static class MemoryConstants {
         protected static final ActivityType MEMORY_TYPE = ActivityType.MEMORY;
         protected static final String JSON_PARAMETER_IMAGES = "images";
+    }
 
+    protected static class FoodPyramidConstants {
+        protected static final ActivityType FOODPYRAMID_TYPE = ActivityType.FOODPYRAMID;
+        protected static final String JSON_PARAMETER_IMAGES = "images";
+        protected static final int PYRAMID_STEPS = 4;
+        protected static final int PYRAMID_COORDINATES_LENGTH = 7;
+        protected static final int IMAGES_COORDINATES_LENGTH = PYRAMID_COORDINATES_LENGTH;
+        protected static final double[] PYRAMID_X_COORDINATES_FACTORS = {0.5, 1.5, 0.7, 1.3, 0.75, 1.25, 1};
+        protected static final int[] PYRAMID_Y_COORDINATES_FACTORS = {0, 0, 2, 2, 4, 4, 6};
+        protected static final String JSON_PARAMETER_CONTAINERELEMENTS = "containerElements";
+        protected static final String JSON_PARAMETER_TEXTS = "texts";
+        protected static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
+        protected static final int DRAG_IMAGE_WIDTH_PX = 250;
+        protected static final int DISTANCE_LIMIT = 100;
     }
 }

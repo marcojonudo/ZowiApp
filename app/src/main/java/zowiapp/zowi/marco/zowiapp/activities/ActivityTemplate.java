@@ -46,6 +46,10 @@ public abstract class ActivityTemplate {
                 DragActivity dragActivity = (DragActivity) activity;
                 dragActivity.getElementsCoordinates();
                 break;
+            case FOODPYRAMID:
+                FoodPyramidActivity foodPyramidActivity = (FoodPyramidActivity) activity;
+                foodPyramidActivity.getElementsCoordinates();
+                break;
             default:
                 break;
         }
@@ -72,6 +76,10 @@ public abstract class ActivityTemplate {
             case MEMORY:
                 MemoryActivity memoryActivity = (MemoryActivity) activity;
                 memoryActivity.processTouchEvent(view, event);
+                break;
+            case FOODPYRAMID:
+                FoodPyramidActivity foodPyramidActivity = (FoodPyramidActivity) activity;
+                foodPyramidActivity.processTouchEvent(view, event);
                 break;
             default:
                 break;
