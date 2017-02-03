@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.json.JSONException;
@@ -223,8 +224,8 @@ public class PuzzleActivity extends ActivityTemplate {
                 float scaleFactor = (float)view.getHeight()/(float)puzzleContainerHeight;
                 float originalWidth = (view.getWidth()/scaleFactor)/PuzzleConstants.PIECES_TO_PUZZLE[(int)view.getTag()-1][0];
                 float originalHeight = (view.getHeight()/scaleFactor)/PuzzleConstants.PIECES_TO_PUZZLE[(int)view.getTag()-1][1];
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams((int)originalWidth, (int)originalHeight);
-                view.setLayoutParams(layoutParams);
+//                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams((int)originalWidth, (int)originalHeight);
+//                view.setLayoutParams(layoutParams);
                 /* Bring the view to the front in order to avoid strange effects when dragging, moving the piece
                    begind the others */
                 view.bringToFront();
@@ -250,6 +251,7 @@ public class PuzzleActivity extends ActivityTemplate {
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                upperLimit = 0;
                 /* It is better not to place the elements automatically. Instead of that, in the correction
                    stage it will be checked if the pieces' coordinates are OK or not */
 //                float viewX = view.getX();
