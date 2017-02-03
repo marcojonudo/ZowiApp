@@ -92,13 +92,13 @@ public class MemoryActivity extends ActivityTemplate {
     }
 
     private void placeImages(GridLayout imagesContainer, String[] images) {
-        int[] ocurrences = {0, 0, 0, 0, 0, 0, 0, 0};
+        int[] occurrences = {0, 0, 0, 0, 0, 0, 0, 0};
         for (int i=0; i<images.length; i++) {
             int randomIndex = new Random().nextInt(images.length);
-            while (ocurrences[randomIndex] == 1) {
+            while (occurrences[randomIndex] == 1) {
                 randomIndex = new Random().nextInt(images.length);
             }
-            ocurrences[randomIndex] = 1;
+            occurrences[randomIndex] = 1;
             placeImage(imagesContainer, images[randomIndex], i);
         }
     }
