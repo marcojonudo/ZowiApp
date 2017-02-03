@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,6 +19,7 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
+import zowiapp.zowi.marco.zowiapp.checker.PuzzleChecker;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
@@ -28,6 +30,7 @@ public class PuzzleActivity extends ActivityTemplate {
 
     private GameParameters gameParameters;
     private LayoutInflater inflater;
+    private PuzzleChecker puzzleChecker;
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
     private String image;
@@ -46,6 +49,7 @@ public class PuzzleActivity extends ActivityTemplate {
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutListenerStep = 0;
+        puzzleChecker = new PuzzleChecker();
 
         getParameters();
     }
@@ -199,8 +203,7 @@ public class PuzzleActivity extends ActivityTemplate {
         layoutParams.addRule(alignments[0], RelativeLayout.TRUE);
         layoutParams.addRule(alignments[1], RelativeLayout.TRUE);
         image.setLayoutParams(layoutParams);
-        /* Pieces coordinates start at index coordinates.length-1 */
-        image.setTag(i+1);
+        image.setTag(i);
 
         container.addView(image);
 
@@ -217,10 +220,11 @@ public class PuzzleActivity extends ActivityTemplate {
 
                 /* Return the image to the original size, in order to fit the puzzle */
                 float scaleFactor = (float)view.getHeight()/(float)puzzleContainerHeight;
-                float originalWidth = (view.getWidth()/scaleFactor)/PuzzleConstants.PIECES_TO_PUZZLE[(int)view.getTag()-1][0];
-                float originalHeight = (view.getHeight()/scaleFactor)/PuzzleConstants.PIECES_TO_PUZZLE[(int)view.getTag()-1][1];
-//                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams((int)originalWidth, (int)originalHeight);
-//                view.setLayoutParams(layoutParams);
+                float originalWidth = (view.getWidth()/scaleFactor)/PuzzleConstants.PIECES_TO_PUZZLE[(int)view.getTag()][0];
+                float originalHeight = (view.getHeight()/scaleFactor)/PuzzleConstants.PIECES_TO_PUZZLE[(int)view.getTag()][1];
+                ViewGroup.LayoutParams l = view.getLayoutParams();
+                l.height = (int)originalHeight;
+                l.width = (int)originalWidth;
                 /* Bring the view to the front in order to avoid strange effects when dragging, moving the piece
                    begind the others */
                 view.bringToFront();
@@ -234,15 +238,15 @@ public class PuzzleActivity extends ActivityTemplate {
                 /* Mechanism to avoid the element to move behind the title and description
                    It is only moved when it is in 'contentContainer' */
                 if (event.getRawY() > upperLimit) {
-                    view.setX(piecesCoordinates[(int)view.getTag()-1][0]+distanceX);
-                    view.setY(piecesCoordinates[(int)view.getTag()-1][1]+distanceY);
+                    view.setX(piecesCoordinates[(int)view.getTag()][0]+distanceX);
+                    view.setY(piecesCoordinates[(int)view.getTag()][1]+distanceY);
 
                     if (view.getY()<=0) {
                         upperLimit = event.getRawY();
                     }
                 }
                 else {
-                    view.setX(piecesCoordinates[(int)view.getTag()-1][0]+distanceX);
+                    view.setX(piecesCoordinates[(int)view.getTag()][0]+distanceX);
                 }
                 break;
             case MotionEvent.ACTION_UP:
