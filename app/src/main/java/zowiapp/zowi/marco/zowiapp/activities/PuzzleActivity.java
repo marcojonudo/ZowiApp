@@ -128,38 +128,33 @@ public class PuzzleActivity extends ActivityTemplate {
                 contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
                 puzzleContainer = (RelativeLayout) gameParameters.findViewById(R.id.puzzle_container);
 
-                /* This loop stores the coordinates of the puzzle container in the first 5 position,
-                   and the ones of the pieces in the last 5 */
+                /* The reference point is the upper left corner of the square. All the coordinates are
+                   calculated based on it, multiplying by the factors */
+                int[] upperLeftCorner = {puzzleContainer.getLeft(), puzzleContainer.getTop()};
+                int puzzleWidth = puzzleContainer.getWidth();
+                int puzzleHeight = puzzleContainer.getHeight();
+
+                /* Depending on the shape of the puzzle, the coordinates are stored */
+                double[][] coordinatesFactors = null;
+                switch (shape) {
+                    case 1:
+                        coordinatesFactors = PuzzleConstants.SHAPES_COORDINATES_FACTORS[0];
+                        break;
+                    case 2:
+                        coordinatesFactors = PuzzleConstants.SHAPES_COORDINATES_FACTORS[1];
+                        break;
+                    case 3:
+                        coordinatesFactors = PuzzleConstants.SHAPES_COORDINATES_FACTORS[2];
+                        break;
+                    default:
+                        break;
+                }
+
+                /* This loop stores the coordinates of the puzzle */
                 for (int i=0; i<piecesCoordinates.length; i++) {
-                    switch (i) {
-                        /* Upper left corner coordinates - 1st piece */
-                        case 0:
-                            puzzleCoordinates[i][0] = puzzleContainer.getLeft();
-                            puzzleCoordinates[i][1] = puzzleContainer.getTop();
-                            break;
-                        /* Upper left corner coordinates - 2nd piece */
-                        case 1:
-                            puzzleCoordinates[i][0] = puzzleContainer.getLeft();
-                            puzzleCoordinates[i][1] = puzzleContainer.getTop();
-                            break;
-                        /* Left, middle height - 3rd piece */
-                        case 2:
-                            puzzleCoordinates[i][0] = puzzleContainer.getLeft();
-                            puzzleCoordinates[i][1] = puzzleContainer.getTop() + puzzleContainer.getHeight()/2;
-                            break;
-                        /* Middle width, top - 4th piece */
-                        case 3:
-                            puzzleCoordinates[i][0] = puzzleContainer.getLeft() + puzzleContainer.getWidth()/2;
-                            puzzleCoordinates[i][1] = puzzleContainer.getTop();
-                            break;
-                        /* Middle - 5th piece */
-                        case 4:
-                            puzzleCoordinates[i][0] = puzzleContainer.getLeft() + puzzleContainer.getWidth()/2;
-                            puzzleCoordinates[i][1] = puzzleContainer.getTop() + puzzleContainer.getHeight()/2;
-                            break;
-                        default:
-                            break;
-                    }
+                    puzzleCoordinates[i][0] = (int)(upperLeftCorner[0] + (puzzleWidth*coordinatesFactors[i][0]));
+                    puzzleCoordinates[i][1] = (int)(upperLeftCorner[1] + (puzzleHeight*coordinatesFactors[i][1]));
+
                     /* The first child is 'puzzleContainer', the rest of them the pieces */
                     ImageView pieceImage = (ImageView) contentContainer.getChildAt(i+1);
                     piecesCoordinates[i][0] = pieceImage.getLeft();
@@ -259,15 +254,15 @@ public class PuzzleActivity extends ActivityTemplate {
 //                /* -1 because the images' tag starts at 1, not at 0 */
 //                int index = (int)view.getTag() - 1;
 //
-//                double distanceToPoint = Math.sqrt(Math.pow(viewX-coordinates[index][0], 2) + Math.pow(viewY-coordinates[index][1], 2));
+//                double distanceToPoint = Math.sqrt(Math.pow(viewX-puzzleCoordinates[index][0], 2) + Math.pow(viewY-puzzleCoordinates[index][1], 2));
 //
 //                if (distanceToPoint < PuzzleConstants.DISTANCE_LIMIT) {
-//                    view.setX(coordinates[(int)view.getTag()-1][0]);
-//                    view.setY(coordinates[(int)view.getTag()-1][1]);
+//                    view.setX(puzzleCoordinates[(int)view.getTag()-1][0]);
+//                    view.setY(puzzleCoordinates[(int)view.getTag()-1][1]);
 //                }
 //                else {
-//                    view.setX(coordinates[coordinates.length-(int)view.getTag()][0]);
-//                    view.setY(coordinates[coordinates.length-(int)view.getTag()][1]);
+//                    view.setX(piecesCoordinates[(int)view.getTag()-1][0]);
+//                    view.setY(piecesCoordinates[(int)view.getTag()-1][1]);
 //                }
 
                 break;

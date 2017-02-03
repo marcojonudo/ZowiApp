@@ -56,6 +56,11 @@ public class ActivityConstants {
         protected static final int CONTENT_CONTAINER_MARGIN = 100;
         protected static final int[][] PIECES_TO_PUZZLE = {{2, 2}, {2, 1}, {2, 2}, {2, 2}, {2, 2}};
         protected static final int DISTANCE_LIMIT = 100;
+        protected static final double[][][] SHAPES_COORDINATES_FACTORS = {
+            {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
+            {{0, 0}, {0, 0}, {0.5, 0}, {0, 0.5}, {0.5, 0.5}},
+            {{0, 0}, {0.5, 0}, {0.5, 0}, {0.5, 0.5}, {0, 0.5}}
+        };
     }
 
     protected static class GuideConstants {
