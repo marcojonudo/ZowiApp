@@ -42,6 +42,7 @@ public class ActivityConstants {
     protected static class OperationsConstants {
         protected static final String JSON_PARAMETER_OPERATIONSTYPE = "operationsType";
         protected static final String JSON_PARAMETER_IMAGE = "image";
+        protected static final int NUMBER_OF_OPERATIONS = 6;
         protected static final String JSON_PARAMETER_OPERATIONS = "operations";
         protected static final String JSON_PARAMETER_OPERATIONSIMAGES = "operationsImages";
         protected static final int OPERATION_IMAGE_WIDTH_PX = 125;

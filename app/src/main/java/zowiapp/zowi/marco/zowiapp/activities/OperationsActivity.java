@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Random;
+
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
@@ -89,16 +91,29 @@ public class OperationsActivity extends ActivityTemplate {
         ImageView mainImage = (ImageView) operationsActivityTemplate.findViewById(R.id.mainImage);
         mainImage.setImageResource(gameParameters.getResources().getIdentifier(image, "drawable", gameParameters.getPackageName()));
 
+        /* Preparation of the ocurrences array to avoid repeated indexes in the random generation */
+        int[] ocurrences = new int[operations.length];
+        for (int i=0; i<ocurrences.length; i++) {
+            ocurrences[i] = 0;
+        }
+
         switch (operationsType) {
             /* Numbers and operations are predefined */
             case 1:
                 /* No need to take care about operations images */
-                for (String[] operation: operations) {
+                for (int i=0; i<OperationsConstants.NUMBER_OF_OPERATIONS; i++) {
+                    int randomIndex = new Random().nextInt(operations.length);
+                    while (ocurrences[randomIndex] == 1) {
+                        randomIndex = new Random().nextInt(operations.length);
+                    }
+                    ocurrences[randomIndex] = 1;
+                    String[] operation = operations[randomIndex];
+
                     LinearLayout operations1Template = (LinearLayout) inflater.inflate(R.layout.operations_1_template, operationsActivityTemplate, false);
 
-                    for (int i=0; i<operation.length; i++) {
-                        TextView op = (TextView) operations1Template.getChildAt(i);
-                        op.setText(operation[i]);
+                    for (int j=0; j<operation.length; j++) {
+                        TextView op = (TextView) operations1Template.getChildAt(j);
+                        op.setText(operation[j]);
                     }
 
                     operationsContainer.addView(operations1Template);
@@ -108,8 +123,14 @@ public class OperationsActivity extends ActivityTemplate {
             case 2:
                 /* In this case, the numbers and operation must be sent to Zowi,
                    instead of been displayed immediately on screen */
-                for (int i=0; i<operations.length; i++) {
-                    String[] operation = operations[i];
+                for (int i=0; i<OperationsConstants.NUMBER_OF_OPERATIONS; i++) {
+                    int randomIndex = new Random().nextInt(operations.length);
+                    while (ocurrences[randomIndex] == 1) {
+                        randomIndex = new Random().nextInt(operations.length);
+                    }
+                    ocurrences[randomIndex] = 1;
+                    String[] operation = operations[randomIndex];
+
                     LinearLayout operations2Template = (LinearLayout) inflater.inflate(R.layout.operations_2_template, operationsActivityTemplate, false);
 
                     for (int j=0; j<operation.length; j++) {
