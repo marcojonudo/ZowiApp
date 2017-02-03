@@ -36,6 +36,7 @@ public class ColouredGridActivity extends ActivityTemplate {
     private String[] colouredCells;
     private JSONObject activityDetails;
     private int[][] coordinates;
+    private int[] colouredCellsNumber;
 
     public ColouredGridActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -56,6 +57,7 @@ public class ColouredGridActivity extends ActivityTemplate {
             cells = new int[jsonCells.length()];
             images = new String[jsonImages.length()];
             colouredCells = new String[jsonColouredCells.length()];
+            colouredCellsNumber = new int[ColouredGridConstants.NUMBER_OF_COLORS];
 
             for (int i=0; i<cells.length; i++) {
                 cells[i] = jsonCells.getInt(i);
@@ -118,12 +120,15 @@ public class ColouredGridActivity extends ActivityTemplate {
                 switch (colouredCells[i]) {
                     case "RED":
                         cell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.red));
+                        colouredCellsNumber[0]++;
                         break;
                     case "BLUE":
                         cell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.blue));
+                        colouredCellsNumber[1]++;
                         break;
                     case "GREEN":
                         cell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.green));
+                        colouredCellsNumber[2]++;
                         break;
                     default:
                         break;

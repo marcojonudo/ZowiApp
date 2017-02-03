@@ -72,6 +72,7 @@ public class ActivityConstants {
         protected static final ActivityType COLOUREDGRID_TYPE = ActivityType.COLOURED_GRID;
         protected static final String JSON_PARAMETER_CELLS = "cells";
         protected static final String JSON_PARAMETER_COLOUREDCELLS = "colouredCells";
+        protected static final int NUMBER_OF_COLORS = 3;
         protected static final String JSON_PARAMETER_IMAGES = "images";
         protected static final int COORDINATES_4X4_LENGTH = 17;
         protected static final int GRID_IMAGE_WIDTH_PX = 150;
