@@ -167,8 +167,21 @@ public class DragActivity extends ActivityTemplate {
     }
 
     private void placeImages(RelativeLayout contentContainer, String[] images) {
-        for (int i=0; i<images.length; i++) {
-            placeImage(contentContainer, images[i], i);
+        /* Ocurrences array for generating random index, so the images have not the same order
+           every time the child enter */
+        int[] occurrences = new int[images.length];
+        for (int i=0; i<occurrences.length; i++) {
+            occurrences[i] = 0;
+        }
+
+        for (String image: images) {
+            int randomIndex = new Random().nextInt(occurrences.length);
+            while (occurrences[randomIndex] == 1) {
+                randomIndex = new Random().nextInt(occurrences.length);
+            }
+            occurrences[randomIndex] = 1;
+
+            placeImage(contentContainer, image, randomIndex);
         }
 
     }
