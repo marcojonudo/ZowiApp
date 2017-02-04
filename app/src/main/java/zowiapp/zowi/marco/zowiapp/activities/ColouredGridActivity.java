@@ -95,6 +95,10 @@ public class ColouredGridActivity extends ActivityTemplate {
 
             LayoutListener layoutListener = new LayoutListener(ColouredGridConstants.COLOUREDGRID_TYPE, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
+
+            /* TouchListener for removing focus on EditTexts */
+            TouchListener touchListener = new TouchListener(ColouredGridConstants.COLOUREDGRID_TYPE, this);
+            contentContainer.setOnTouchListener(touchListener);
         }
     }
 
@@ -140,31 +144,30 @@ public class ColouredGridActivity extends ActivityTemplate {
 
             /* The listeners of the EditTexts are set. They will allow sending each answer to Zowi */
             LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
-            for (int i=0; i<answersContainer.getChildCount(); i++) {
-                LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
-                EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount()-1);
 
-                colorEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View view, boolean hasFocus) {
-                        if (!hasFocus) {
-                            EditText editText = (EditText) view;
-                            String text = editText.getText().toString();
-                            if (!text.equals("")) {
-                                colouredGridChecker.check(gameParameters, colouredCellsNumber, (String)view.getTag(), editText.getText().toString());
-                            }
-                            else {
-                                Toast.makeText(gameParameters, "¡Introduce algún número!", Toast.LENGTH_SHORT).show();
+            if (answersContainer != null) {
+                for (int i=0; i<answersContainer.getChildCount(); i++) {
+                    LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
+                    EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount()-1);
+
+                    colorEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                        @Override
+                        public void onFocusChange(View view, boolean hasFocus) {
+                            if (!hasFocus) {
+                                EditText editText = (EditText) view;
+                                String text = editText.getText().toString();
+                                if (!text.equals("")) {
+                                    colouredGridChecker.check(gameParameters, colouredCellsNumber, (String)view.getTag(), editText.getText().toString());
+                                }
+                                else {
+                                    Toast.makeText(gameParameters, "¡Introduce algún número!", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
             }
-
-            /* TouchListener for removing focus on EditTexts */
-            TouchListener touchListener = new TouchListener(ColouredGridConstants.COLOUREDGRID_TYPE, this);
-            contentContainer.setOnTouchListener(touchListener);
-
+            
             placeImages(contentContainer, cells, images);
         }
     }
