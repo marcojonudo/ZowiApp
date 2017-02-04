@@ -5,7 +5,6 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -184,7 +183,7 @@ public class ColouredGridActivity extends ActivityTemplate {
     private void placeImage(RelativeLayout container, String imageName, int x, int y) {
         ImageView image = new ImageView(gameParameters);
         image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ColouredGridConstants.GRID_IMAGE_WIDTH_PX, ColouredGridConstants.GRID_IMAGE_WIDTH_PX);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ColouredGridConstants.GRID_IMAGE_SIDE_PX, ColouredGridConstants.GRID_IMAGE_SIDE_PX);
         image.setLayoutParams(layoutParams);
         image.setX(x);
         image.setY(y);
@@ -197,12 +196,14 @@ public class ColouredGridActivity extends ActivityTemplate {
             case MotionEvent.ACTION_DOWN:
                 LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
 
-                for (int i=0; i<answersContainer.getChildCount(); i++) {
-                    LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
-                    EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount()-1);
+                if (answersContainer != null) {
+                    for (int i=0; i<answersContainer.getChildCount(); i++) {
+                        LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
+                        EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount()-1);
 
-                    /* When touching elsewhere, the focus is removed from the EditTexts */
-                    colorEditText.clearFocus();
+                        /* When touching elsewhere, the focus is removed from the EditTexts */
+                        colorEditText.clearFocus();
+                    }
                 }
                 break;
             default:
