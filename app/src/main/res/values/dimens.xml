@@ -21,4 +21,6 @@
     <dimen name="pyramid_image_side">265dp</dimen>
     <dimen name="pyramid_text_side">300dp</dimen>
     <dimen name="food_image_side">75dp</dimen>
+
+    <dimen name="columns_image_side">75dp</dimen>
 </resources>

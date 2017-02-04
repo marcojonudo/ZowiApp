@@ -31,8 +31,9 @@ public class ColumnsActivity extends ActivityTemplate {
     private GameParameters gameParameters;
     private LayoutInflater inflater;
     private String activityTitle, activityDescription, leftColumnTitle, rightColumnTitle;
-    private String[] images;
     private JSONObject activityDetails;
+    private String[] images;
+    int imageSide;
     private int[][] piecesCoordinates;
     private int[][] columnCoordinates;
     float startX, startY, upperLimit = 0;
@@ -90,6 +91,9 @@ public class ColumnsActivity extends ActivityTemplate {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         RelativeLayout imagesContainer = (RelativeLayout) gameParameters.findViewById(R.id.images_container);
 
+        imageSide = (int)gameParameters.getResources().getDimension(R.dimen.columns_image_side);
+        int translationToCenter = imageSide/2;
+
         /* piecesCoordinates will contain the images' coordinates */
         piecesCoordinates = new int[ColumnsConstants.NUMBER_OF_IMAGES][CommonConstants.AXIS_NUMBER];
         /* columnsCoordinates will contain the coordinates of the corners of the columns */
@@ -99,8 +103,8 @@ public class ColumnsActivity extends ActivityTemplate {
             /* The first coordinates are the ones from the element in the center */
             int centerX = imagesContainer.getLeft() + imagesContainer.getWidth()/2;
             int centerY = imagesContainer.getTop() + imagesContainer.getHeight()/2;
-            piecesCoordinates[0][0] = centerX - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
-            piecesCoordinates[0][1] = centerY - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
+            piecesCoordinates[0][0] = centerX - translationToCenter;
+            piecesCoordinates[0][1] = centerY - translationToCenter;
 
             /* Place the other images on the corners of a square */
             /* 'distance' is a intermediate distance between the center and the limits of the container */
@@ -109,8 +113,8 @@ public class ColumnsActivity extends ActivityTemplate {
                 int x = (int) Math.round(centerX + distance*Math.cos(ColumnsConstants.CIRCUMFERENCE_INITIAL_POS*(Math.PI/180) + ColumnsConstants.CIRCUMFERENCE_INCREMENT*(Math.PI/180)*(i-1)));
                 int y = (int) Math.round(centerY + distance*Math.sin(ColumnsConstants.CIRCUMFERENCE_INITIAL_POS*(Math.PI/180) + ColumnsConstants.CIRCUMFERENCE_INCREMENT*(Math.PI/180)*(i-1)));
 
-                piecesCoordinates[i][0] = x - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
-                piecesCoordinates[i][1] = y - ColumnsConstants.COLUMNS_TRANSLATION_TO_CENTER;
+                piecesCoordinates[i][0] = x - translationToCenter;
+                piecesCoordinates[i][1] = y - translationToCenter;
             }
 
             View leftColumn = gameParameters.findViewById(R.id.left_column);
@@ -147,7 +151,7 @@ public class ColumnsActivity extends ActivityTemplate {
     private void placeImage(RelativeLayout container, String imageName, int x, int y, int i) {
         ImageView image = new ImageView(gameParameters);
         image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ColumnsConstants.COLUMNS_IMAGE_WIDTH_PX, ColumnsConstants.COLUMNS_IMAGE_WIDTH_PX);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(imageSide, imageSide);
         image.setLayoutParams(layoutParams);
         image.setX(x);
         image.setY(y);
