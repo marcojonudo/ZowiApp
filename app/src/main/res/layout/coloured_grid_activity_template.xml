@@ -27,7 +27,8 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:id="@+id/answers_container">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -46,7 +47,8 @@
 
                 <EditText
                     android:layout_width="@dimen/operator_side"
-                    android:layout_height="@dimen/operator_side" />
+                    android:layout_height="@dimen/operator_side"
+                    android:tag="RED"/>
 
             </LinearLayout>
 
@@ -67,7 +69,8 @@
 
                 <EditText
                     android:layout_width="@dimen/operator_side"
-                    android:layout_height="@dimen/operator_side" />
+                    android:layout_height="@dimen/operator_side"
+                    android:tag="BLUE"/>
 
             </LinearLayout>
 
@@ -88,7 +91,8 @@
 
                 <EditText
                     android:layout_width="@dimen/operator_side"
-                    android:layout_height="@dimen/operator_side" />
+                    android:layout_height="@dimen/operator_side"
+                    android:tag="GREEN"/>
 
             </LinearLayout>
 

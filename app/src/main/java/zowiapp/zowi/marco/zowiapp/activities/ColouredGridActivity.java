@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColouredGridConstants;
+import zowiapp.zowi.marco.zowiapp.checker.ColouredGridChecker;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
@@ -30,6 +32,7 @@ public class ColouredGridActivity extends ActivityTemplate {
 
     private GameParameters gameParameters;
     private LayoutInflater inflater;
+    private ColouredGridChecker colouredGridChecker;
     private String activityTitle, activityDescription;
     private String[] images;
     private int[] cells;
@@ -43,6 +46,7 @@ public class ColouredGridActivity extends ActivityTemplate {
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        colouredGridChecker = new ColouredGridChecker();
 
         getParameters();
     }
@@ -85,7 +89,6 @@ public class ColouredGridActivity extends ActivityTemplate {
         /* In this activity, grid is always 4x4 */
         inflater.inflate(R.layout.grid_4x4_template, grid, true);
         coordinates = new int[ColouredGridConstants.COORDINATES_4X4_LENGTH][CommonConstants.AXIS_NUMBER];
-
 
         if (contentContainer != null) {
             contentContainer.addView(colouredGridActivityTemplate);
@@ -135,6 +138,33 @@ public class ColouredGridActivity extends ActivityTemplate {
                 }
             }
 
+            /* The listeners of the EditTexts are set. They will allow sending each answer to Zowi */
+            LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
+            for (int i=0; i<answersContainer.getChildCount(); i++) {
+                LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
+                EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount()-1);
+
+                colorEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View view, boolean hasFocus) {
+                        if (!hasFocus) {
+                            EditText editText = (EditText) view;
+                            String text = editText.getText().toString();
+                            if (!text.equals("")) {
+                                colouredGridChecker.check(gameParameters, colouredCellsNumber, (String)view.getTag(), editText.getText().toString());
+                            }
+                            else {
+                                Toast.makeText(gameParameters, "¡Introduce algún número!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+            }
+
+            /* TouchListener for removing focus on EditTexts */
+            TouchListener touchListener = new TouchListener(ColouredGridConstants.COLOUREDGRID_TYPE, this);
+            contentContainer.setOnTouchListener(touchListener);
+
             placeImages(contentContainer, cells, images);
         }
     }
@@ -157,6 +187,23 @@ public class ColouredGridActivity extends ActivityTemplate {
         image.setY(y);
 
         container.addView(image);
+    }
+
+    protected void processTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_UP:
+                LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
+
+                for (int i=0; i<answersContainer.getChildCount(); i++) {
+                    LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
+                    EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount()-1);
+
+                    colorEditText.clearFocus();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 }
