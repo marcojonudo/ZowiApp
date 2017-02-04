@@ -170,14 +170,6 @@ public class PuzzleActivity extends ActivityTemplate {
                     puzzleCoordinates[i][0] = (int)(upperLeftCorner[0] + (puzzleWidth*coordinatesFactors[i][0]));
                     puzzleCoordinates[i][1] = (int)(upperLeftCorner[1] + (puzzleHeight*coordinatesFactors[i][1]));
 
-                    View v = new View(gameParameters);
-                    ViewGroup.LayoutParams l = new ViewGroup.LayoutParams(15, 15);
-                    v.setLayoutParams(l);
-                    v.setX(puzzleCoordinates[i][0]);
-                    v.setY(puzzleCoordinates[i][1]);
-                    v.setBackground(ContextCompat.getDrawable(gameParameters, R.drawable.black));
-                    contentContainer.addView(v);
-
                     /* The first child is 'puzzleContainer', the rest of them the pieces */
                     ImageView pieceImage = (ImageView) contentContainer.getChildAt(i+1);
                     piecesCoordinates[i][0] = pieceImage.getLeft();
