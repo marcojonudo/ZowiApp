@@ -19,6 +19,7 @@ import java.util.Random;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColumnsConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
+import zowiapp.zowi.marco.zowiapp.checker.ColumnsChecker;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
@@ -32,7 +33,8 @@ public class ColumnsActivity extends ActivityTemplate {
     private LayoutInflater inflater;
     private String activityTitle, activityDescription, leftColumnTitle, rightColumnTitle;
     private JSONObject activityDetails;
-    private String[] images;
+    private ColumnsChecker columnsChecker;
+    private String[] images, correction;
     int imageSide;
     private int[][] piecesCoordinates;
     private int[][] columnCoordinates;
@@ -43,6 +45,7 @@ public class ColumnsActivity extends ActivityTemplate {
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        columnsChecker = new ColumnsChecker();
 
         getParameters();
     }
@@ -53,11 +56,14 @@ public class ColumnsActivity extends ActivityTemplate {
             activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
             leftColumnTitle = activityDetails.getString(ColumnsConstants.JSON_PARAMETER_LEFTTITLE);
             rightColumnTitle = activityDetails.getString(ColumnsConstants.JSON_PARAMETER_RIGHTTITLE);
-            JSONArray jsonBAImages = activityDetails.getJSONArray(ColumnsConstants.JSON_PARAMETER_IMAGES);
-            images = new String[jsonBAImages.length()];
+            JSONArray jsonImages = activityDetails.getJSONArray(ColumnsConstants.JSON_PARAMETER_IMAGES);
+            JSONArray jsonCorrection = activityDetails.getJSONArray(ColumnsConstants.JSON_PARAMETER_CORRECTION);
+            images = new String[jsonImages.length()];
+            correction = new String[jsonCorrection.length()];
 
-            for (int i=0; i<jsonBAImages.length(); i++) {
-                images[i] = jsonBAImages.getString(i);
+            for (int i=0; i<jsonImages.length(); i++) {
+                images[i] = jsonImages.getString(i);
+                correction[i] = jsonCorrection.getString(i);
             }
 
             generateLayout();
@@ -220,6 +226,9 @@ public class ColumnsActivity extends ActivityTemplate {
                     else if (topRightCornerX > columnCoordinates[leftColumnIndex][0]) {
                         view.setX(columnCoordinates[leftColumnIndex][0]-view.getWidth());
                     }
+
+                    String chosenColumn = "LEFT";
+                    columnsChecker.check(gameParameters, chosenColumn, correction[(int)view.getTag()]);
                 }
                 /* The view is placed inside the right column */
                 else if ((topRightCornerX > columnCoordinates[rightColumnIndex][0])
@@ -240,6 +249,9 @@ public class ColumnsActivity extends ActivityTemplate {
                     else if (topLeftCornerX < columnCoordinates[rightColumnIndex][0]) {
                         view.setX(columnCoordinates[rightColumnIndex][0]);
                     }
+
+                    String chosenColumn = "RIGHT";
+                    columnsChecker.check(gameParameters, chosenColumn, correction[(int)view.getTag()]);
                 }
                 /* The element goes back to the original position */
 //                else {
