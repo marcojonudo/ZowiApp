@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -92,7 +93,7 @@ public class GridActivity extends ActivityTemplate {
         }
 
         /* Set the listener that detects what section of the controls has been touched */
-        Button controls = (Button) gridActivityTemplate.findViewById(R.id.controls);
+        FrameLayout controls = (FrameLayout) gridActivityTemplate.findViewById(R.id.controls);
         TouchListener touchListener = new TouchListener(GridConstants.GRID_TYPE, this);
         controls.setOnTouchListener(touchListener);
 
@@ -168,7 +169,8 @@ public class GridActivity extends ActivityTemplate {
                 float rightCorner = view.getWidth();
                 float center = rightCorner/2;
                 /* The control's width is 500px, and the diameter of the circumference is 150px (500/(150/2))*/
-                double circumferenceRadius = rightCorner/GridConstants.CONTROL_RADIUS_FACTOR;
+                ImageView innerControl = (ImageView) gameParameters.findViewById(R.id.inner_control);
+                double circumferenceRadius = innerControl.getWidth()/2;
 
                 double distanceToCenter = Math.sqrt(Math.pow(x-center, 2)+Math.pow(y-center, 2));
 
