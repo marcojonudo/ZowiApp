@@ -167,7 +167,7 @@ public class ColouredGridActivity extends ActivityTemplate {
                     });
                 }
             }
-            
+
             placeImages(contentContainer, cells, images);
         }
     }
@@ -194,13 +194,14 @@ public class ColouredGridActivity extends ActivityTemplate {
 
     protected void processTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
-            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_DOWN:
                 LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
 
                 for (int i=0; i<answersContainer.getChildCount(); i++) {
                     LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
                     EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount()-1);
 
+                    /* When touching elsewhere, the focus is removed from the EditTexts */
                     colorEditText.clearFocus();
                 }
                 break;
