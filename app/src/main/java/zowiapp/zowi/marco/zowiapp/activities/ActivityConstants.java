@@ -48,14 +48,14 @@ public class ActivityConstants {
         protected static final int OPERATION_IMAGE_WIDTH_PX = 125;
     }
 
-    protected static class PuzzleConstants {
+    public static class PuzzleConstants {
         protected static final ActivityType PUZZLE_TYPE = ActivityType.PUZZLE;
         protected static final String JSON_PARAMETER_IMAGE = "image";
         protected static final String JSON_PARAMETER_SHAPE = "shape";
         protected static final String JSON_PARAMETER_PIECESNUMBER = "piecesNumber";
         protected static final int CONTENT_CONTAINER_MARGIN = 100;
         protected static final int[][] PIECES_TO_PUZZLE = {{2, 2}, {2, 1}, {2, 2}, {2, 2}, {2, 2}};
-        protected static final int DISTANCE_LIMIT = 100;
+        public static final int DISTANCE_LIMIT = 100;
         protected static final double[][][] SHAPES_COORDINATES_FACTORS = {
             {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
             {{0, 0}, {0, 0}, {0.5, 0}, {0, 0.5}, {0.5, 0.5}},

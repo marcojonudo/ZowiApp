@@ -2,6 +2,8 @@ package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.os.CountDownTimer;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,7 +45,7 @@ public class PuzzleActivity extends ActivityTemplate {
     float startX, startY, upperLimit = 0;
     int puzzleContainerHeight;
 
-    public PuzzleActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
+    public PuzzleActivity(final GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
@@ -52,6 +54,15 @@ public class PuzzleActivity extends ActivityTemplate {
         puzzleChecker = new PuzzleChecker();
 
         getParameters();
+
+        new CountDownTimer(15000, 15000) {
+
+            public void onTick(long millisUntilFinished) {}
+
+            public void onFinish() {
+                puzzleChecker.check(gameParameters, piecesImages, puzzleCoordinates, piecesCoordinates);
+            }
+        }.start();
     }
 
     @Override
@@ -159,6 +170,14 @@ public class PuzzleActivity extends ActivityTemplate {
                     puzzleCoordinates[i][0] = (int)(upperLeftCorner[0] + (puzzleWidth*coordinatesFactors[i][0]));
                     puzzleCoordinates[i][1] = (int)(upperLeftCorner[1] + (puzzleHeight*coordinatesFactors[i][1]));
 
+                    View v = new View(gameParameters);
+                    ViewGroup.LayoutParams l = new ViewGroup.LayoutParams(15, 15);
+                    v.setLayoutParams(l);
+                    v.setX(puzzleCoordinates[i][0]);
+                    v.setY(puzzleCoordinates[i][1]);
+                    v.setBackground(ContextCompat.getDrawable(gameParameters, R.drawable.black));
+                    contentContainer.addView(v);
+
                     /* The first child is 'puzzleContainer', the rest of them the pieces */
                     ImageView pieceImage = (ImageView) contentContainer.getChildAt(i+1);
                     piecesCoordinates[i][0] = pieceImage.getLeft();
@@ -251,6 +270,10 @@ public class PuzzleActivity extends ActivityTemplate {
                 break;
             case MotionEvent.ACTION_UP:
                 upperLimit = 0;
+
+                piecesCoordinates[(int)view.getTag()][0] = (int)view.getX();
+                piecesCoordinates[(int)view.getTag()][1] = (int)view.getY();
+
                 /* It is better not to place the elements automatically. Instead of that, in the correction
                    stage it will be checked if the pieces' coordinates are OK or not */
 //                float viewX = view.getX();
