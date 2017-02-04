@@ -30,11 +30,12 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_LEFTTITLE = "leftTitle";
         protected static final String JSON_PARAMETER_RIGHTTITLE = "rightTitle";
         protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final int COLUMNS_INCREMENT = 2;
+        protected static final int NUMBER_OF_IMAGES = 5;
+        protected static final int NUMBER_OF_COLUMNS_CORNERS = 5;
         protected static final int CIRCUMFERENCE_INITIAL_POS = 45;
         protected static final int CIRCUMFERENCE_INCREMENT = 90;
-        protected static final int LEFT_COL_INDEX_ADJUSTMENT = 2;
-        protected static final int RIGHT_COL_INDEX_ADJUSTMENT = 1;
+        protected static final int LEFT_COLUMN_INDEX = 0;
+        protected static final int RIGHT_COLUMN_INDEX = 1;
         protected static final int COLUMNS_IMAGE_WIDTH_PX = 150;
         protected static final int COLUMNS_TRANSLATION_TO_CENTER = COLUMNS_IMAGE_WIDTH_PX /2;
     }
