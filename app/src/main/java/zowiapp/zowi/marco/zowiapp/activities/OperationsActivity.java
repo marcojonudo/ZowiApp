@@ -22,6 +22,7 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.OperationsConstants;
+import zowiapp.zowi.marco.zowiapp.checker.OperationsChecker;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
 /**
@@ -33,6 +34,7 @@ public class OperationsActivity extends ActivityTemplate {
     private LayoutInflater inflater;
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
+    private OperationsChecker operationsChecker;
     private int operationsType;
     private String image;
     private String[] operationsImages;
@@ -43,6 +45,7 @@ public class OperationsActivity extends ActivityTemplate {
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        operationsChecker = new OperationsChecker();
 
         getParameters();
     }
@@ -146,7 +149,7 @@ public class OperationsActivity extends ActivityTemplate {
                     @Override
                     public void onClick(View view) {
                         int index = (int)view.getTag();
-                        checkAnswer(index, operationsResults[index]);
+                        operationsChecker.check(gameParameters, index, operationsResults[index]);
                     }
                 });
 
@@ -156,30 +159,6 @@ public class OperationsActivity extends ActivityTemplate {
 
         if (contentContainer != null) {
             contentContainer.addView(operationsActivityTemplate);
-        }
-    }
-
-    public void checkAnswer(int index, int correctResult) {
-        LinearLayout operationsTemplateContainer = (LinearLayout) gameParameters.findViewById(R.id.operations_container);
-        if (operationsTemplateContainer != null) {
-            LinearLayout currentOperation = (LinearLayout) operationsTemplateContainer.getChildAt(index);
-            EditText answerEditText = (EditText) currentOperation.getChildAt(currentOperation.getChildCount()-2);
-
-            String answer = answerEditText.getText().toString();
-
-            if (answer.equals("")) {
-                Toast.makeText(gameParameters, "¡Escribe un resultado!", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                int answerNumber = Integer.valueOf(answer);
-                if (answerNumber == correctResult) {
-                    // Send OK To Zowi
-                    Toast.makeText(gameParameters, "¡Bien!", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(gameParameters, "Mal", Toast.LENGTH_SHORT).show();
-                }
-            }
         }
     }
 
