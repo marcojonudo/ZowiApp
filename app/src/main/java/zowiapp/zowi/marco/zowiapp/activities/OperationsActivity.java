@@ -35,7 +35,6 @@ public class OperationsActivity extends ActivityTemplate {
     private String activityTitle, activityDescription;
     private int operationsType;
     private String image;
-    private String[][] operations;
     private String[] operationsImages;
     private JSONObject activityDetails;
 
@@ -54,17 +53,8 @@ public class OperationsActivity extends ActivityTemplate {
             activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
             operationsType = activityDetails.getInt(OperationsConstants.JSON_PARAMETER_OPERATIONSTYPE);
             image = activityDetails.getString(OperationsConstants.JSON_PARAMETER_IMAGE);
-            JSONArray jsonOperations = activityDetails.getJSONArray(OperationsConstants.JSON_PARAMETER_OPERATIONS);
-            operations = new String[jsonOperations.length()][3];
             JSONArray jsonOperationsImages = activityDetails.getJSONArray(OperationsConstants.JSON_PARAMETER_OPERATIONSIMAGES);
             operationsImages = new String[jsonOperationsImages.length()];
-
-            for (int i=0; i<jsonOperations.length(); i++) {
-                JSONArray operation = jsonOperations.getJSONArray(i);
-                for (int j=0; j<3; j++) {
-                    operations[i][j] = operation.getString(j);
-                }
-            }
 
             if (jsonOperationsImages.length() != 0) {
                 for (int i=0; i<jsonOperationsImages.length(); i++) {
@@ -91,64 +81,56 @@ public class OperationsActivity extends ActivityTemplate {
         ImageView mainImage = (ImageView) operationsActivityTemplate.findViewById(R.id.mainImage);
         mainImage.setImageResource(gameParameters.getResources().getIdentifier(image, "drawable", gameParameters.getPackageName()));
 
-        /* Preparation of the ocurrences array to avoid repeated indexes in the random generation */
-        int[] ocurrences = new int[operations.length];
-        for (int i=0; i<ocurrences.length; i++) {
-            ocurrences[i] = 0;
-        }
+        for (int i=0; i<OperationsConstants.NUMBER_OF_OPERATIONS; i++) {
+            int firstNumber = new Random().nextInt(OperationsConstants.RANDOM_NUMBER_LIMIT);
+            int randomOperatorIndex = new Random().nextInt(OperationsConstants.OPERATORS.length);
+            String operator = OperationsConstants.OPERATORS[randomOperatorIndex];
 
-        switch (operationsType) {
-            /* Numbers and operations are predefined */
-            case 1:
-                /* No need to take care about operations images */
-                for (int i=0; i<OperationsConstants.NUMBER_OF_OPERATIONS; i++) {
-                    int randomIndex = new Random().nextInt(operations.length);
-                    while (ocurrences[randomIndex] == 1) {
-                        randomIndex = new Random().nextInt(operations.length);
-                    }
-                    ocurrences[randomIndex] = 1;
-                    String[] operation = operations[randomIndex];
+            int secondNumber = 0;
+            switch (operator) {
+                case "+":
+                    /* We want the result to be between 0 and 9, so the second randomly generated number must be
+                       between 0 and RAMDON_NUMBER_LIMIT-firstNumber-1.
+                       Ej. fN = 6, RNL-fN = 10-6 = 4 --> Random number between 0 and 3 */
+                    secondNumber = new Random().nextInt(OperationsConstants.RANDOM_NUMBER_LIMIT-firstNumber);
+                    break;
+                case "-":
+                    /* Ej. fN = 6, fN+1 = 7 --> Random number between 0 and 6 */
+                    secondNumber = new Random().nextInt(firstNumber+1);
+                    break;
+                default:
+                    break;
+            }
+            String[] operation = {String.valueOf(firstNumber), operator, String.valueOf(secondNumber)};
 
-                    LinearLayout operations1Template = (LinearLayout) inflater.inflate(R.layout.operations_1_template, operationsActivityTemplate, false);
+            LinearLayout operationsTemplate = null;
+            switch (operationsType) {
+                case 1:
+                    operationsTemplate = (LinearLayout) inflater.inflate(R.layout.operations_1_template, operationsActivityTemplate, false);
 
                     for (int j=0; j<operation.length; j++) {
-                        TextView op = (TextView) operations1Template.getChildAt(j);
+                        TextView op = (TextView) operationsTemplate.getChildAt(j);
                         op.setText(operation[j]);
                     }
-
-                    operationsContainer.addView(operations1Template);
-                }
-                break;
-            /* Zowi gives the numbers and operation */
-            case 2:
-                /* In this case, the numbers and operation must be sent to Zowi,
-                   instead of been displayed immediately on screen */
-                for (int i=0; i<OperationsConstants.NUMBER_OF_OPERATIONS; i++) {
-                    int randomIndex = new Random().nextInt(operations.length);
-                    while (ocurrences[randomIndex] == 1) {
-                        randomIndex = new Random().nextInt(operations.length);
-                    }
-                    ocurrences[randomIndex] = 1;
-                    String[] operation = operations[randomIndex];
-
-                    LinearLayout operations2Template = (LinearLayout) inflater.inflate(R.layout.operations_2_template, operationsActivityTemplate, false);
+                    break;
+                case 2:
+                    operationsTemplate = (LinearLayout) inflater.inflate(R.layout.operations_2_template, operationsActivityTemplate, false);
 
                     for (int j=0; j<operation.length; j++) {
                         // Send to Zowi
 
-                        /* This operation selects automatically elements 2, 5 and 8, that correspond to
-                           to the ImageViews*/
-                        ImageView operationsImage = (ImageView) operations2Template.getChildAt(j+(2*(j+1))-1);
+                        /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews*/
+                        ImageView operationsImage = (ImageView) operationsTemplate.getChildAt(j+(2*(j+1))-1);
                         operationsImage.setImageResource(gameParameters.getResources().getIdentifier(operationsImages[i], "drawable", gameParameters.getPackageName()));
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(OperationsConstants.OPERATION_IMAGE_WIDTH_PX, OperationsConstants.OPERATION_IMAGE_WIDTH_PX);
                         operationsImage.setLayoutParams(layoutParams);
                     }
+                    break;
+                default:
+                    break;
+            }
 
-                    operationsContainer.addView(operations2Template);
-                }
-                break;
-            default:
-                break;
+            operationsContainer.addView(operationsTemplate);
         }
 
         if (contentContainer != null) {
