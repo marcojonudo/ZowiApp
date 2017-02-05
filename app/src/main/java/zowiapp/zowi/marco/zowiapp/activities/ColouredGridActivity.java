@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -95,9 +96,23 @@ public class ColouredGridActivity extends ActivityTemplate {
             LayoutListener layoutListener = new LayoutListener(ColouredGridConstants.COLOUREDGRID_TYPE, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
 
-            /* TouchListener for removing focus on EditTexts */
-            TouchListener touchListener = new TouchListener(ColouredGridConstants.COLOUREDGRID_TYPE, this);
-            contentContainer.setOnTouchListener(touchListener);
+            /* Listener for the correction buttons */
+            LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
+            if (answersContainer != null) {
+                for (int i=0; i<answersContainer.getChildCount(); i++) {
+                    LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
+                    Button colorButton = (Button) colorContainer.getChildAt(colorContainer.getChildCount()-1);
+
+                    colorButton.setTag(i);
+                    colorButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int index = (int)view.getTag();
+                            colouredGridChecker.check(gameParameters, index, colouredCellsNumber[index]);
+                        }
+                    });
+                }
+            }
         }
     }
 
@@ -138,32 +153,6 @@ public class ColouredGridActivity extends ActivityTemplate {
                         break;
                     default:
                         break;
-                }
-            }
-
-            /* The listeners of the EditTexts are set. They will allow sending each answer to Zowi */
-            LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
-
-            if (answersContainer != null) {
-                for (int i=0; i<answersContainer.getChildCount(); i++) {
-                    LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
-                    EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount()-1);
-
-                    colorEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                        @Override
-                        public void onFocusChange(View view, boolean hasFocus) {
-                            if (!hasFocus) {
-                                EditText editText = (EditText) view;
-                                String text = editText.getText().toString();
-                                if (!text.equals("")) {
-                                    colouredGridChecker.check(gameParameters, colouredCellsNumber, (String)view.getTag(), editText.getText().toString());
-                                }
-                                else {
-                                    Toast.makeText(gameParameters, "¡Introduce algún número!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-                    });
                 }
             }
 

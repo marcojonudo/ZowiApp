@@ -1,8 +1,12 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
+import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 
 /**
@@ -10,46 +14,28 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
  */
 public class ColouredGridChecker {
 
-    public void check(GameParameters gameParameters, int[] colouredCellsNumber, String stringColor, String result) {
-        Colors color = Colors.valueOf(stringColor);
-        int numberResult = Integer.valueOf(result);
+    public void check(GameParameters gameParameters, int index, int correctResult) {
+        LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
 
-        switch (color) {
-            case RED:
-                if (colouredCellsNumber[0] == numberResult) {
-                    // Send OK to Zowi
-                    Log.i("ColouredGridChecker", "Rojo bien");
+        if (answersContainer != null) {
+            LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(index);
+            EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount() - 2);
+
+            String answer = colorEditText.getText().toString();
+
+            if (answer.equals("")) {
+                Toast.makeText(gameParameters, "¡Escribe un resultado!", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                int answerNumber = Integer.parseInt(answer);
+
+                if (answerNumber == correctResult) {
+                    Toast.makeText(gameParameters, "¡Bien!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(gameParameters, "¡Mal!", Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    // Send WRONG to Zowi
-                    Log.i("ColouredGridChecker", "Rojo bien");
-                }
-                break;
-            case BLUE:
-                if (colouredCellsNumber[1] == numberResult) {
-                    // Send OK to Zowi
-                    Log.i("ColouredGridChecker", "Azul bien");
-                }
-                else {
-                    // Send WRONG to Zowi
-                    Log.i("ColouredGridChecker", "Azul bien");
-                }
-                break;
-            case GREEN:
-                if (colouredCellsNumber[2] == numberResult) {
-                    // Send OK to Zowi
-                    Log.i("ColouredGridChecker", "Verde bien");
-                }
-                else {
-                    // Send WRONG to Zowi
-                    Log.i("ColouredGridChecker", "Verde bien");
-                }
-                break;
+            }
         }
-    }
-
-    public enum Colors {
-        RED, BLUE, GREEN
     }
 
 }

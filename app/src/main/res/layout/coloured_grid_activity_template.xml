@@ -43,14 +43,21 @@
                     android:text="@string/red"/>
 
                 <View
-                    android:layout_width="@dimen/operator_side"
-                    android:layout_height="@dimen/operator_side"
+                    android:layout_width="@dimen/element_side"
+                    android:layout_height="@dimen/element_side"
                     android:background="@color/red"/>
 
                 <EditText
-                    android:layout_width="@dimen/operator_side"
-                    android:layout_height="@dimen/operator_side"
+                    android:layout_width="@dimen/element_side"
+                    android:layout_height="@dimen/element_side"
                     android:tag="RED"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/circle"
+                    android:text="Corregir"
+                    android:onClick="checkAnswer"/>
 
             </LinearLayout>
 
@@ -65,14 +72,21 @@
                     android:text="@string/blue"/>
 
                 <View
-                    android:layout_width="@dimen/operator_side"
-                    android:layout_height="@dimen/operator_side"
+                    android:layout_width="@dimen/element_side"
+                    android:layout_height="@dimen/element_side"
                     android:background="@color/blue"/>
 
                 <EditText
-                    android:layout_width="@dimen/operator_side"
-                    android:layout_height="@dimen/operator_side"
+                    android:layout_width="@dimen/element_side"
+                    android:layout_height="@dimen/element_side"
                     android:tag="BLUE"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/circle"
+                    android:text="Corregir"
+                    android:onClick="checkAnswer"/>
 
             </LinearLayout>
 
@@ -87,14 +101,21 @@
                     android:text="@string/green"/>
 
                 <View
-                    android:layout_width="@dimen/operator_side"
-                    android:layout_height="@dimen/operator_side"
+                    android:layout_width="@dimen/element_side"
+                    android:layout_height="@dimen/element_side"
                     android:background="@color/green"/>
 
                 <EditText
-                    android:layout_width="@dimen/operator_side"
-                    android:layout_height="@dimen/operator_side"
+                    android:layout_width="@dimen/element_side"
+                    android:layout_height="@dimen/element_side"
                     android:tag="GREEN"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/circle"
+                    android:text="Corregir"
+                    android:onClick="checkAnswer"/>
 
             </LinearLayout>
 

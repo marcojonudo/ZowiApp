@@ -81,10 +81,6 @@ public abstract class ActivityTemplate {
                 FoodPyramidActivity foodPyramidActivity = (FoodPyramidActivity) activity;
                 foodPyramidActivity.processTouchEvent(view, event);
                 break;
-            case COLOURED_GRID:
-                ColouredGridActivity colouredGridActivity = (ColouredGridActivity) activity;
-                colouredGridActivity.processTouchEvent(event);
-                break;
             default:
                 break;
         }
