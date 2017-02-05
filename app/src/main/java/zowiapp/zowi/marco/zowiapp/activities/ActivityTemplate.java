@@ -84,6 +84,7 @@ public abstract class ActivityTemplate {
             case COLOURED_GRID:
                 ColouredGridActivity colouredGridActivity = (ColouredGridActivity) activity;
                 colouredGridActivity.processTouchEvent(event);
+                break;
             default:
                 break;
         }

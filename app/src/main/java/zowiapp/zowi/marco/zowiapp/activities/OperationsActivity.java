@@ -3,14 +3,11 @@ package zowiapp.zowi.marco.zowiapp.activities;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.GridLayout;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +19,6 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.OperationsConstants;
-import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
 /**
@@ -33,10 +29,11 @@ public class OperationsActivity extends ActivityTemplate {
     private GameParameters gameParameters;
     private LayoutInflater inflater;
     private String activityTitle, activityDescription;
+    private JSONObject activityDetails;
     private int operationsType;
     private String image;
     private String[] operationsImages;
-    private JSONObject activityDetails;
+    private int[] operationsResults;
 
     public OperationsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -78,29 +75,37 @@ public class OperationsActivity extends ActivityTemplate {
         LinearLayout operationsContainer = (LinearLayout) operationsActivityTemplate.findViewById(R.id.operations_container);
 
         /* Set the resource of the left image */
-        ImageView mainImage = (ImageView) operationsActivityTemplate.findViewById(R.id.mainImage);
+        ImageView mainImage = (ImageView) operationsActivityTemplate.findViewById(R.id.main_image);
         mainImage.setImageResource(gameParameters.getResources().getIdentifier(image, "drawable", gameParameters.getPackageName()));
+
+        /* Array that will allow the correction of the operations */
+        operationsResults = new int[OperationsConstants.NUMBER_OF_OPERATIONS];
 
         for (int i=0; i<OperationsConstants.NUMBER_OF_OPERATIONS; i++) {
             int firstNumber = new Random().nextInt(OperationsConstants.RANDOM_NUMBER_LIMIT);
             int randomOperatorIndex = new Random().nextInt(OperationsConstants.OPERATORS.length);
             String operator = OperationsConstants.OPERATORS[randomOperatorIndex];
 
-            int secondNumber = 0;
+            int secondNumber = 0, operationResult = 0;
             switch (operator) {
                 case "+":
                     /* We want the result to be between 0 and 9, so the second randomly generated number must be
                        between 0 and RAMDON_NUMBER_LIMIT-firstNumber-1.
                        Ej. fN = 6, RNL-fN = 10-6 = 4 --> Random number between 0 and 3 */
                     secondNumber = new Random().nextInt(OperationsConstants.RANDOM_NUMBER_LIMIT-firstNumber);
+
+                    operationResult = firstNumber + secondNumber;
                     break;
                 case "-":
                     /* Ej. fN = 6, fN+1 = 7 --> Random number between 0 and 6 */
                     secondNumber = new Random().nextInt(firstNumber+1);
+
+                    operationResult = firstNumber - secondNumber;
                     break;
                 default:
                     break;
             }
+            operationsResults[i] = operationResult;
             String[] operation = {String.valueOf(firstNumber), operator, String.valueOf(secondNumber)};
 
             LinearLayout operationsTemplate = null;
@@ -135,6 +140,10 @@ public class OperationsActivity extends ActivityTemplate {
 
         if (contentContainer != null) {
             contentContainer.addView(operationsActivityTemplate);
+
+            /* TouchListener for removing focus on EditTexts */
+            TouchListener touchListener = new TouchListener(OperationsConstants.OPERATIONS_TYPE, this);
+            contentContainer.setOnTouchListener(touchListener);
         }
     }
 
