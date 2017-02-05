@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:id="@+id/operations_1_template_container">
+    android:id="@+id/operations_template_container">
 
     <EditText
         android:layout_width="@dimen/operator_side"

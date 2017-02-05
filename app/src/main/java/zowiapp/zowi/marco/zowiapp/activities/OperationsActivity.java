@@ -3,11 +3,14 @@ package zowiapp.zowi.marco.zowiapp.activities;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -135,15 +138,48 @@ public class OperationsActivity extends ActivityTemplate {
                     break;
             }
 
-            operationsContainer.addView(operationsTemplate);
+            if (operationsTemplate != null) {
+                LinearLayout operationsTemplateContainer = (LinearLayout) operationsTemplate.findViewById(R.id.operations_template_container);
+                Button checkButton = (Button) operationsTemplateContainer.getChildAt(operationsTemplateContainer.getChildCount()-1);
+                checkButton.setTag(i);
+                checkButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int index = (int)view.getTag();
+                        checkAnswer(index, operationsResults[index]);
+                    }
+                });
+
+                operationsContainer.addView(operationsTemplate);
+            }
         }
 
         if (contentContainer != null) {
             contentContainer.addView(operationsActivityTemplate);
+        }
+    }
 
-            /* TouchListener for removing focus on EditTexts */
-            TouchListener touchListener = new TouchListener(OperationsConstants.OPERATIONS_TYPE, this);
-            contentContainer.setOnTouchListener(touchListener);
+    public void checkAnswer(int index, int correctResult) {
+        LinearLayout operationsTemplateContainer = (LinearLayout) gameParameters.findViewById(R.id.operations_container);
+        if (operationsTemplateContainer != null) {
+            LinearLayout currentOperation = (LinearLayout) operationsTemplateContainer.getChildAt(index);
+            EditText answerEditText = (EditText) currentOperation.getChildAt(currentOperation.getChildCount()-2);
+
+            String answer = answerEditText.getText().toString();
+
+            if (answer.equals("")) {
+                Toast.makeText(gameParameters, "¡Escribe un resultado!", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                int answerNumber = Integer.valueOf(answer);
+                if (answerNumber == correctResult) {
+                    // Send OK To Zowi
+                    Toast.makeText(gameParameters, "¡Bien!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(gameParameters, "Mal", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
