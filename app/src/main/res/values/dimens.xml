@@ -4,6 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
+    <!-- Grid dimensions -->
     <dimen name="controls_side">150dp</dimen>
     <dimen name="controls_center_side">47dp</dimen>
     <dimen name="cell_side">75dp</dimen>
@@ -12,18 +13,24 @@
     <dimen name="movement_cell_margin">1dp</dimen>
     <dimen name="layout_margin">20dp</dimen>
 
+    <!-- Operations dimensions -->
     <dimen name="operator_side">30dp</dimen>
 
+    <!-- Music dimensions -->
     <dimen name="button_side">75dp</dimen>
     <dimen name="dictation_width">500dp</dimen>
 
+    <!-- Drag dimensions -->
     <dimen name="drag_cell_side">100dp</dimen>
 
+    <!-- Memory dimensions -->
     <dimen name="memory_image_side">125dp</dimen>
 
+    <!-- Pyramid dimensions -->
     <dimen name="pyramid_image_side">265dp</dimen>
     <dimen name="pyramid_text_side">300dp</dimen>
     <dimen name="food_image_side">75dp</dimen>
 
+    <!-- Columns dimensions -->
     <dimen name="columns_image_side">75dp</dimen>
 </resources>

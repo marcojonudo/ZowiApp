@@ -130,8 +130,8 @@ public class OperationsActivity extends ActivityTemplate {
                         /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews*/
                         ImageView operationsImage = (ImageView) operationsTemplate.getChildAt(j+(2*(j+1))-1);
                         operationsImage.setImageResource(gameParameters.getResources().getIdentifier(operationsImages[i], "drawable", gameParameters.getPackageName()));
-                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(OperationsConstants.OPERATION_IMAGE_WIDTH_PX, OperationsConstants.OPERATION_IMAGE_WIDTH_PX);
-                        operationsImage.setLayoutParams(layoutParams);
+//                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(OperationsConstants.OPERATION_IMAGE_WIDTH_PX, OperationsConstants.OPERATION_IMAGE_WIDTH_PX);
+//                        operationsImage.setLayoutParams(layoutParams);
                     }
                     break;
                 default:

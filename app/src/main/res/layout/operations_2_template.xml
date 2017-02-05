@@ -14,39 +14,42 @@
         android:background="@drawable/square"/>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="@dimen/operator_side"
+        android:layout_height="@dimen/operator_side"/>
 
     <EditText
         android:layout_width="@dimen/operator_side"
         android:layout_height="@dimen/operator_side"
-        android:layout_weight="1"
         android:background="@drawable/circle"/>
 
     <EditText
         android:layout_width="@dimen/operator_side"
         android:layout_height="@dimen/operator_side"
-        android:layout_weight="1"
         android:background="@drawable/square" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="@dimen/operator_side"
+        android:layout_height="@dimen/operator_side"/>
 
     <TextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/equals"/>
 
     <EditText
         android:layout_width="@dimen/operator_side"
         android:layout_height="@dimen/operator_side"
-        android:layout_weight="1"
         android:background="@drawable/semisquare"/>
 
     <ImageView
+        android:layout_width="@dimen/operator_side"
+        android:layout_height="@dimen/operator_side"/>
+
+    <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:text="Corregir"
+        android:onClick="checkAnswer"/>
 
 </LinearLayout>
