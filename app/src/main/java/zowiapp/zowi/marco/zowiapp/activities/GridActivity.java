@@ -168,7 +168,7 @@ public class GridActivity extends ActivityTemplate {
                 float y = event.getY();
                 float rightCorner = view.getWidth();
                 float center = rightCorner/2;
-                /* The control's width is 500px, and the diameter of the circumference is 150px (500/(150/2))*/
+                /* 'innerControl' is not the same image as 'outerControl', so the radius is its width/2 */
                 ImageView innerControl = (ImageView) gameParameters.findViewById(R.id.inner_control);
                 double circumferenceRadius = innerControl.getWidth()/2;
 
