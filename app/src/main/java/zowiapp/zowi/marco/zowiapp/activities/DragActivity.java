@@ -161,11 +161,11 @@ public class DragActivity extends ActivityTemplate {
             }
 
             int heightCenterImage = gridContainer.getTop() / 2;
-        /* Dividing between containerElements+1, we obtain the distance from the left of the first
+            /* Dividing between containerElements+1, we obtain the distance from the left of the first
            vertical line where an element will be placed */
             int baseWidth = contentContainer.getWidth() / (dragImagesNumber+1);
 
-        /* As now we have more images, some of which will be selected randomly, the limit of this loop must
+            /* As now we have more images, some of which will be selected randomly, the limit of this loop must
            be the variable with the total amount of drag images */
             for (int i=0; i<dragImagesNumber; i++) {
                 dragCoordinates[i][0] = baseWidth + (baseWidth*i) - DragConstants.DRAG_IMAGE_WIDTH_PX/2;
