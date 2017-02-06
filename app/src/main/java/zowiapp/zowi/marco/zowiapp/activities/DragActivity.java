@@ -36,22 +36,15 @@ public class DragActivity extends ActivityTemplate {
     private JSONObject activityDetails;
     private String[][] dragImages;
     private String[] containerImages, texts;
-    private int containerElements;
-    private int dragImagesNumber;
-    private int shape;
+    private int containerElements, dragImagesNumber;
     private int[][] dragCoordinates, containerCoordinates;
-    private int imageWidth, imageHeight;
-    private float piecesScalingFactor;
-    private int layoutListenerStep;
     float startX, startY, upperLimit = 0;
-    int puzzleContainerHeight;
 
     public DragActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layoutListenerStep = 0;
 
         getParameters();
     }
@@ -116,19 +109,22 @@ public class DragActivity extends ActivityTemplate {
             default:
                 break;
         }
-        /* Depending on the activity, there can be images, texts or both */
-        for (int i=0; i<containerImages.length; i++) {
-            LinearLayout element = (LinearLayout) gridTemplate.getChildAt(i);
-            ImageView containerImage = (ImageView) element.getChildAt(1);
-            containerImage.setImageResource(gameParameters.getResources().getIdentifier(containerImages[i], "drawable", gameParameters.getPackageName()));
-        }
-        for (int i=0; i<texts.length; i++) {
-            LinearLayout element = (LinearLayout) gridTemplate.getChildAt(i);
-            TextView containerText = (TextView) element.getChildAt(0);
-            containerText.setText(texts[i]);
-        }
 
-        gridContainer.addView(gridTemplate);
+        if (gridTemplate != null) {
+            /* Depending on the activity, there can be images, texts or both */
+            for (int i=0; i<containerImages.length; i++) {
+                LinearLayout element = (LinearLayout) gridTemplate.getChildAt(i);
+                ImageView containerImage = (ImageView) element.getChildAt(1);
+                containerImage.setImageResource(gameParameters.getResources().getIdentifier(containerImages[i], "drawable", gameParameters.getPackageName()));
+            }
+            for (int i=0; i<texts.length; i++) {
+                LinearLayout element = (LinearLayout) gridTemplate.getChildAt(i);
+                TextView containerText = (TextView) element.getChildAt(0);
+                containerText.setText(texts[i]);
+            }
+
+            gridContainer.addView(gridTemplate);
+        }
 
         if (contentContainer != null) {
             contentContainer.addView(dragActivityTemplate);
@@ -143,34 +139,38 @@ public class DragActivity extends ActivityTemplate {
         RelativeLayout gridContainer = (RelativeLayout) gameParameters.findViewById(R.id.grid_container);
         LinearLayout cellsContainer = (LinearLayout) gameParameters.findViewById(R.id.cells_container);
 
-        for (int i=0; i<containerElements; i++) {
-            LinearLayout element = (LinearLayout) cellsContainer.getChildAt(i);
-            ImageView containerImage = (ImageView) element.getChildAt(1);
+        if ((gridContainer != null)&&(contentContainer != null)) {
+            if (cellsContainer != null) {
+                for (int i=0; i<containerElements; i++) {
+                    LinearLayout element = (LinearLayout) cellsContainer.getChildAt(i);
+                    ImageView containerImage = (ImageView) element.getChildAt(1);
 
-            /* As 'gridContainer' and 'cellsContainer' fill the whole width of 'contentContainer',
-               the method getLeft() should return 0 in these cases */
-            int x = gridContainer.getLeft() + cellsContainer.getLeft() + element.getLeft() + containerImage.getLeft();
-            /* The center of the cell is stored, instead of the upper left corner */
-            x += containerImage.getWidth()/2;
+                /* As 'gridContainer' and 'cellsContainer' fill the whole width of 'contentContainer',
+                the method getLeft() should return 0 in these cases */
+                    int x = gridContainer.getLeft() + cellsContainer.getLeft() + element.getLeft() + containerImage.getLeft();
+                /* The center of the cell is stored, instead of the upper left corner */
+                    x += containerImage.getWidth()/2;
 
-            /* In this case, getTop() from 'cellsContainer' and 'element' should be 0 */
-            int y = gridContainer.getTop() + cellsContainer.getTop() + element.getTop() + containerImage.getTop();
-            y += containerImage.getHeight()/2;
+                /* In this case, getTop() from 'cellsContainer' and 'element' should be 0 */
+                    int y = gridContainer.getTop() + cellsContainer.getTop() + element.getTop() + containerImage.getTop();
+                    y += containerImage.getHeight()/2;
 
-            containerCoordinates[i][0] = x;
-            containerCoordinates[i][1] = y;
-        }
+                    containerCoordinates[i][0] = x;
+                    containerCoordinates[i][1] = y;
+                }
+            }
 
-        int heightCenterImage = gridContainer.getTop() / 2;
+            int heightCenterImage = gridContainer.getTop() / 2;
         /* Dividing between containerElements+1, we obtain the distance from the left of the first
            vertical line where an element will be placed */
-        int baseWidth = contentContainer.getWidth() / (dragImagesNumber+1);
+            int baseWidth = contentContainer.getWidth() / (dragImagesNumber+1);
 
         /* As now we have more images, some of which will be selected randomly, the limit of this loop must
            be the variable with the total amount of drag images */
-        for (int i=0; i<dragImagesNumber; i++) {
-            dragCoordinates[i][0] = baseWidth + (baseWidth*i) - DragConstants.DRAG_IMAGE_WIDTH_PX/2;
-            dragCoordinates[i][1] = heightCenterImage - DragConstants.DRAG_IMAGE_WIDTH_PX/2;
+            for (int i=0; i<dragImagesNumber; i++) {
+                dragCoordinates[i][0] = baseWidth + (baseWidth*i) - DragConstants.DRAG_IMAGE_WIDTH_PX/2;
+                dragCoordinates[i][1] = heightCenterImage - DragConstants.DRAG_IMAGE_WIDTH_PX/2;
+            }
         }
 
         placeImages(contentContainer, dragImages);
