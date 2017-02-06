@@ -145,13 +145,13 @@ public class DragActivity extends ActivityTemplate {
                     LinearLayout element = (LinearLayout) cellsContainer.getChildAt(i);
                     ImageView containerImage = (ImageView) element.getChildAt(1);
 
-                /* As 'gridContainer' and 'cellsContainer' fill the whole width of 'contentContainer',
-                the method getLeft() should return 0 in these cases */
+                    /* As 'gridContainer' and 'cellsContainer' fill the whole width of 'contentContainer',
+                    the method getLeft() should return 0 in these cases */
                     int x = gridContainer.getLeft() + cellsContainer.getLeft() + element.getLeft() + containerImage.getLeft();
-                /* The center of the cell is stored, instead of the upper left corner */
+                    /* The center of the cell is stored, instead of the upper left corner */
                     x += containerImage.getWidth()/2;
 
-                /* In this case, getTop() from 'cellsContainer' and 'element' should be 0 */
+                    /* In this case, getTop() from 'cellsContainer' and 'element' should be 0 */
                     int y = gridContainer.getTop() + cellsContainer.getTop() + element.getTop() + containerImage.getTop();
                     y += containerImage.getHeight()/2;
 
