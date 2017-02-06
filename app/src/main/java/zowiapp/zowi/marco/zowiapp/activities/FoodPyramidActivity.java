@@ -169,28 +169,20 @@ public class FoodPyramidActivity extends ActivityTemplate {
             placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
         }
 
+        /* randomImagesIndex is always 0 because we only want two images of the first category (base of the pyramid) */
         for (int i=images.length; i<imagesNumber; i++) {
-            int randomImagesIndex = new Random().nextInt(images.length);
+            int randomImagesIndex = 0;
             /* images index can be 0, as all the subarrays have always the same number of images */
             int randomCategoryIndex = new Random().nextInt(images[0].length);
 
             while (occurrences[randomImagesIndex][randomCategoryIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
+                randomImagesIndex = 0;
                 randomCategoryIndex = new Random().nextInt(images[0].length);
             }
             occurrences[randomImagesIndex][randomCategoryIndex] = 1;
 
             placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
         }
-
-//        int positionIndex = 0;
-//
-//        for (int i=0; i<images.length; i++) {
-//            for (int j=0; j<images[i].length; j++) {
-//                placeImage(contentContainer, images[i][j], i, positionIndex);
-//                positionIndex++;
-//            }
-//        }
     }
 
     private void placeImage(RelativeLayout container, String imageName, int i, String correction) {
