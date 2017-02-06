@@ -2,7 +2,7 @@
 <resources>
     <string-array name="activities_details">
         <item>{"description": \"Descripcion 1\", "type": "DRAG", "dragImages": [[zowi_pointer, zowi_pointer, zowi_pointer, zowi_pointer], [house, house, house, house], [paper_bin, paper_bin, paper_bin, paper_bin]], "dragImagesNumber": 7, "correction": [LIVING_ROOM, KITCHEN, BEDROOM], "containerElements": 3, "containerImages": [], "texts": ["Salón", "Cocina", "Habitación"]}</item>
-        <item>{"description": \"Descripcion 1\", "type": "DRAG", "dragImages": [[zowi_pointer], [green_circular_button], [paper_bin], [red_circular_button], [house]], "dragImagesNumber": 5, "containerElements": 5, "containerImages": [], "texts": [\"1ª comida\", \"2ª comida\", \"3ª comida\", \"4ª comida\", \"5ª comida\"]}</item>
+        <item>{"description": \"Descripcion 1\", "type": "DRAG", "dragImages": [[zowi_pointer], [green_circular_button], [paper_bin], [red_circular_button], [house]], "dragImagesNumber": 5, "correction": [BREAKFAST, LUNCHEON, LUNCH, SNACK, DINNER], "containerElements": 5, "containerImages": [], "texts": [\"1ª comida\", \"2ª comida\", \"3ª comida\", \"4ª comida\", \"5ª comida\"]}</item>
         <item>{"description": \"Descripcion 4\", "type": "OPERATIONS", "operationsType": 1, "image": "zowi_6_teeth", "operationsImages": []}</item>
         <item>{"description": \"Descripcion 5\", "type": "OPERATIONS", "operationsType": 2, "image": "zowi_teeth", "operationsImages": [house, zowi_pointer, zowi_2_teeth, red_circular_button, zowi_6_teeth, green_circular_button]}</item>
         <item>{"description": \"Descripcion 1\", "type": "GRID", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
