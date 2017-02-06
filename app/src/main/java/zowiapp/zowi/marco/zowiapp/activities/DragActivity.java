@@ -254,6 +254,8 @@ public class DragActivity extends ActivityTemplate {
                 /* Values used to calculate de distance to move the element */
                 startX = event.getRawX();
                 startY = event.getRawY();
+
+                view.bringToFront();
                 break;
             case MotionEvent.ACTION_MOVE:
                 /* The distance of the element to the start point is calculated when the user
