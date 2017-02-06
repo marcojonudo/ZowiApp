@@ -22,6 +22,7 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.DragConstants;
+import zowiapp.zowi.marco.zowiapp.checker.DragChecker;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
@@ -34,8 +35,9 @@ public class DragActivity extends ActivityTemplate {
     private LayoutInflater inflater;
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
+    private DragChecker dragChecker;
     private String[][] dragImages;
-    private String[] containerImages, texts;
+    private String[] containerImages, texts, correction;
     private int containerElements, dragImagesNumber;
     private int[][] dragCoordinates, containerCoordinates;
     float startX, startY, upperLimit = 0;
@@ -45,6 +47,7 @@ public class DragActivity extends ActivityTemplate {
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        dragChecker = new DragChecker();
 
         getParameters();
     }
@@ -58,9 +61,11 @@ public class DragActivity extends ActivityTemplate {
             dragImagesNumber = activityDetails.getInt(DragConstants.JSON_PARAMETER_DRAGIMAGESNUMBER);
             JSONArray jsonContainerImages = activityDetails.getJSONArray(DragConstants.JSON_PARAMETER_CONTAINERIMAGES);
             JSONArray jsonTexts = activityDetails.getJSONArray(DragConstants.JSON_PARAMETER_TEXTS);
+            JSONArray jsonCorrection = activityDetails.getJSONArray(DragConstants.JSON_PARAMETER_CORRECTION);
             dragImages = new String[jsonDragImages.length()][];
             containerImages = new String[jsonContainerImages.length()];
             texts = new String[jsonTexts.length()];
+            correction = new String[jsonCorrection.length()];
             dragCoordinates = new int[dragImagesNumber][CommonConstants.AXIS_NUMBER];
             containerCoordinates = new int[containerElements][CommonConstants.AXIS_NUMBER];
 
@@ -77,6 +82,9 @@ public class DragActivity extends ActivityTemplate {
             }
             for (int i=0; i<texts.length; i++) {
                 texts[i] = jsonTexts.getString(i);
+            }
+            for (int i=0; i<correction.length; i++) {
+                correction[i] = jsonCorrection.getString(i);
             }
 
             generateLayout();
@@ -202,7 +210,7 @@ public class DragActivity extends ActivityTemplate {
             occurrences[randomImagesIndex][randomCategoryIndex] = 1;
 
             occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-            placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i);
+            placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
         }
 
         /* As images are chosen randomly between all the available ones, we cannot take the length of the
@@ -219,11 +227,12 @@ public class DragActivity extends ActivityTemplate {
             }
             occurrences[randomImagesIndex][randomCategoryIndex] = 1;
 
-            placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i);
+
+            placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
         }
     }
 
-    private void placeImage(RelativeLayout container, String imageName, int i) {
+    private void placeImage(RelativeLayout container, String imageName, int i, String correction) {
         int side = (int) gameParameters.getResources().getDimension(R.dimen.drag_image_side);
         ImageView image = new ImageView(gameParameters);
         image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
@@ -231,8 +240,8 @@ public class DragActivity extends ActivityTemplate {
         image.setLayoutParams(layoutParams);
         image.setX(dragCoordinates[i][0]);
         image.setY(dragCoordinates[i][1]);
-        image.setTag(i);
-
+        String tag = i + "-" + correction;
+        image.setTag(tag);
         container.addView(image);
 
         TouchListener touchListener = new TouchListener(DragConstants.DRAG_TYPE, this);
@@ -252,18 +261,21 @@ public class DragActivity extends ActivityTemplate {
                 float distanceX = event.getRawX() - startX;
                 float distanceY = event.getRawY() - startY;
 
+                /* The tag is the index plus the category, so it is necessary to split it */
+                int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
+
                 /* Mechanism to avoid the element to move behind the title and description
                    It is only moved when it is in 'contentContainer' */
                 if (event.getRawY() > upperLimit) {
-                    view.setX(dragCoordinates[(int)view.getTag()][0]+distanceX);
-                    view.setY(dragCoordinates[(int)view.getTag()][1]+distanceY);
+                    view.setX(dragCoordinates[index][0]+distanceX);
+                    view.setY(dragCoordinates[index][1]+distanceY);
 
                     if (view.getY()<=0) {
                         upperLimit = event.getRawY();
                     }
                 }
                 else {
-                    view.setX(dragCoordinates[(int)view.getTag()][0]+distanceX);
+                    view.setX(dragCoordinates[index][0]+distanceX);
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -277,6 +289,9 @@ public class DragActivity extends ActivityTemplate {
                     if (distanceToPoint < DragConstants.DISTANCE_LIMIT) {
                         view.setX(containerCoordinates[i][0]-imageWidth/2);
                         view.setY(containerCoordinates[i][1]-imageWidth/2);
+
+                        String imageCategory = view.getTag().toString().split("-")[1];
+                        dragChecker.check(gameParameters, imageCategory, correction[i]);
                         break;
                     }
                 }
