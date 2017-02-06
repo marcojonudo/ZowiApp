@@ -101,46 +101,52 @@ public class FoodPyramidActivity extends ActivityTemplate {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         FrameLayout mainImageContainer = (FrameLayout) gameParameters.findViewById(R.id.main_image_container);
 
-        pyramidCoordinates = new int[FoodPyramidConstants.PYRAMID_COORDINATES_LENGTH][CommonConstants.AXIS_NUMBER];
+        if (mainImageContainer != null) {
+            pyramidCoordinates = new int[FoodPyramidConstants.PYRAMID_COORDINATES_LENGTH][CommonConstants.AXIS_NUMBER];
 
-        /* In this case, the images has been defined through xml instead of dynamically.
-           It still has to be checked if the dps work as expected, and they are rescaled correctly */
-        ImageView foodPyramidImage = (ImageView) gameParameters.findViewById(R.id.food_pyramid_image);
+            /* In this case, the images has been defined through xml instead of dynamically.
+            It still has to be checked if the dps work as expected, and they are rescaled correctly */
+            ImageView foodPyramidImage = (ImageView) gameParameters.findViewById(R.id.food_pyramid_image);
 
-        /* We get the horizontal line in the middle of the first step */
-        int halfStepHeight = foodPyramidImage.getHeight()/(FoodPyramidConstants.PYRAMID_STEPS*2);
-        /* As 0 is the upper, and we want to start from the base of the pyramid, we calculate
-        the y coordinate first */
-        int stepYCoordinate = halfStepHeight*(FoodPyramidConstants.PYRAMID_STEPS*2-1);
+            if (foodPyramidImage != null) {
+                /* We get the horizontal line in the middle of the first step */
+                int halfStepHeight = foodPyramidImage.getHeight()/(FoodPyramidConstants.PYRAMID_STEPS*2);
+                /* As 0 is the upper, and we want to start from the base of the pyramid, we calculate
+                the y coordinate first */
+                int stepYCoordinate = halfStepHeight*(FoodPyramidConstants.PYRAMID_STEPS*2-1);
 
-        int pyramidHalfWidth = foodPyramidImage.getWidth()/2;
+                int pyramidHalfWidth = foodPyramidImage.getWidth()/2;
 
-        for (int i=0; i<pyramidCoordinates.length; i++) {
-            pyramidCoordinates[i][0] = mainImageContainer.getLeft() + foodPyramidImage.getLeft() + (int)(pyramidHalfWidth * FoodPyramidConstants.PYRAMID_X_COORDINATES_FACTORS[i]);
-            pyramidCoordinates[i][1] = mainImageContainer.getTop() + foodPyramidImage.getTop() + stepYCoordinate-(halfStepHeight*FoodPyramidConstants.PYRAMID_Y_COORDINATES_FACTORS[i]);
+                for (int i=0; i<pyramidCoordinates.length; i++) {
+                    pyramidCoordinates[i][0] = mainImageContainer.getLeft() + foodPyramidImage.getLeft() + (int)(pyramidHalfWidth * FoodPyramidConstants.PYRAMID_X_COORDINATES_FACTORS[i]);
+                    pyramidCoordinates[i][1] = mainImageContainer.getTop() + foodPyramidImage.getTop() + stepYCoordinate-(halfStepHeight*FoodPyramidConstants.PYRAMID_Y_COORDINATES_FACTORS[i]);
+                }
+            }
+
+            FrameLayout layoutBehindImages = (FrameLayout) gameParameters.findViewById(R.id.layout_behind_images);
+
+            if (layoutBehindImages != null) {
+                float imageSide = gameParameters.getResources().getDimension(R.dimen.food_image_side);
+
+                /* Limits for the images to fit the screen */
+                int leftLimit = layoutBehindImages.getLeft();
+                int rightLimit = layoutBehindImages.getLeft() + layoutBehindImages.getWidth() - (int)imageSide;
+                int upperLimit = layoutBehindImages.getTop();
+                int bottomLimit = layoutBehindImages.getTop() + layoutBehindImages.getHeight() - (int)imageSide;
+
+                int[] limits = {leftLimit, rightLimit, upperLimit, bottomLimit};
+                imagesCoordinates = new int[imagesNumber][CommonConstants.AXIS_NUMBER];
+
+                for (int i=0; i<imagesNumber; i++) {
+                    int x = new Random().nextInt((limits[1] - limits[0]) + 1) + limits[0];
+                    int y = new Random().nextInt((limits[3] - limits[2]) + 1) + limits[2];
+                    imagesCoordinates[i][0] = x;
+                    imagesCoordinates[i][1] = y;
+                }
+
+                placeImages(contentContainer, images, limits);
+            }
         }
-
-        FrameLayout layoutBehindImages = (FrameLayout) gameParameters.findViewById(R.id.layout_behind_images);
-
-        float imageSide = gameParameters.getResources().getDimension(R.dimen.food_image_side);
-
-        /* Limits for the images to fit the screen */
-        int leftLimit = layoutBehindImages.getLeft();
-        int rightLimit = layoutBehindImages.getLeft() + layoutBehindImages.getWidth() - (int)imageSide;
-        int upperLimit = layoutBehindImages.getTop();
-        int bottomLimit = layoutBehindImages.getTop() + layoutBehindImages.getHeight() - (int)imageSide;
-
-        int[] limits = {leftLimit, rightLimit, upperLimit, bottomLimit};
-        imagesCoordinates = new int[imagesNumber][CommonConstants.AXIS_NUMBER];
-
-        for (int i=0; i<imagesNumber; i++) {
-            int x = new Random().nextInt((limits[1] - limits[0]) + 1) + limits[0];
-            int y = new Random().nextInt((limits[3] - limits[2]) + 1) + limits[2];
-            imagesCoordinates[i][0] = x;
-            imagesCoordinates[i][1] = y;
-        }
-
-        placeImages(contentContainer, images, limits);
     }
 
     private void placeImages(RelativeLayout contentContainer, String[][] images, int[] limits) {
