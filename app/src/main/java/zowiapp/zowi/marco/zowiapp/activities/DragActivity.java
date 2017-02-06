@@ -223,9 +223,10 @@ public class DragActivity extends ActivityTemplate {
     }
 
     private void placeImage(RelativeLayout container, String imageName, int i) {
+        int side = (int) gameParameters.getResources().getDimension(R.dimen.drag_image_side);
         ImageView image = new ImageView(gameParameters);
         image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(DragConstants.DRAG_IMAGE_WIDTH_PX, DragConstants.DRAG_IMAGE_WIDTH_PX);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(side, side);
         image.setLayoutParams(layoutParams);
         image.setX(dragCoordinates[i][0]);
         image.setY(dragCoordinates[i][1]);

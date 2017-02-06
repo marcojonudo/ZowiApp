@@ -25,6 +25,7 @@
 
     <!-- Drag dimensions -->
     <dimen name="drag_cell_side">100dp</dimen>
+    <dimen name="drag_image_side">80dp</dimen>
 
     <!-- Memory dimensions -->
     <dimen name="memory_image_side">125dp</dimen>
