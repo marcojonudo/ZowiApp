@@ -2,6 +2,7 @@ package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,8 +34,10 @@ public class DragActivity extends ActivityTemplate {
     private LayoutInflater inflater;
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
-    private String[] dragImages, containerImages, texts;
+    private String[][] dragImages;
+    private String[] containerImages, texts;
     private int containerElements;
+    private int dragImagesNumber;
     private int shape;
     private int[][] dragCoordinates, containerCoordinates;
     private int imageWidth, imageHeight;
@@ -59,17 +62,22 @@ public class DragActivity extends ActivityTemplate {
             activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
             JSONArray jsonDragImages = activityDetails.getJSONArray(DragConstants.JSON_PARAMETER_DRAGIMAGES);
             containerElements = activityDetails.getInt(DragConstants.JSON_PARAMETER_CONTAINERELEMENTS);
+            dragImagesNumber = activityDetails.getInt(DragConstants.JSON_PARAMETER_DRAGIMAGESNUMBER);
             JSONArray jsonContainerImages = activityDetails.getJSONArray(DragConstants.JSON_PARAMETER_CONTAINERIMAGES);
             JSONArray jsonTexts = activityDetails.getJSONArray(DragConstants.JSON_PARAMETER_TEXTS);
-            dragImages = new String[jsonDragImages.length()];
+            dragImages = new String[jsonDragImages.length()][];
             containerImages = new String[jsonContainerImages.length()];
             texts = new String[jsonTexts.length()];
-            dragCoordinates = new int[dragImages.length][CommonConstants.AXIS_NUMBER];
+            dragCoordinates = new int[dragImagesNumber][CommonConstants.AXIS_NUMBER];
             containerCoordinates = new int[containerElements][CommonConstants.AXIS_NUMBER];
 
             /* Drag elements number doesn't have to be the same as container elements one */
             for (int i=0; i<dragImages.length; i++) {
-                dragImages[i] = jsonDragImages.getString(i);
+                JSONArray jsonCategoryImages = jsonDragImages.getJSONArray(i);
+                dragImages[i] = new String[jsonCategoryImages.length()];
+                for (int j=0; j<dragImages[i].length; j++) {
+                    dragImages[i][j] = jsonCategoryImages.getString(j);
+                }
             }
             for (int i=0; i<containerImages.length; i++) {
                 containerImages[i] = jsonContainerImages.getString(i);
@@ -156,9 +164,11 @@ public class DragActivity extends ActivityTemplate {
         int heightCenterImage = gridContainer.getTop() / 2;
         /* Dividing between containerElements+1, we obtain the distance from the left of the first
            vertical line where an element will be placed */
-        int baseWidth = contentContainer.getWidth() / (dragImages.length+1);
+        int baseWidth = contentContainer.getWidth() / (dragImagesNumber+1);
 
-        for (int i=0; i<dragImages.length; i++) {
+        /* As now we have more images, some of which will be selected randomly, the limit of this loop must
+           be the variable with the total amount of drag images */
+        for (int i=0; i<dragImagesNumber; i++) {
             dragCoordinates[i][0] = baseWidth + (baseWidth*i) - DragConstants.DRAG_IMAGE_WIDTH_PX/2;
             dragCoordinates[i][1] = heightCenterImage - DragConstants.DRAG_IMAGE_WIDTH_PX/2;
         }
@@ -166,24 +176,50 @@ public class DragActivity extends ActivityTemplate {
         placeImages(contentContainer, dragImages);
     }
 
-    private void placeImages(RelativeLayout contentContainer, String[] images) {
+    private void placeImages(RelativeLayout contentContainer, String[][] images) {
         /* Ocurrences array for generating random index, so the images have not the same order
            every time the child enter */
-        int[] occurrences = new int[images.length];
+        int[][] occurrences = new int[images.length][];
+        int[] categoryOccurrences = new int[images.length];
         for (int i=0; i<occurrences.length; i++) {
-            occurrences[i] = 0;
-        }
-
-        for (String image: images) {
-            int randomIndex = new Random().nextInt(occurrences.length);
-            while (occurrences[randomIndex] == 1) {
-                randomIndex = new Random().nextInt(occurrences.length);
+            occurrences[i] = new int[images[i].length];
+            categoryOccurrences[i] = 0;
+            for (int j=0; j<occurrences[i].length; j++) {
+                occurrences[i][j] = 0;
             }
-            occurrences[randomIndex] = 1;
-
-            placeImage(contentContainer, image, randomIndex);
         }
 
+        /* We ensure that at least one image of each category is displayed */
+        for (int i=0; i<images.length; i++) {
+            int randomImagesIndex = new Random().nextInt(images.length);
+            int randomCategoryIndex = new Random().nextInt(images[0].length);
+
+            while (categoryOccurrences[randomImagesIndex] == 1) {
+                randomImagesIndex = new Random().nextInt(occurrences.length);
+            }
+            categoryOccurrences[randomImagesIndex] = 1;
+            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
+
+            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
+            placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i);
+        }
+
+        /* As images are chosen randomly between all the available ones, we cannot take the length of the
+           images array as reference. Instead of that, we use a number defined in activities_details */
+        /* We start at 3 because indexes 0, 1 and 2 have been used just before */
+        for (int i=images.length; i<dragImagesNumber; i++) {
+            int randomImagesIndex = new Random().nextInt(images.length);
+            /* images index can be 0, as all the subarrays have always the same number of images */
+            int randomCategoryIndex = new Random().nextInt(images[0].length);
+
+            while (occurrences[randomImagesIndex][randomCategoryIndex] == 1) {
+                randomImagesIndex = new Random().nextInt(occurrences.length);
+                randomCategoryIndex = new Random().nextInt(images[0].length);
+            }
+            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
+
+            placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i);
+        }
     }
 
     private void placeImage(RelativeLayout container, String imageName, int i) {

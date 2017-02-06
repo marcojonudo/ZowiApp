@@ -88,6 +88,7 @@ public class ActivityConstants {
         protected static final ActivityType DRAG_TYPE = ActivityType.DRAG;
         protected static final String JSON_PARAMETER_DRAGIMAGES = "dragImages";
         protected static final String JSON_PARAMETER_CONTAINERELEMENTS = "containerElements";
+        protected static final String JSON_PARAMETER_DRAGIMAGESNUMBER = "dragImagesNumber";
         protected static final String JSON_PARAMETER_TEXTS = "texts";
         protected static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
         protected static final int DRAG_IMAGE_WIDTH_PX = 250;
