@@ -4,13 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,8 +36,8 @@ public class FoodPyramidActivity extends ActivityTemplate {
     private String[][] images;
     private int imagesNumber;
     private String[] correction;
-    private int[][] pyramidCoordinates, imagesCoordinates;
-    float startX, startY, upperLimit = 0;
+    private int[][] imagesCoordinates, pyramidLimitsCoordinates;
+    private float startX, startY, upperLimit = 0;
 
     public FoodPyramidActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -57,7 +54,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
         try {
             activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
             JSONArray jsonImages = activityDetails.getJSONArray(FoodPyramidConstants.JSON_PARAMETER_IMAGES);
-            JSONArray jsonCorrection = activityDetails.getJSONArray(ActivityConstants.DragConstants.JSON_PARAMETER_CORRECTION);
+            JSONArray jsonCorrection = activityDetails.getJSONArray(FoodPyramidConstants.JSON_PARAMETER_CORRECTION);
             images = new String[jsonImages.length()][];
             imagesNumber = activityDetails.getInt(FoodPyramidConstants.JSON_PARAMETER_IMAGESNUMBER);
             correction = new String[jsonCorrection.length()];
@@ -102,24 +99,23 @@ public class FoodPyramidActivity extends ActivityTemplate {
         FrameLayout mainImageContainer = (FrameLayout) gameParameters.findViewById(R.id.main_image_container);
 
         if (mainImageContainer != null) {
-            pyramidCoordinates = new int[FoodPyramidConstants.PYRAMID_COORDINATES_LENGTH][CommonConstants.AXIS_NUMBER];
-
+            pyramidLimitsCoordinates = new int[FoodPyramidConstants.PYRAMID_COORDINATES_LENGTH][CommonConstants.AXIS_NUMBER];
             /* In this case, the images has been defined through xml instead of dynamically.
             It still has to be checked if the dps work as expected, and they are rescaled correctly */
             ImageView foodPyramidImage = (ImageView) gameParameters.findViewById(R.id.food_pyramid_image);
 
             if (foodPyramidImage != null) {
-                /* We get the horizontal line in the middle of the first step */
-                int halfStepHeight = foodPyramidImage.getHeight()/(FoodPyramidConstants.PYRAMID_STEPS*2);
+                /* We get the Y position of the top of the first step */
+                int halfStepHeight = foodPyramidImage.getHeight()/(FoodPyramidConstants.PYRAMID_STEPS);
                 /* As 0 is the upper, and we want to start from the base of the pyramid, we calculate
                 the y coordinate first */
-                int stepYCoordinate = halfStepHeight*(FoodPyramidConstants.PYRAMID_STEPS*2-1);
+                int stepYCoordinate = halfStepHeight*(FoodPyramidConstants.PYRAMID_STEPS);
 
                 int pyramidHalfWidth = foodPyramidImage.getWidth()/2;
 
-                for (int i=0; i<pyramidCoordinates.length; i++) {
-                    pyramidCoordinates[i][0] = mainImageContainer.getLeft() + foodPyramidImage.getLeft() + (int)(pyramidHalfWidth * FoodPyramidConstants.PYRAMID_X_COORDINATES_FACTORS[i]);
-                    pyramidCoordinates[i][1] = mainImageContainer.getTop() + foodPyramidImage.getTop() + stepYCoordinate-(halfStepHeight*FoodPyramidConstants.PYRAMID_Y_COORDINATES_FACTORS[i]);
+                for (int i=0; i<pyramidLimitsCoordinates.length; i++) {
+                    pyramidLimitsCoordinates[i][0] = mainImageContainer.getLeft() + foodPyramidImage.getLeft() + (pyramidHalfWidth * FoodPyramidConstants.PYRAMID_LIMITS_FACTORS[0][i]);
+                    pyramidLimitsCoordinates[i][1] = mainImageContainer.getTop() + foodPyramidImage.getTop() + stepYCoordinate-(halfStepHeight*FoodPyramidConstants.PYRAMID_LIMITS_FACTORS[1][i]);
                 }
             }
 
@@ -144,12 +140,12 @@ public class FoodPyramidActivity extends ActivityTemplate {
                     imagesCoordinates[i][1] = y;
                 }
 
-                placeImages(contentContainer, images, limits);
+                placeImages(contentContainer, images);
             }
         }
     }
 
-    private void placeImages(RelativeLayout contentContainer, String[][] images, int[] limits) {
+    private void placeImages(RelativeLayout contentContainer, String[][] images) {
         int[][] occurrences = new int[images.length][];
         int[] categoryOccurrences = new int[images.length];
         for (int i=0; i<occurrences.length; i++) {
@@ -244,17 +240,50 @@ public class FoodPyramidActivity extends ActivityTemplate {
                 float viewX = view.getX() + view.getWidth()/2;
                 float viewY = view.getY() + view.getHeight()/2;
 
-                for (int i=0; i<pyramidCoordinates.length; i++) {
-                    double distanceToPoint = Math.sqrt(Math.pow(viewX-pyramidCoordinates[i][0], 2) + Math.pow(viewY-pyramidCoordinates[i][1], 2));
+                /* This equations make us know if the center of the view is between the two sides of the pyramid */
+                int leftOrRight1 = (pyramidLimitsCoordinates[0][0]-pyramidLimitsCoordinates[pyramidLimitsCoordinates.length-1][0]) *
+                                        ((int)viewY-pyramidLimitsCoordinates[pyramidLimitsCoordinates.length-1][1]) -
+                                        (pyramidLimitsCoordinates[0][1]-pyramidLimitsCoordinates[pyramidLimitsCoordinates.length-1][1]) *
+                                        ((int)viewX-pyramidLimitsCoordinates[pyramidLimitsCoordinates.length-1][0]);
 
-                    if (distanceToPoint < FoodPyramidConstants.DISTANCE_LIMIT) {
-                        view.setX(pyramidCoordinates[i][0]-view.getWidth()/2);
-                        view.setY(pyramidCoordinates[i][1]-view.getHeight()/2);
+                int leftOrRight2 = (pyramidLimitsCoordinates[1][0]-pyramidLimitsCoordinates[pyramidLimitsCoordinates.length-1][0]) *
+                                        ((int)viewY-pyramidLimitsCoordinates[pyramidLimitsCoordinates.length-1][1]) -
+                                        (pyramidLimitsCoordinates[1][1]-pyramidLimitsCoordinates[pyramidLimitsCoordinates.length-1][1]) *
+                                        ((int)viewX-pyramidLimitsCoordinates[pyramidLimitsCoordinates.length-1][0]);
 
-                        String imageCategory = view.getTag().toString().split("-")[1];
-                        foodPyramidChecker.check(gameParameters, imageCategory, correction[i]);
-                        break;
+                /* This equations make us know if the center of the view is above or below the base of the pyramid */
+                int aboveOrBelow = (pyramidLimitsCoordinates[1][0]-pyramidLimitsCoordinates[0][0]) *
+                                        ((int)viewY-pyramidLimitsCoordinates[0][1]) -
+                                        (pyramidLimitsCoordinates[1][1]-pyramidLimitsCoordinates[0][1]) *
+                                        ((int)viewX-pyramidLimitsCoordinates[0][0]);
+
+                /* The center of the view is inside the pyramid */
+                if ((leftOrRight1 < 0)&&(leftOrRight2 > 0) && (aboveOrBelow<0)) {
+                    int step;
+                    if (viewY > pyramidLimitsCoordinates[2][1]) {
+                        step = 0;
                     }
+                    else if (viewY > pyramidLimitsCoordinates[3][1]) {
+                        if (viewX > pyramidLimitsCoordinates[3][0]) {
+                            step = 1;
+                        }
+                        else {
+                            step = 2;
+                        }
+                    }
+                    else if (viewY > pyramidLimitsCoordinates[4][1]) {
+                        if (viewX > pyramidLimitsCoordinates[4][0]) {
+                            step = 3;
+                        }
+                        else {
+                            step = 4;
+                        }
+                    }
+                    else {
+                        step = 5;
+                    }
+                    String imageCategory = view.getTag().toString().split("-")[1];
+                    foodPyramidChecker.check(gameParameters, imageCategory, correction[step]);
                 }
                 break;
             default:

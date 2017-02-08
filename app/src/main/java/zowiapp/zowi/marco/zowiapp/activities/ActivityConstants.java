@@ -106,10 +106,11 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_IMAGESNUMBER = "imagesNumber";
         protected static final String JSON_PARAMETER_CORRECTION = "correction";
         protected static final int PYRAMID_STEPS = 4;
-        protected static final int PYRAMID_COORDINATES_LENGTH = 7;
-        protected static final int IMAGES_COORDINATES_LENGTH = PYRAMID_COORDINATES_LENGTH;
-        protected static final double[] PYRAMID_X_COORDINATES_FACTORS = {0.5, 1.5, 0.7, 1.3, 0.75, 1.25, 1};
-        protected static final int[] PYRAMID_Y_COORDINATES_FACTORS = {0, 0, 2, 2, 4, 4, 6};
+        protected static final int PYRAMID_COORDINATES_LENGTH = 6;
+        protected static final int[][] PYRAMID_LIMITS_FACTORS = {
+                {0, 2, 1, 1, 1, 1},
+                {0, 0, 1, 2, 3, 4}
+        };
         protected static final int DISTANCE_LIMIT = 75;
     }
 }
