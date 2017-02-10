@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_images"
+    android:layout_margin="0dp">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/image1"
+        android:layout_marginTop="@dimen/drag_images_margin"
+        android:layout_marginBottom="@dimen/drag_images_margin"
+        android:layout_marginEnd="@dimen/drag_images_margin"
+        android:layout_marginStart="@dimen/drag_images_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/image2"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/image2"
+        android:layout_marginTop="@dimen/drag_images_margin"
+        android:layout_marginBottom="@dimen/drag_images_margin"
+        android:layout_marginEnd="@dimen/drag_images_margin"
+        android:layout_marginStart="@dimen/drag_images_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/image1"
+        app:layout_constraintRight_toLeftOf="@+id/image3"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/image3"
+        android:layout_marginTop="@dimen/drag_images_margin"
+        android:layout_marginBottom="@dimen/drag_images_margin"
+        android:layout_marginEnd="@dimen/drag_images_margin"
+        android:layout_marginStart="@dimen/drag_images_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/image2"
+        app:layout_constraintRight_toLeftOf="@+id/image4"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/image4"
+        android:layout_marginTop="@dimen/drag_images_margin"
+        android:layout_marginBottom="@dimen/drag_images_margin"
+        android:layout_marginEnd="@dimen/drag_images_margin"
+        android:layout_marginStart="@dimen/drag_images_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/image3"
+        app:layout_constraintRight_toLeftOf="@+id/image5"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/image5"
+        android:layout_marginTop="@dimen/drag_images_margin"
+        android:layout_marginBottom="@dimen/drag_images_margin"
+        android:layout_marginEnd="@dimen/drag_images_margin"
+        android:layout_marginStart="@dimen/drag_images_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/image4"
+        app:layout_constraintRight_toLeftOf="@+id/image6"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/image6"
+        android:layout_marginTop="@dimen/drag_images_margin"
+        android:layout_marginBottom="@dimen/drag_images_margin"
+        android:layout_marginEnd="@dimen/drag_images_margin"
+        android:layout_marginStart="@dimen/drag_images_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/image5"
+        app:layout_constraintRight_toLeftOf="@+id/image7"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/image7"
+        android:layout_marginTop="@dimen/drag_images_margin"
+        android:layout_marginBottom="@dimen/drag_images_margin"
+        android:layout_marginEnd="@dimen/drag_images_margin"
+        android:layout_marginStart="@dimen/drag_images_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/image6"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_images_container"
+    android:layout_margin="0dp">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/container1"
+        android:layout_marginTop="@dimen/none"
+        android:layout_marginBottom="@dimen/drag_images_container_margin"
+        android:layout_marginEnd="@dimen/drag_images_container_margin"
+        android:layout_marginStart="@dimen/drag_images_container_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/container2">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/square"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/container2"
+        android:layout_marginTop="@dimen/none"
+        android:layout_marginBottom="@dimen/drag_images_container_margin"
+        android:layout_marginEnd="@dimen/drag_images_container_margin"
+        android:layout_marginStart="@dimen/drag_images_container_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/container1"
+        app:layout_constraintRight_toLeftOf="@+id/container3">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/container_text"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/square"
+            android:id="@+id/container_image"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/container3"
+        android:layout_marginTop="@dimen/none"
+        android:layout_marginBottom="@dimen/drag_images_container_margin"
+        android:layout_marginEnd="@dimen/drag_images_container_margin"
+        android:layout_marginStart="@dimen/drag_images_container_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/container2"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/square"/>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
