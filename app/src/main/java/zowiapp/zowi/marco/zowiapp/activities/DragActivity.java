@@ -1,11 +1,9 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -114,10 +112,10 @@ public class DragActivity extends ActivityTemplate {
         ConstraintLayout constraintImages = null;
         switch (dragImagesNumber) {
             case 5:
-                constraintImages = (ConstraintLayout) inflater.inflate(R.layout.constraint_images_1x5_template, constraintContainer, false);
+                constraintImages = (ConstraintLayout) inflater.inflate(R.layout.drag_images_1x5_template, constraintContainer, false);
                 break;
             case 7:
-                constraintImages = (ConstraintLayout) inflater.inflate(R.layout.constraint_images_1x7_template, constraintContainer, false);
+                constraintImages = (ConstraintLayout) inflater.inflate(R.layout.drag_images_1x7_template, constraintContainer, false);
                 break;
             default:
                 break;
@@ -137,10 +135,10 @@ public class DragActivity extends ActivityTemplate {
         ConstraintLayout constraintImagesContainer = null;
         switch (containerElements) {
             case 3:
-                constraintImagesContainer = (ConstraintLayout) inflater.inflate(R.layout.constraint_container_1x3_template, constraintContainer, false);
+                constraintImagesContainer = (ConstraintLayout) inflater.inflate(R.layout.drag_container_1x3_template, constraintContainer, false);
                 break;
             case 5:
-                constraintImagesContainer = (ConstraintLayout) inflater.inflate(R.layout.constraint_container_1x5_template, constraintContainer, false);
+                constraintImagesContainer = (ConstraintLayout) inflater.inflate(R.layout.drag_container_1x5_template, constraintContainer, false);
         }
 
         if (constraintImagesContainer != null) {
