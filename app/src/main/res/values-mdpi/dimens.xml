@@ -4,8 +4,13 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="none">0dp</dimen>
+    <!-- Common dimensions -->
     <dimen name="default_font_size">25sp</dimen>
+    <dimen name="none">0dp</dimen>
+
+    <!-- Drag dimensions -->
+    <dimen name="drag_images_margin">20dp</dimen>
+    <dimen name="drag_images_container_margin">20dp</dimen>
 
     <!-- Grid dimensions -->
     <dimen name="controls_side">150dp</dimen>
@@ -26,10 +31,6 @@
     <dimen name="button_side">75dp</dimen>
     <dimen name="dictation_width">500dp</dimen>
 
-    <!-- Drag dimensions -->
-    <dimen name="drag_cell_side">100dp</dimen>
-    <dimen name="drag_image_side">80dp</dimen>
-
     <!-- Memory dimensions -->
     <dimen name="memory_image_side">125dp</dimen>
 
@@ -41,9 +42,4 @@
     <!-- Columns dimensions -->
     <dimen name="columns_image_side">75dp</dimen>
 
-
-
-    <!-- Drag dimensions -->
-    <dimen name="drag_images_margin">20dp</dimen>
-    <dimen name="drag_images_container_margin">20dp</dimen>
 </resources>
