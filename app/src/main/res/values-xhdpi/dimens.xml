@@ -5,6 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="none">0dp</dimen>
+    <dimen name="default_font_size">25sp</dimen>
 
     <!-- Grid dimensions -->
     <dimen name="controls_side">150dp</dimen>
