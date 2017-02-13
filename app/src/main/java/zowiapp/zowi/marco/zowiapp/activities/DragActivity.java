@@ -1,8 +1,11 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,7 +42,7 @@ public class DragActivity extends ActivityTemplate {
     private String[][] dragImages;
     private String[] containerImages, texts, correction;
     private int containerElements, dragImagesNumber;
-    private int[][] dragCoordinates, containerCoordinates, dragDimensions;
+    private int[][] dragCoordinates, containerCoordinates, dragDimensions, containerDimensions;
     float startX, startY, upperLimit = 0;
 
     public DragActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
@@ -69,6 +72,7 @@ public class DragActivity extends ActivityTemplate {
             dragCoordinates = new int[dragImagesNumber][CommonConstants.AXIS_NUMBER];
             dragDimensions = new int[dragImagesNumber][CommonConstants.AXIS_NUMBER];
             containerCoordinates = new int[containerElements][CommonConstants.AXIS_NUMBER];
+            containerDimensions = new int[containerElements][CommonConstants.AXIS_NUMBER];
 
             /* Drag elements number doesn't have to be the same as container elements one */
             for (int i=0; i<dragImages.length; i++) {
@@ -106,8 +110,8 @@ public class DragActivity extends ActivityTemplate {
 
         Guideline guideline = (Guideline) dragActivityTemplate.findViewById(R.id.guideline);
 
-        ConstraintLayout constraintImages = null;
         /* Generation of the drag images layout */
+        ConstraintLayout constraintImages = null;
         switch (dragImagesNumber) {
             case 5:
                 constraintImages = (ConstraintLayout) inflater.inflate(R.layout.constraint_images_1x5_template, constraintContainer, false);
@@ -119,26 +123,35 @@ public class DragActivity extends ActivityTemplate {
                 break;
         }
 
-        ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) constraintImages.getLayoutParams();
-        layoutParams.leftToLeft = constraintContainer.getId();
-        layoutParams.rightToRight = constraintContainer.getId();
-        layoutParams.topToTop = constraintContainer.getId();
-        layoutParams.bottomToTop = guideline.getId();
+        if (constraintImages != null) {
+            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) constraintImages.getLayoutParams();
+            layoutParams.leftToLeft = constraintContainer.getId();
+            layoutParams.rightToRight = constraintContainer.getId();
+            layoutParams.topToTop = constraintContainer.getId();
+            layoutParams.bottomToTop = guideline.getId();
 
-        //loadImages(constraintImages, dragImages);
-
-        constraintContainer.addView(constraintImages);
+            constraintContainer.addView(constraintImages);
+        }
 
         /* Generation of the containers layout */
-        ConstraintLayout constraintImagesContainer = (ConstraintLayout) inflater.inflate(R.layout.constraint_container_1x3_template, constraintContainer, false);
+        ConstraintLayout constraintImagesContainer = null;
+        switch (containerElements) {
+            case 3:
+                constraintImagesContainer = (ConstraintLayout) inflater.inflate(R.layout.constraint_container_1x3_template, constraintContainer, false);
+                break;
+            case 5:
+                constraintImagesContainer = (ConstraintLayout) inflater.inflate(R.layout.constraint_container_1x5_template, constraintContainer, false);
+        }
 
-        ConstraintLayout.LayoutParams layoutParams2 = (ConstraintLayout.LayoutParams) constraintImagesContainer.getLayoutParams();
-        layoutParams2.leftToLeft = constraintContainer.getId();
-        layoutParams2.rightToRight = constraintContainer.getId();
-        layoutParams2.topToBottom = guideline.getId();
-        layoutParams2.bottomToBottom = constraintContainer.getId();
+        if (constraintImagesContainer != null) {
+            ConstraintLayout.LayoutParams layoutParams2 = (ConstraintLayout.LayoutParams) constraintImagesContainer.getLayoutParams();
+            layoutParams2.leftToLeft = constraintContainer.getId();
+            layoutParams2.rightToRight = constraintContainer.getId();
+            layoutParams2.topToBottom = guideline.getId();
+            layoutParams2.bottomToBottom = constraintContainer.getId();
 
-        constraintContainer.addView(constraintImagesContainer);
+            constraintContainer.addView(constraintImagesContainer);
+        }
 
         if (contentContainer != null) {
             contentContainer.addView(dragActivityTemplate);
@@ -152,14 +165,16 @@ public class DragActivity extends ActivityTemplate {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         ConstraintLayout constraintImages = (ConstraintLayout) gameParameters.findViewById(R.id.constraint_images);
 
+        /* We get the coordinates and dimensions on the view and load the images in 'contentContainer' */
+        /* This way, they can be dragged over the whole screen */
         if (constraintImages != null) {
             for (int i=0; i<constraintImages.getChildCount(); i++) {
-                View constraitView = constraintImages.getChildAt(i);
+                View constraintView = constraintImages.getChildAt(i);
 
-                dragCoordinates[i][0] = (int)constraitView.getX();
-                dragCoordinates[i][1] = (int)constraitView.getY();
-                dragDimensions[i][0] = constraitView.getWidth();
-                dragDimensions[i][1] = constraitView.getHeight();
+                dragCoordinates[i][0] = (int)constraintView.getX() + constraintView.getWidth()/2;
+                dragCoordinates[i][1] = (int)constraintView.getY() + constraintView.getHeight()/2;
+                dragDimensions[i][0] = constraintView.getWidth();
+                dragDimensions[i][1] = constraintView.getHeight();
             }
 
             loadImages(contentContainer, dragImages);
@@ -173,6 +188,14 @@ public class DragActivity extends ActivityTemplate {
 
                 TextView containerElementTitle = (TextView) containerElement.getChildAt(0);
                 containerElementTitle.setText(texts[i]);
+
+                View containerElementBox = containerElement.getChildAt(1);
+                float x = containerElement.getLeft() + containerElementBox.getLeft() + containerElementBox.getX();
+                float y = constraintImagesContainer.getTop() + containerElement.getTop() + containerElementBox.getY();
+                containerCoordinates[i][0] = (int)x;
+                containerCoordinates[i][1] = (int)y;
+                containerDimensions[i][0] = containerElementBox.getWidth();
+                containerDimensions[i][1] = containerElementBox.getHeight();
             }
         }
     }
@@ -226,12 +249,28 @@ public class DragActivity extends ActivityTemplate {
     private void loadImage(RelativeLayout contentContainer, String imageName, int i, String correction) {
         ImageView image = (ImageView) inflater.inflate(R.layout.constraint_base_image, contentContainer, false);
         image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(dragDimensions[i][0], dragDimensions[0][1]);
+
+        /* 'scaleFactor' is used to set the exact width and height to the ImageView, the same as the resource it will contain */
+        Drawable drawable = image.getDrawable();
+        float scaleFactor;
+        if (dragDimensions[i][0] < dragDimensions[i][1]) {
+            scaleFactor = (float)dragDimensions[i][0]/(float)drawable.getIntrinsicWidth();
+        }
+        else {
+            scaleFactor = (float)dragDimensions[i][1]/(float)drawable.getIntrinsicHeight();
+        }
+
+        int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
+        int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
         image.setLayoutParams(layoutParams);
+        dragCoordinates[i][0] = dragCoordinates[i][0] - width/2;
+        dragCoordinates[i][1] = dragCoordinates[i][1] - height/2;
         image.setX(dragCoordinates[i][0]);
         image.setY(dragCoordinates[i][1]);
         String tag = i + "-" + correction;
         image.setTag(tag);
+
 
         TouchListener touchListener = new TouchListener(DragConstants.DRAG_TYPE, this);
         image.setOnTouchListener(touchListener);
@@ -272,20 +311,30 @@ public class DragActivity extends ActivityTemplate {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                float viewX = view.getX() + view.getWidth()/2;
-                float viewY = view.getY() + view.getHeight()/2;
+                float viewCenterX = view.getX() + view.getWidth()/2;
+                float viewCenterY = view.getY() + view.getHeight()/2;
 
                 for (int i=0; i<containerElements; i++) {
-                    double distanceToPoint = Math.sqrt(Math.pow(viewX-containerCoordinates[i][0], 2) + Math.pow(viewY-containerCoordinates[i][1], 2));
+                    if ((viewCenterX > containerCoordinates[i][0])&&(viewCenterX < (containerCoordinates[i][0]+containerDimensions[i][0]))) {
+                        if (viewCenterY > containerCoordinates[i][1]) {
+                            /* If the view is not completely inside the box, we move it */
+                            if (view.getX() < containerCoordinates[i][0]) {
+                                view.setX(containerCoordinates[i][0]);
+                            }
+                            else if ((view.getX()+view.getWidth()) > (containerCoordinates[i][0]+containerDimensions[i][0])) {
+                                view.setX(containerCoordinates[i][0]+containerDimensions[i][0]-view.getWidth());
+                            }
 
-                    int imageWidth = (int) gameParameters.getResources().getDimension(R.dimen.drag_image_side);
-                    if (distanceToPoint < DragConstants.DISTANCE_LIMIT) {
-                        view.setX(containerCoordinates[i][0]-imageWidth/2);
-                        view.setY(containerCoordinates[i][1]-imageWidth/2);
+                            if (view.getY() < containerCoordinates[i][1]) {
+                                view.setY(containerCoordinates[i][1]);
+                            }
+                            else if ((view.getY()+view.getHeight()) > (containerCoordinates[i][1]+containerDimensions[i][1])) {
+                                view.setY(containerCoordinates[i][1]+containerDimensions[i][1]);
+                            }
 
-                        String imageCategory = view.getTag().toString().split("-")[1];
-                        dragChecker.check(gameParameters, imageCategory, correction[i]);
-                        break;
+                            String imageCategory = view.getTag().toString().split("-")[1];
+                            dragChecker.check(gameParameters, imageCategory, correction[i]);
+                        }
                     }
                 }
                 break;
