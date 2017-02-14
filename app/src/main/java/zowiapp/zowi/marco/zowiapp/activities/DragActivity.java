@@ -106,49 +106,32 @@ public class DragActivity extends ActivityTemplate {
         ConstraintLayout dragActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.drag_activity_template, contentContainer, false);
         ConstraintLayout constraintContainer = (ConstraintLayout) dragActivityTemplate.findViewById(R.id.constraint_container);
 
-        Guideline guideline = (Guideline) dragActivityTemplate.findViewById(R.id.guideline);
+        Guideline guideline = (Guideline) dragActivityTemplate.findViewById(R.id.drag_guideline);
 
         /* Generation of the drag images layout */
-        ConstraintLayout constraintImages = null;
         switch (dragImagesNumber) {
             case 5:
-                constraintImages = (ConstraintLayout) inflater.inflate(R.layout.drag_images_1x5_template, constraintContainer, false);
+                /* It is not necessary to set the constraint relations dynamically. They can be defined in the xml,
+                   so we can directly inflate the container */
+                inflater.inflate(R.layout.drag_images_1x5_template, constraintContainer, true);
                 break;
             case 7:
-                constraintImages = (ConstraintLayout) inflater.inflate(R.layout.drag_images_1x7_template, constraintContainer, false);
+                inflater.inflate(R.layout.drag_images_1x7_template, constraintContainer, true);
                 break;
             default:
                 break;
         }
 
-        if (constraintImages != null) {
-            ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) constraintImages.getLayoutParams();
-            layoutParams.leftToLeft = constraintContainer.getId();
-            layoutParams.rightToRight = constraintContainer.getId();
-            layoutParams.topToTop = constraintContainer.getId();
-            layoutParams.bottomToTop = guideline.getId();
-
-            constraintContainer.addView(constraintImages);
-        }
-
         /* Generation of the containers layout */
-        ConstraintLayout constraintImagesContainer = null;
         switch (containerElements) {
             case 3:
-                constraintImagesContainer = (ConstraintLayout) inflater.inflate(R.layout.drag_container_1x3_template, constraintContainer, false);
+                inflater.inflate(R.layout.drag_container_1x3_template, constraintContainer, true);
                 break;
             case 5:
-                constraintImagesContainer = (ConstraintLayout) inflater.inflate(R.layout.drag_container_1x5_template, constraintContainer, false);
-        }
-
-        if (constraintImagesContainer != null) {
-            ConstraintLayout.LayoutParams layoutParams2 = (ConstraintLayout.LayoutParams) constraintImagesContainer.getLayoutParams();
-            layoutParams2.leftToLeft = constraintContainer.getId();
-            layoutParams2.rightToRight = constraintContainer.getId();
-            layoutParams2.topToBottom = guideline.getId();
-            layoutParams2.bottomToBottom = constraintContainer.getId();
-
-            constraintContainer.addView(constraintImagesContainer);
+                inflater.inflate(R.layout.drag_container_1x5_template, constraintContainer, true);
+                break;
+            default:
+                break;
         }
 
         if (contentContainer != null) {

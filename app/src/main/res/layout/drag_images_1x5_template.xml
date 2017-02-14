@@ -5,6 +5,10 @@
     android:layout_height="0dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/constraint_images"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/drag_guideline"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
     android:layout_margin="0dp">
 
     <View
