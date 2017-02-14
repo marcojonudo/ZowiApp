@@ -75,28 +75,28 @@ public class GridActivity extends ActivityTemplate {
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         ConstraintLayout gridActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.grid_activity_template, contentContainer, false);
-//        GridLayout grid = (GridLayout) gridActivityTemplate.findViewById(R.id.grid);
-//
-//        switch (gridSize) {
-//            /* 3x3 */
-//            case 1:
-//                /* The grid is added automatically to 'grid' because the third parameter is 'true' */
-//                inflater.inflate(R.layout.grid_3x3_template, grid, true);
-//                coordinates = new int[GridConstants.COORDINATES_3X3_LENGTH][CommonConstants.AXIS_NUMBER];
-//                break;
-//            /* 4x4 */
-//            case 2:
-//                inflater.inflate(R.layout.grid_4x4_template, grid, true);
-//                coordinates = new int[GridConstants.COORDINATES_4X4_LENGTH][CommonConstants.AXIS_NUMBER];
-//                break;
-//            default:
-//                break;
-//        }
-//
-//        /* Set the listener that detects what section of the controls has been touched */
-//        FrameLayout controls = (FrameLayout) gridActivityTemplate.findViewById(R.id.controls);
-//        TouchListener touchListener = new TouchListener(GridConstants.GRID_TYPE, this);
-//        controls.setOnTouchListener(touchListener);
+        ConstraintLayout grid = (ConstraintLayout) gridActivityTemplate.findViewById(R.id.grid);
+
+        switch (gridSize) {
+            /* 3x3 */
+            case 1:
+                /* The grid is added automatically to 'grid' because the third parameter is 'true' */
+                inflater.inflate(R.layout.grid_3x3_template, grid, true);
+                coordinates = new int[GridConstants.COORDINATES_3X3_LENGTH][CommonConstants.AXIS_NUMBER];
+                break;
+            /* 4x4 */
+            case 2:
+                inflater.inflate(R.layout.grid_4x4_template, grid, true);
+                coordinates = new int[GridConstants.COORDINATES_4X4_LENGTH][CommonConstants.AXIS_NUMBER];
+                break;
+            default:
+                break;
+        }
+
+        /* Set the listener that detects what section of the controls has been touched */
+        ConstraintLayout controls = (ConstraintLayout) gridActivityTemplate.findViewById(R.id.controls);
+        TouchListener touchListener = new TouchListener(GridConstants.GRID_TYPE, this);
+        controls.setOnTouchListener(touchListener);
 
         if (contentContainer != null) {
             contentContainer.addView(gridActivityTemplate);

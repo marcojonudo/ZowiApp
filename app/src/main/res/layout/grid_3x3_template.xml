@@ -1,75 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:columnCount="3"
-    android:rowCount="3"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
     android:background="@color/black"
-    android:layout_centerInParent="true"
-    android:id="@+id/grid_3x3">
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toRightOf="@+id/guideline1"
+    app:layout_constraintRight_toLeftOf="@+id/guideline2"
+    app:layout_constraintDimensionRatio="1:1">
 
     <View
-        android:layout_width="@dimen/cell_side"
-        android:layout_height="@dimen/cell_side"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/cell1"
         android:background="@color/white"
-        android:layout_margin="@dimen/cell_margin"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cell4"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/cell2"
+        android:layout_margin="@dimen/grid_cell_margin"/>
 
     <View
-        android:layout_width="@dimen/cell_side"
-        android:layout_height="@dimen/cell_side"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/cell2"
         android:background="@color/white"
-        android:layout_margin="@dimen/cell_margin"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cell5"
+        app:layout_constraintLeft_toRightOf="@+id/cell1"
+        app:layout_constraintRight_toLeftOf="@+id/cell3"
+        android:layout_margin="@dimen/grid_cell_margin"/>
 
     <View
-        android:layout_width="@dimen/cell_side"
-        android:layout_height="@dimen/cell_side"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/cell3"
         android:background="@color/white"
-        android:layout_margin="@dimen/cell_margin"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cell6"
+        app:layout_constraintLeft_toRightOf="@+id/cell2"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="@dimen/grid_cell_margin"/>
 
     <View
-        android:layout_width="@dimen/cell_side"
-        android:layout_height="@dimen/cell_side"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/cell4"
         android:background="@color/white"
-        android:layout_margin="@dimen/cell_margin"/>
+        app:layout_constraintTop_toBottomOf="@+id/cell1"
+        app:layout_constraintBottom_toTopOf="@+id/cell7"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/cell5"
+        android:layout_margin="@dimen/grid_cell_margin"/>
 
     <View
-        android:layout_width="@dimen/cell_side"
-        android:layout_height="@dimen/cell_side"
-        android:gravity="center"
-        android:layout_margin="@dimen/cell_margin"
-        android:background="@color/white"/>
-
-    <View
-        android:layout_width="@dimen/cell_side"
-        android:layout_height="@dimen/cell_side"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/cell5"
         android:background="@color/white"
-        android:layout_margin="@dimen/cell_margin"/>
+        app:layout_constraintTop_toBottomOf="@+id/cell2"
+        app:layout_constraintBottom_toTopOf="@+id/cell8"
+        app:layout_constraintLeft_toRightOf="@+id/cell4"
+        app:layout_constraintRight_toLeftOf="@+id/cell6"
+        android:layout_margin="@dimen/grid_cell_margin"/>
 
     <View
-        android:layout_width="@dimen/cell_side"
-        android:layout_height="@dimen/cell_side"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/cell6"
         android:background="@color/white"
-        android:layout_margin="@dimen/cell_margin"/>
+        app:layout_constraintTop_toBottomOf="@+id/cell3"
+        app:layout_constraintBottom_toTopOf="@+id/cell9"
+        app:layout_constraintLeft_toRightOf="@+id/cell5"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="@dimen/grid_cell_margin"/>
 
     <View
-        android:layout_width="@dimen/cell_side"
-        android:layout_height="@dimen/cell_side"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/cell7"
         android:background="@color/white"
-        android:layout_margin="@dimen/cell_margin"/>
+        app:layout_constraintTop_toBottomOf="@+id/cell4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/cell8"
+        android:layout_margin="@dimen/grid_cell_margin"/>
 
     <View
-        android:layout_width="@dimen/cell_side"
-        android:layout_height="@dimen/cell_side"
-        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/cell8"
         android:background="@color/white"
-        android:layout_margin="@dimen/cell_margin"/>
+        app:layout_constraintTop_toBottomOf="@+id/cell5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/cell7"
+        app:layout_constraintRight_toLeftOf="@+id/cell9"
+        android:layout_margin="@dimen/grid_cell_margin"/>
 
-</GridLayout>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/cell9"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/cell6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/cell8"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="@dimen/grid_cell_margin"/>
+
+</android.support.constraint.ConstraintLayout>
