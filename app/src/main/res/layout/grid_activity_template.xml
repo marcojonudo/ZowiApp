@@ -1,115 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/grid_template_container">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/layout_margin"
-        android:text="¡Go!"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:id="@+id/controls"
-        android:layout_centerVertical="true">
-
-        <ImageView
-            android:layout_width="@dimen/controls_side"
-            android:layout_height="@dimen/controls_side"
-            android:layout_gravity="center"
-            android:src="@drawable/outer_control"/>
-
-        <ImageView
-            android:layout_width="@dimen/controls_center_side"
-            android:layout_height="@dimen/controls_center_side"
-            android:layout_gravity="center"
-            android:src="@drawable/inner_control"
-            android:id="@+id/inner_control"/>
-
-    </FrameLayout>
-
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:id="@+id/grid"/>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentEnd="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/grid"
+        app:layout_constraintDimensionRatio="1:1"
+        android:layout_marginTop="175dp"
+        android:layout_marginBottom="175dp"
+        android:layout_marginStart="@dimen/layout_margin"
         android:layout_marginEnd="20dp">
 
-        <GridLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:columnCount="1"
-            android:rowCount="7"
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/outer_control"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/inner_control"
+            android:id="@+id/inner_control"
+            android:scaleX="0.32"
+            android:scaleY="0.32"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:id="@+id/grid"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/controls"
+        app:layout_constraintRight_toLeftOf="@+id/movements"
+        app:layout_constraintDimensionRatio="1:1"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginStart="@dimen/layout_margin"
+        android:layout_marginEnd="20dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell1"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cell4"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/cell2"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell2"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cell5"
+            app:layout_constraintLeft_toRightOf="@+id/cell1"
+            app:layout_constraintRight_toLeftOf="@+id/cell3"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell3"
+            android:background="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cell6"
+            app:layout_constraintLeft_toRightOf="@+id/cell2"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell4"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/cell1"
+            app:layout_constraintBottom_toTopOf="@+id/cell7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/cell5"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell5"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/cell2"
+            app:layout_constraintBottom_toTopOf="@+id/cell8"
+            app:layout_constraintLeft_toRightOf="@+id/cell4"
+            app:layout_constraintRight_toLeftOf="@+id/cell6"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell6"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/cell3"
+            app:layout_constraintBottom_toTopOf="@+id/cell9"
+            app:layout_constraintLeft_toRightOf="@+id/cell5"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell7"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/cell4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/cell8"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell8"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/cell5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/cell7"
+            app:layout_constraintRight_toLeftOf="@+id/cell9"
+            android:layout_margin="4dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell9"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/cell6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/cell8"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="4dp"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/movements"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/grid"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginStart="@dimen/layout_margin"
+        android:layout_marginEnd="20dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/movements_grid"
             android:background="@color/black"
-            android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="20dp"
-            android:id="@+id/movements_grid">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/paper_bin"
+            app:layout_constraintDimensionRatio="1:7">
 
             <View
-                android:layout_width="@dimen/movement_cell_side"
-                android:layout_height="@dimen/movement_cell_side"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/movement_cell1"
                 android:background="@color/white"
-                android:layout_margin="@dimen/movement_cell_margin"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/movement_cell2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_margin="1dp"/>
 
             <View
-                android:layout_width="@dimen/movement_cell_side"
-                android:layout_height="@dimen/movement_cell_side"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/movement_cell2"
                 android:background="@color/white"
-                android:layout_margin="@dimen/movement_cell_margin"/>
+                app:layout_constraintTop_toBottomOf="@+id/movement_cell1"
+                app:layout_constraintBottom_toTopOf="@+id/movement_cell3"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_margin="1dp"/>
 
             <View
-                android:layout_width="@dimen/movement_cell_side"
-                android:layout_height="@dimen/movement_cell_side"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/movement_cell3"
                 android:background="@color/white"
-                android:layout_margin="@dimen/movement_cell_margin"/>
+                app:layout_constraintTop_toBottomOf="@+id/movement_cell2"
+                app:layout_constraintBottom_toTopOf="@+id/movement_cell4"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_margin="1dp"/>
 
             <View
-                android:layout_width="@dimen/movement_cell_side"
-                android:layout_height="@dimen/movement_cell_side"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/movement_cell4"
                 android:background="@color/white"
-                android:layout_margin="@dimen/movement_cell_margin"/>
+                app:layout_constraintTop_toBottomOf="@+id/movement_cell3"
+                app:layout_constraintBottom_toTopOf="@+id/movement_cell5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_margin="1dp"/>
 
             <View
-                android:layout_width="@dimen/movement_cell_side"
-                android:layout_height="@dimen/movement_cell_side"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/movement_cell5"
                 android:background="@color/white"
-                android:layout_margin="@dimen/movement_cell_margin"/>
+                app:layout_constraintTop_toBottomOf="@+id/movement_cell4"
+                app:layout_constraintBottom_toTopOf="@+id/movement_cell6"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_margin="1dp"/>
 
             <View
-                android:layout_width="@dimen/movement_cell_side"
-                android:layout_height="@dimen/movement_cell_side"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/movement_cell6"
                 android:background="@color/white"
-                android:layout_margin="@dimen/movement_cell_margin"/>
+                app:layout_constraintTop_toBottomOf="@+id/movement_cell5"
+                app:layout_constraintBottom_toTopOf="@+id/movement_cell7"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_margin="1dp"/>
 
             <View
-                android:layout_width="@dimen/movement_cell_side"
-                android:layout_height="@dimen/movement_cell_side"
-                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:id="@+id/movement_cell7"
                 android:background="@color/white"
-                android:layout_margin="@dimen/movement_cell_margin"/>
+                app:layout_constraintTop_toBottomOf="@+id/movement_cell6"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_margin="1dp"/>
 
-        </GridLayout>
+        </android.support.constraint.ConstraintLayout>
+
 
         <Button
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/paper_bin"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@id/movements_grid"
             android:id="@+id/paper_bin"
-            android:onClick="deleteMovement"/>
-    </RelativeLayout>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/movements_grid"
+            app:layout_constraintRight_toRightOf="parent"/>
 
-</RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
