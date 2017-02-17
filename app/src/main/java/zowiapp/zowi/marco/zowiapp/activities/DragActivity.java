@@ -228,7 +228,7 @@ public class DragActivity extends ActivityTemplate {
     }
 
     private void loadImage(RelativeLayout contentContainer, String imageName, int i, String correction) {
-        ImageView image = (ImageView) inflater.inflate(R.layout.constraint_base_image, contentContainer, false);
+        ImageView image = new ImageView(gameParameters);
         image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
 
         /* 'scaleFactor' is used to set the exact width and height to the ImageView, the same as the resource it will contain */
