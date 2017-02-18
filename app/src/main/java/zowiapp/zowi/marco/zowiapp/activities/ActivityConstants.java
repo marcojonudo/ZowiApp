@@ -18,11 +18,10 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_GRIDSIZE = "gridSize";
         protected static final String JSON_PARAMETER_CELLS = "cells";
         protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final int COORDINATES_3X3_LENGTH = 10;
-        protected static final int COORDINATES_4X4_LENGTH = 17;
-        protected static final double CONTROL_RADIUS_FACTOR = 6.66;
-        protected static final int GRID_IMAGE_WIDTH_PX = 150;
-        protected static final int GRID_TRANSLATION_TO_CENTER = GRID_IMAGE_WIDTH_PX /2;
+        protected static final int COORDINATES_3X3_LENGTH = 9;
+        protected static final int COORDINATES_4X4_LENGTH = 16;
+        protected static final float CELL_FILLED_SPACE = 0.85f;
+        protected static final String INNER = "INNER";
     }
 
     protected static class ColumnsConstants {

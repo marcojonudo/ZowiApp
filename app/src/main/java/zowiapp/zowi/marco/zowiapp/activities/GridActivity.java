@@ -1,10 +1,12 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
@@ -34,7 +36,7 @@ public class GridActivity extends ActivityTemplate {
     private String activityTitle, activityDescription;
     private String[] images;
     private int[] cells;
-    private int gridSize;
+    private int gridSize, cellWidth, cellHeight;
     private JSONObject activityDetails;
     private int[][] coordinates;
 
@@ -93,60 +95,53 @@ public class GridActivity extends ActivityTemplate {
                 break;
         }
 
-        /* Set the listener that detects what section of the controls has been touched */
-        ConstraintLayout controls = (ConstraintLayout) gridActivityTemplate.findViewById(R.id.controls);
+        /* Set the listener that detects which section of the controls has been touched */
+        /* Instead of setting the listener on 'controls', it is set on both images. This way, we don't
+           have problems with the width of the rescaled image */
+        ImageView innerControl = (ImageView) gridActivityTemplate.findViewById(R.id.inner_control);
+        ImageView outerControl = (ImageView) gridActivityTemplate.findViewById(R.id.outer_control);
         TouchListener touchListener = new TouchListener(GridConstants.GRID_TYPE, this);
-        controls.setOnTouchListener(touchListener);
+        innerControl.setOnTouchListener(touchListener);
+        outerControl.setOnTouchListener(touchListener);
 
         if (contentContainer != null) {
             contentContainer.addView(gridActivityTemplate);
 
-//            LayoutListener layoutListener = new LayoutListener(GridConstants.GRID_TYPE, contentContainer, this);
-//            contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
+            LayoutListener layoutListener = new LayoutListener(GridConstants.GRID_TYPE, contentContainer, this);
+            contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
     }
 
     protected void getElementsCoordinates() {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         /* 'grid' contains the 3x3 or 4x4 grid */
-        GridLayout grid = (GridLayout) gameParameters.findViewById(R.id.grid);
+        ConstraintLayout gridContainer = (ConstraintLayout) gameParameters.findViewById(R.id.grid);
 
-        if (grid != null) {
-            GridLayout gameGrid = (GridLayout) grid.getChildAt(0);
+        if (gridContainer != null) {
+            ConstraintLayout gameGrid = (ConstraintLayout) gridContainer.getChildAt(0);
 
-            coordinates[0][0] = grid.getLeft();
-            coordinates[0][1] = grid.getTop();
-
-            /* Values used to calculate the center of the cells */
-            int halfCell = 0, rows = 0;
-            switch (gridSize) {
-                case 1:
-                    halfCell = grid.getWidth()/6;
-                    rows = 3;
-                    break;
-                case 2:
-                    halfCell = grid.getWidth()/8;
-                    rows = 4;
-                    break;
-                default:
-                    break;
-            }
+            int left = gridContainer.getLeft();
+            int top = gridContainer.getTop();
 
             /* Cell center coordinates are calculated based on the upper left corner of the grid */
             for (int i=0; i<gameGrid.getChildCount(); i++) {
-                coordinates[i+1][0] = coordinates[0][0] + (((i%rows)*2 + 1)*halfCell) - GridConstants.GRID_TRANSLATION_TO_CENTER;
-                coordinates[i+1][1] = coordinates[0][1] + (((i/rows)*2 + 1)*halfCell) - GridConstants.GRID_TRANSLATION_TO_CENTER;
+                View cell = gameGrid.getChildAt(i);
+                coordinates[i][0] = left + cell.getLeft() + cell.getWidth()/2;
+                coordinates[i][1] = top + cell.getTop() + cell.getHeight()/2;
+
+                cellWidth = cell.getWidth();
+                cellHeight = cell.getHeight();
             }
 
             placeImages(contentContainer, cells, images);
         }
     }
 
-    private void placeImages(RelativeLayout gridActivityTemplate, int[] cells, String[] images) {
+    private void placeImages(RelativeLayout contentContainer, int[] cells, String[] images) {
         /* 'cells' contains a number between 1 and 9 or 16 that indicates the cells that will contain an image */
         /* 'images' contains the name of the resources */
         for (int i=0; i<cells.length; i++) {
-            placeImage(gridActivityTemplate, images[i], coordinates[cells[i]][0], coordinates[cells[i]][1]);
+            placeImage(contentContainer, images[i], coordinates[cells[i]-1][0], coordinates[cells[i]-1][1]);
         }
 
     }
@@ -154,10 +149,22 @@ public class GridActivity extends ActivityTemplate {
     private void placeImage(RelativeLayout container, String imageName, int x, int y) {
         ImageView image = new ImageView(gameParameters);
         image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(GridConstants.GRID_IMAGE_WIDTH_PX, GridConstants.GRID_IMAGE_WIDTH_PX);
+
+        Drawable drawable = image.getDrawable();
+        float scaleFactor;
+        if (drawable.getIntrinsicWidth() > drawable.getIntrinsicHeight()) {
+            scaleFactor = (cellWidth*GridConstants.CELL_FILLED_SPACE) / drawable.getIntrinsicWidth();
+        }
+        else {
+            scaleFactor = (cellHeight*GridConstants.CELL_FILLED_SPACE) / drawable.getIntrinsicHeight();
+        }
+
+        int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
+        int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
         image.setLayoutParams(layoutParams);
-        image.setX(x);
-        image.setY(y);
+        image.setX(x - width/2);
+        image.setY(y - height/2);
 
         container.addView(image);
     }
@@ -168,15 +175,10 @@ public class GridActivity extends ActivityTemplate {
                 float x = event.getX();
                 float y = event.getY();
                 float rightCorner = view.getWidth();
-                float center = rightCorner/2;
-                /* 'innerControl' is not the same image as 'outerControl', so the radius is its width/2 */
-                ImageView innerControl = (ImageView) gameParameters.findViewById(R.id.inner_control);
-                double circumferenceRadius = innerControl.getWidth()/2;
+                String tag = view.getTag().toString();
 
-                double distanceToCenter = Math.sqrt(Math.pow(x-center, 2)+Math.pow(y-center, 2));
-
-                /* If coordinates are inside the circumference */
-                if (distanceToCenter < circumferenceRadius) {
+                /* The tag determines which image has been touched */
+                if (tag.equals(GridConstants.INNER)) {
                     Toast.makeText(gameParameters, "Go!", Toast.LENGTH_SHORT).show();
                 }
                 else {
