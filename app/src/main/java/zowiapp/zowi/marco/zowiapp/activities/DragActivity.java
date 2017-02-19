@@ -41,7 +41,7 @@ public class DragActivity extends ActivityTemplate {
     private String[] containerImages, texts, correction;
     private int containerElements, dragImagesNumber;
     private int[][] dragCoordinates, containerCoordinates, dragDimensions, containerDimensions;
-    float startX, startY, upperLimit = 0;
+    private float startX, startY, upperLimit = 0;
 
     public DragActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -105,8 +105,6 @@ public class DragActivity extends ActivityTemplate {
 
         ConstraintLayout dragActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.drag_activity_template, contentContainer, false);
         ConstraintLayout constraintContainer = (ConstraintLayout) dragActivityTemplate.findViewById(R.id.constraint_container);
-
-        Guideline guideline = (Guideline) dragActivityTemplate.findViewById(R.id.drag_guideline);
 
         /* Generation of the drag images layout */
         switch (dragImagesNumber) {
