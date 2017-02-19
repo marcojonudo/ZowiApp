@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/before_after_template_container">
@@ -9,8 +9,14 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_height="0dp"
+        android:id="@+id/left_column_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/columns_guideline_1"
+        android:layout_marginStart="@dimen/control_horizontal_margin"
+        android:layout_marginEnd="@dimen/control_horizontal_margin">
 
         <TextView
             android:layout_width="match_parent"
@@ -25,18 +31,135 @@
             android:id="@+id/left_column"/>
     </LinearLayout>
 
-    <RelativeLayout
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/columns_guideline_1"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33"/>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:gravity="center"
-        android:id="@+id/images_container"/>
+        android:layout_height="0dp"
+        android:id="@+id/columns_grid"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/columns_guideline_1"
+        app:layout_constraintRight_toLeftOf="@+id/columns_guideline_2"
+        app:layout_constraintDimensionRatio="1:1">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cell4"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/cell2"
+            android:layout_margin="@dimen/grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cell5"
+            app:layout_constraintLeft_toRightOf="@+id/cell1"
+            app:layout_constraintRight_toLeftOf="@+id/cell3"
+            android:layout_margin="@dimen/grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cell6"
+            app:layout_constraintLeft_toRightOf="@+id/cell2"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell4"
+            app:layout_constraintTop_toBottomOf="@+id/cell1"
+            app:layout_constraintBottom_toTopOf="@+id/cell7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/cell5"
+            android:layout_margin="@dimen/grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell5"
+            app:layout_constraintTop_toBottomOf="@+id/cell2"
+            app:layout_constraintBottom_toTopOf="@+id/cell8"
+            app:layout_constraintLeft_toRightOf="@+id/cell4"
+            app:layout_constraintRight_toLeftOf="@+id/cell6"
+            android:layout_margin="@dimen/grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell6"
+            app:layout_constraintTop_toBottomOf="@+id/cell3"
+            app:layout_constraintBottom_toTopOf="@+id/cell9"
+            app:layout_constraintLeft_toRightOf="@+id/cell5"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell7"
+            app:layout_constraintTop_toBottomOf="@+id/cell4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/cell8"
+            android:layout_margin="@dimen/grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell8"
+            app:layout_constraintTop_toBottomOf="@+id/cell5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/cell7"
+            app:layout_constraintRight_toLeftOf="@+id/cell9"
+            android:layout_margin="@dimen/grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/cell9"
+            app:layout_constraintTop_toBottomOf="@+id/cell6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/cell8"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/grid_cell_margin"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/columns_guideline_2"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.67"/>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_height="0dp"
+        android:id="@+id/right_column_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/columns_guideline_2"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginStart="@dimen/control_horizontal_margin"
+        android:layout_marginEnd="@dimen/control_horizontal_margin">
 
         <TextView
             android:layout_width="match_parent"
@@ -52,4 +175,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

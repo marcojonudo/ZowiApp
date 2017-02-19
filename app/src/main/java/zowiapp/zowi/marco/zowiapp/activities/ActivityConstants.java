@@ -32,10 +32,9 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_CORRECTION = "correction";
         protected static final int NUMBER_OF_IMAGES = 5;
         protected static final int NUMBER_OF_COLUMNS_CORNERS = 2;
-        protected static final int CIRCUMFERENCE_INITIAL_POS = 45;
-        protected static final int CIRCUMFERENCE_INCREMENT = 90;
         protected static final int LEFT_COLUMN_INDEX = 0;
         protected static final int RIGHT_COLUMN_INDEX = 1;
+        protected static final float CELL_FILLED_SPACE = 0.85f;
     }
 
     protected static class OperationsConstants {
