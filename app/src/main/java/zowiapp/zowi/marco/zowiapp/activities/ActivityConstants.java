@@ -34,7 +34,7 @@ public class ActivityConstants {
         protected static final int NUMBER_OF_COLUMNS_CORNERS = 2;
         protected static final int LEFT_COLUMN_INDEX = 0;
         protected static final int RIGHT_COLUMN_INDEX = 1;
-        protected static final float CELL_FILLED_SPACE = 0.85f;
+        protected static final float CELL_FILLED_SPACE = 1;
     }
 
     protected static class OperationsConstants {

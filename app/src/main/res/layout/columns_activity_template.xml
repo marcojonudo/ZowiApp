@@ -57,8 +57,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/cell4"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/cell2"
-            android:layout_margin="@dimen/grid_cell_margin"/>
+            app:layout_constraintRight_toLeftOf="@+id/cell2"/>
 
         <View
             android:layout_width="0dp"
@@ -67,8 +66,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/cell5"
             app:layout_constraintLeft_toRightOf="@+id/cell1"
-            app:layout_constraintRight_toLeftOf="@+id/cell3"
-            android:layout_margin="@dimen/grid_cell_margin"/>
+            app:layout_constraintRight_toLeftOf="@+id/cell3"/>
 
         <View
             android:layout_width="0dp"
@@ -77,8 +75,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/cell6"
             app:layout_constraintLeft_toRightOf="@+id/cell2"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_margin="@dimen/grid_cell_margin"/>
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <View
             android:layout_width="0dp"
@@ -87,8 +84,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cell1"
             app:layout_constraintBottom_toTopOf="@+id/cell7"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/cell5"
-            android:layout_margin="@dimen/grid_cell_margin"/>
+            app:layout_constraintRight_toLeftOf="@+id/cell5"/>
 
         <View
             android:layout_width="0dp"
@@ -97,8 +93,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cell2"
             app:layout_constraintBottom_toTopOf="@+id/cell8"
             app:layout_constraintLeft_toRightOf="@+id/cell4"
-            app:layout_constraintRight_toLeftOf="@+id/cell6"
-            android:layout_margin="@dimen/grid_cell_margin"/>
+            app:layout_constraintRight_toLeftOf="@+id/cell6"/>
 
         <View
             android:layout_width="0dp"
@@ -107,8 +102,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cell3"
             app:layout_constraintBottom_toTopOf="@+id/cell9"
             app:layout_constraintLeft_toRightOf="@+id/cell5"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_margin="@dimen/grid_cell_margin"/>
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <View
             android:layout_width="0dp"
@@ -117,8 +111,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cell4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/cell8"
-            android:layout_margin="@dimen/grid_cell_margin"/>
+            app:layout_constraintRight_toLeftOf="@+id/cell8"/>
 
         <View
             android:layout_width="0dp"
@@ -127,8 +120,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cell5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/cell7"
-            app:layout_constraintRight_toLeftOf="@+id/cell9"
-            android:layout_margin="@dimen/grid_cell_margin"/>
+            app:layout_constraintRight_toLeftOf="@+id/cell9"/>
 
         <View
             android:layout_width="0dp"
@@ -137,8 +129,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cell6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/cell8"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_margin="@dimen/grid_cell_margin"/>
+            app:layout_constraintRight_toRightOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 
