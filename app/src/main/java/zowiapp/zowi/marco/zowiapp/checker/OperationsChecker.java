@@ -1,5 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -17,8 +18,9 @@ public class OperationsChecker {
     public void check(GameParameters gameParameters, int index, int correctResult) {
         LinearLayout operationsTemplateContainer = (LinearLayout) gameParameters.findViewById(R.id.operations_container);
         if (operationsTemplateContainer != null) {
-            LinearLayout currentOperation = (LinearLayout) operationsTemplateContainer.getChildAt(index);
-            EditText answerEditText = (EditText) currentOperation.getChildAt(currentOperation.getChildCount()-2);
+            ConstraintLayout currentOperation = (ConstraintLayout) operationsTemplateContainer.getChildAt(index);
+            ConstraintLayout operationContainer = (ConstraintLayout) currentOperation.getChildAt(0);
+            EditText answerEditText = (EditText) operationContainer.getChildAt(operationContainer.getChildCount()-1);
 
             String answer = answerEditText.getText().toString();
 
