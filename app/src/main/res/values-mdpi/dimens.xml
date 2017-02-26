@@ -25,16 +25,14 @@
     <dimen name="movements_cell_margin">1dp</dimen>
     <dimen name="paper_bin_left_margin">20dp</dimen>
 
-    <dimen name="controls_side">150dp</dimen>
-    <dimen name="controls_center_side">47dp</dimen>
-    <dimen name="cell_side">75dp</dimen>
-    <dimen name="cell_margin">2dp</dimen>
-    <dimen name="movement_cell_side">40dp</dimen>
-    <dimen name="movement_cell_margin">1dp</dimen>
-    <dimen name="layout_margin">20dp</dimen>
-
     <!-- Operations dimensions -->
-    <dimen name="operator_side">30dp</dimen>
+    <dimen name="operations_font_size">50sp</dimen>
+    <dimen name="operation_start_margin">50dp</dimen>
+    <dimen name="operation_2_start_margin">20dp</dimen>
+    <dimen name="operation_button_horizontal_margin">60dp</dimen>
+    <dimen name="operation_2_button_horizontal_margin">30dp</dimen>
+    <dimen name="operation_button_vertical_margin">3dp</dimen>
+    <dimen name="operation_2_edittext_margin">3dp</dimen>
 
     <!-- ColouredGrid dimensions -->
     <dimen name="element_side">30dp</dimen>

@@ -1,16 +1,13 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +20,6 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.OperationsConstants;
 import zowiapp.zowi.marco.zowiapp.checker.OperationsChecker;
-import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -114,24 +110,26 @@ public class OperationsActivity extends ActivityTemplate {
             operationsResults[i] = operationResult;
             String[] operation = {String.valueOf(firstNumber), operator, String.valueOf(secondNumber)};
 
-            LinearLayout operationsTemplate = null;
+            ConstraintLayout operationsTemplate = null;
+            ConstraintLayout operationContainer;
             switch (operationsType) {
                 case 1:
-                    operationsTemplate = (LinearLayout) inflater.inflate(R.layout.operations_1_template, operationsActivityTemplate, false);
+                    operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.operation_1_template, operationsActivityTemplate, false);
+                    operationContainer = (ConstraintLayout) operationsTemplate.findViewById(R.id.operation_container);
 
                     for (int j=0; j<operation.length; j++) {
-                        TextView op = (TextView) operationsTemplate.getChildAt(j);
+                        TextView op = (TextView) operationContainer.getChildAt(j);
                         op.setText(operation[j]);
                     }
                     break;
                 case 2:
-                    operationsTemplate = (LinearLayout) inflater.inflate(R.layout.operations_2_template, operationsActivityTemplate, false);
-
+                    operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.operation_2_template, operationsActivityTemplate, false);
+                    operationContainer = (ConstraintLayout) operationsTemplate.findViewById(R.id.operation_container);
                     for (int j=0; j<operation.length; j++) {
                         // Send to Zowi
 
                         /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews*/
-                        ImageView operationsImage = (ImageView) operationsTemplate.getChildAt(j+(2*(j+1))-1);
+                        ImageView operationsImage = (ImageView) operationContainer.getChildAt(j+(2*(j+1))-1);
                         operationsImage.setImageResource(gameParameters.getResources().getIdentifier(operationsImages[i], "drawable", gameParameters.getPackageName()));
 //                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(OperationsConstants.OPERATION_IMAGE_WIDTH_PX, OperationsConstants.OPERATION_IMAGE_WIDTH_PX);
 //                        operationsImage.setLayoutParams(layoutParams);
@@ -142,8 +140,7 @@ public class OperationsActivity extends ActivityTemplate {
             }
 
             if (operationsTemplate != null) {
-                LinearLayout operationsTemplateContainer = (LinearLayout) operationsTemplate.findViewById(R.id.operations_template_container);
-                Button checkButton = (Button) operationsTemplateContainer.getChildAt(operationsTemplateContainer.getChildCount()-1);
+                ConstraintLayout checkButton = (ConstraintLayout) operationsTemplate.findViewById(R.id.operations_button);
                 checkButton.setTag(i);
                 checkButton.setOnClickListener(new View.OnClickListener() {
                     @Override
