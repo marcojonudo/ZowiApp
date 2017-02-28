@@ -39,8 +39,7 @@
     <dimen name="element_side">30dp</dimen>
 
     <!-- Music dimensions -->
-    <dimen name="button_side">75dp</dimen>
-    <dimen name="dictation_width">500dp</dimen>
+    <dimen name="dictation_button_horizontal_margin">50dp</dimen>
 
     <!-- Memory dimensions -->
     <dimen name="memory_image_side">125dp</dimen>

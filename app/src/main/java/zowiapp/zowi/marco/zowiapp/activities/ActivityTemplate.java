@@ -50,6 +50,9 @@ public abstract class ActivityTemplate {
                 FoodPyramidActivity foodPyramidActivity = (FoodPyramidActivity) activity;
                 foodPyramidActivity.getElementsCoordinates();
                 break;
+            case MUSIC:
+                MusicActivity musicActivity = (MusicActivity) activity;
+                musicActivity.getElementsCoordinates();
             default:
                 break;
         }

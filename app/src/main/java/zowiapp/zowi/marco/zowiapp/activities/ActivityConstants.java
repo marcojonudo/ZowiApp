@@ -79,7 +79,9 @@ public class ActivityConstants {
     }
 
     protected static class MusicConstants {
+        protected static final ActivityType MUSIC_TYPE = ActivityType.MUSIC;
         protected static final String JSON_PARAMETER_IMAGES = "images";
+        protected static final int NUMBER_OF_DICTATIONS = 3;
     }
 
     protected static class DragConstants {
