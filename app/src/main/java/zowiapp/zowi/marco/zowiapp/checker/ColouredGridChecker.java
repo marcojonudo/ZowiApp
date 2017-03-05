@@ -1,5 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
+import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,8 +19,8 @@ public class ColouredGridChecker {
         LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
 
         if (answersContainer != null) {
-            LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(index);
-            EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount() - 2);
+            ConstraintLayout colorContainer = (ConstraintLayout) answersContainer.getChildAt(index);
+            EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount()-3);
 
             String answer = colorEditText.getText().toString();
 

@@ -1,10 +1,13 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -16,6 +19,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Random;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
@@ -35,11 +40,12 @@ public class ColouredGridActivity extends ActivityTemplate {
     private ColouredGridChecker colouredGridChecker;
     private String activityTitle, activityDescription;
     private String[] images;
-    private int[] cells;
-    private String[] colouredCells;
+    private int[][] cells;
+    private String[][] colouredCells;
     private JSONObject activityDetails;
     private int[][] coordinates;
     private int[] colouredCellsNumber;
+    private int cellWidth, cellHeight;
 
     public ColouredGridActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -58,17 +64,26 @@ public class ColouredGridActivity extends ActivityTemplate {
             JSONArray jsonCells = activityDetails.getJSONArray(ColouredGridConstants.JSON_PARAMETER_CELLS);
             JSONArray jsonImages = activityDetails.getJSONArray(ColouredGridConstants.JSON_PARAMETER_IMAGES);
             JSONArray jsonColouredCells = activityDetails.getJSONArray(ColouredGridConstants.JSON_PARAMETER_COLOUREDCELLS);
-            cells = new int[jsonCells.length()];
+            cells = new int[jsonCells.length()][];
             images = new String[jsonImages.length()];
-            colouredCells = new String[jsonColouredCells.length()];
+            colouredCells = new String[jsonColouredCells.length()][];
             colouredCellsNumber = new int[ColouredGridConstants.NUMBER_OF_COLORS];
 
             for (int i=0; i<cells.length; i++) {
-                cells[i] = jsonCells.getInt(i);
-                images[i] = jsonImages.getString(i);
+                JSONArray jsonCellsArray = jsonCells.getJSONArray(i);
+                JSONArray jsonColouredCellsArray = jsonColouredCells.getJSONArray(i);
+                cells[i] = new int[jsonCellsArray.length()];
+                colouredCells[i] = new String[jsonColouredCellsArray.length()];
+                for (int j=0; j<cells[i].length; j++) {
+                    cells[i][j] = jsonCellsArray.getInt(j);
+                    colouredCells[i][j] = jsonColouredCellsArray.getString(j);
+                }
+                for (int j=0; j<colouredCells[i].length; j++) {
+                    colouredCells[i][j] = jsonColouredCellsArray.getString(j);
+                }
             }
-            for (int i=0; i<colouredCells.length; i++) {
-                colouredCells[i] = jsonColouredCells.getString(i);
+            for (int i=0; i<images.length; i++) {
+                images[i] = jsonImages.getString(i);
             }
 
             generateLayout();
@@ -83,8 +98,8 @@ public class ColouredGridActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        LinearLayout colouredGridActivityTemplate = (LinearLayout) inflater.inflate(R.layout.coloured_grid_activity_template, contentContainer, false);
-        GridLayout grid = (GridLayout) colouredGridActivityTemplate.findViewById(R.id.grid);
+        ConstraintLayout colouredGridActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.coloured_grid_activity_template, contentContainer, false);
+        ConstraintLayout grid = (ConstraintLayout) colouredGridActivityTemplate.findViewById(R.id.coloured_grid);
 
         /* In this activity, grid is always 4x4 */
         inflater.inflate(R.layout.grid_4x4_template, grid, true);
@@ -100,8 +115,9 @@ public class ColouredGridActivity extends ActivityTemplate {
             LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
             if (answersContainer != null) {
                 for (int i=0; i<answersContainer.getChildCount(); i++) {
-                    LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
-                    Button colorButton = (Button) colorContainer.getChildAt(colorContainer.getChildCount()-1);
+                    ConstraintLayout colorContainer = (ConstraintLayout) answersContainer.getChildAt(i);
+                    ConstraintLayout colorButtonContainer = (ConstraintLayout) colorContainer.getChildAt(colorContainer.getChildCount()-1);
+                    Button colorButton = (Button) colorButtonContainer.getChildAt(0);
 
                     colorButton.setTag(i);
                     colorButton.setOnClickListener(new View.OnClickListener() {
@@ -119,26 +135,28 @@ public class ColouredGridActivity extends ActivityTemplate {
     protected void getElementsCoordinates() {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         /* 'grid' contains the 3x3 or 4x4 grid */
-        GridLayout grid = (GridLayout) gameParameters.findViewById(R.id.grid);
+        ConstraintLayout gridContainer = (ConstraintLayout) gameParameters.findViewById(R.id.coloured_grid);
 
-        if (grid != null) {
-            GridLayout gameGrid = (GridLayout) grid.getChildAt(0);
+        /* Generation of the random index to choose one of the possible different activities */
+        int randomIndex = new Random().nextInt(cells.length);
 
-            coordinates[0][0] = grid.getLeft();
-            coordinates[0][1] = grid.getTop();
+        if (gridContainer != null) {
+            ConstraintLayout gameGrid = (ConstraintLayout) gridContainer.getChildAt(0);
 
-            /* Values used to calculate the center of the cells (4x4 grid) */
-            int halfCell = grid.getWidth()/8;
-            int rows = 4;
+            int left = gridContainer.getLeft();
+            int top = gridContainer.getTop();
 
             /* Cell center coordinates are calculated based on the upper left corner of the grid */
             for (int i=0; i<gameGrid.getChildCount(); i++) {
-                coordinates[i+1][0] = coordinates[0][0] + (((i%rows)*2 + 1)*halfCell) - ColouredGridConstants.GRID_TRANSLATION_TO_CENTER;
-                coordinates[i+1][1] = coordinates[0][1] + (((i/rows)*2 + 1)*halfCell) - ColouredGridConstants.GRID_TRANSLATION_TO_CENTER;
+                View cell = gameGrid.getChildAt(i);
+                coordinates[i][0] = left + cell.getLeft() + cell.getWidth()/2;
+                coordinates[i][1] = top + cell.getTop() + cell.getHeight()/2;
+
+                cellWidth = cell.getWidth();
+                cellHeight = cell.getHeight();
 
                 /* The cells are coloured now, instead of looping again later */
-                View cell = gameGrid.getChildAt(i);
-                switch (colouredCells[i]) {
+                switch (colouredCells[randomIndex][i]) {
                     case "RED":
                         cell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.red));
                         colouredCellsNumber[0]++;
@@ -156,15 +174,15 @@ public class ColouredGridActivity extends ActivityTemplate {
                 }
             }
 
-            placeImages(contentContainer, cells, images);
+            placeImages(contentContainer, cells[randomIndex], images);
         }
     }
 
-    private void placeImages(RelativeLayout gridActivityTemplate, int[] cells, String[] images) {
+    private void placeImages(RelativeLayout contentContainer, int[] cells, String[] images) {
         /* 'cells' contains a number between 1 and 9 or 16 that indicates the cells that will contain an image */
         /* 'images' contains the name of the resources */
         for (int i=0; i<cells.length; i++) {
-            placeImage(gridActivityTemplate, images[i], coordinates[cells[i]][0], coordinates[cells[i]][1]);
+            placeImage(contentContainer, images[i], coordinates[cells[i]-1][0], coordinates[cells[i]-1][1]);
         }
 
     }
@@ -172,10 +190,22 @@ public class ColouredGridActivity extends ActivityTemplate {
     private void placeImage(RelativeLayout container, String imageName, int x, int y) {
         ImageView image = new ImageView(gameParameters);
         image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ColouredGridConstants.GRID_IMAGE_SIDE_PX, ColouredGridConstants.GRID_IMAGE_SIDE_PX);
+
+        Drawable drawable = image.getDrawable();
+        float scaleFactor;
+        if (drawable.getIntrinsicWidth() > drawable.getIntrinsicHeight()) {
+            scaleFactor = (cellWidth* ActivityConstants.GridConstants.CELL_FILLED_SPACE) / drawable.getIntrinsicWidth();
+        }
+        else {
+            scaleFactor = (cellHeight* ActivityConstants.GridConstants.CELL_FILLED_SPACE) / drawable.getIntrinsicHeight();
+        }
+
+        int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
+        int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
         image.setLayoutParams(layoutParams);
-        image.setX(x);
-        image.setY(y);
+        image.setX(x - width/2);
+        image.setY(y - height/2);
 
         container.addView(image);
     }

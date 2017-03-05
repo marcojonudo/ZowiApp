@@ -5,7 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Common dimensions -->
-    <dimen name="default_font_size">25sp</dimen>
+    <dimen name="default_font_size">40sp</dimen>
     <dimen name="none">0dp</dimen>
 
     <!-- Drag dimensions -->
@@ -36,7 +36,9 @@
     <dimen name="operation_2_edittext_margin">3dp</dimen>
 
     <!-- ColouredGrid dimensions -->
-    <dimen name="element_side">30dp</dimen>
+    <dimen name="coloured_grid_vertical_margin">15dp</dimen>
+    <dimen name="answer_edittext_horizontal_margin">20dp</dimen>
+    <dimen name="answer_button_horizontal_margin">15dp</dimen>
 
     <!-- Music dimensions -->
     <dimen name="dictation_button_horizontal_margin">50dp</dimen>
