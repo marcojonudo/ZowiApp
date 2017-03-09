@@ -49,17 +49,26 @@ public class ActivityConstants {
 
     public static class PuzzleConstants {
         protected static final ActivityType PUZZLE_TYPE = ActivityType.PUZZLE;
-        protected static final String JSON_PARAMETER_IMAGE = "image";
-        protected static final String JSON_PARAMETER_SHAPE = "shape";
-        protected static final String JSON_PARAMETER_PIECESNUMBER = "piecesNumber";
-        protected static final int CONTENT_CONTAINER_MARGIN = 100;
-        protected static final int[][] PIECES_TO_PUZZLE = {{2, 2}, {2, 1}, {2, 2}, {2, 2}, {2, 2}};
+        protected static final String JSON_PARAMETER_IMAGES = "images";
+        protected static final int PIECES_NUMBER = 5;
+        //TODO Change puzzle dimensions
+        protected static final double[][][] PIECES_TO_PUZZLE = {
+            {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
+            {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
+            {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
+    };
         public static final int DISTANCE_LIMIT = 100;
         protected static final double[][][] SHAPES_COORDINATES_FACTORS = {
-            {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
-            {{0, 0}, {0, 0}, {0.5, 0}, {0, 0.5}, {0.5, 0.5}},
-            {{0, 0}, {0.5, 0}, {0.5, 0}, {0.5, 0.5}, {0, 0.5}}
+                {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
+                {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
+                {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}}
         };
+        //TODO This factors are correct, but I only use shape 1 for testing
+//        protected static final double[][][] SHAPES_COORDINATES_FACTORS = {
+//            {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
+//            {{0, 0}, {0, 0}, {0.5, 0}, {0, 0.5}, {0.5, 0.5}},
+//            {{0, 0}, {0.5, 0}, {0.5, 0}, {0.5, 0.5}, {0, 0.5}}
+//        };
     }
 
     protected static class GuideConstants {
