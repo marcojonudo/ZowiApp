@@ -54,4 +54,9 @@
     <!-- Columns dimensions -->
     <dimen name="columns_image_side">75dp</dimen>
 
+    <!-- Puzzle dimensions -->
+    <dimen name="elements_vertical_margin">15dp</dimen>
+    <dimen name="pieces_container_margin">10dp</dimen>
+    <dimen name="pieces_margin">2dp</dimen>
+
 </resources>
