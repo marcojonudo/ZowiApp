@@ -20,6 +20,7 @@ import zowiapp.zowi.marco.zowiapp.activities.MemoryActivity;
 import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
 import zowiapp.zowi.marco.zowiapp.activities.OperationsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
+import zowiapp.zowi.marco.zowiapp.activities.SeedsActivity;
 
 public class GameParameters extends AppCompatActivity {
 
@@ -78,6 +79,9 @@ public class GameParameters extends AppCompatActivity {
                     break;
                 case FOODPYRAMID:
                     new FoodPyramidActivity(context, activityTitle, activityDetails);
+                    break;
+                case SEEDS:
+                    new SeedsActivity(context, activityTitle, activityDetails);
                     break;
                 default:
                     break;

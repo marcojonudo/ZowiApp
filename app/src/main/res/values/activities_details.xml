@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="activities_details">
+        <item>{"description": \"Descripcion 1\", "type": "SEEDS", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"description": \"Descripcion 1\", "type": "FOODPYRAMID", "images": [[zowi_pointer, zowi_pointer, zowi_pointer, zowi_pointer], [green_circular_button, green_circular_button, green_circular_button, green_circular_button], [red_circular_button, red_circular_button, red_circular_button, red_circular_button], [house, house, house, house], [zowi_teeth, zowi_teeth, zowi_teeth, zowi_teeth], [zowi_5_teeth, zowi_5_teeth, zowi_5_teeth, zowi_5_teeth]], "imagesNumber": 7, "correction": [1, 2, 3, 4, 5, 6]}</item>
         <item>{"description": \"Descripcion 1\", "type": "DRAG", "dragImages": [[zowi_pointer, zowi_pointer, zowi_pointer, zowi_pointer], [house, house, house, house], [paper_bin, paper_bin, paper_bin, paper_bin]], "dragImagesNumber": 7, "correction": [LIVING_ROOM, KITCHEN, BEDROOM], "containerElements": 3, "containerImages": [], "texts": ["Salón", "Cocina", "Habitación"]}</item>
         <item>{"description": \"Descripcion 1\", "type": "DRAG", "dragImages": [[zowi_pointer], [green_circular_button], [paper_bin], [red_circular_button], [house]], "dragImagesNumber": 5, "correction": [BREAKFAST, LUNCHEON, LUNCH, SNACK, DINNER], "containerElements": 5, "containerImages": [], "texts": [\"1ª comida\", \"2ª comida\", \"3ª comida\", \"4ª comida\", \"5ª comida\"]}</item>

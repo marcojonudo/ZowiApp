@@ -122,4 +122,15 @@ public class ActivityConstants {
         };
         protected static final int DISTANCE_LIMIT = 75;
     }
+
+    protected static class SeedsConstants {
+        protected static final ActivityType SEEDS_TYPE = ActivityType.SEEDS;
+        protected static final String JSON_PARAMETER_DRAGIMAGES = "dragImages";
+        protected static final String JSON_PARAMETER_CONTAINERELEMENTS = "containerElements";
+        protected static final String JSON_PARAMETER_DRAGIMAGESNUMBER = "dragImagesNumber";
+        protected static final String JSON_PARAMETER_TEXTS = "texts";
+        protected static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
+        protected static final String JSON_PARAMETER_CORRECTION = "correction";
+        protected static final int DISTANCE_LIMIT = 100;
+    }
 }
