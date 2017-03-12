@@ -1,51 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/units_separation_vertical_margin"
     android:id="@+id/unit_container">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="30sp"
-        android:id="@+id/unit_title"/>
+        android:id="@+id/unit_title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:stretchColumns="*"
-        android:id="@+id/unit_activities_table">
 
-        <TableRow
-            android:layout_height="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/activity_1"
+        app:layout_constraintTop_toBottomOf="@+id/unit_title"
+        app:layout_constraintBottom_toTopOf="@+id/activity_5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/activity_2"
+        android:layout_margin="@dimen/menu_item_margin">
+
+        <TextView
             android:layout_width="match_parent"
-            android:paddingBottom="@dimen/activity_vertical_margin">
-
-            <include layout="@layout/menu_grid_item"/>
-
-            <include layout="@layout/menu_grid_item"/>
-
-            <include layout="@layout/menu_grid_item"/>
-
-            <include layout="@layout/menu_grid_item"/>
-
-        </TableRow>
-
-        <TableRow
             android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:gravity="center"/>
+
+        <ImageView
             android:layout_width="match_parent"
-            android:paddingBottom="@dimen/activity_vertical_margin">
+            android:layout_height="match_parent"/>
 
-            <include layout="@layout/menu_grid_item"/>
+    </LinearLayout>
 
-            <include layout="@layout/menu_grid_item"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/activity_2"
+        app:layout_constraintTop_toBottomOf="@+id/unit_title"
+        app:layout_constraintBottom_toTopOf="@+id/activity_6"
+        app:layout_constraintLeft_toRightOf="@+id/activity_1"
+        app:layout_constraintRight_toLeftOf="@+id/activity_3"
+        android:layout_margin="@dimen/menu_item_margin">
 
-        </TableRow>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:gravity="center"/>
 
-    </TableLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/activity_3"
+        app:layout_constraintTop_toBottomOf="@+id/unit_title"
+        app:layout_constraintBottom_toTopOf="@+id/activity_6"
+        app:layout_constraintLeft_toRightOf="@id/activity_2"
+        app:layout_constraintRight_toLeftOf="@+id/activity_4"
+        android:layout_margin="@dimen/menu_item_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:gravity="center"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/activity_4"
+        app:layout_constraintTop_toBottomOf="@+id/unit_title"
+        app:layout_constraintBottom_toTopOf="@+id/activity_8"
+        app:layout_constraintLeft_toRightOf="@id/activity_3"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="@dimen/menu_item_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:gravity="center"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/activity_5"
+        app:layout_constraintTop_toBottomOf="@+id/activity_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/activity_6"
+        android:layout_margin="@dimen/menu_item_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:gravity="center"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/activity_6"
+        app:layout_constraintTop_toBottomOf="@+id/activity_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/activity_5"
+        app:layout_constraintRight_toLeftOf="@+id/activity_7"
+        android:layout_margin="@dimen/menu_item_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:gravity="center"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/activity_7"
+        app:layout_constraintTop_toBottomOf="@+id/activity_3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/activity_6"
+        app:layout_constraintRight_toLeftOf="@+id/activity_8"
+        android:layout_margin="@dimen/menu_item_margin">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/activity_8"
+        app:layout_constraintTop_toBottomOf="@+id/activity_4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/activity_7"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="@dimen/menu_item_margin">
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

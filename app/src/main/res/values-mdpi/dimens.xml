@@ -8,6 +8,10 @@
     <dimen name="default_font_size">40sp</dimen>
     <dimen name="none">0dp</dimen>
 
+    <!-- Menu dimensions -->
+    <dimen name="menu_item_margin">3dp</dimen>
+    <dimen name="units_separation_vertical_margin">20dp</dimen>
+
     <!-- Drag dimensions -->
     <dimen name="drag_images_margin">20dp</dimen>
     <dimen name="drag_images_container_margin">20dp</dimen>
