@@ -63,4 +63,11 @@
     <dimen name="pieces_container_margin">10dp</dimen>
     <dimen name="pieces_margin">2dp</dimen>
 
+    <!-- Seeds dimensions -->
+    <dimen name="seeds_container_horizontal_margin">200dp</dimen>
+    <dimen name="seeds_container_padding">20dp</dimen>
+    <dimen name="seeds_final_container_margin">15dp</dimen>
+    <dimen name="seeds_final_container_padding">10dp</dimen>
+    <dimen name="seed_margin">2dp</dimen>
+
 </resources>

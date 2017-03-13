@@ -53,6 +53,11 @@ public abstract class ActivityTemplate {
             case MUSIC:
                 MusicActivity musicActivity = (MusicActivity) activity;
                 musicActivity.getElementsCoordinates();
+                break;
+            case SEEDS:
+                SeedsActivity seedsActivity = (SeedsActivity) activity;
+                seedsActivity.getElementsCoordinates();
+                break;
             default:
                 break;
         }
@@ -83,6 +88,10 @@ public abstract class ActivityTemplate {
             case FOODPYRAMID:
                 FoodPyramidActivity foodPyramidActivity = (FoodPyramidActivity) activity;
                 foodPyramidActivity.processTouchEvent(view, event);
+                break;
+            case SEEDS:
+                SeedsActivity seedsActivity = (SeedsActivity) activity;
+                seedsActivity.processTouchEvent(view, event);
                 break;
             default:
                 break;

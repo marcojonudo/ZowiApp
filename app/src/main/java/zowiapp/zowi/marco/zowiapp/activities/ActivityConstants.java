@@ -125,12 +125,10 @@ public class ActivityConstants {
 
     protected static class SeedsConstants {
         protected static final ActivityType SEEDS_TYPE = ActivityType.SEEDS;
-        protected static final String JSON_PARAMETER_DRAGIMAGES = "dragImages";
-        protected static final String JSON_PARAMETER_CONTAINERELEMENTS = "containerElements";
-        protected static final String JSON_PARAMETER_DRAGIMAGESNUMBER = "dragImagesNumber";
-        protected static final String JSON_PARAMETER_TEXTS = "texts";
+        protected static final String JSON_PARAMETER_SEEDSIMAGES = "seedsImages";
         protected static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
+        protected static final int NUMBER_OF_SEEDS = 16;
+        protected static final int GUIDELINE_POSITION = 8;
         protected static final String JSON_PARAMETER_CORRECTION = "correction";
-        protected static final int DISTANCE_LIMIT = 100;
     }
 }
