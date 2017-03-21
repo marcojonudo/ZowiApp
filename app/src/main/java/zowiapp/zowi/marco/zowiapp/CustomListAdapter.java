@@ -3,7 +3,6 @@ package zowiapp.zowi.marco.zowiapp;
 import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +58,6 @@ public class CustomListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
-        Log.i("position: ", String.valueOf(position));
         if (view == null) {
             if (units[position] == null) {
                 ConstraintLayout unitContainer = (ConstraintLayout) inflater.inflate(R.layout.menu_unit_container_layout, viewGroup, false);
