@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -39,7 +40,8 @@ public class SeedsActivity extends ActivityTemplate {
     private String[][] seedsImages;
     private String[] containerImages, correction;
     private int[][] seedsCoordinates, seedsDimensions, containerCoordinates, containerDimensions;
-    private float startX, startY, upperLimit = 0;
+    private float startX, startY, distanceX, distanceY, upperLimit = 0;
+    float dX, dY;
 
     public SeedsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -271,19 +273,23 @@ public class SeedsActivity extends ActivityTemplate {
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {
+        float newX, newY;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 /* Values used to calculate de distance to move the element */
                 startX = event.getRawX();
                 startY = event.getRawY();
 
+                dX = view.getX() - event.getRawX();
+                dY = view.getY() - event.getRawY();
+
                 view.bringToFront();
                 break;
             case MotionEvent.ACTION_MOVE:
                 /* The distance of the element to the start point is calculated when the user
                    moves it */
-                float distanceX = event.getRawX() - startX;
-                float distanceY = event.getRawY() - startY;
+                distanceX = event.getRawX() - startX;
+                distanceY = event.getRawY() - startY;
 
                 /* The tag is the index plus the category, so it is necessary to split it */
                 int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
@@ -306,31 +312,46 @@ public class SeedsActivity extends ActivityTemplate {
                 float viewCenterX = view.getX() + view.getWidth()/2;
                 float viewCenterY = view.getY() + view.getHeight()/2;
 
+                index = Integer.parseInt(view.getTag().toString().split("-")[0]);
+
+                boolean correctAnswer = false;
+                int insideColumnIndex = -1;
                 /* We loop trought the number of containers */
                 for (int i=0; i<containerCoordinates.length; i++) {
                     if ((viewCenterX > containerCoordinates[i][0])&&(viewCenterX < (containerCoordinates[i][0]+containerDimensions[i][0]))) {
                         if (viewCenterY > containerCoordinates[i][1]) {
-                            /* If the view is not completely inside the box, we move it */
-                            if (view.getX() < containerCoordinates[i][0]) {
-                                view.setX(containerCoordinates[i][0]);
-                            }
-                            else if ((view.getX()+view.getWidth()) > (containerCoordinates[i][0]+containerDimensions[i][0])) {
-                                view.setX(containerCoordinates[i][0]+containerDimensions[i][0]-view.getWidth());
-                            }
-
-                            if (view.getY() < containerCoordinates[i][1]) {
-                                view.setY(containerCoordinates[i][1]);
-                            }
-                            else if ((view.getY()+view.getHeight()) > (containerCoordinates[i][1]+containerDimensions[i][1])) {
-                                view.setY(containerCoordinates[i][1]+containerDimensions[i][1]);
-                            }
+                            insideColumnIndex = i;
 
                             String imageCategory = view.getTag().toString().split("-")[1];
-                            seedsChecker.check(gameParameters, imageCategory, correction[i]);
+                            correctAnswer = seedsChecker.check(gameParameters, imageCategory, correction[i]);
 
                             break;
                         }
                     }
+                }
+
+                if (correctAnswer) {
+                    /* If the view is not completely inside the box, we move it */
+                    if (view.getX() < containerCoordinates[insideColumnIndex][0]) {
+                        view.setX(containerCoordinates[insideColumnIndex][0]);
+                    }
+                    else if ((view.getX()+view.getWidth()) > (containerCoordinates[insideColumnIndex][0]+containerDimensions[insideColumnIndex][0])) {
+                        view.setX(containerCoordinates[insideColumnIndex][0]+containerDimensions[insideColumnIndex][0]-view.getWidth());
+                    }
+
+                    if (view.getY() < containerCoordinates[insideColumnIndex][1]) {
+                        view.setY(containerCoordinates[insideColumnIndex][1]);
+                    }
+                    else if ((view.getY()+view.getHeight()) > (containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1])) {
+                        view.setY(containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1]);
+                    }
+                }
+                else {
+                    TranslateAnimation translateAnimation = new TranslateAnimation(0, seedsCoordinates[index][0]-(int)view.getX(), 0, seedsCoordinates[index][1]-(int)view.getY());
+                    translateAnimation.setDuration(1000);
+                    translateAnimation.setFillAfter(true);
+
+                    view.startAnimation(translateAnimation);
                 }
                 break;
             default:
