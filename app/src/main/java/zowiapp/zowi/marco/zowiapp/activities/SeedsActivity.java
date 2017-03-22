@@ -1,16 +1,20 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
-import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
@@ -40,8 +44,8 @@ public class SeedsActivity extends ActivityTemplate {
     private String[][] seedsImages;
     private String[] containerImages, correction;
     private int[][] seedsCoordinates, seedsDimensions, containerCoordinates, containerDimensions;
-    private float startX, startY, distanceX, distanceY, upperLimit = 0;
-    float dX, dY;
+    private float distanceToLeft, distanceToTop;
+    private int[] dragLimits;
 
     public SeedsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -67,6 +71,7 @@ public class SeedsActivity extends ActivityTemplate {
             seedsDimensions = new int[SeedsConstants.NUMBER_OF_SEEDS][CommonConstants.AXIS_NUMBER];
             containerCoordinates = new int[containerImages.length][CommonConstants.AXIS_NUMBER];
             containerDimensions = new int[containerImages.length][CommonConstants.AXIS_NUMBER];
+            dragLimits = new int[4];
 
             for (int i=0; i<seedsImages.length; i++) {
                 JSONArray jsonCategoryImages = jsonSeedsImages.getJSONArray(i);
@@ -109,6 +114,14 @@ public class SeedsActivity extends ActivityTemplate {
     protected void getElementsCoordinates() {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         ConstraintLayout seedsImagesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.seeds_images_container);
+
+        /* Store limits for dragging vies */
+        if (contentContainer != null) {
+            dragLimits[0] = 0;
+            dragLimits[1] = 0;
+            dragLimits[2] = contentContainer.getRight();
+            dragLimits[3] = contentContainer.getBottom();
+        }
 
         if (seedsImagesContainer != null) {
             View constraintView;
@@ -217,26 +230,6 @@ public class SeedsActivity extends ActivityTemplate {
 
     private void loadContainerImage(ImageView imageView, String imageName, int i) {
         imageView.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-
-//        Drawable drawable = imageView.getDrawable();
-//        float scaleFactor;
-//        if (containerDimensions[i][0] < containerDimensions[i][0]) {
-//            scaleFactor = (float)containerDimensions[i][0]/(float)drawable.getIntrinsicWidth();
-//        }
-//        else {
-//            scaleFactor = (float)containerDimensions[i][1]/(float)drawable.getIntrinsicHeight();
-//        }
-//
-//        int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
-//        int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
-//        ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
-//        layoutParams.width = width;
-//        layoutParams.height = height;
-//
-//        containerCoordinates[i][0] = containerCoordinates[i][0] - width/2;
-//        containerCoordinates[i][1] = containerCoordinates[i][1] - height/2;
-//        imageView.setX(seedsCoordinates[i][0]);
-//        imageView.setY(seedsCoordinates[i][1]);
         String tag = String.valueOf(i);
         imageView.setTag(tag);
     }
@@ -272,47 +265,50 @@ public class SeedsActivity extends ActivityTemplate {
         contentContainer.addView(image);
     }
 
-    protected void processTouchEvent(View view, MotionEvent event) {
-        float newX, newY;
+    protected boolean processTouchEvent(View view, MotionEvent event) {
+        float left, right, top, bottom;
+
+        LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);
+        int headerTextHeight = 0;
+        if (headerText != null)
+            headerTextHeight = headerText.getHeight();
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                /* Values used to calculate de distance to move the element */
-                startX = event.getRawX();
-                startY = event.getRawY();
-
-                dX = view.getX() - event.getRawX();
-                dY = view.getY() - event.getRawY();
+                distanceToLeft = view.getX() - event.getRawX();
+                distanceToTop = headerTextHeight + view.getY() - event.getRawY();
 
                 view.bringToFront();
                 break;
             case MotionEvent.ACTION_MOVE:
-                /* The distance of the element to the start point is calculated when the user
-                   moves it */
-                distanceX = event.getRawX() - startX;
-                distanceY = event.getRawY() - startY;
+                left = event.getRawX() + distanceToLeft;
+                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
+                top = event.getRawY() + distanceToTop - headerTextHeight;
+                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
 
-                /* The tag is the index plus the category, so it is necessary to split it */
-                int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
-
-                /* Mechanism to avoid the element to move behind the title and description
+                /* Mechanism to avoid the element to move outside the container.
                    It is only moved when it is in 'contentContainer' */
-                if (event.getRawY() > upperLimit) {
-                    view.setX(seedsCoordinates[index][0]+distanceX);
-                    view.setY(seedsCoordinates[index][1]+distanceY);
-
-                    if (view.getY()<=0) {
-                        upperLimit = event.getRawY();
+                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
+                    if ((top > dragLimits[1]) || (bottom < dragLimits[3])) {
+                        view.setY(top);
+                    }
+                }
+                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
+                    if ((left > dragLimits[0] || right < dragLimits[2])) {
+                        view.setX(left);
                     }
                 }
                 else {
-                    view.setX(seedsCoordinates[index][0]+distanceX);
+                    view.setX(left);
+                    view.setY(top);
                 }
+
                 break;
             case MotionEvent.ACTION_UP:
                 float viewCenterX = view.getX() + view.getWidth()/2;
                 float viewCenterY = view.getY() + view.getHeight()/2;
 
-                index = Integer.parseInt(view.getTag().toString().split("-")[0]);
+                int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
 
                 boolean correctAnswer = false;
                 int insideColumnIndex = -1;
@@ -347,16 +343,21 @@ public class SeedsActivity extends ActivityTemplate {
                     }
                 }
                 else {
-                    TranslateAnimation translateAnimation = new TranslateAnimation(0, seedsCoordinates[index][0]-(int)view.getX(), 0, seedsCoordinates[index][1]-(int)view.getY());
-                    translateAnimation.setDuration(1000);
-                    translateAnimation.setFillAfter(true);
+                    ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), seedsCoordinates[index][0]);
+                    animX.setDuration(1000);
+                    ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), seedsCoordinates[index][1]);
+                    animY.setDuration(1000);
 
-                    view.startAnimation(translateAnimation);
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.play(animX).with(animY);
+                    animatorSet.start();
                 }
                 break;
             default:
                 break;
         }
+
+        return true;
     }
 
 }
