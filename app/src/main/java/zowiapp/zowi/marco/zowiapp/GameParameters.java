@@ -21,6 +21,7 @@ import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
 import zowiapp.zowi.marco.zowiapp.activities.OperationsActivity;
 import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
 import zowiapp.zowi.marco.zowiapp.activities.SeedsActivity;
+import zowiapp.zowi.marco.zowiapp.activities.ZowiEyesActivity;
 
 public class GameParameters extends AppCompatActivity {
 
@@ -82,6 +83,9 @@ public class GameParameters extends AppCompatActivity {
                     break;
                 case SEEDS:
                     new SeedsActivity(context, activityTitle, activityDetails);
+                    break;
+                case ZOWI_EYES:
+                    new ZowiEyesActivity(context, activityTitle, activityDetails);
                     break;
                 default:
                     break;

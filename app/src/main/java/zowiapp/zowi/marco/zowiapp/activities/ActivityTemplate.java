@@ -58,6 +58,10 @@ public abstract class ActivityTemplate {
                 SeedsActivity seedsActivity = (SeedsActivity) activity;
                 seedsActivity.getElementsCoordinates();
                 break;
+            case ZOWI_EYES:
+                ZowiEyesActivity zowiEyesActivity = (ZowiEyesActivity) activity;
+                zowiEyesActivity.getElementsCoordinates();
+                break;
             default:
                 break;
         }

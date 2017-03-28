@@ -70,4 +70,8 @@
     <dimen name="seeds_final_container_padding">10dp</dimen>
     <dimen name="seed_margin">2dp</dimen>
 
+    <!-- ZowiEyes dimensions -->
+    <dimen name="zowi_eyes_images_margin">5dp</dimen>
+    <dimen name="zowi_eyes_hole_radius">100dp</dimen>
+
 </resources>

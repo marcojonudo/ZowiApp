@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="activities_details">
+        <item>{"description": \"Descripcion 1\", "type": "ZOWI_EYES", "imagesNumber": [4, 2], "images": [[house, house, house, house, house, house], [zowi_pointer, zowi_pointer, zowi_pointer]]}</item>
         <item>{"description": \"Descripcion 1\", "type": "SEEDS", "seedsImages": [[black, black, black, black], [black, black, black, black], [black, black, black, black], [black, black, black, black]], "containerImages": [black, black, black, black], "correction": [RED, GREEN, BLUE, YELLOW]}</item>
         <item>{"description": \"Descripcion 1\", "type": "FOODPYRAMID", "images": [[zowi_pointer, zowi_pointer, zowi_pointer, zowi_pointer], [green_circular_button, green_circular_button, green_circular_button, green_circular_button], [red_circular_button, red_circular_button, red_circular_button, red_circular_button], [house, house, house, house], [zowi_teeth, zowi_teeth, zowi_teeth, zowi_teeth], [zowi_5_teeth, zowi_5_teeth, zowi_5_teeth, zowi_5_teeth]], "imagesNumber": 7, "correction": [1, 2, 3, 4, 5, 6]}</item>
         <item>{"description": \"Descripcion 1\", "type": "DRAG", "dragImages": [[zowi_pointer, zowi_pointer, zowi_pointer, zowi_pointer], [house, house, house, house], [paper_bin, paper_bin, paper_bin, paper_bin]], "dragImagesNumber": 7, "correction": [LIVING_ROOM, KITCHEN, BEDROOM], "containerElements": 3, "containerImages": [], "texts": ["Salón", "Cocina", "Habitación"]}</item>

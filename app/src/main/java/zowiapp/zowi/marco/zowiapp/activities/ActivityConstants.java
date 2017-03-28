@@ -131,4 +131,14 @@ public class ActivityConstants {
         protected static final int GUIDELINE_POSITION = 8;
         protected static final String JSON_PARAMETER_CORRECTION = "correction";
     }
+
+    public static class ZowiEyesConstants {
+        protected static final ActivityType ZOWI_EYES_TYPE = ActivityType.ZOWI_EYES;
+        protected static final String JSON_PARAMETER_IMAGESNUMBER = "imagesNumber";
+        protected static final String JSON_PARAMETER_IMAGES = "images";
+        protected static final int LAYOUT_IMAGES = 12;
+        public static final int[][] DISTANCE_LIMITS= {
+            {500, 10}, {350, 5}, {200, 3}, {100, 2}, {50, 1}
+        };
+    }
 }
