@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/operations_button"
+        app:layout_constraintRight_toLeftOf="@+id/operation_guideline"
         android:layout_marginStart="@dimen/operation_2_start_margin">
 
         <EditText
@@ -46,6 +46,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:background="@drawable/circle"
+            android:digits="+-"
             android:textSize="@dimen/operations_font_size"
             android:id="@+id/operation_edittext_2"
             app:layout_constraintTop_toTopOf="parent"
@@ -116,16 +117,22 @@
 
     </android.support.constraint.ConstraintLayout>
 
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/operation_guideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7"/>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/operations_button"
-        android:background="@drawable/circle"
+        android:background="@drawable/semisquare"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/operation_container"
+        app:layout_constraintLeft_toRightOf="@+id/operation_guideline"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
         android:layout_marginTop="@dimen/operation_button_vertical_margin"
         android:layout_marginBottom="@dimen/operation_button_vertical_margin"
         android:layout_marginStart="@dimen/operation_2_button_horizontal_margin"
@@ -139,7 +146,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="Corregir"/>
+            android:text="@string/check"/>
 
     </android.support.constraint.ConstraintLayout>
 

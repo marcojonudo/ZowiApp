@@ -34,9 +34,9 @@
     <dimen name="operations_font_size">50sp</dimen>
     <dimen name="operation_start_margin">50dp</dimen>
     <dimen name="operation_2_start_margin">20dp</dimen>
-    <dimen name="operation_button_horizontal_margin">60dp</dimen>
-    <dimen name="operation_2_button_horizontal_margin">30dp</dimen>
-    <dimen name="operation_button_vertical_margin">3dp</dimen>
+    <dimen name="operation_button_horizontal_margin">10dp</dimen>
+    <dimen name="operation_2_button_horizontal_margin">10dp</dimen>
+    <dimen name="operation_button_vertical_margin">5dp</dimen>
     <dimen name="operation_2_edittext_margin">3dp</dimen>
 
     <!-- ColouredGrid dimensions -->
@@ -53,7 +53,7 @@
     <!-- Pyramid dimensions -->
     <dimen name="pyramid_image_side">265dp</dimen>
     <dimen name="pyramid_text_side">300dp</dimen>
-    <dimen name="food_image_side">75dp</dimen>
+    <dimen name="food_image_side">150dp</dimen>
 
     <!-- Columns dimensions -->
     <dimen name="columns_image_side">75dp</dimen>

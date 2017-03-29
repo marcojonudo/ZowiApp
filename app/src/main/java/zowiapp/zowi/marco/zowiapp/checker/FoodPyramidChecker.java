@@ -9,12 +9,14 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
  */
 public class FoodPyramidChecker {
 
-    public void check(GameParameters gameParameters, String imageCategory, String containerCategory) {
+    public boolean check(GameParameters gameParameters, String imageCategory, String containerCategory) {
         if (imageCategory.equals(containerCategory)) {
             Toast.makeText(gameParameters, "Bien", Toast.LENGTH_SHORT).show();
+            return true;
         }
         else {
             Toast.makeText(gameParameters, "Mal", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 

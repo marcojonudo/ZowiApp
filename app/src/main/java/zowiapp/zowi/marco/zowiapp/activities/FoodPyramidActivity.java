@@ -1,5 +1,7 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -37,7 +39,8 @@ public class FoodPyramidActivity extends ActivityTemplate {
     private int imagesNumber;
     private String[] correction;
     private int[][] imagesCoordinates, pyramidLimitsCoordinates;
-    private float startX, startY, upperLimit = 0;
+    private float distanceToLeft, distanceToTop;
+    private int[] dragLimits;
 
     public FoodPyramidActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -58,6 +61,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
             images = new String[jsonImages.length()][];
             imagesNumber = activityDetails.getInt(FoodPyramidConstants.JSON_PARAMETER_IMAGESNUMBER);
             correction = new String[jsonCorrection.length()];
+            dragLimits = new int[4];
 
             /* The different types of food are stored in different indexes of 'images' */
             for (int i=0; i<images.length; i++) {
@@ -97,6 +101,13 @@ public class FoodPyramidActivity extends ActivityTemplate {
     protected void getElementsCoordinates() {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         FrameLayout mainImageContainer = (FrameLayout) gameParameters.findViewById(R.id.main_image_container);
+
+        if (contentContainer != null) {
+            dragLimits[0] = 0;
+            dragLimits[1] = 0;
+            dragLimits[2] = contentContainer.getRight();
+            dragLimits[3] = contentContainer.getBottom();
+        }
 
         if (mainImageContainer != null) {
             pyramidLimitsCoordinates = new int[FoodPyramidConstants.PYRAMID_COORDINATES_LENGTH][CommonConstants.AXIS_NUMBER];
@@ -206,39 +217,52 @@ public class FoodPyramidActivity extends ActivityTemplate {
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {
+        float left, right, top, bottom;
+
+        LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);
+        int headerTextHeight = 0;
+        if (headerText != null)
+            headerTextHeight = headerText.getHeight();
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 /* Values used to calculate de distance to move the element */
-                startX = event.getRawX();
-                startY = event.getRawY();
+                distanceToLeft = view.getX() - event.getRawX();
+                distanceToTop = headerTextHeight + view.getY() - event.getRawY();
 
                 view.bringToFront();
                 break;
             case MotionEvent.ACTION_MOVE:
-                /* The distance of the element to the start point is calculated when the user
-                   moves it */
-                float distanceX = event.getRawX() - startX;
-                float distanceY = event.getRawY() - startY;
+                left = event.getRawX() + distanceToLeft;
+                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
+                top = event.getRawY() + distanceToTop - headerTextHeight;
+                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
 
-                int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
-
-                /* Mechanism to avoid the element to move behind the title and description
+                /* Mechanism to avoid the element to move outside the container.
                    It is only moved when it is in 'contentContainer' */
-                if (event.getRawY() > upperLimit) {
-                    view.setX(imagesCoordinates[index][0]+distanceX);
-                    view.setY(imagesCoordinates[index][1]+distanceY);
+                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
+                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
+                        view.setY(top);
+                    }
 
-                    if (view.getY()<=0) {
-                        upperLimit = event.getRawY();
+                }
+                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
+                    if ((left > dragLimits[0] && right < dragLimits[2])) {
+                        view.setX(left);
                     }
                 }
                 else {
-                    view.setX(imagesCoordinates[index][0]+distanceX);
+                    view.setX(left);
+                    view.setY(top);
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 float viewX = view.getX() + view.getWidth()/2;
                 float viewY = view.getY() + view.getHeight()/2;
+
+                int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
+                String imageCategory = view.getTag().toString().split("-")[1];
+                boolean correctAnswer = false;
 
                 /* This equations make us know if the center of the view is between the two sides of the pyramid */
                 int leftOrRight1 = (pyramidLimitsCoordinates[0][0]-pyramidLimitsCoordinates[pyramidLimitsCoordinates.length-1][0]) *
@@ -282,8 +306,17 @@ public class FoodPyramidActivity extends ActivityTemplate {
                     else {
                         step = 5;
                     }
-                    String imageCategory = view.getTag().toString().split("-")[1];
-                    foodPyramidChecker.check(gameParameters, imageCategory, correction[step]);
+                    correctAnswer = foodPyramidChecker.check(gameParameters, imageCategory, correction[step]);
+                }
+                if (!correctAnswer) {
+                    ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), imagesCoordinates[index][0]);
+                    animX.setDuration(1000);
+                    ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), imagesCoordinates[index][1]);
+                    animY.setDuration(1000);
+
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.play(animX).with(animY);
+                    animatorSet.start();
                 }
                 break;
             default:

@@ -1,9 +1,10 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +42,8 @@ public class ColumnsActivity extends ActivityTemplate {
     private String[] correction;
     private int cellWidth, cellHeight;
     private int[][] imagesCoordinates, columnsCoordinates, columnsDimensions;
-    private float startX, startY, upperLimit = 0;
+    private float distanceToLeft, distanceToTop;
+    private int[] dragLimits;
 
     public ColumnsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -64,6 +65,7 @@ public class ColumnsActivity extends ActivityTemplate {
             JSONArray jsonCorrection = activityDetails.getJSONArray(ColumnsConstants.JSON_PARAMETER_CORRECTION);
             images = new String[jsonImages.length()][];
             correction = new String[jsonCorrection.length()];
+            dragLimits = new int[4];
 
             for (int i=0; i<images.length; i++) {
                 JSONArray jsonCategoryImages = jsonImages.getJSONArray(i);
@@ -106,6 +108,13 @@ public class ColumnsActivity extends ActivityTemplate {
     protected void getElementsCoordinates() {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         ConstraintLayout grid = (ConstraintLayout) gameParameters.findViewById(R.id.columns_grid);
+
+        if (contentContainer != null) {
+            dragLimits[0] = 0;
+            dragLimits[1] = 0;
+            dragLimits[2] = contentContainer.getRight();
+            dragLimits[3] = contentContainer.getBottom();
+        }
 
         if (grid != null) {
             int left = grid.getLeft();
@@ -234,74 +243,92 @@ public class ColumnsActivity extends ActivityTemplate {
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {
-        /* The tag is the index plus the category, so it is necessary to split it */
-        int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
+        float left, right, top, bottom;
+
+        LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);
+        int headerTextHeight = 0;
+        if (headerText != null)
+            headerTextHeight = headerText.getHeight();
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                /* Values used to calculate de distance to move the element */
-                startX = event.getRawX();
-                startY = event.getRawY();
+                distanceToLeft = view.getX() - event.getRawX();
+                distanceToTop = headerTextHeight + view.getY() - event.getRawY();
 
                 view.bringToFront();
                 break;
             case MotionEvent.ACTION_MOVE:
-                /* The distance of the element to the start point is calculated when the user
-                   moves it */
-                float distanceX = event.getRawX() - startX;
-                float distanceY = event.getRawY() - startY;
+                left = event.getRawX() + distanceToLeft;
+                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
+                top = event.getRawY() + distanceToTop - headerTextHeight;
+                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
 
-                /* Mechanism to avoid the element to move behind the title and description
+                /* Mechanism to avoid the element to move outside the container.
                    It is only moved when it is in 'contentContainer' */
-                if (event.getRawY() > upperLimit) {
-                    view.setX(imagesCoordinates[index][0]+distanceX);
-                    view.setY(imagesCoordinates[index][1]+distanceY);
-
-                    if (view.getY()<=0) {
-                        upperLimit = event.getRawY();
+                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
+                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
+                        view.setY(top);
+                    }
+                }
+                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
+                    if ((left > dragLimits[0] && right < dragLimits[2])) {
+                        view.setX(left);
                     }
                 }
                 else {
-                    view.setX(imagesCoordinates[index][0]+distanceX);
+                    view.setX(left);
+                    view.setY(top);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                upperLimit = 0;
-
                 float viewCenterX = view.getX() + view.getWidth()/2;
                 float viewCenterY = view.getY() + view.getHeight()/2;
 
-                for (int i = 0; i< columnsCoordinates.length; i++) {
+                int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
+
+                boolean correctAnswer = false;
+                int insideColumnIndex = -1;
+                /* We loop trought the number of containers */
+                for (int i=0; i<columnsCoordinates.length; i++) {
                     if ((viewCenterX > columnsCoordinates[i][0])&&(viewCenterX < (columnsCoordinates[i][0]+columnsDimensions[i][0]))) {
                         if (viewCenterY > columnsCoordinates[i][1]) {
-                            /* If the view is not completely inside the box, we move it */
-                            if (view.getX() < columnsCoordinates[i][0]) {
-                                view.setX(columnsCoordinates[i][0]);
-                            }
-                            else if ((view.getX()+view.getWidth()) > (columnsCoordinates[i][0]+columnsDimensions[i][0])) {
-                                view.setX(columnsCoordinates[i][0]+columnsDimensions[i][0]-view.getWidth());
-                            }
-
-                            if (view.getY() < columnsCoordinates[i][1]) {
-                                view.setY(columnsCoordinates[i][1]);
-                            }
-                            else if ((view.getY()+view.getHeight()) > (columnsCoordinates[i][1]+columnsDimensions[i][1])) {
-                                view.setY(columnsCoordinates[i][1]+columnsDimensions[i][1]);
-                            }
+                            insideColumnIndex = i;
 
                             String imageCategory = view.getTag().toString().split("-")[1];
-                            columnsChecker.check(gameParameters, imageCategory, correction[i]);
+                            correctAnswer = columnsChecker.check(gameParameters, imageCategory, correction[i]);
+
+                            break;
                         }
                     }
                 }
-                /* The element goes back to the original position */
-//                else {
-//                    view.setX(piecesCoordinates[(int)view.getTag()][0]);
-//                    view.setY(piecesCoordinates[(int)view.getTag()][1]);
-//                }
 
-                /* Store the new coordinates */
-                imagesCoordinates[index][0] = (int)view.getX();
-                imagesCoordinates[index][1] = (int)view.getY();
+                if (correctAnswer) {
+                    /* If the view is not completely inside the box, we move it */
+                    if (view.getX() < columnsCoordinates[insideColumnIndex][0]) {
+                        view.setX(columnsCoordinates[insideColumnIndex][0]);
+                    }
+                    else if ((view.getX()+view.getWidth()) > (columnsCoordinates[insideColumnIndex][0]+columnsDimensions[insideColumnIndex][0])) {
+                        view.setX(columnsCoordinates[insideColumnIndex][0]+columnsDimensions[insideColumnIndex][0]-view.getWidth());
+                    }
+
+                    if (view.getY() < columnsCoordinates[insideColumnIndex][1]) {
+                        view.setY(columnsCoordinates[insideColumnIndex][1]);
+                    }
+                    else if ((view.getY()+view.getHeight()) > (columnsCoordinates[insideColumnIndex][1]+columnsDimensions[insideColumnIndex][1])) {
+                        view.setY(columnsCoordinates[insideColumnIndex][1]+columnsDimensions[insideColumnIndex][1]-view.getHeight());
+                    }
+                }
+                else {
+                    ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), imagesCoordinates[index][0]);
+                    animX.setDuration(1000);
+                    ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), imagesCoordinates[index][1]);
+                    animY.setDuration(1000);
+
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.play(animX).with(animY);
+                    animatorSet.start();
+                }
+
                 break;
             default:
                 break;

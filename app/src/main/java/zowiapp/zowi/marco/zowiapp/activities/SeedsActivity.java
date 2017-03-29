@@ -3,16 +3,13 @@ package zowiapp.zowi.marco.zowiapp.activities;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -289,12 +286,12 @@ public class SeedsActivity extends ActivityTemplate {
                 /* Mechanism to avoid the element to move outside the container.
                    It is only moved when it is in 'contentContainer' */
                 if ((left <= dragLimits[0] || right >= dragLimits[2])) {
-                    if ((top > dragLimits[1]) || (bottom < dragLimits[3])) {
+                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
                         view.setY(top);
                     }
                 }
                 else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
-                    if ((left > dragLimits[0] || right < dragLimits[2])) {
+                    if ((left > dragLimits[0] && right < dragLimits[2])) {
                         view.setX(left);
                     }
                 }
@@ -302,7 +299,6 @@ public class SeedsActivity extends ActivityTemplate {
                     view.setX(left);
                     view.setY(top);
                 }
-
                 break;
             case MotionEvent.ACTION_UP:
                 float viewCenterX = view.getX() + view.getWidth()/2;
@@ -339,7 +335,7 @@ public class SeedsActivity extends ActivityTemplate {
                         view.setY(containerCoordinates[insideColumnIndex][1]);
                     }
                     else if ((view.getY()+view.getHeight()) > (containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1])) {
-                        view.setY(containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1]);
+                        view.setY(containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1]-view.getHeight());
                     }
                 }
                 else {

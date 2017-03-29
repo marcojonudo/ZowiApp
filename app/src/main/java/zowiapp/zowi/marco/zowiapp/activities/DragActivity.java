@@ -1,5 +1,7 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
@@ -41,7 +43,8 @@ public class DragActivity extends ActivityTemplate {
     private String[] containerImages, texts, correction;
     private int containerElements, dragImagesNumber;
     private int[][] dragCoordinates, containerCoordinates, dragDimensions, containerDimensions;
-    private float startX, startY, upperLimit = 0;
+    private float distanceToLeft, distanceToTop;
+    private int[] dragLimits;
 
     public DragActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -71,6 +74,7 @@ public class DragActivity extends ActivityTemplate {
             dragDimensions = new int[dragImagesNumber][CommonConstants.AXIS_NUMBER];
             containerCoordinates = new int[containerElements][CommonConstants.AXIS_NUMBER];
             containerDimensions = new int[containerElements][CommonConstants.AXIS_NUMBER];
+            dragLimits = new int[4];
 
             /* Drag elements number doesn't have to be the same as container elements one */
             for (int i=0; i<dragImages.length; i++) {
@@ -143,6 +147,13 @@ public class DragActivity extends ActivityTemplate {
     protected void getElementsCoordinates() {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         ConstraintLayout constraintImages = (ConstraintLayout) gameParameters.findViewById(R.id.constraint_images);
+
+        if (contentContainer != null) {
+            dragLimits[0] = 0;
+            dragLimits[1] = 0;
+            dragLimits[2] = contentContainer.getRight();
+            dragLimits[3] = contentContainer.getBottom();
+        }
 
         /* We get the coordinates and dimensions on the view and load the images in 'contentContainer' */
         /* This way, they can be dragged over the whole screen */
@@ -258,63 +269,90 @@ public class DragActivity extends ActivityTemplate {
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {
+        float left, right, top, bottom;
+
+        LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);
+        int headerTextHeight = 0;
+        if (headerText != null)
+            headerTextHeight = headerText.getHeight();
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                /* Values used to calculate de distance to move the element */
-                startX = event.getRawX();
-                startY = event.getRawY();
+                distanceToLeft = view.getX() - event.getRawX();
+                distanceToTop = headerTextHeight + view.getY() - event.getRawY();
 
                 view.bringToFront();
                 break;
             case MotionEvent.ACTION_MOVE:
-                /* The distance of the element to the start point is calculated when the user
-                   moves it */
-                float distanceX = event.getRawX() - startX;
-                float distanceY = event.getRawY() - startY;
+                left = event.getRawX() + distanceToLeft;
+                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
+                top = event.getRawY() + distanceToTop - headerTextHeight;
+                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
 
-                /* The tag is the index plus the category, so it is necessary to split it */
-                int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
-
-                /* Mechanism to avoid the element to move behind the title and description
+                /* Mechanism to avoid the element to move outside the container.
                    It is only moved when it is in 'contentContainer' */
-                if (event.getRawY() > upperLimit) {
-                    view.setX(dragCoordinates[index][0]+distanceX);
-                    view.setY(dragCoordinates[index][1]+distanceY);
-
-                    if (view.getY()<=0) {
-                        upperLimit = event.getRawY();
+                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
+                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
+                        view.setY(top);
+                    }
+                }
+                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
+                    if ((left > dragLimits[0] && right < dragLimits[2])) {
+                        view.setX(left);
                     }
                 }
                 else {
-                    view.setX(dragCoordinates[index][0]+distanceX);
+                    view.setX(left);
+                    view.setY(top);
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 float viewCenterX = view.getX() + view.getWidth()/2;
                 float viewCenterY = view.getY() + view.getHeight()/2;
 
-                for (int i=0; i<containerElements; i++) {
+                int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
+
+                boolean correctAnswer = false;
+                int insideColumnIndex = -1;
+                /* We loop trought the number of containers */
+                for (int i=0; i<containerCoordinates.length; i++) {
                     if ((viewCenterX > containerCoordinates[i][0])&&(viewCenterX < (containerCoordinates[i][0]+containerDimensions[i][0]))) {
                         if (viewCenterY > containerCoordinates[i][1]) {
-                            /* If the view is not completely inside the box, we move it */
-                            if (view.getX() < containerCoordinates[i][0]) {
-                                view.setX(containerCoordinates[i][0]);
-                            }
-                            else if ((view.getX()+view.getWidth()) > (containerCoordinates[i][0]+containerDimensions[i][0])) {
-                                view.setX(containerCoordinates[i][0]+containerDimensions[i][0]-view.getWidth());
-                            }
-
-                            if (view.getY() < containerCoordinates[i][1]) {
-                                view.setY(containerCoordinates[i][1]);
-                            }
-                            else if ((view.getY()+view.getHeight()) > (containerCoordinates[i][1]+containerDimensions[i][1])) {
-                                view.setY(containerCoordinates[i][1]+containerDimensions[i][1]);
-                            }
+                            insideColumnIndex = i;
 
                             String imageCategory = view.getTag().toString().split("-")[1];
-                            dragChecker.check(gameParameters, imageCategory, correction[i]);
+                            correctAnswer = dragChecker.check(gameParameters, imageCategory, correction[i]);
+
+                            break;
                         }
                     }
+                }
+
+                if (correctAnswer) {
+                    /* If the view is not completely inside the box, we move it */
+                    if (view.getX() < containerCoordinates[insideColumnIndex][0]) {
+                        view.setX(containerCoordinates[insideColumnIndex][0]);
+                    }
+                    else if ((view.getX()+view.getWidth()) > (containerCoordinates[insideColumnIndex][0]+containerDimensions[insideColumnIndex][0])) {
+                        view.setX(containerCoordinates[insideColumnIndex][0]+containerDimensions[insideColumnIndex][0]-view.getWidth());
+                    }
+
+                    if (view.getY() < containerCoordinates[insideColumnIndex][1]) {
+                        view.setY(containerCoordinates[insideColumnIndex][1]);
+                    }
+                    else if ((view.getY()+view.getHeight()) > (containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1])) {
+                        view.setY(containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1]-view.getHeight());
+                    }
+                }
+                else {
+                    ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), dragCoordinates[index][0]);
+                    animX.setDuration(1000);
+                    ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), dragCoordinates[index][1]);
+                    animY.setDuration(1000);
+
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.play(animX).with(animY);
+                    animatorSet.start();
                 }
                 break;
             default:
