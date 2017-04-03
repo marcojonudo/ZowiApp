@@ -23,6 +23,7 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ZowiEyesConstants;
 import zowiapp.zowi.marco.zowiapp.checker.ZowiEyesChecker;
+import zowiapp.zowi.marco.zowiapp.error.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 
 /**
@@ -87,6 +88,9 @@ public class ZowiEyesActivity extends ActivityTemplate {
             LayoutListener layoutListener = new LayoutListener(ZowiEyesConstants.ZOWI_EYES_TYPE, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
+        }
     }
 
     protected void getElementsCoordinates() {
@@ -99,6 +103,9 @@ public class ZowiEyesActivity extends ActivityTemplate {
             title.setTextColor(ContextCompat.getColor(gameParameters, R.color.white));
             TextView description = (TextView) headerText.getChildAt(1);
             description.setTextColor(ContextCompat.getColor(gameParameters, R.color.white));
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "headerText");
         }
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
@@ -114,6 +121,9 @@ public class ZowiEyesActivity extends ActivityTemplate {
             }
 
             placeImages(contentContainer, images);
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "zowiEyesContainer");
         }
 
         ZowiEyesChecker.setImagesCoordinates(imagesCoordinates);

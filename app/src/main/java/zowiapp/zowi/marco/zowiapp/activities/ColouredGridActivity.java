@@ -27,6 +27,7 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColouredGridConstants;
 import zowiapp.zowi.marco.zowiapp.checker.ColouredGridChecker;
+import zowiapp.zowi.marco.zowiapp.error.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
@@ -124,11 +125,17 @@ public class ColouredGridActivity extends ActivityTemplate {
                         @Override
                         public void onClick(View view) {
                             int index = (int)view.getTag();
-                            colouredGridChecker.check(gameParameters, index, colouredCellsNumber[index]);
+                            colouredGridChecker.check(gameParameters, index, colouredCellsNumber[index]+1);
                         }
                     });
                 }
             }
+            else {
+                new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "answersContainer");
+            }
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
         }
     }
 
@@ -176,6 +183,9 @@ public class ColouredGridActivity extends ActivityTemplate {
 
             placeImages(contentContainer, cells[randomIndex], images);
         }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "gridContainer");
+        }
     }
 
     private void placeImages(RelativeLayout contentContainer, int[] cells, String[] images) {
@@ -208,26 +218,6 @@ public class ColouredGridActivity extends ActivityTemplate {
         image.setY(y - height/2);
 
         container.addView(image);
-    }
-
-    protected void processTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
-
-                if (answersContainer != null) {
-                    for (int i=0; i<answersContainer.getChildCount(); i++) {
-                        LinearLayout colorContainer = (LinearLayout) answersContainer.getChildAt(i);
-                        EditText colorEditText = (EditText) colorContainer.getChildAt(colorContainer.getChildCount()-1);
-
-                        /* When touching elsewhere, the focus is removed from the EditTexts */
-                        colorEditText.clearFocus();
-                    }
-                }
-                break;
-            default:
-                break;
-        }
     }
 
 }

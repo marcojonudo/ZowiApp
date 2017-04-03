@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.GridConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
+import zowiapp.zowi.marco.zowiapp.error.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
@@ -110,6 +111,9 @@ public class GridActivity extends ActivityTemplate {
             LayoutListener layoutListener = new LayoutListener(GridConstants.GRID_TYPE, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
+        }
     }
 
     protected void getElementsCoordinates() {
@@ -134,6 +138,9 @@ public class GridActivity extends ActivityTemplate {
             }
 
             placeImages(contentContainer, cells, images);
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "gridContainer");
         }
     }
 

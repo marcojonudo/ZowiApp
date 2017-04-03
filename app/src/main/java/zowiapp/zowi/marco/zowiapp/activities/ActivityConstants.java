@@ -104,6 +104,7 @@ public class ActivityConstants {
         protected static final ActivityType MEMORY_TYPE = ActivityType.MEMORY;
         protected static final String JSON_PARAMETER_IMAGES = "images";
         protected static final int NUMBER_OF_IMAGES = 4;
+        protected static final int FLIP_DELAY = 5000;
     }
 
     protected static class FoodPyramidConstants {

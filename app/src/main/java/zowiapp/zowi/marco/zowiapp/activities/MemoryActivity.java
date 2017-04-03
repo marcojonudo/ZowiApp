@@ -23,6 +23,7 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.MemoryConstants;
 import zowiapp.zowi.marco.zowiapp.checker.MemoryChecker;
+import zowiapp.zowi.marco.zowiapp.error.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
 /**
@@ -77,7 +78,7 @@ public class MemoryActivity extends ActivityTemplate {
 
         placeImages(contentContainer, memoryImages);
 
-        new CountDownTimer(2000, 2000) {
+        new CountDownTimer(MemoryConstants.FLIP_DELAY, MemoryConstants.FLIP_DELAY) {
 
             public void onTick(long millisUntilFinished) {}
 
@@ -151,6 +152,9 @@ public class MemoryActivity extends ActivityTemplate {
                 setLeftIn.start();
             }
         }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "imagesGrid");
+        }
 
     }
 
@@ -197,6 +201,9 @@ public class MemoryActivity extends ActivityTemplate {
                         setRightIn.setTarget(secondView);
                         setLeftOut.start();
                         setRightIn.start();
+                    }
+                    else {
+                        new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "imagesGrid");
                     }
                 }
 

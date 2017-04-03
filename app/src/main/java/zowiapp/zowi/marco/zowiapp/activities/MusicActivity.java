@@ -18,6 +18,7 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.MusicConstants;
+import zowiapp.zowi.marco.zowiapp.error.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 
 /**
@@ -64,13 +65,10 @@ public class MusicActivity extends ActivityTemplate {
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         LinearLayout musicActivityTemplate = (LinearLayout) inflater.inflate(R.layout.music_activity_template, contentContainer, false);
-//        LinearLayout dictationsContainer = (LinearLayout) musicActivityTemplate.findViewById(R.id.dictations_container);
 
         for (int i=0; i<MusicConstants.NUMBER_OF_DICTATIONS; i++) {
             inflater.inflate(R.layout.dictation_template, musicActivityTemplate, true);
         }
-
-//        placeImages(dictationsContainer, dictationsImages);
 
         if (contentContainer != null) {
             contentContainer.addView(musicActivityTemplate);
@@ -78,10 +76,12 @@ public class MusicActivity extends ActivityTemplate {
             LayoutListener layoutListener = new LayoutListener(MusicConstants.MUSIC_TYPE, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
+        }
     }
 
     protected void getElementsCoordinates() {
-        RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         LinearLayout dictationsContainer = (LinearLayout) gameParameters.findViewById(R.id.dictations_container);
 
         loadImages(dictationsContainer, dictationsImages);

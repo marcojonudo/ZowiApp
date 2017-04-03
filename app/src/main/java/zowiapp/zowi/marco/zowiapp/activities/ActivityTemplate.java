@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.error.NullElement;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -19,8 +20,14 @@ public abstract class ActivityTemplate {
         if (title != null) {
             title.setText(activityTitle);
         }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "title");
+        }
         if (description != null) {
             description.setText(activityDescription);
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "description");
         }
     }
 

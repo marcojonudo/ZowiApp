@@ -24,6 +24,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColumnsConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.checker.ColumnsChecker;
+import zowiapp.zowi.marco.zowiapp.error.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
@@ -103,6 +104,9 @@ public class ColumnsActivity extends ActivityTemplate {
             LayoutListener layoutListener = new LayoutListener(ColumnsConstants.COLUMNS_TYPE, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
+        }
     }
 
     protected void getElementsCoordinates() {
@@ -114,6 +118,9 @@ public class ColumnsActivity extends ActivityTemplate {
             dragLimits[1] = 0;
             dragLimits[2] = contentContainer.getRight();
             dragLimits[3] = contentContainer.getBottom();
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
         }
 
         if (grid != null) {
@@ -159,8 +166,14 @@ public class ColumnsActivity extends ActivityTemplate {
                 columnsDimensions[ColumnsConstants.RIGHT_COLUMN_INDEX][0] = rightColumn.getWidth();
                 columnsDimensions[ColumnsConstants.RIGHT_COLUMN_INDEX][1] = rightColumn.getHeight();
             }
+            else {
+                new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "columns");
+            }
 
             placeImages(contentContainer, images, ColumnsConstants.NUMBER_OF_IMAGES);
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "grid");
         }
     }
 
@@ -247,8 +260,13 @@ public class ColumnsActivity extends ActivityTemplate {
 
         LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);
         int headerTextHeight = 0;
-        if (headerText != null)
+        if (headerText != null) {
             headerTextHeight = headerText.getHeight();
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "headerText");
+        }
+
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:

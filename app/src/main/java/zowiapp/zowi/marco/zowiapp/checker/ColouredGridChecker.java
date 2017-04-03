@@ -9,6 +9,7 @@ import android.widget.Toast;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
+import zowiapp.zowi.marco.zowiapp.error.NullElement;
 
 /**
  * Created by Marco on 03/02/2017.
@@ -36,6 +37,9 @@ public class ColouredGridChecker {
                     Toast.makeText(gameParameters, "¡Mal!", Toast.LENGTH_SHORT).show();
                 }
             }
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "answersContainer");
         }
     }
 

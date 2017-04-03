@@ -22,6 +22,7 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.FoodPyramidConstants;
 import zowiapp.zowi.marco.zowiapp.checker.FoodPyramidChecker;
+import zowiapp.zowi.marco.zowiapp.error.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
@@ -221,8 +222,12 @@ public class FoodPyramidActivity extends ActivityTemplate {
 
         LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);
         int headerTextHeight = 0;
-        if (headerText != null)
+        if (headerText != null) {
             headerTextHeight = headerText.getHeight();
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "headerText");
+        }
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
