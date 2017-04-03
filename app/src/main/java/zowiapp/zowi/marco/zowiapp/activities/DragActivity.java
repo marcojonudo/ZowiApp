@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Guideline;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,7 +25,7 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.DragConstants;
 import zowiapp.zowi.marco.zowiapp.checker.DragChecker;
-import zowiapp.zowi.marco.zowiapp.error.NullElement;
+import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 

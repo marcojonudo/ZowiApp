@@ -1,4 +1,4 @@
-package zowiapp.zowi.marco.zowiapp.error;
+package zowiapp.zowi.marco.zowiapp.errors;
 
 import android.util.Log;
 

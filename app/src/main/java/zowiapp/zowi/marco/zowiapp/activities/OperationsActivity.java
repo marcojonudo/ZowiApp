@@ -20,7 +20,7 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.OperationsConstants;
 import zowiapp.zowi.marco.zowiapp.checker.OperationsChecker;
-import zowiapp.zowi.marco.zowiapp.error.NullElement;
+import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
 /**
  * Created by Marco on 24/01/2017.

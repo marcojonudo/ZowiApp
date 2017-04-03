@@ -1,15 +1,13 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
-import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
-import zowiapp.zowi.marco.zowiapp.error.NullElement;
+import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
 /**
  * Created by Marco on 03/02/2017.

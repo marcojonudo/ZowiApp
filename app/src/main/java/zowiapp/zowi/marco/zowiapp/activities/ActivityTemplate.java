@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
-import zowiapp.zowi.marco.zowiapp.error.NullElement;
+import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
 /**
  * Created by Marco on 24/01/2017.

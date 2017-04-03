@@ -3,7 +3,6 @@ package zowiapp.zowi.marco.zowiapp.activities;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,7 +17,7 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.MusicConstants;
-import zowiapp.zowi.marco.zowiapp.error.NullElement;
+import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 
 /**

@@ -5,16 +5,12 @@ import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,9 +23,8 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColouredGridConstants;
 import zowiapp.zowi.marco.zowiapp.checker.ColouredGridChecker;
-import zowiapp.zowi.marco.zowiapp.error.NullElement;
+import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
-import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
 /**
  * Created by Marco on 24/01/2017.
