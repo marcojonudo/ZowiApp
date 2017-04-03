@@ -42,7 +42,6 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_IMAGE = "image";
         protected static final int NUMBER_OF_OPERATIONS = 6;
         protected static final String JSON_PARAMETER_OPERATIONSIMAGES = "operationsImages";
-        protected static final int OPERATION_IMAGE_WIDTH_PX = 125;
         protected static final int RANDOM_NUMBER_LIMIT = 10;
         protected static final String[] OPERATORS = {"+", "-"};
     }
@@ -83,8 +82,6 @@ public class ActivityConstants {
         protected static final int NUMBER_OF_COLORS = 3;
         protected static final String JSON_PARAMETER_IMAGES = "images";
         protected static final int COORDINATES_4X4_LENGTH = 17;
-        protected static final int GRID_IMAGE_SIDE_PX = 150;
-        protected static final int GRID_TRANSLATION_TO_CENTER = GRID_IMAGE_SIDE_PX /2;
     }
 
     protected static class MusicConstants {
@@ -101,12 +98,12 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_TEXTS = "texts";
         protected static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
         protected static final String JSON_PARAMETER_CORRECTION = "correction";
-        protected static final int DISTANCE_LIMIT = 100;
     }
 
     protected static class MemoryConstants {
         protected static final ActivityType MEMORY_TYPE = ActivityType.MEMORY;
         protected static final String JSON_PARAMETER_IMAGES = "images";
+        protected static final int NUMBER_OF_IMAGES = 4;
     }
 
     protected static class FoodPyramidConstants {

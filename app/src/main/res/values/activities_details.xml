@@ -10,7 +10,7 @@
         <item>{"description": \"Descripcion 5\", "type": "OPERATIONS", "operationsType": 2, "image": "zowi_teeth", "operationsImages": [house, zowi_pointer, zowi_2_teeth, red_circular_button, zowi_6_teeth, green_circular_button]}</item>
         <item>{"description": \"Descripcion 1\", "type": "GRID", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"description": \"Descripcion 2\", "type": "COLUMNS", "leftTitle": "Antes", "rightTitle": "Después", "images": [[zowi_pointer, zowi_pointer, zowi_pointer, zowi_pointer], [house, house, house, house]], "correction": [LEFT, RIGHT]}</item>
-        <item>{"description": \"Descripcion 1\", "type": "MEMORY", "images": [zowi_pointer, green_circular_button, red_circular_button, house, zowi_pointer, green_circular_button, red_circular_button, house]}</item>
+        <item>{"description": \"Descripcion 1\", "type": "MEMORY", "images": [zowi_pointer, green_circular_button, red_circular_button, house, zowi_3_teeth, black]}</item>
         <item>{"description": \"Descripcion 1\", "type": "MUSIC", "images": [dictation_1, dictation_2, dictation_3]}</item>
         <item>{"description": \"Descripcion 3\", "type": "COLOURED_GRID", "cells": [[3, 14], [2, 11], [4, 12]], "images": [house, zowi_pointer], "colouredCells": [[GREEN, GREEN, BLANK, RED, GREEN, BLANK, BLUE, RED, GREEN, BLUE, BLUE, RED, GREEN, BLANK, RED, RED], [GREEN, GREEN, BLANK, RED, GREEN, BLANK, BLUE, RED, GREEN, BLUE, BLUE, RED, GREEN, BLANK, RED, RED], [GREEN, GREEN, BLANK, RED, GREEN, BLANK, BLUE, RED, GREEN, BLUE, BLUE, RED, GREEN, BLANK, RED, RED]]}</item>
         <item>{"description": \"Descripcion 1\", "type": "GUIDE", "images": [house, house, house, house]}</item>

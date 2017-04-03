@@ -1,15 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/memory_images_container"
+    android:layout_margin="@dimen/memory_images_container_margin">
 
-    <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:rowCount="2"
-        android:columnCount="4"
-        android:id="@+id/images_grid"/>
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/memory_image_1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/memory_image_5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/memory_image_2"
+        android:layout_margin="@dimen/memory_images_margin">
 
-</RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_pale_yellow"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/memory_image_2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/memory_image_6"
+        app:layout_constraintLeft_toRightOf="@+id/memory_image_1"
+        app:layout_constraintRight_toLeftOf="@+id/memory_image_3"
+        android:layout_margin="@dimen/memory_images_margin">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_pale_yellow"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/memory_image_3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/memory_image_7"
+        app:layout_constraintLeft_toRightOf="@+id/memory_image_2"
+        app:layout_constraintRight_toLeftOf="@+id/memory_image_4"
+        android:layout_margin="@dimen/memory_images_margin">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_pale_yellow"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/memory_image_4"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/memory_image_8"
+        app:layout_constraintLeft_toRightOf="@+id/memory_image_3"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="@dimen/memory_images_margin">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_pale_yellow"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/memory_image_5"
+        app:layout_constraintTop_toBottomOf="@+id/memory_image_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/memory_image_6"
+        android:layout_margin="@dimen/memory_images_margin">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_pale_yellow"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/memory_image_6"
+        app:layout_constraintTop_toBottomOf="@+id/memory_image_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/memory_image_5"
+        app:layout_constraintRight_toLeftOf="@+id/memory_image_7"
+        android:layout_margin="@dimen/memory_images_margin">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_pale_yellow"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/memory_image_7"
+        app:layout_constraintTop_toBottomOf="@+id/memory_image_3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/memory_image_6"
+        app:layout_constraintRight_toLeftOf="@+id/memory_image_8"
+        android:layout_margin="@dimen/memory_images_margin">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_pale_yellow"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/memory_image_8"
+        app:layout_constraintTop_toBottomOf="@+id/memory_image_4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/memory_image_7"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="@dimen/memory_images_margin">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_pale_yellow"/>
+
+    </FrameLayout>
+
+</android.support.constraint.ConstraintLayout>

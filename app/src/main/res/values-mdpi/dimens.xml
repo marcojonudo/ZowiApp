@@ -48,7 +48,8 @@
     <dimen name="dictation_button_horizontal_margin">50dp</dimen>
 
     <!-- Memory dimensions -->
-    <dimen name="memory_image_side">125dp</dimen>
+    <dimen name="memory_images_container_margin">20dp</dimen>
+    <dimen name="memory_images_margin">15dp</dimen>
 
     <!-- Pyramid dimensions -->
     <dimen name="pyramid_image_side">265dp</dimen>
