@@ -1,13 +1,19 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
@@ -39,8 +45,8 @@ public class PuzzleActivity extends ActivityTemplate {
     private int randomShapeIndex, puzzleContainerSide;
     private int[][] puzzleCoordinates, piecesCoordinates, piecesDimensions, correction;
     private float[][] scaleFactorsToPuzzle;
-    private float startX, startY, upperLimit = 0;
-    private boolean[] alreadyResized;
+    private float distanceToLeft, distanceToTop;
+    private int[] dragLimits;
 
     public PuzzleActivity(final GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -63,7 +69,7 @@ public class PuzzleActivity extends ActivityTemplate {
             piecesDimensions = new int[PuzzleConstants.PIECES_NUMBER][CommonConstants.AXIS_NUMBER];
             scaleFactorsToPuzzle = new float[PuzzleConstants.PIECES_NUMBER][CommonConstants.AXIS_NUMBER];
             correction = new int[PuzzleConstants.PIECES_NUMBER][CommonConstants.AXIS_NUMBER];
-            alreadyResized = new boolean[PuzzleConstants.PIECES_NUMBER];
+            dragLimits = new int[4];
 
             /* The name of the pieces images is the name of the image followed by '_number' */
             for (int i=0; i<piecesImages.length; i++) {
@@ -76,9 +82,6 @@ public class PuzzleActivity extends ActivityTemplate {
                         piecesImages[i][j][h] = image + "_" + (h+1);
                     }
                 }
-            }
-            for (int i=0; i<alreadyResized.length; i++) {
-                alreadyResized[i] = false;
             }
 
             generateLayout();
@@ -97,6 +100,7 @@ public class PuzzleActivity extends ActivityTemplate {
 
         if (contentContainer != null) {
             contentContainer.addView(puzzleActivityTemplate);
+
             LayoutListener layoutListener = new LayoutListener(PuzzleConstants.PUZZLE_TYPE, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
@@ -105,6 +109,16 @@ public class PuzzleActivity extends ActivityTemplate {
     protected void getElementsCoordinates() {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         ConstraintLayout puzzleContainer = (ConstraintLayout) gameParameters.findViewById(R.id.puzzle_image_container);
+
+        if (contentContainer != null) {
+            dragLimits[0] = 0;
+            dragLimits[1] = 0;
+            dragLimits[2] = contentContainer.getRight();
+            dragLimits[3] = contentContainer.getBottom();
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
+        }
 
         if (puzzleContainer != null) {
             /* The reference point is the upper left corner of the square. All the coordinates are
@@ -182,6 +196,7 @@ public class PuzzleActivity extends ActivityTemplate {
     private void placeImage(RelativeLayout container, String imageName, int randomIndex, int i) {
         ImageView image = new ImageView(gameParameters);
         image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
+        image.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.red));
 
         Drawable drawable = image.getDrawable();
         float scaleFactor, scaleFactorToPuzzle;
@@ -218,79 +233,102 @@ public class PuzzleActivity extends ActivityTemplate {
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {
+        float left, right, top, bottom;
+        float scaleFactorToPuzzle = -1;
+
+        LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);
+        int headerTextHeight = 0;
+        if (headerText != null) {
+            headerTextHeight = headerText.getHeight();
+        }
+        else {
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "headerText");
+        }
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                /* Values used to calculate de distance to move the element */
-                startX = event.getRawX();
-                startY = event.getRawY();
+                distanceToLeft = view.getX() - event.getRawX();
+                distanceToTop = headerTextHeight + view.getY() - event.getRawY();
 
-                int index = (int)view.getTag();
-                if (!alreadyResized[index]) {
-                    float scaleFactorToPuzzle;
+                int index = (int) view.getTag();
 
-                    if (scaleFactorsToPuzzle[(int)view.getTag()][0] != 0) {
-                        scaleFactorToPuzzle = scaleFactorsToPuzzle[index][0];
-                    }
-                    else {
-                        scaleFactorToPuzzle = scaleFactorsToPuzzle[index][1];
-                    }
-                    int puzzlePieceWidth = (int)(view.getWidth() * scaleFactorToPuzzle);
-                    int puzzlePieceHeight = (int)(view.getHeight() * scaleFactorToPuzzle);
-                    ViewGroup.LayoutParams l = view.getLayoutParams();
-                    l.width = puzzlePieceWidth;
-                    l.height = puzzlePieceHeight;
-
-                    alreadyResized[index] = true;
+                if (scaleFactorsToPuzzle[(int)view.getTag()][0] != 0) {
+                    scaleFactorToPuzzle = scaleFactorsToPuzzle[index][0];
                 }
+                else {
+                    scaleFactorToPuzzle = scaleFactorsToPuzzle[index][1];
+                }
+
+                ScaleAnimation anim = new ScaleAnimation(
+                        1f, scaleFactorToPuzzle,
+                        1f, scaleFactorToPuzzle,
+                        ScaleAnimation.RELATIVE_TO_PARENT, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index][0], // Pivot point of X scaling
+                        ScaleAnimation.RELATIVE_TO_PARENT, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index][1]); // Pivot point of Y scaling
+                anim.setFillAfter(true);
+                anim.setDuration(500);
+                view.startAnimation(anim);
 
                 /* Bring the view to the front in order to avoid strange effects when dragging, moving the piece
                    begind the others */
                 view.bringToFront();
                 break;
             case MotionEvent.ACTION_MOVE:
-                /* The distance of the element to the start point is calculated when the user
-                   moves it */
-                float distanceX = event.getRawX() - startX;
-                float distanceY = event.getRawY() - startY;
+                left = event.getRawX() + distanceToLeft;
+                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
+                top = event.getRawY() + distanceToTop - headerTextHeight;
+                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
 
-                /* Mechanism to avoid the element to move behind the title and description
-                   It is only moved when it is in 'contentContainer' */
-                if (event.getRawY() > upperLimit) {
-                    view.setX(piecesCoordinates[(int)view.getTag()][0]+distanceX);
-                    view.setY(piecesCoordinates[(int)view.getTag()][1]+distanceY);
-
-                    if (view.getY()<=0) {
-                        upperLimit = event.getRawY();
+                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
+                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
+                        view.setY(top);
+                    }
+                }
+                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
+                    if ((left > dragLimits[0] && right < dragLimits[2])) {
+                        view.setX(left);
                     }
                 }
                 else {
-                    view.setX(piecesCoordinates[(int)view.getTag()][0]+distanceX);
+                    view.setX(left);
+                    view.setY(top);
                 }
+                Log.i("View position", view.getX() + ", " + view.getY());
                 break;
             case MotionEvent.ACTION_UP:
-                upperLimit = 0;
+                index = (int) view.getTag();
 
-                index = (int)view.getTag();
-                piecesCoordinates[index][0] = (int)view.getX();
-                piecesCoordinates[index][1] = (int)view.getY();
+                boolean correctAnswer = puzzleChecker.check(gameParameters, view.getX(), view.getY(), correction[index]);
 
-                puzzleChecker.check(gameParameters, piecesCoordinates[index], correction[index]);
+                ObjectAnimator animX, animY;
+                if (correctAnswer) {
+                    animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), correction[index][0]);
+                    animX.setDuration(1000);
+                    animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), correction[index][1]);
+                    animY.setDuration(1000);
 
-//                float viewX = view.getX();
-//                float viewY = view.getY();
-//                /* -1 because the images' tag starts at 1, not at 0 */
-//                int index = (int)view.getTag() - 1;
-//
-//                double distanceToPoint = Math.sqrt(Math.pow(viewX-puzzleCoordinates[index][0], 2) + Math.pow(viewY-puzzleCoordinates[index][1], 2));
-//
-//                if (distanceToPoint < PuzzleConstants.DISTANCE_LIMIT) {
-//                    view.setX(puzzleCoordinates[(int)view.getTag()-1][0]);
-//                    view.setY(puzzleCoordinates[(int)view.getTag()-1][1]);
-//                }
-//                else {
-//                    view.setX(piecesCoordinates[(int)view.getTag()-1][0]);
-//                    view.setY(piecesCoordinates[(int)view.getTag()-1][1]);
-//                }
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.play(animX).with(animY);
+                    animatorSet.start();
+                }
+                else {
+                    animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), piecesCoordinates[index][0]);
+                    animX.setDuration(1000);
+                    animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), piecesCoordinates[index][1]);
+                    animY.setDuration(1000);
+
+                    AnimatorSet animatorSet = new AnimatorSet();
+                    animatorSet.play(animX).with(animY);
+                    animatorSet.start();
+
+                    anim = new ScaleAnimation(
+                            scaleFactorToPuzzle, 1f,
+                            scaleFactorToPuzzle, 1f,
+                            ScaleAnimation.RELATIVE_TO_PARENT, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index][0], // Pivot point of X scaling
+                            ScaleAnimation.RELATIVE_TO_PARENT, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index][1]); // Pivot point of Y scaling
+                    anim.setFillAfter(true);
+                    anim.setDuration(500);
+                    view.startAnimation(anim);
+                }
 
                 break;
             default:

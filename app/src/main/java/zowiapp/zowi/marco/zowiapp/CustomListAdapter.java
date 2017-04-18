@@ -63,7 +63,7 @@ public class CustomListAdapter extends BaseAdapter {
                 ConstraintLayout unitContainer = (ConstraintLayout) inflater.inflate(R.layout.menu_unit_container_layout, viewGroup, false);
                 ViewGroup.LayoutParams l = unitContainer.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels - statusBarHeight + unitsSeparation;
-
+                unitContainer.setBackgroundResource((position == UNITS_NUMBER-1) ? R.drawable.footpring_background_final : (position % 2 == 0) ? R.drawable.footprint_background_top_3 : R.drawable.footprint_background_bottom_3);
                 loadContent(unitContainer, position);
 
                 units[position] = unitContainer;
@@ -78,6 +78,7 @@ public class CustomListAdapter extends BaseAdapter {
             if (units[position] == null) {
                 ConstraintLayout unitContainer = (ConstraintLayout) inflater.inflate(R.layout.menu_unit_container_layout, viewGroup, false);
                 unitContainer.setLayoutParams(view.getLayoutParams());
+                unitContainer.setBackgroundResource((position == UNITS_NUMBER-1) ? R.drawable.footpring_background_final : (position % 2 == 0) ? R.drawable.footprint_background_top_3 : R.drawable.footprint_background_bottom_3);
 
                 loadContent(unitContainer, position);
                 units[position] = unitContainer;

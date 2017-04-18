@@ -2,12 +2,15 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="zowi_blue_color">#32BDAF</color>
     <color name="colorAccent">#FF4081</color>
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
+    <color name="dark_red">#C90101</color>
     <color name="blue">#0000FF</color>
     <color name="green">#00FF00</color>
+    <color name="dark_green">#01C901</color>
     <color name="background_pale_yellow">#FFFFD4</color>
 </resources>

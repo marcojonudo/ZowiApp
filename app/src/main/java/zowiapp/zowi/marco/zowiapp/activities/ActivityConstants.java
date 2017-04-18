@@ -55,12 +55,15 @@ public class ActivityConstants {
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
-    };
-        public static final int DISTANCE_LIMIT = 100;
+        };
+        public static final int DISTANCE_LIMIT = 200;
         protected static final double[][][] SHAPES_COORDINATES_FACTORS = {
                 {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
                 {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
                 {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}}
+        };
+        protected static final float[][] SCALE_ANIMATION_PIVOTS = {
+                {0, 0}, {0, 0.5f}, {0, 1}, {1, 0}, {1, 1}
         };
         //TODO This factors are correct, but I only use shape 1 for testing
 //        protected static final double[][][] SHAPES_COORDINATES_FACTORS = {

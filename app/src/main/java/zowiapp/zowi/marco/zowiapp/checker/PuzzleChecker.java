@@ -10,8 +10,8 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
  */
 public class PuzzleChecker {
 
-    public boolean check(GameParameters gameParameters, int[] piecesCoordinates, int[] puzzleCoordinates) {
-        double distanceToPoint = Math.sqrt(Math.pow(piecesCoordinates[0]-puzzleCoordinates[0], 2) + Math.pow(piecesCoordinates[1]-puzzleCoordinates[1], 2));
+    public boolean check(GameParameters gameParameters, float x, float y, int[] puzzleCoordinates) {
+        double distanceToPoint = Math.sqrt(Math.pow(x-puzzleCoordinates[0], 2) + Math.pow(y-puzzleCoordinates[1], 2));
 
         if (distanceToPoint < PuzzleConstants.DISTANCE_LIMIT) {
             Toast.makeText(gameParameters, "Bien!", Toast.LENGTH_SHORT).show();
