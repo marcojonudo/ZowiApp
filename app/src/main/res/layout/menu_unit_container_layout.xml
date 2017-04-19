@@ -17,8 +17,7 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_1"
@@ -29,19 +28,31 @@
         android:layout_margin="@dimen/menu_item_margin">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:id="@+id/activity_text_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/activity_image_1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/activity_image_1"
+            android:background="@drawable/circular_border_red"
+            app:layout_constraintTop_toBottomOf="@+id/activity_text_1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:padding="@dimen/menu_image_padding"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_2"
@@ -52,19 +63,31 @@
         android:layout_margin="@dimen/menu_item_margin">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:id="@+id/activity_text_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/activity_image_2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/activity_image_2"
+            android:background="@drawable/circular_border_red"
+            app:layout_constraintTop_toBottomOf="@+id/activity_text_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:padding="@dimen/menu_image_padding"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_3"
@@ -75,19 +98,31 @@
         android:layout_margin="@dimen/menu_item_margin">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:id="@+id/activity_text_3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/activity_image_3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/activity_image_3"
+            android:background="@drawable/circular_border_red"
+            app:layout_constraintTop_toBottomOf="@+id/activity_text_3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:padding="@dimen/menu_image_padding"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_4"
@@ -98,19 +133,31 @@
         android:layout_margin="@dimen/menu_item_margin">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:id="@+id/activity_text_4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/activity_image_4"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/activity_image_4"
+            android:background="@drawable/circular_border_red"
+            app:layout_constraintTop_toBottomOf="@+id/activity_text_4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:padding="@dimen/menu_image_padding"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_5"
@@ -121,18 +168,31 @@
         android:layout_margin="@dimen/menu_item_margin">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:id="@+id/activity_text_5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/activity_image_5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/activity_image_5"
+            android:background="@drawable/circular_border_red"
+            app:layout_constraintTop_toBottomOf="@+id/activity_text_5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:padding="@dimen/menu_image_padding"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -144,19 +204,31 @@
         android:layout_margin="@dimen/menu_item_margin">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="2"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:id="@+id/activity_text_6"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/activity_image_6"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/activity_image_6"
+            android:background="@drawable/circular_border_red"
+            app:layout_constraintTop_toBottomOf="@+id/activity_text_6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:padding="@dimen/menu_image_padding"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_7"
@@ -166,10 +238,9 @@
         app:layout_constraintRight_toLeftOf="@+id/activity_8"
         android:layout_margin="@dimen/menu_item_margin">
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_8"
@@ -179,6 +250,6 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="@dimen/menu_item_margin">
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

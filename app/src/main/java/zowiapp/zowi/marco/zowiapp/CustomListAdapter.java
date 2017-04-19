@@ -95,7 +95,7 @@ public class CustomListAdapter extends BaseAdapter {
         TextView unitTitle = (TextView) unitContainer.getChildAt(0);
         unitTitle.setText(unitsTitles[position]);
         for (int i=0; i<ACTIVITIES_NUMBER; i++) {
-            LinearLayout activityContainer = (LinearLayout) unitContainer.getChildAt(i+1);
+            ConstraintLayout activityContainer = (ConstraintLayout) unitContainer.getChildAt(i+1);
             TextView activityTitle = (TextView) activityContainer.getChildAt(0);
             ImageView activityImage = (ImageView) activityContainer.getChildAt(1);
 

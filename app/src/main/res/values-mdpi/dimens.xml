@@ -10,8 +10,9 @@
     <dimen name="main_button_vertical_margin">125dp</dimen>
 
     <!-- Menu dimensions -->
-    <dimen name="menu_item_margin">3dp</dimen>
+    <dimen name="menu_item_margin">7dp</dimen>
     <dimen name="units_separation_vertical_margin">20dp</dimen>
+    <dimen name="menu_image_padding">5dp</dimen>
 
     <!-- Drag dimensions -->
     <dimen name="drag_images_margin">20dp</dimen>
