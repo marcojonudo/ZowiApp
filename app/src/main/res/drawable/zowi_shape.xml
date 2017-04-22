@@ -3,7 +3,8 @@
     <solid android:color="@color/zowi_blue_color" />
 
     <corners
-        android:radius="100dp"
-        android:bottomRightRadius="30dp"
-        android:bottomLeftRadius="30dp" />
+        android:radius="@dimen/zowi_shape_radius"
+        android:bottomLeftRadius="@dimen/zowi_shape_bottom_left_radius"
+        android:bottomRightRadius="@dimen/zowi_shape_bottom_right_radius" />
+
 </shape>

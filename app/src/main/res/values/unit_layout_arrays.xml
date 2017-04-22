@@ -34,36 +34,36 @@
     </string-array>
 
     <string-array name="activities_images">
-        <item>zowi_6_teeth</item>
-        <item>house</item>
-        <item>zowi_pointer</item>
-        <item>zowi_3_teeth</item>
         <item>black</item>
-        <item>zowi_1_teeth</item>
-        <item>lightred_circular_button</item>
-        <item>green_circular_button</item>
-        <item>zowi_pointer</item>
-        <item>house</item>
-        <item>zowi_2_teeth</item>
-        <item>lightred_circular_button</item>
-        <item>red_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>green_circular_button</item>
-        <item>red_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>green_circular_button</item>
-        <item>green_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>green_circular_button</item>
-        <item>green_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>green_circular_button</item>
-        <item>red_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>red_circular_button</item>
-        <item>lightred_circular_button</item>
-        <item>lightred_circular_button</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
+        <item>black</item>
     </string-array>
 
     <string-array name="units_titles">

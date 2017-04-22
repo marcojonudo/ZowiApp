@@ -2,14 +2,19 @@ package zowiapp.zowi.marco.zowiapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 /**
  * Created by Marco on 10/03/2017.
@@ -60,10 +65,12 @@ public class CustomListAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
         if (view == null) {
             if (units[position] == null) {
-                ConstraintLayout unitContainer = (ConstraintLayout) inflater.inflate(R.layout.menu_unit_container_layout, viewGroup, false);
+                final CustomConstraintBackground unitContainer = (CustomConstraintBackground) inflater.inflate(R.layout.menu_unit_container_layout, viewGroup, false);
                 ViewGroup.LayoutParams l = unitContainer.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels - statusBarHeight + unitsSeparation;
-                unitContainer.setBackgroundResource((position == UNITS_NUMBER-1) ? R.drawable.footpring_background_final : (position % 2 == 0) ? R.drawable.footprint_background_top_3 : R.drawable.footprint_background_bottom_3);
+//                unitContainer.setBackgroundResource(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
+                Picasso.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
+
                 loadContent(unitContainer, position);
 
                 units[position] = unitContainer;
@@ -76,9 +83,10 @@ public class CustomListAdapter extends BaseAdapter {
         }
         else {
             if (units[position] == null) {
-                ConstraintLayout unitContainer = (ConstraintLayout) inflater.inflate(R.layout.menu_unit_container_layout, viewGroup, false);
+                final CustomConstraintBackground unitContainer = (CustomConstraintBackground) inflater.inflate(R.layout.menu_unit_container_layout, viewGroup, false);
                 unitContainer.setLayoutParams(view.getLayoutParams());
-                unitContainer.setBackgroundResource((position == UNITS_NUMBER-1) ? R.drawable.footpring_background_final : (position % 2 == 0) ? R.drawable.footprint_background_top_3 : R.drawable.footprint_background_bottom_3);
+//                unitContainer.setBackgroundResource((position == UNITS_NUMBER-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
+                Picasso.with(context).load((position == UNITS_NUMBER-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
 
                 loadContent(unitContainer, position);
                 units[position] = unitContainer;

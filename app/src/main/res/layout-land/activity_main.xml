@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        android:id="@+id/choosGameTypeText"
+        android:id="@+id/chooseGameTypeText"
         android:text="@string/choose_game_type_text" />
 
     <android.support.constraint.ConstraintLayout
@@ -31,7 +31,7 @@
             android:background="@drawable/rounded_button_green"
             android:text="@string/free_game_button_text"
             android:textAllCaps="false"
-            android:gravity="center"
+            android:onClick="toFreeGame"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
