@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
+import java.util.Date;
+
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.checker.ZowiEyesChecker;
 
@@ -21,6 +23,8 @@ public class CanvasHoleView extends FrameLayout {
     private float lastEventX, lastEventY;
     private float screenWidth, screenHeight;
     private ZowiEyesChecker zowiEyesChecker;
+    private Long startTime;
+    private int mode;
 
     public CanvasHoleView(Context context) {
         super(context);
@@ -55,6 +59,9 @@ public class CanvasHoleView extends FrameLayout {
 
         backgroundPaint = new Paint();
         backgroundPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+
+        startTime = new Date().getTime();
+        mode = 1;
     }
 
     @Override

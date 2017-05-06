@@ -2,12 +2,13 @@ package zowiapp.zowi.marco.zowiapp.checker;
 
 import android.widget.Toast;
 
+import zowiapp.zowi.marco.zowiapp.BluetoothSocket;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 
 /**
  * Created by Marco on 03/02/2017.
  */
-public class FoodPyramidChecker {
+public class FoodPyramidChecker extends CheckerTemplate {
 
     public boolean check(GameParameters gameParameters, String imageCategory, String containerCategory) {
         if (imageCategory.equals(containerCategory)) {
@@ -18,6 +19,11 @@ public class FoodPyramidChecker {
             Toast.makeText(gameParameters, "Mal", Toast.LENGTH_SHORT).show();
             return false;
         }
+    }
+
+    @Override
+    public void sendDataToZowi(String command) {
+        BluetoothSocket.sendCommand(command);
     }
 
 }

@@ -11,6 +11,8 @@ public class ActivityConstants {
         public static final String JSON_PARAMETER_TYPE = "type";
         protected static final String JSON_PARAMETER_DESCRIPTION = "description";
         protected static final int AXIS_NUMBER = 2;
+        public static final int OVERLAY_HORIZONTAL_RATIO = 8;
+        public static final int OVERLAY_VERTICAL_RATIO = 4;
     }
 
     protected static class GridConstants {
@@ -41,10 +43,50 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_OPERATIONSTYPE = "operationsType";
         protected static final String JSON_PARAMETER_IMAGE = "image";
         protected static final int NUMBER_OF_OPERATIONS = 6;
+        protected static final int NUMBER_OF_OPERATORS = 3;
         protected static final String JSON_PARAMETER_OPERATIONSIMAGES = "operationsImages";
         protected static final int RANDOM_NUMBER_LIMIT = 10;
         protected static final String[] OPERATORS = {"+", "-"};
+        protected static final String COLUMN_0 = "00000";
+        private static final String COLUMN_1 = "01110";
+        private static final String COLUMN_2 = "01001";
+        private static final String COLUMN_3 = "11111";
+        private static final String COLUMN_4 = "00001";
+        private static final String COLUMN_5 = "10011";
+        private static final String COLUMN_6 = "10101";
+        private static final String COLUMN_7 = "01010";
+        private static final String COLUMN_8 = "10001";
+        private static final String COLUMN_9 = "11100";
+        private static final String COLUMN_10 = "00100";
+        private static final String COLUMN_11 = "11101";
+        private static final String COLUMN_12 = "10010";
+        private static final String COLUMN_13 = "00110";
+        private static final String COLUMN_14 = "01101";
+        private static final String COLUMN_15 = "00010";
+        private static final String COLUMN_16 = "10100";
+        private static final String COLUMN_17 = "11000";
+        private static final String COLUMN_18 = "01000";
+        private static final String COLUMN_19 = "01111";
+        private static final String COLUMN_20 = "01110";
+        protected static final String[][] NUMBERS_TO_LED = {
+                {COLUMN_1, COLUMN_8, COLUMN_8, COLUMN_1},
+                {COLUMN_2, COLUMN_3, COLUMN_4},
+                {COLUMN_2, COLUMN_5, COLUMN_6, COLUMN_2},
+                {COLUMN_7, COLUMN_8, COLUMN_6, COLUMN_7},
+                {COLUMN_9, COLUMN_10, COLUMN_10, COLUMN_3},
+                {COLUMN_11, COLUMN_6, COLUMN_6, COLUMN_12},
+                {COLUMN_13, COLUMN_14, COLUMN_6, COLUMN_15},
+                {COLUMN_8, COLUMN_12, COLUMN_16, COLUMN_17},
+                {COLUMN_7, COLUMN_6, COLUMN_6, COLUMN_7},
+                {COLUMN_18, COLUMN_6, COLUMN_6, COLUMN_19}
+        };
+        protected static final String[][] OPERATORS_TO_LED = {
+                {COLUMN_10, COLUMN_20, COLUMN_10},
+                {COLUMN_10, COLUMN_10, COLUMN_10}
+        };
+        protected static final int MAX_NUMBER_BLUETOOTH_COLUMNS = 5;
     }
+//    {0, {0, {0, 1, 1, 1, 0}}}
 
     public static class PuzzleConstants {
         protected static final ActivityType PUZZLE_TYPE = ActivityType.PUZZLE;
@@ -138,8 +180,11 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_IMAGESNUMBER = "imagesNumber";
         protected static final String JSON_PARAMETER_IMAGES = "images";
         protected static final int LAYOUT_IMAGES = 12;
-        public static final int[][] DISTANCE_LIMITS= {
-            {500, 10}, {350, 5}, {200, 3}, {100, 2}, {50, 1}
+        public static final int[][] DISTANCE_LIMITS = {
+            {300, 1}, {200, 2}, {0, 3}
+        };
+        public static final int[] DISTANCE_PERIODS = {
+            1000, 500, 200
         };
     }
 }

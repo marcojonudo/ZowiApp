@@ -1,29 +1,30 @@
 package zowiapp.zowi.marco.zowiapp;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.animation.TranslateAnimation;
-import android.widget.GridLayout;
-import android.widget.ImageView;
+import android.view.ViewOverlay;
+import android.view.Window;
+import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -31,39 +32,75 @@ import java.util.Set;
 import java.util.UUID;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
-import zowiapp.zowi.marco.zowiapp.activities.CheckerTemplate;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 
 public class MainActivity extends AppCompatActivity {
 
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothReceiver bluetoothReceiver;
     private static OutputStream outputStream;
+    private LayoutInflater inflater;
 
     private static final int REQUEST_COARSE_LOCATION = 2;
     private static final String ZOWI_NAME = "Zowi";
     static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    public static OutputStream getOutputStream() {
-        return outputStream;
-    }
+//    public static OutputStream getOutputStream() {
+//        return outputStream;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//        boolean bluetoothAvailable = checkBluetoothConnectivity(bluetoothAdapter);
-//
-//        if (bluetoothAvailable) {
-//            checkLocationPermission();
-//        }
+//        ProgressDialog progressDialog = new ProgressDialog(this, R.style.DialogTheme);
+//        progressDialog.show();
+//        progressDialog.setContentView(R.layout.custom_progress_dialog);
+//        progressDialog.setCancelable(true);
+
+        this.inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        new AlertDialog.Builder(this)
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // continue with delete
+                }
+            })
+            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // do nothing
+                }
+            })
+            .setView(inflater.inflate(R.layout.custom_alert_dialog, null))
+            .show();
+
+        final LinearLayout mainActivityContainer = (LinearLayout) findViewById(R.id.main_activity_container);
+        if (mainActivityContainer != null) {
+            final Drawable smallZowi = ContextCompat.getDrawable(this, R.drawable.overlay_off);
+            final ViewOverlay overlay = mainActivityContainer.getOverlay();
+
+            mainActivityContainer.post(new Runnable() {
+                @Override
+                public void run() {
+                    smallZowi.setBounds(mainActivityContainer.getWidth()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getHeight()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getWidth(), mainActivityContainer.getHeight());
+                    overlay.add(smallZowi);
+                }
+            });
+        }
+
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        boolean bluetoothAvailable = checkBluetoothConnectivity(bluetoothAdapter);
+
+        if (bluetoothAvailable) {
+            checkLocationPermission();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(bluetoothReceiver);
+//        unregisterReceiver(bluetoothReceiver);
     }
 
     @Override
@@ -147,19 +184,83 @@ public class MainActivity extends AppCompatActivity {
             bluetoothSocket.connect();
             outputStream = bluetoothSocket.getOutputStream();
             Log.i("connectDevice", "bluetoothSocket conectado");
+
+            final LinearLayout mainActivityContainer = (LinearLayout) findViewById(R.id.main_activity_container);
+            if (mainActivityContainer != null) {
+                final Drawable smallZowi = ContextCompat.getDrawable(this, R.drawable.overlay_on);
+                final ViewOverlay overlay = mainActivityContainer.getOverlay();
+
+                mainActivityContainer.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        smallZowi.setBounds(mainActivityContainer.getWidth()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getHeight()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getWidth(), mainActivityContainer.getHeight());
+                        overlay.add(smallZowi);
+                    }
+                });
+            }
         }
         catch (IOException e) {
+            new AlertDialog.Builder(this)
+                    .setTitle("¡Vaya!")
+                    .setMessage("No hemos podido contactar con Zowi. ¿Está a tu lado?\n¡Haz clic en su imagen (abajo a la derecha) para intentarlo de nuevo!")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
             e.printStackTrace();
         }
     }
 
     public void toFreeGame(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Title");
 
+        // Set up the input
+        final EditText input = new EditText(this);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sendCommand(input.getText().toString());
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     public void toGuidedGame(View v) {
         Intent intent = new Intent(getApplicationContext(), GuidedGameActivity.class);
         startActivity(intent);
+    }
+
+    public static void sendCommand(String command) {
+        char r = '\r';
+
+        try {
+            outputStream.write(command.getBytes());
+            outputStream.write(r);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

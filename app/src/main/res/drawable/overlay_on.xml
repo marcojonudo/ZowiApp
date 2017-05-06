@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <shape>
+            <solid android:color="@color/overlayBackground" />
+            <corners
+                android:topLeftRadius="@dimen/overlay_radius" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/zowi_happy_open_small" />
+</layer-list>

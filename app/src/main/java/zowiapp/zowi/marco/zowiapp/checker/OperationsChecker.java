@@ -5,14 +5,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import zowiapp.zowi.marco.zowiapp.BluetoothSocket;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
+import zowiapp.zowi.marco.zowiapp.MainActivity;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
 /**
  * Created by Marco on 03/02/2017.
  */
-public class OperationsChecker {
+public class OperationsChecker extends CheckerTemplate{
 
     public void check(GameParameters gameParameters, int index, int correctResult) {
         LinearLayout operationsTemplateContainer = (LinearLayout) gameParameters.findViewById(R.id.operations_container);
@@ -29,17 +31,23 @@ public class OperationsChecker {
             else {
                 int answerNumber = Integer.valueOf(answer);
                 if (answerNumber == correctResult) {
-                    // Send OK To Zowi
                     Toast.makeText(gameParameters, "¡Bien!", Toast.LENGTH_SHORT).show();
+                    sendDataToZowi(CORRECT_ANSWER_COMMAND);
                 }
                 else {
                     Toast.makeText(gameParameters, "Mal", Toast.LENGTH_SHORT).show();
+                    sendDataToZowi(WRONG_ANSWER_COMMAND);
                 }
             }
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "operationsTemplateContainer");
         }
+    }
+
+    @Override
+    public void sendDataToZowi(String command) {
+        MainActivity.sendCommand(command);
     }
 
 }

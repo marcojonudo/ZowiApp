@@ -1,4 +1,4 @@
-package zowiapp.zowi.marco.zowiapp.activities;
+package zowiapp.zowi.marco.zowiapp.checker;
 
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +16,8 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 public abstract class CheckerTemplate {
 
     protected OutputStream outputStream;
+    protected static final String CORRECT_ANSWER_COMMAND = "C 1";
+    protected static final String WRONG_ANSWER_COMMAND = "C 2";
 
     public CheckerTemplate(){}
 
@@ -23,6 +25,6 @@ public abstract class CheckerTemplate {
         this.outputStream = outputStream;
     }
 
-    protected abstract void sendDataToZowi();
+    protected abstract void sendDataToZowi(String command);
 
 }

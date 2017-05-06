@@ -13,9 +13,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Random;
 
+import zowiapp.zowi.marco.zowiapp.BluetoothSocket;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
+import zowiapp.zowi.marco.zowiapp.MainActivity;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.OperationsConstants;
@@ -36,6 +39,7 @@ public class OperationsActivity extends ActivityTemplate {
     private String image;
     private String[] operationsImages;
     private int[] operationsResults;
+    private String[][] operations;
 
     public OperationsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -55,6 +59,7 @@ public class OperationsActivity extends ActivityTemplate {
             image = activityDetails.getString(OperationsConstants.JSON_PARAMETER_IMAGE);
             JSONArray jsonOperationsImages = activityDetails.getJSONArray(OperationsConstants.JSON_PARAMETER_OPERATIONSIMAGES);
             operationsImages = new String[jsonOperationsImages.length()];
+            operations = new String[OperationsConstants.NUMBER_OF_OPERATIONS][OperationsConstants.NUMBER_OF_OPERATORS];
 
             if (jsonOperationsImages.length() != 0) {
                 for (int i=0; i<jsonOperationsImages.length(); i++) {
@@ -74,7 +79,7 @@ public class OperationsActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        LinearLayout operationsActivityTemplate = (LinearLayout) inflater.inflate(R.layout.operations_activity_template, contentContainer, false);
+        ConstraintLayout operationsActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.operations_activity_template, contentContainer, false);
         LinearLayout operationsContainer = (LinearLayout) operationsActivityTemplate.findViewById(R.id.operations_container);
 
         /* Set the resource of the left image */
@@ -110,6 +115,7 @@ public class OperationsActivity extends ActivityTemplate {
             }
             operationsResults[i] = operationResult;
             String[] operation = {String.valueOf(firstNumber), operator, String.valueOf(secondNumber)};
+            operations[i] = operation;
 
             ConstraintLayout operationsTemplate = null;
             ConstraintLayout operationContainer;
@@ -127,9 +133,7 @@ public class OperationsActivity extends ActivityTemplate {
                     operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.operation_2_template, operationsActivityTemplate, false);
                     operationContainer = (ConstraintLayout) operationsTemplate.findViewById(R.id.operation_container);
                     for (int j=0; j<operation.length; j++) {
-                        // Send to Zowi
-
-                        /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews*/
+                        /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews */
                         ImageView operationsImage = (ImageView) operationContainer.getChildAt(j+(2*(j+1))-1);
                         operationsImage.setImageResource(gameParameters.getResources().getIdentifier(operationsImages[i], "drawable", gameParameters.getPackageName()));
 //                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(OperationsConstants.OPERATION_IMAGE_WIDTH_PX, OperationsConstants.OPERATION_IMAGE_WIDTH_PX);
@@ -142,6 +146,7 @@ public class OperationsActivity extends ActivityTemplate {
 
             if (operationsTemplate != null) {
                 ConstraintLayout checkButton = (ConstraintLayout) operationsTemplate.findViewById(R.id.operations_button);
+                ConstraintLayout displayButton = (ConstraintLayout) operationsTemplate.findViewById(R.id.display_operation_button);
                 checkButton.setTag(i);
                 checkButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -150,6 +155,16 @@ public class OperationsActivity extends ActivityTemplate {
                         operationsChecker.check(gameParameters, index, operationsResults[index]);
                     }
                 });
+                if (displayButton != null) {
+                    displayButton.setTag(i);
+                    displayButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            int index = (int)view.getTag();
+                            sendOperation(operations[index]);
+                        }
+                    });
+                }
 
                 operationsContainer.addView(operationsTemplate);
             }
@@ -164,6 +179,37 @@ public class OperationsActivity extends ActivityTemplate {
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
         }
+    }
+
+    private void sendOperation(String[] operation) {
+        ArrayList<String> matrixCodeArray = new ArrayList<>();
+        for (int i=0; i<operation.length; i++) {
+            String[] operator = (i == 1) ? ((operation[i].equals("+")) ? OperationsConstants.OPERATORS_TO_LED[0] : OperationsConstants.OPERATORS_TO_LED[1]) : OperationsConstants.NUMBERS_TO_LED[Integer.parseInt(operation[i])];
+            for (String numberColumn: operator) {
+                matrixCodeArray.add(numberColumn);
+            }
+            /* Add empty column between operators */
+            matrixCodeArray.add(OperationsConstants.COLUMN_0);
+        }
+        /* Add empty columns until the last number disappears */
+        for (int i=0; i<5; i++) {
+            matrixCodeArray.add(OperationsConstants.COLUMN_0);
+        }
+
+        StringBuilder matrixCommand = new StringBuilder();
+        matrixCommand.append("O ");
+        for (int i=0; i<matrixCodeArray.size(); i++) {
+            matrixCommand.append(matrixCodeArray.get(i)).append(" ");
+            /* Send only 5 bits columns to avoid filling the buffer */
+            if ((i+1) % 5 == 0) {
+//                MainActivity.sendCommand(matrixCommand.toString());
+                matrixCommand = new StringBuilder();
+                matrixCommand.append("O ");
+            }
+        }
+        int b = 3;
+//        MainActivity.sendCommand(matrixCommand.toString());
+
     }
 
 }

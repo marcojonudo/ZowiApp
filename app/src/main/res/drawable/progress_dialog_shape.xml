@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    <solid android:color="@color/zowiBlueColor" />
-
+    <solid android:color="@color/zowiPaleBlueColor" />
     <corners
         android:radius="@dimen/zowi_shape_radius"
         android:bottomLeftRadius="@dimen/zowi_shape_bottom_left_radius"
         android:bottomRightRadius="@dimen/zowi_shape_bottom_right_radius" />
-
 </shape>

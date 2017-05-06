@@ -4,6 +4,7 @@
     <string name="choose_game_type_text">¿Cómo quieres jugar con Zowi?</string>
     <string name="free_game_button_text">JUEGO LIBRE\nJuego libre</string>
     <string name="guided_game_button_text">JUEGO DIRIGIDO\nJuego dirigido</string>
+    <string name="progress_dialog_bluetooth_text">Estamos buscando a Zowi&#8230; ¡Será sólo un segundo!</string>
 
     <string name="title_activity_guided_game">GuidedGameActivity</string>
     <string name="title_activity_main2">Main2Activity</string>
@@ -19,4 +20,8 @@
     <string name="start">Comenzar</string>
 
     <string name="check">¡Corregir!</string>
+    <string name="display_operation">¡Enseñar!</string>
+
+    <string name="zowi_not_found_title">¡Vaya!</string>
+    <string name="zowi_not_found_text">No hemos podido contactar con Zowi ¿Está a tu lado?\n¡Haz clic en su carita para intentarlo de nuevo!"</string>
 </resources>

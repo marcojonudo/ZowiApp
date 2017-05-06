@@ -36,7 +36,7 @@
     <dimen name="operations_font_size">50sp</dimen>
     <dimen name="operation_start_margin">50dp</dimen>
     <dimen name="operation_2_start_margin">20dp</dimen>
-    <dimen name="operation_button_horizontal_margin">60dp</dimen>
+    <dimen name="operation_button_horizontal_margin">30dp</dimen>
     <dimen name="operation_2_button_horizontal_margin">30dp</dimen>
     <dimen name="operation_button_vertical_margin">3dp</dimen>
     <dimen name="operation_2_edittext_margin">3dp</dimen>
@@ -75,7 +75,7 @@
 
     <!-- ZowiEyes dimensions -->
     <dimen name="zowi_eyes_images_margin">5dp</dimen>
-    <dimen name="zowi_eyes_hole_radius">100dp</dimen>
+    <dimen name="zowi_eyes_hole_radius">150dp</dimen>
 
     <!-- ZowiShape -->
     <dimen name="zowi_shape_radius">50dp</dimen>
