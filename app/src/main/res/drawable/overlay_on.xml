@@ -5,6 +5,11 @@
             <solid android:color="@color/overlayBackground" />
             <corners
                 android:topLeftRadius="@dimen/overlay_radius" />
+            <padding
+                android:bottom="@dimen/overlay_padding"
+                android:top="@dimen/overlay_padding"
+                android:left="@dimen/overlay_padding"
+                android:right="@dimen/overlay_padding"/>
         </shape>
     </item>
     <item android:drawable="@drawable/zowi_happy_open_small" />

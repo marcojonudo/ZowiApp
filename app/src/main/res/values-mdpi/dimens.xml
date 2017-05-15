@@ -10,9 +10,13 @@
     <dimen name="none">0dp</dimen>
     <dimen name="main_button_vertical_margin">125dp</dimen>
     <dimen name="overlay_radius">30dp</dimen>
+    <dimen name="overlay_padding">20dp</dimen>
     <dimen name="dialog_width">850dp</dimen>
     <dimen name="dialog_height">475dp</dimen>
     <dimen name="dialog_padding">40dp</dimen>
+    <dimen name="progress_dialog_width">475dp</dimen>
+    <dimen name="progress_dialog_height">300dp</dimen>
+    <dimen name="progress_dialog_padding">40dp</dimen>
 
     <!-- Main activity dimensions -->
     <dimen name="main_title_font_size">75sp</dimen>

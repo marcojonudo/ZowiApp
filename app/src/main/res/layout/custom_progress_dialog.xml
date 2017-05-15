@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="220dp"
+    android:layout_width="@dimen/progress_dialog_width"
+    android:layout_height="@dimen/progress_dialog_height"
     android:layout_gravity="center"
-    android:background="@drawable/progress_dialog_shape"
-    android:orientation="vertical" >
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:progressDrawable="@drawable/custom_progress_bar"
-        android:layout_gravity="center_horizontal"/>
+    android:background="@drawable/alert_dialog_shape"
+    android:padding="@dimen/progress_dialog_padding">
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/progress_dialog_bluetooth_text"
-        android:textStyle="bold"
-        android:textColor="@color/red"
-        android:layout_marginTop="8dp"/>
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"/>
 
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateDrawable="@drawable/custom_progress_bar"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

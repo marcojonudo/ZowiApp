@@ -41,10 +41,13 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothReceiver bluetoothReceiver;
     private static OutputStream outputStream;
     private LayoutInflater inflater;
+    private MainActivity mainActivity;
+    private ProgressDialog progressDialog;
 
     private static final int REQUEST_COARSE_LOCATION = 2;
     private static final String ZOWI_NAME = "Zowi";
     static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final int BOND_NONE = 10;
 
 //    public static OutputStream getOutputStream() {
 //        return outputStream;
@@ -55,18 +58,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        ProgressDialog progressDialog = new ProgressDialog(this, R.style.DialogTheme);
-//        progressDialog.show();
-//        progressDialog.setContentView(R.layout.custom_progress_dialog);
-//        progressDialog.setCancelable(true);
-
+        this.mainActivity = this;
         this.inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        Dialog alertDialog = new Dialog(this, R.style.DialogTheme);
-        alertDialog.setContentView(R.layout.custom_alert_dialog);
-        alertDialog.show();
+        progressDialog = new ProgressDialog(this, R.style.DialogTheme);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.custom_progress_dialog);
+        progressDialog.setCancelable(true);
 
         final LinearLayout mainActivityContainer = (LinearLayout) findViewById(R.id.main_activity_container);
+        /* The Zowi not connected overlay is shown */
         if (mainActivityContainer != null) {
             final Drawable smallZowi = ContextCompat.getDrawable(this, R.drawable.overlay_off);
             final ViewOverlay overlay = mainActivityContainer.getOverlay();
@@ -174,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
             BluetoothSocket bluetoothSocket = zowiDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
             bluetoothSocket.connect();
             outputStream = bluetoothSocket.getOutputStream();
+            progressDialog.cancel();
             Log.i("connectDevice", "bluetoothSocket conectado");
 
             final LinearLayout mainActivityContainer = (LinearLayout) findViewById(R.id.main_activity_container);
@@ -191,21 +193,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         catch (IOException e) {
-            new AlertDialog.Builder(this)
-                    .setTitle("¡Vaya!")
-                    .setMessage("No hemos podido contactar con Zowi. ¿Está a tu lado?\n¡Haz clic en su imagen (abajo a la derecha) para intentarlo de nuevo!")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+            showAlertDialog();
             e.printStackTrace();
         }
     }
@@ -254,6 +242,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void showAlertDialog() {
+        Dialog alertDialog = new Dialog(mainActivity, R.style.DialogTheme);
+        alertDialog.setContentView(R.layout.custom_alert_dialog);
+        alertDialog.show();
+    }
 
     private class BluetoothReceiver extends BroadcastReceiver {
 
@@ -268,6 +261,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
                     Log.i("BluetoothReceiver", "Discovery finished");
+                    device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+                    if (device.getBondState() == BOND_NONE) {
+                        showAlertDialog();
+                    }
                     break;
                 case BluetoothDevice.ACTION_FOUND:
                     device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
