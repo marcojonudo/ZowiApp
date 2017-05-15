@@ -15,4 +15,5 @@
     <color name="green">#00FF00</color>
     <color name="darkGreen">#01C901</color>
     <color name="backgroundPaleYellow">#FFFFD4</color>
+    <color name="paleGray">#D8D8D8</color>
 </resources>

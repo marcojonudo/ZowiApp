@@ -6,13 +6,18 @@
 
     <!-- Common dimensions -->
     <dimen name="default_font_size">40sp</dimen>
+    <dimen name="dialog_title_font_size">70sp</dimen>
     <dimen name="none">0dp</dimen>
     <dimen name="main_button_vertical_margin">125dp</dimen>
     <dimen name="overlay_radius">30dp</dimen>
+    <dimen name="dialog_width">850dp</dimen>
+    <dimen name="dialog_height">475dp</dimen>
+    <dimen name="dialog_padding">40dp</dimen>
 
     <!-- Main activity dimensions -->
     <dimen name="main_title_font_size">75sp</dimen>
     <dimen name="main_title_vertical_margin">50dp</dimen>
+    <dimen name="button_border_width">10dp</dimen>
 
     <!-- Progess dialog dimensions -->
 

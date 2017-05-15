@@ -9,7 +9,7 @@
     <item android:state_pressed="true">
         <shape android:shape="oval">
             <solid android:color="@color/darkRed"/>
-            <stroke android:width="10dp" android:color="@color/black"/>
+            <stroke android:width="@dimen/button_border_width" android:color="@color/black"/>
         </shape>
     </item>
 </selector>

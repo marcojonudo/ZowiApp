@@ -2,6 +2,7 @@ package zowiapp.zowi.marco.zowiapp;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -61,19 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
         this.inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        new AlertDialog.Builder(this)
-            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    // continue with delete
-                }
-            })
-            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    // do nothing
-                }
-            })
-            .setView(inflater.inflate(R.layout.custom_alert_dialog, null))
-            .show();
+        Dialog alertDialog = new Dialog(this, R.style.DialogTheme);
+        alertDialog.setContentView(R.layout.custom_alert_dialog);
+        alertDialog.show();
 
         final LinearLayout mainActivityContainer = (LinearLayout) findViewById(R.id.main_activity_container);
         if (mainActivityContainer != null) {

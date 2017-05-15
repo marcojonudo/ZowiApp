@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    <solid android:color="@color/blue" />
-    <!--<corners-->
-        <!--android:radius="@dimen/zowi_shape_radius"/>-->
+    <solid
+        android:color="@color/paleGray" />
+    <corners
+        android:radius="@dimen/zowi_shape_radius"
+        android:bottomLeftRadius="@dimen/zowi_shape_bottom_left_radius"
+        android:bottomRightRadius="@dimen/zowi_shape_bottom_right_radius" />
+    <stroke
+        android:width="@dimen/button_border_width"
+        android:color="@color/black"/>
 </shape>

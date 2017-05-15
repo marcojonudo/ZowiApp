@@ -202,13 +202,13 @@ public class OperationsActivity extends ActivityTemplate {
             matrixCommand.append(matrixCodeArray.get(i)).append(" ");
             /* Send only 5 bits columns to avoid filling the buffer */
             if ((i+1) % 5 == 0) {
-//                MainActivity.sendCommand(matrixCommand.toString());
+                MainActivity.sendCommand(matrixCommand.toString());
                 matrixCommand = new StringBuilder();
                 matrixCommand.append("O ");
             }
         }
         int b = 3;
-//        MainActivity.sendCommand(matrixCommand.toString());
+        MainActivity.sendCommand(matrixCommand.toString());
 
     }
 
