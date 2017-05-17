@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.Date;
 
 import zowiapp.zowi.marco.zowiapp.MainActivity;
+import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ZowiEyesConstants;
 
 /**
@@ -39,7 +40,7 @@ public class ZowiEyesChecker {
             if (distanceToCenter > ZowiEyesConstants.DISTANCE_LIMITS[i][0]) {
                 Log.i("ZowiEyes", String.valueOf(distanceToCenter));
                 if (new Date().getTime() - referenceTime >= ZowiEyesConstants.DISTANCE_PERIODS[i]) {
-                    MainActivity.sendCommand("S " + String.valueOf(ZowiEyesConstants.DISTANCE_LIMITS[i][1]));
+                    ZowiSocket.sendCommand("S " + String.valueOf(ZowiEyesConstants.DISTANCE_LIMITS[i][1]));
                     referenceTime = new Date().getTime();
                 }
                 break;

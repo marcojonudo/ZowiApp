@@ -2,7 +2,6 @@ package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,10 +17,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import zowiapp.zowi.marco.zowiapp.BluetoothSocket;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.MainActivity;
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.OperationsConstants;
 import zowiapp.zowi.marco.zowiapp.checker.OperationsChecker;
@@ -207,23 +206,18 @@ public class OperationsActivity extends ActivityTemplate {
 
         new Thread(new Runnable() {
             public void run() {
-                try {
-                    while (!Thread.currentThread().isInterrupted() && !killThread) {
-                        int bytesAvailable = MainActivity.inputStream.available();
-                        if (bytesAvailable > 0) {
-                            byte[] packetBytes = new byte[bytesAvailable];
-                            MainActivity.inputStream.read(packetBytes);
+                while (!Thread.currentThread().isInterrupted() && !killThread) {
+                    int bytesAvailable = ZowiSocket.isInputStreamAvailable();
+                    if (bytesAvailable > 0) {
+                        byte[] packetBytes = new byte[bytesAvailable];
+                        ZowiSocket.readInputStream(packetBytes);
 
-                            String receivedText = new String(packetBytes, 0, bytesAvailable);
-                            /* sendFinalAck from Zowi sends an 'F' */
-                            if (receivedText.contains("F")) {
-                                sendNewInfo = true;
-                            }
+                        String receivedText = new String(packetBytes, 0, bytesAvailable);
+                        /* sendFinalAck from Zowi sends an 'F' */
+                        if (receivedText.contains("F")) {
+                            sendNewInfo = true;
                         }
                     }
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         }).start();
@@ -233,7 +227,7 @@ public class OperationsActivity extends ActivityTemplate {
             /* Send only 5 bits columns to avoid filling the buffer */
             if ((i+1) % 5 == 0) {
                 matrixCommand.deleteCharAt(matrixCommand.length()-1);
-                MainActivity.sendCommand(matrixCommand.toString());
+                ZowiSocket.sendCommand(matrixCommand.toString());
                 matrixCommand = new StringBuilder();
                 matrixCommand.append("O ");
 
@@ -241,7 +235,7 @@ public class OperationsActivity extends ActivityTemplate {
                 sendNewInfo = false;
             }
         }
-        MainActivity.sendCommand(matrixCommand.toString());
+        ZowiSocket.sendCommand(matrixCommand.toString());
         killThread = true;
     }
 

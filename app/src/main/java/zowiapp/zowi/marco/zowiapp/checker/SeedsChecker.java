@@ -2,9 +2,9 @@ package zowiapp.zowi.marco.zowiapp.checker;
 
 import android.widget.Toast;
 
-import zowiapp.zowi.marco.zowiapp.BluetoothSocket;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.MainActivity;
+import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 
 /**
  * Created by Marco on 03/02/2017.
@@ -26,7 +26,7 @@ public class SeedsChecker extends CheckerTemplate {
 
     @Override
     public void sendDataToZowi(String command) {
-        MainActivity.sendCommand(command);
+        ZowiSocket.sendCommand(command);
     }
 
 }

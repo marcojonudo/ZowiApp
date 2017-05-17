@@ -38,22 +38,11 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BluetoothAdapter bluetoothAdapter;
-    private BluetoothReceiver bluetoothReceiver;
-    private static OutputStream outputStream;
-    public static InputStream inputStream;
-    private LayoutInflater inflater;
     private MainActivity mainActivity;
     private ProgressDialog progressDialog;
 
+    private ZowiSocket zowiSocket;
     private static final int REQUEST_COARSE_LOCATION = 2;
-    private static final String ZOWI_NAME = "Zowi";
-    static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private static final int BOND_NONE = 10;
-
-//    public static OutputStream getOutputStream() {
-//        return outputStream;
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,34 +50,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.mainActivity = this;
-        this.inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        progressDialog = new ProgressDialog(this, R.style.DialogTheme);
-        progressDialog.show();
-        progressDialog.setContentView(R.layout.custom_progress_dialog);
-        progressDialog.setCancelable(true);
+        showProgressDialog();
+        Log.i("ConnectionStep", "ProgressDialog shown");
 
-        final LinearLayout mainActivityContainer = (LinearLayout) findViewById(R.id.main_activity_container);
-        /* The Zowi not connected overlay is shown */
-        if (mainActivityContainer != null) {
-            final Drawable smallZowi = ContextCompat.getDrawable(this, R.drawable.overlay_off);
-            final ViewOverlay overlay = mainActivityContainer.getOverlay();
+        zowiSocket = new ZowiSocket(this);
+        zowiSocket.connectToZowi();
 
-            mainActivityContainer.post(new Runnable() {
-                @Override
-                public void run() {
-                    smallZowi.setBounds(mainActivityContainer.getWidth()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getHeight()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getWidth(), mainActivityContainer.getHeight());
-                    overlay.add(smallZowi);
-                }
-            });
-        }
-
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        boolean bluetoothAvailable = checkBluetoothConnectivity(bluetoothAdapter);
-
-        if (bluetoothAvailable) {
-            checkLocationPermission();
-        }
+        displayOverlay();
     }
 
     @Override
@@ -102,102 +71,16 @@ public class MainActivity extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    private boolean checkBluetoothConnectivity(BluetoothAdapter bluetoothAdapter) {
-        if (bluetoothAdapter == null) {
-            Log.i("checkBluetoothConnectivity", "Bluetooth no disponible");
-            return false;
-        }
-        else if (!bluetoothAdapter.isEnabled()) {
-            bluetoothAdapter.enable();
-        }
-        return true;
-    }
-
-    private void checkLocationPermission() {
-        int accessCoarseLocation = ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION);
-
-        if (accessCoarseLocation != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_COARSE_LOCATION);
-        }
-        else {
-            String zowiAddress = getZowiAddress();
-            if (zowiAddress.equals("")) {
-                startDiscovery();
-            }
-            else {
-                Log.i("checkLocationPermission", "Conectando dispositivo...");
-                connectDevice(zowiAddress);
-            }
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case REQUEST_COARSE_LOCATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startDiscovery();
+                    zowiSocket.startDiscovery();
                 }
                 break;
             default:
                 break;
-        }
-    }
-
-    private String getZowiAddress() {
-        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                if (device.getName().equals(ZOWI_NAME)) {
-                    return device.getAddress();
-                }
-            }
-        }
-        return "";
-    }
-
-    private void startDiscovery() {
-        bluetoothReceiver = new BluetoothReceiver();
-
-        IntentFilter bluetoothFilter = new IntentFilter();
-        bluetoothFilter.addAction(BluetoothDevice.ACTION_FOUND);
-        bluetoothFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        bluetoothFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        bluetoothFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-
-        registerReceiver(bluetoothReceiver, bluetoothFilter);
-
-        bluetoothAdapter.startDiscovery();
-    }
-
-    private void connectDevice(String zowiAddress) {
-        BluetoothDevice zowiDevice = bluetoothAdapter.getRemoteDevice(zowiAddress);
-        try {
-            BluetoothSocket bluetoothSocket = zowiDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
-            bluetoothSocket.connect();
-            outputStream = bluetoothSocket.getOutputStream();
-            inputStream = bluetoothSocket.getInputStream();
-            progressDialog.cancel();
-            Log.i("connectDevice", "bluetoothSocket conectado");
-
-            final LinearLayout mainActivityContainer = (LinearLayout) findViewById(R.id.main_activity_container);
-            if (mainActivityContainer != null) {
-                final Drawable smallZowi = ContextCompat.getDrawable(this, R.drawable.overlay_on);
-                final ViewOverlay overlay = mainActivityContainer.getOverlay();
-
-                mainActivityContainer.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        smallZowi.setBounds(mainActivityContainer.getWidth()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getHeight()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getWidth(), mainActivityContainer.getHeight());
-                        overlay.add(smallZowi);
-                    }
-                });
-            }
-        }
-        catch (IOException e) {
-            showAlertDialog();
-            e.printStackTrace();
         }
     }
 
@@ -215,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                sendCommand(input.getText().toString());
+                ZowiSocket.sendCommand(input.getText().toString());
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -229,67 +112,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toGuidedGame(View v) {
-        Intent intent = new Intent(getApplicationContext(), GuidedGameActivity.class);
-        startActivity(intent);
+        if (Zowi.getConnected()) {
+            Intent intent = new Intent(getApplicationContext(), GuidedGameActivity.class);
+            startActivity(intent);
+        }
+        else {
+            showAlertDialog();
+        }
+
     }
 
-    public static void sendCommand(String command) {
-        char r = '\r';
-
-        try {
-            outputStream.write(command.getBytes());
-            outputStream.write(r);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(this, R.style.DialogTheme);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.custom_progress_dialog);
+        progressDialog.setCancelable(true);
     }
 
-    private void showAlertDialog() {
+    public void closeProgressDialog() {
+        progressDialog.cancel();
+    }
+
+    public void showAlertDialog() {
         Dialog alertDialog = new Dialog(mainActivity, R.style.DialogTheme);
         alertDialog.setContentView(R.layout.custom_alert_dialog);
         alertDialog.show();
     }
 
-    private class BluetoothReceiver extends BroadcastReceiver {
+    public void displayOverlay() {
+        final LinearLayout mainActivityContainer = (LinearLayout) findViewById(R.id.main_activity_container);
+        /* The Zowi not connected overlay is shown */
+        if (mainActivityContainer != null) {
+            final Drawable smallZowi = Zowi.getConnected() ? ContextCompat.getDrawable(this, R.drawable.overlay_on) : ContextCompat.getDrawable(this, R.drawable.overlay_off);
+            final ViewOverlay overlay = mainActivityContainer.getOverlay();
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-            BluetoothDevice device;
-            switch (action) {
-                case BluetoothAdapter.ACTION_DISCOVERY_STARTED:
-                    Log.i("BluetoothReceiver", "Discovery started");
-                    break;
-                case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                    Log.i("BluetoothReceiver", "Discovery finished");
-                    device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-                    if (device.getBondState() == BOND_NONE) {
-                        showAlertDialog();
-                    }
-                    break;
-                case BluetoothDevice.ACTION_FOUND:
-                    device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-                    if (device.getName().equals(ZOWI_NAME)) {
-                        bluetoothAdapter.cancelDiscovery();
-                        device.createBond();
-                    }
-                    Log.i("BluetoothReceiver", "Device discovered " + device.getName() + ": " + device.getAddress());
-                    break;
-                case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
-                    device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    String name = device.getName();
-                    int bondState = device.getBondState();
-
-                    if (name.equals(ZOWI_NAME) && (bondState == BluetoothDevice.BOND_BONDED)) {
-                        connectDevice(device.getAddress());
-                    }
-                    Log.i("BluetoothReceiver", "Device bond changed " + device.getName() + ": " + device.getBondState());
-                    break;
-            }
+            mainActivityContainer.post(new Runnable() {
+                @Override
+                public void run() {
+                    smallZowi.setBounds(mainActivityContainer.getWidth()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getHeight()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getWidth(), mainActivityContainer.getHeight());
+                    overlay.add(smallZowi);
+                }
+            });
+            Log.i("ConnectionStep", "Overlay shown");
         }
     }
+
 }

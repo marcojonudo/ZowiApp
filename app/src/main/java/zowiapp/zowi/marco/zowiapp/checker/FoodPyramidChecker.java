@@ -2,7 +2,7 @@ package zowiapp.zowi.marco.zowiapp.checker;
 
 import android.widget.Toast;
 
-import zowiapp.zowi.marco.zowiapp.BluetoothSocket;
+import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 
 /**
@@ -23,7 +23,7 @@ public class FoodPyramidChecker extends CheckerTemplate {
 
     @Override
     public void sendDataToZowi(String command) {
-        BluetoothSocket.sendCommand(command);
+        ZowiSocket.sendCommand(command);
     }
 
 }

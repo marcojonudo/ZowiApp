@@ -5,10 +5,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import zowiapp.zowi.marco.zowiapp.BluetoothSocket;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.MainActivity;
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
 /**
@@ -47,7 +47,7 @@ public class OperationsChecker extends CheckerTemplate{
 
     @Override
     public void sendDataToZowi(String command) {
-        MainActivity.sendCommand(command);
+        ZowiSocket.sendCommand(command);
     }
 
 }

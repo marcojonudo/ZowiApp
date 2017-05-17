@@ -30,7 +30,7 @@ public class GuidedGameActivity extends AppCompatActivity {
 
         final LinearLayout guidedGameScroller = (LinearLayout) findViewById(R.id.guided_game_scroller);
         if (guidedGameScroller != null) {
-            final Drawable smallZowi = ContextCompat.getDrawable(this, R.drawable.overlay_off);
+            final Drawable smallZowi = Zowi.getConnected() ? ContextCompat.getDrawable(this, R.drawable.overlay_on) : ContextCompat.getDrawable(this, R.drawable.overlay_off);
             final ViewOverlay overlay = guidedGameScroller.getOverlay();
 
             guidedGameScroller.post(new Runnable() {
