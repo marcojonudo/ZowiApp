@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothReceiver bluetoothReceiver;
     private static OutputStream outputStream;
+    public static InputStream inputStream;
     private LayoutInflater inflater;
     private MainActivity mainActivity;
     private ProgressDialog progressDialog;
@@ -175,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
             BluetoothSocket bluetoothSocket = zowiDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
             bluetoothSocket.connect();
             outputStream = bluetoothSocket.getOutputStream();
+            inputStream = bluetoothSocket.getInputStream();
             progressDialog.cancel();
             Log.i("connectDevice", "bluetoothSocket conectado");
 

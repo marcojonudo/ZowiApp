@@ -2,6 +2,7 @@ package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -40,6 +42,7 @@ public class OperationsActivity extends ActivityTemplate {
     private String[] operationsImages;
     private int[] operationsResults;
     private String[][] operations;
+    private boolean sendNewInfo, killThread;
 
     public OperationsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -60,6 +63,8 @@ public class OperationsActivity extends ActivityTemplate {
             JSONArray jsonOperationsImages = activityDetails.getJSONArray(OperationsConstants.JSON_PARAMETER_OPERATIONSIMAGES);
             operationsImages = new String[jsonOperationsImages.length()];
             operations = new String[OperationsConstants.NUMBER_OF_OPERATIONS][OperationsConstants.NUMBER_OF_OPERATORS];
+            sendNewInfo = false;
+            killThread = false;
 
             if (jsonOperationsImages.length() != 0) {
                 for (int i=0; i<jsonOperationsImages.length(); i++) {
@@ -183,6 +188,7 @@ public class OperationsActivity extends ActivityTemplate {
 
     private void sendOperation(String[] operation) {
         ArrayList<String> matrixCodeArray = new ArrayList<>();
+        killThread = false;
         for (int i=0; i<operation.length; i++) {
             String[] operator = (i == 1) ? ((operation[i].equals("+")) ? OperationsConstants.OPERATORS_TO_LED[0] : OperationsConstants.OPERATORS_TO_LED[1]) : OperationsConstants.NUMBERS_TO_LED[Integer.parseInt(operation[i])];
             for (String numberColumn: operator) {
@@ -198,18 +204,45 @@ public class OperationsActivity extends ActivityTemplate {
 
         StringBuilder matrixCommand = new StringBuilder();
         matrixCommand.append("O ");
+
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    while (!Thread.currentThread().isInterrupted() && !killThread) {
+                        int bytesAvailable = MainActivity.inputStream.available();
+                        if (bytesAvailable > 0) {
+                            byte[] packetBytes = new byte[bytesAvailable];
+                            MainActivity.inputStream.read(packetBytes);
+
+                            String receivedText = new String(packetBytes, 0, bytesAvailable);
+                            /* sendFinalAck from Zowi sends an 'F' */
+                            if (receivedText.contains("F")) {
+                                sendNewInfo = true;
+                            }
+                        }
+                    }
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
         for (int i=0; i<matrixCodeArray.size(); i++) {
             matrixCommand.append(matrixCodeArray.get(i)).append(" ");
             /* Send only 5 bits columns to avoid filling the buffer */
             if ((i+1) % 5 == 0) {
+                matrixCommand.deleteCharAt(matrixCommand.length()-1);
                 MainActivity.sendCommand(matrixCommand.toString());
                 matrixCommand = new StringBuilder();
                 matrixCommand.append("O ");
+
+                while (!sendNewInfo) {}
+                sendNewInfo = false;
             }
         }
-        int b = 3;
         MainActivity.sendCommand(matrixCommand.toString());
-
+        killThread = true;
     }
 
 }
