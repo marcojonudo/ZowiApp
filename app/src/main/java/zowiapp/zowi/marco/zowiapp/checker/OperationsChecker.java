@@ -45,9 +45,4 @@ public class OperationsChecker extends CheckerTemplate{
         }
     }
 
-    @Override
-    public void sendDataToZowi(String command) {
-        ZowiSocket.sendCommand(command);
-    }
-
 }

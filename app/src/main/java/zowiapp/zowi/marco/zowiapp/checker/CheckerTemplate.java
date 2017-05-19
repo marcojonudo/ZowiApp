@@ -8,6 +8,7 @@ import java.io.OutputStream;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
 /**
@@ -15,16 +16,11 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
  */
 public abstract class CheckerTemplate {
 
-    protected OutputStream outputStream;
     protected static final String CORRECT_ANSWER_COMMAND = "C 1";
     protected static final String WRONG_ANSWER_COMMAND = "C 2";
 
-    public CheckerTemplate(){}
-
-    public CheckerTemplate(OutputStream outputStream) {
-        this.outputStream = outputStream;
+    protected void sendDataToZowi(String command) {
+        ZowiSocket.sendCommand(command);
     }
-
-    protected abstract void sendDataToZowi(String command);
 
 }

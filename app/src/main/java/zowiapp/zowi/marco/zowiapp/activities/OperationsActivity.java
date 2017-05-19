@@ -204,6 +204,7 @@ public class OperationsActivity extends ActivityTemplate {
         StringBuilder matrixCommand = new StringBuilder();
         matrixCommand.append("O ");
 
+        /* New thread for receiving final ack's from Zowi */
         new Thread(new Runnable() {
             public void run() {
                 while (!Thread.currentThread().isInterrupted() && !killThread) {

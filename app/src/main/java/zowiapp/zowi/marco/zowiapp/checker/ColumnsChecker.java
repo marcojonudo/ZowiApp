@@ -1,7 +1,5 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
-import android.widget.Toast;
-
 import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 
@@ -10,25 +8,15 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
  */
 public class ColumnsChecker extends CheckerTemplate{
 
-    private static final String correctAnwerCommand = "C 1";
-    private static final String wrongAnswerCommand = "C 2";
-
     public boolean check(GameParameters gameParameters, String chosenColumn, String correctColumn) {
         if (chosenColumn.equals(correctColumn)) {
-            Toast.makeText(gameParameters, "Bien", Toast.LENGTH_SHORT).show();
-            sendDataToZowi(correctAnwerCommand);
+            sendDataToZowi(CORRECT_ANSWER_COMMAND);
             return true;
         }
         else {
-            Toast.makeText(gameParameters, "Mal", Toast.LENGTH_SHORT).show();
-            sendDataToZowi(wrongAnswerCommand);
+            sendDataToZowi(WRONG_ANSWER_COMMAND);
             return false;
         }
-    }
-
-    @Override
-    public void sendDataToZowi(String command) {
-        ZowiSocket.sendCommand(command);
     }
 
 }
