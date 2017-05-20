@@ -31,12 +31,10 @@ public class OperationsChecker extends CheckerTemplate{
             else {
                 int answerNumber = Integer.valueOf(answer);
                 if (answerNumber == correctResult) {
-                    Toast.makeText(gameParameters, "¡Bien!", Toast.LENGTH_SHORT).show();
-                    sendDataToZowi(CORRECT_ANSWER_COMMAND);
+                    sendDataToZowi(TIC_ANSWER_COMMAND);
                 }
                 else {
-                    Toast.makeText(gameParameters, "Mal", Toast.LENGTH_SHORT).show();
-                    sendDataToZowi(WRONG_ANSWER_COMMAND);
+                    sendDataToZowi(X_ANSWER_COMMAND);
                 }
             }
         }

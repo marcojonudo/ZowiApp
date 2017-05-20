@@ -12,7 +12,6 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_DESCRIPTION = "description";
         protected static final int AXIS_NUMBER = 2;
         public static final int OVERLAY_HORIZONTAL_RATIO = 8;
-        public static final int OVERLAY_VERTICAL_RATIO = 4;
     }
 
     protected static class GridConstants {
