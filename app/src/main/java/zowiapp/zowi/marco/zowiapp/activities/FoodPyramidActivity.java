@@ -36,8 +36,8 @@ public class FoodPyramidActivity extends ActivityTemplate {
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
     private FoodPyramidChecker foodPyramidChecker;
-    private String[][] images;
-    private int imagesNumber;
+    private String[][] images, correctionArray;
+    private int imagesNumber, imagesCounter;
     private String[] correction;
     private int[][] imagesCoordinates, pyramidLimitsCoordinates;
     private float distanceToLeft, distanceToTop;
@@ -61,8 +61,10 @@ public class FoodPyramidActivity extends ActivityTemplate {
             JSONArray jsonCorrection = activityDetails.getJSONArray(FoodPyramidConstants.JSON_PARAMETER_CORRECTION);
             images = new String[jsonImages.length()][];
             imagesNumber = activityDetails.getInt(FoodPyramidConstants.JSON_PARAMETER_IMAGESNUMBER);
+            imagesCounter = 0;
             correction = new String[jsonCorrection.length()];
             dragLimits = new int[4];
+            correctionArray = new String[imagesNumber][2];
 
             /* The different types of food are stored in different indexes of 'images' */
             for (int i=0; i<images.length; i++) {
@@ -311,18 +313,24 @@ public class FoodPyramidActivity extends ActivityTemplate {
                     else {
                         step = 5;
                     }
-                    correctAnswer = foodPyramidChecker.check(gameParameters, imageCategory, correction[step]);
-                }
-                if (!correctAnswer) {
-                    ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), imagesCoordinates[index][0]);
-                    animX.setDuration(1000);
-                    ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), imagesCoordinates[index][1]);
-                    animY.setDuration(1000);
 
-                    AnimatorSet animatorSet = new AnimatorSet();
-                    animatorSet.play(animX).with(animY);
-                    animatorSet.start();
+                    correctionArray[imagesCounter][0] = imageCategory;
+                    correctionArray[imagesCounter][1] = correction[step];
+                    imagesCounter++;
+                    if (imagesCounter == FoodPyramidConstants.NUMBER_OF_IMAGES)
+                        foodPyramidChecker.check(gameParameters, correctionArray);
+//                    correctAnswer = foodPyramidChecker.check(gameParameters, imageCategory, correction[step]);
                 }
+//                if (!correctAnswer) {
+//                    ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), imagesCoordinates[index][0]);
+//                    animX.setDuration(1000);
+//                    ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), imagesCoordinates[index][1]);
+//                    animY.setDuration(1000);
+//
+//                    AnimatorSet animatorSet = new AnimatorSet();
+//                    animatorSet.play(animX).with(animY);
+//                    animatorSet.start();
+//                }
                 break;
             default:
                 break;

@@ -158,6 +158,7 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_CORRECTION = "correction";
         protected static final int PYRAMID_STEPS = 4;
         protected static final int PYRAMID_COORDINATES_LENGTH = 6;
+        protected static final int NUMBER_OF_IMAGES = 7;
         protected static final int[][] PYRAMID_LIMITS_FACTORS = {
                 {0, 2, 1, 1, 1, 1},
                 {0, 0, 1, 2, 3, 4}
