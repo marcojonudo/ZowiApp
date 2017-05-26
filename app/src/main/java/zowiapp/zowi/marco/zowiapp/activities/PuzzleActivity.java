@@ -1,7 +1,5 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
@@ -11,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,6 +27,7 @@ import zowiapp.zowi.marco.zowiapp.checker.PuzzleChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
+import zowiapp.zowi.marco.zowiapp.utils.Animations;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -259,14 +257,7 @@ public class PuzzleActivity extends ActivityTemplate {
                     scaleFactorToPuzzle = scaleFactorsToPuzzle[index][1];
                 }
 
-                ScaleAnimation anim = new ScaleAnimation(
-                        1f, scaleFactorToPuzzle,
-                        1f, scaleFactorToPuzzle,
-                        ScaleAnimation.RELATIVE_TO_PARENT, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index][0], // Pivot point of X scaling
-                        ScaleAnimation.RELATIVE_TO_PARENT, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index][1]); // Pivot point of Y scaling
-                anim.setFillAfter(true);
-                anim.setDuration(500);
-                view.startAnimation(anim);
+                Animations.scaleAnimation(view, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_PIVOTS, index);
 
                 /* Bring the view to the front in order to avoid strange effects when dragging, moving the piece
                    begind the others */
@@ -299,35 +290,12 @@ public class PuzzleActivity extends ActivityTemplate {
 
                 boolean correctAnswer = puzzleChecker.check(gameParameters, view.getX(), view.getY(), correction[index]);
 
-                ObjectAnimator animX, animY;
                 if (correctAnswer) {
-                    animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), correction[index][0]);
-                    animX.setDuration(1000);
-                    animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), correction[index][1]);
-                    animY.setDuration(1000);
-
-                    AnimatorSet animatorSet = new AnimatorSet();
-                    animatorSet.play(animX).with(animY);
-                    animatorSet.start();
+                    Animations.translateAnimation(view, correction, index);
                 }
                 else {
-                    animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), piecesCoordinates[index][0]);
-                    animX.setDuration(1000);
-                    animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), piecesCoordinates[index][1]);
-                    animY.setDuration(1000);
-
-                    AnimatorSet animatorSet = new AnimatorSet();
-                    animatorSet.play(animX).with(animY);
-                    animatorSet.start();
-
-                    anim = new ScaleAnimation(
-                            scaleFactorToPuzzle, 1f,
-                            scaleFactorToPuzzle, 1f,
-                            ScaleAnimation.RELATIVE_TO_PARENT, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index][0], // Pivot point of X scaling
-                            ScaleAnimation.RELATIVE_TO_PARENT, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index][1]); // Pivot point of Y scaling
-                    anim.setFillAfter(true);
-                    anim.setDuration(500);
-                    view.startAnimation(anim);
+                    Animations.translateAnimation(view, piecesCoordinates, index);
+                    Animations.scaleAnimation(view, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_PIVOTS, index);
                 }
 
                 break;

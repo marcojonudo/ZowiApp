@@ -1,7 +1,5 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
@@ -28,6 +26,7 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
+import zowiapp.zowi.marco.zowiapp.utils.Animations;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -337,14 +336,7 @@ public class ColumnsActivity extends ActivityTemplate {
                     }
                 }
                 else {
-                    ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), imagesCoordinates[index][0]);
-                    animX.setDuration(1000);
-                    ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), imagesCoordinates[index][1]);
-                    animY.setDuration(1000);
-
-                    AnimatorSet animatorSet = new AnimatorSet();
-                    animatorSet.play(animX).with(animY);
-                    animatorSet.start();
+                    Animations.translateAnimation(view, imagesCoordinates, index);
                 }
 
                 break;
