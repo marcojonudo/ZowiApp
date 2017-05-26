@@ -3,6 +3,7 @@ package zowiapp.zowi.marco.zowiapp;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,8 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
+import zowiapp.zowi.marco.zowiapp.utils.Layout;
+
 public class ZowiSocket {
 
     private MainActivity mainActivity;
@@ -26,10 +29,13 @@ public class ZowiSocket {
     private static OutputStream outputStream;
     private static InputStream inputStream;
 
+    private static final String ZOWI_PROGRAM_ID = "SUPER_ZOWI";
     private static final int REQUEST_COARSE_LOCATION = 2;
     private static final String ZOWI_NAME = "Zowi";
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final int BOND_NONE = 10;
+
+    private boolean killThread = false;
 
     ZowiSocket(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -67,6 +73,7 @@ public class ZowiSocket {
         else {
             String zowiAddress = getZowiAddress();
             if (zowiAddress.equals("")) {
+
                 startDiscovery();
             }
             else {
@@ -78,9 +85,11 @@ public class ZowiSocket {
 
     private String getZowiAddress() {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        Log.i("ConnectionStep", "getZowiAddress");
 
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
+                Log.i("ConnectionStep", device.getName());
                 if (device.getName().equals(ZOWI_NAME)) {
                     Log.i("ConnectionStep", "Obtenida dirección de Zowi");
                     return device.getAddress();
@@ -107,18 +116,38 @@ public class ZowiSocket {
     private void connectDevice(String zowiAddress) {
         BluetoothDevice zowiDevice = bluetoothAdapter.getRemoteDevice(zowiAddress);
         try {
-            android.bluetooth.BluetoothSocket bluetoothSocket = zowiDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
+            BluetoothSocket bluetoothSocket = zowiDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
             bluetoothSocket.connect();
             outputStream = bluetoothSocket.getOutputStream();
             inputStream = bluetoothSocket.getInputStream();
-            Zowi.setConnected(true);
 
-            mainActivity.closeProgressDialog();
-            mainActivity.displayOverlay();
-            Log.i("connectDevice", "ZowiSocket conectado");
+            Log.i("connectDevice", "Creando hilo");
+            new Thread(new Runnable() {
+                public void run() {
+                    while (!Thread.currentThread().isInterrupted() && !killThread) {
+                        int bytesAvailable = ZowiSocket.isInputStreamAvailable();
+                        if (bytesAvailable > 0) {
+                            byte[] packetBytes = new byte[bytesAvailable];
+                            ZowiSocket.readInputStream(packetBytes);
+
+                            String receivedText = new String(packetBytes, 0, bytesAvailable);
+                            if (receivedText.contains(ZOWI_PROGRAM_ID)) {
+                                Zowi.setConnected(true);
+
+                                Layout.closeProgressDialog();
+                                Layout.drawOverlay(mainActivity, mainActivity.findViewById(R.id.main_activity_container));
+                                Log.i("connectDevice", "ZowiSocket conectado");
+
+                                killThread = true;
+                            }
+
+                        }
+                    }
+                }
+            }).start();
         }
         catch (IOException e) {
-            mainActivity.showAlertDialog();
+            Layout.drawAlertDialog(mainActivity);
             e.printStackTrace();
         }
     }
@@ -171,7 +200,7 @@ public class ZowiSocket {
                     device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
                     if (device.getBondState() == BOND_NONE) {
-                        mainActivity.showAlertDialog();
+                        Layout.drawAlertDialog(mainActivity);
                     }
                     break;
                 case BluetoothDevice.ACTION_FOUND:

@@ -20,12 +20,9 @@ import android.widget.LinearLayout;
 
 import uk.co.chrisjenx.calligraphy. CalligraphyContextWrapper;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
+import zowiapp.zowi.marco.zowiapp.utils.Layout;
 
 public class MainActivity extends AppCompatActivity {
-
-    private MainActivity mainActivity;
-    private ProgressDialog progressDialog;
-    Dialog alertDialog;
 
     private ZowiSocket zowiSocket;
     private static final int REQUEST_COARSE_LOCATION = 2;
@@ -35,15 +32,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.mainActivity = this;
-
-        showProgressDialog();
+        Layout.drawProgressDialog(this);
         Log.i("ConnectionStep", "ProgressDialog shown");
 
         zowiSocket = new ZowiSocket(this);
         zowiSocket.connectToZowi();
 
-        displayOverlay();
+        Layout.drawOverlay(this, findViewById(R.id.main_activity_container));
     }
 
     @Override
@@ -103,49 +98,14 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
         else {
-            showAlertDialog();
+            Layout.drawAlertDialog(this);
         }
     }
 
     public void discoverZowi(View v) {
-        alertDialog.cancel();
-        showProgressDialog();
+        Layout.closeAlertDialog();
+        Layout.drawProgressDialog(this);
         zowiSocket.connectToZowi();
-    }
-
-    private void showProgressDialog() {
-        progressDialog = new ProgressDialog(this, R.style.DialogTheme);
-        progressDialog.show();
-        progressDialog.setContentView(R.layout.custom_progress_dialog);
-        progressDialog.setCancelable(true);
-    }
-
-    public void closeProgressDialog() {
-        progressDialog.cancel();
-    }
-
-    public void showAlertDialog() {
-        alertDialog = new Dialog(mainActivity, R.style.DialogTheme);
-        alertDialog.setContentView(R.layout.custom_alert_dialog);
-        alertDialog.show();
-    }
-
-    public void displayOverlay() {
-        final LinearLayout mainActivityContainer = (LinearLayout) findViewById(R.id.main_activity_container);
-        /* The Zowi not connected overlay is shown */
-        if (mainActivityContainer != null) {
-            final Drawable smallZowi = Zowi.getConnected() ? ContextCompat.getDrawable(this, R.drawable.overlay_on) : ContextCompat.getDrawable(this, R.drawable.overlay_off);
-            final ViewOverlay overlay = mainActivityContainer.getOverlay();
-
-            mainActivityContainer.post(new Runnable() {
-                @Override
-                public void run() {
-                    smallZowi.setBounds(mainActivityContainer.getWidth()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getHeight()-mainActivityContainer.getWidth()/CommonConstants.OVERLAY_HORIZONTAL_RATIO, mainActivityContainer.getWidth(), mainActivityContainer.getHeight());
-                    overlay.add(smallZowi);
-                }
-            });
-            Log.i("ConnectionStep", "Overlay shown");
-        }
     }
 
 }
