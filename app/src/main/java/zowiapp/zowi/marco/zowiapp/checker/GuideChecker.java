@@ -1,27 +1,30 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
+import android.content.Context;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import zowiapp.zowi.marco.zowiapp.GameParameters;
+import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.ZowiSocket;
-import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.activities.FoodPyramidActivity;
+import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
+import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 
 /**
  * Created by Marco on 03/02/2017.
  */
-public class FoodPyramidChecker extends CheckerTemplate {
+public class GuideChecker extends CheckerTemplate {
 
+    GuideActivity guideActivity;
     private boolean checkAnswers, killThread;
-    private int state;
-    private static final int WAITING_ZOWI_CHECKS = 0;
-    private static final int ZOWI_HAS_CHECKED = 1;
 
-    public FoodPyramidChecker() {
+    public GuideChecker(GuideActivity guideActivity) {
         checkAnswers = false;
         killThread = false;
-        state = 0;
+        this.guideActivity = guideActivity;
     }
 
     public boolean check(GameParameters gameParameters, String[][] correctionArray, ImageView[] imageViews, int[][] imagesCoordinates) {
@@ -37,13 +40,9 @@ public class FoodPyramidChecker extends CheckerTemplate {
 
                         String receivedText = new String(packetBytes, 0, bytesAvailable);
                         /* sendFinalAck from Zowi sends an 'F' as response to ZOWI_CHECKS_ANSWERS */
-                        if (receivedText.contains("F") && state == WAITING_ZOWI_CHECKS) {
+                        if (receivedText.contains("F")) {
                             checkAnswers = true;
-                            state = ZOWI_HAS_CHECKED;
-                        }
-                        else if (receivedText.contains("F") && state == ZOWI_HAS_CHECKED) {
                             killThread = true;
-                            state = WAITING_ZOWI_CHECKS;
                         }
 
                     }
@@ -55,23 +54,18 @@ public class FoodPyramidChecker extends CheckerTemplate {
 
         while (!checkAnswers) {}
 
-        int correctAnswers = 0;
-        for (String[] correctionStep: correctionArray) {
-            if (!correctionStep[0].equals(correctionStep[1])) {
-                for (int i=0; i<imageViews.length; i++) {
-                    if (!correctionArray[i][0].equals(correctionArray[i][1])) {
-                        Animations.translateAnimation(imageViews[i], imagesCoordinates, i);
-                    }
-                    else
-                        correctAnswers++;
-                }
-                FoodPyramidActivity.setImagesCounter(correctAnswers);
-                sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
+        LinearLayout guideImagesContainer = (LinearLayout) gameParameters.findViewById(R.id.guide_images_container);
 
-                return false;
+        if (guideImagesContainer != null) {
+            ImageView imageView;
+            for (int i=0; i<guideImagesContainer.getChildCount(); i++) {
+                imageView = (ImageView) guideImagesContainer.getChildAt(i);
+                Animations.shadeAnimation(imageView, 1.0f, 2.0f);
             }
         }
-        sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+        else {
+            new NullElement(gameParameters, guideActivity.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "guideImagesContainer");
+        }
         return true;
     }
 

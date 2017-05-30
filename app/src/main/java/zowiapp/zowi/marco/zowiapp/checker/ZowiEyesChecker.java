@@ -11,7 +11,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ZowiEyesConstants
 /**
  * Created by Marco on 03/02/2017.
  */
-public class ZowiEyesChecker {
+public class ZowiEyesChecker extends CheckerTemplate{
 
     private static int[][] imagesCoordinates;
     private boolean firstTime = true;
@@ -40,7 +40,7 @@ public class ZowiEyesChecker {
             if (distanceToCenter > ZowiEyesConstants.DISTANCE_LIMITS[i][0]) {
                 Log.i("ZowiEyes", String.valueOf(distanceToCenter));
                 if (new Date().getTime() - referenceTime >= ZowiEyesConstants.DISTANCE_PERIODS[i]) {
-                    ZowiSocket.sendCommand("S " + String.valueOf(ZowiEyesConstants.DISTANCE_LIMITS[i][1]));
+                    sendDataToZowi("S " + String.valueOf(ZowiEyesConstants.DISTANCE_LIMITS[i][1]));
                     referenceTime = new Date().getTime();
                 }
                 break;

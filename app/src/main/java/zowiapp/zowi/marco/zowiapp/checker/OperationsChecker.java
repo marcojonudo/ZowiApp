@@ -8,6 +8,7 @@ import android.widget.Toast;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.MainActivity;
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
@@ -31,10 +32,10 @@ public class OperationsChecker extends CheckerTemplate{
             else {
                 int answerNumber = Integer.valueOf(answer);
                 if (answerNumber == correctResult) {
-                    sendDataToZowi(TIC_ANSWER_COMMAND);
+                    sendDataToZowi(ZowiActions.TIC_ANSWER_COMMAND);
                 }
                 else {
-                    sendDataToZowi(X_ANSWER_COMMAND);
+                    sendDataToZowi(ZowiActions.X_ANSWER_COMMAND);
                 }
             }
         }

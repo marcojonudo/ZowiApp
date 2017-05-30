@@ -1,5 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
+import zowiapp.zowi.marco.zowiapp.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 
 /**
@@ -7,14 +8,8 @@ import zowiapp.zowi.marco.zowiapp.ZowiSocket;
  */
 public abstract class CheckerTemplate {
 
-    protected static final String CORRECT_ANSWER_COMMAND = "C 1";
-    protected static final String WRONG_ANSWER_COMMAND = "C 2";
-    protected static final String TIC_ANSWER_COMMAND = "D 1";
-    protected static final String X_ANSWER_COMMAND = "D 2";
-    protected static final String ZOWI_CHECKS_ANSWERS = "E";
-
     protected void sendDataToZowi(String command) {
-        ZowiSocket.sendCommand(command);
+        ZowiActions.sendDataToZowi(command);
     }
 
 }

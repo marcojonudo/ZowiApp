@@ -1,5 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
+import zowiapp.zowi.marco.zowiapp.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 
@@ -10,11 +11,11 @@ public class ColumnsChecker extends CheckerTemplate{
 
     public boolean check(GameParameters gameParameters, String chosenColumn, String correctColumn) {
         if (chosenColumn.equals(correctColumn)) {
-            sendDataToZowi(CORRECT_ANSWER_COMMAND);
+            sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
             return true;
         }
         else {
-            sendDataToZowi(WRONG_ANSWER_COMMAND);
+            sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
             return false;
         }
     }
