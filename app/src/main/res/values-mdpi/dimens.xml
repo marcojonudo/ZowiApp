@@ -71,9 +71,7 @@
     <dimen name="memory_images_margin">15dp</dimen>
 
     <!-- Pyramid dimensions -->
-    <dimen name="pyramid_image_side">265dp</dimen>
-    <dimen name="pyramid_text_side">300dp</dimen>
-    <dimen name="food_image_side">150dp</dimen>
+    <dimen name="pyramid_images_margin">10dp</dimen>
 
     <!-- Columns dimensions -->
     <dimen name="columns_image_side">75dp</dimen>

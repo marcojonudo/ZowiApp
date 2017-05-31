@@ -25,6 +25,8 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.MemoryConstants;
 import zowiapp.zowi.marco.zowiapp.checker.MemoryChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
+import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -39,6 +41,7 @@ public class MemoryActivity extends ActivityTemplate {
     private int firstImageID, firstPosition;
     private boolean first;
     private MemoryChecker memoryChecker;
+    private ImagesHandler imagesHandler;
 
     public MemoryActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -46,6 +49,7 @@ public class MemoryActivity extends ActivityTemplate {
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         memoryChecker = new MemoryChecker();
+        imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.MEMORY);
 
         getParameters();
     }
@@ -76,80 +80,35 @@ public class MemoryActivity extends ActivityTemplate {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         inflater.inflate(R.layout.memory_activity_template, contentContainer, true);
 
-        placeImages(contentContainer, memoryImages);
+        if (contentContainer != null) {
+            ConstraintLayout constraintContainer = (ConstraintLayout) contentContainer.getChildAt(0);
 
-        new CountDownTimer(MemoryConstants.FLIP_DELAY, MemoryConstants.FLIP_DELAY) {
+            imagesHandler.loadSimpleDoubleImages(constraintContainer, memoryImages, MemoryConstants.NUMBER_OF_IMAGES, memoryImages.length, constraintContainer.getChildCount());
 
-            public void onTick(long millisUntilFinished) {}
+            new CountDownTimer(MemoryConstants.FLIP_DELAY, MemoryConstants.FLIP_DELAY) {
 
-            public void onFinish() {
-                hideImages();
-            }
-        }.start();
-    }
+                public void onTick(long millisUntilFinished) {}
 
-    private void placeImages(RelativeLayout contentContainer, String[] images) {
-        ConstraintLayout constrainContainer = (ConstraintLayout) contentContainer.getChildAt(0);
-        int[] occurrences = new int[images.length];
-        int[] imageViewsOccurrences = new int[constrainContainer.getChildCount()];
-
-        for (int i=0; i<occurrences.length; i++) {
-            occurrences[i] = 0;
-        }
-        for (int i=0; i<imageViewsOccurrences.length; i++) {
-            imageViewsOccurrences[i] = 0;
-        }
-
-        int randomImagesIndex, randomPositionIndex;
-        ImageView imageView;
-        for (int i=0; i<MemoryConstants.NUMBER_OF_IMAGES; i++) {
-            randomImagesIndex = new Random().nextInt(occurrences.length);
-
-            while (occurrences[randomImagesIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-            }
-            occurrences[randomImagesIndex] = 1;
-
-            for (int j=0; j<2; j++) {
-                randomPositionIndex = new Random().nextInt(imageViewsOccurrences.length);
-
-                while (imageViewsOccurrences[randomPositionIndex] == 1) {
-                    randomPositionIndex = new Random().nextInt(imageViewsOccurrences.length);
+                public void onFinish() {
+                    hideImages();
                 }
-                imageViewsOccurrences[randomPositionIndex] = 1;
-
-                imageView = (ImageView) ((FrameLayout) constrainContainer.getChildAt(randomPositionIndex)).getChildAt(1);
-                placeImage(imageView, images[randomImagesIndex], randomImagesIndex, randomPositionIndex);
-            }
+            }.start();
         }
-    }
 
-    private void placeImage(ImageView imageView, String imageName, int randomImagesIndex, int randomPositionIndex) {
-        imageView.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        imageView.setTag(randomImagesIndex + "-" + randomPositionIndex);
-
-        TouchListener touchListener = new TouchListener(MemoryConstants.MEMORY_TYPE, this);
-        imageView.setOnTouchListener(touchListener);
     }
 
     private void hideImages() {
         ConstraintLayout imagesGrid = (ConstraintLayout) gameParameters.findViewById(R.id.memory_images_container);
 
         if (imagesGrid != null) {
-            Animator setRightOut, setLeftIn;
             ImageView image;
             View view;
             /* The images are flipped */
             for (int i=0; i<imagesGrid.getChildCount(); i++) {
-                setRightOut = AnimatorInflater.loadAnimator(gameParameters, R.animator.card_flip_right_out);
-                setLeftIn = AnimatorInflater.loadAnimator(gameParameters, R.animator.card_flip_left_in);
                 image = (ImageView) ((FrameLayout) imagesGrid.getChildAt(i)).getChildAt(1);
                 view = ((FrameLayout) imagesGrid.getChildAt(i)).getChildAt(0);
 
-                setRightOut.setTarget(image);
-                setLeftIn.setTarget(view);
-                setRightOut.start();
-                setLeftIn.start();
+                Animations.flip1(gameParameters, image, view);
             }
         }
         else {
@@ -178,29 +137,15 @@ public class MemoryActivity extends ActivityTemplate {
                 if (correctAnswer) {
                     ConstraintLayout imagesGrid = (ConstraintLayout) gameParameters.findViewById(R.id.memory_images_container);
 
-                    Animator setLeftOut, setRightIn;
                     ImageView firstImage, secondImage;
                     View firstView, secondView;
                     if (imagesGrid != null) {
-                        setLeftOut = AnimatorInflater.loadAnimator(gameParameters, R.animator.card_flip_right_in);
-                        setRightIn = AnimatorInflater.loadAnimator(gameParameters, R.animator.card_flip_left_out);
                         firstImage = (ImageView) ((FrameLayout) imagesGrid.getChildAt(firstPosition)).getChildAt(1);
                         firstView = ((FrameLayout) imagesGrid.getChildAt(firstPosition)).getChildAt(0);
-
-                        setLeftOut.setTarget(firstImage);
-                        setRightIn.setTarget(firstView);
-                        setLeftOut.start();
-                        setRightIn.start();
-
-                        setLeftOut = AnimatorInflater.loadAnimator(gameParameters, R.animator.card_flip_right_in);
-                        setRightIn = AnimatorInflater.loadAnimator(gameParameters, R.animator.card_flip_left_out);
                         secondImage = (ImageView) ((FrameLayout) imagesGrid.getChildAt(secondPosition)).getChildAt(1);
                         secondView = ((FrameLayout) imagesGrid.getChildAt(secondPosition)).getChildAt(0);
 
-                        setLeftOut.setTarget(secondImage);
-                        setRightIn.setTarget(secondView);
-                        setLeftOut.start();
-                        setRightIn.start();
+                        Animations.flip2WithDelay(gameParameters, firstImage, firstView, secondImage, secondView);
                     }
                     else {
                         new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "imagesGrid");

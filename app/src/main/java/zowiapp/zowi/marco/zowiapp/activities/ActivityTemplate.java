@@ -69,6 +69,10 @@ public abstract class ActivityTemplate {
                 ZowiEyesActivity zowiEyesActivity = (ZowiEyesActivity) activity;
                 zowiEyesActivity.getElementsCoordinates();
                 break;
+            case GUIDE:
+                GuideActivity guideActivity = (GuideActivity) activity;
+                guideActivity.getElementsCoordinates();
+                break;
             default:
                 break;
         }

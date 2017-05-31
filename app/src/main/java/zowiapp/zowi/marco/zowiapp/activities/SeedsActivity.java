@@ -27,6 +27,7 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -38,9 +39,11 @@ public class SeedsActivity extends ActivityTemplate {
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
     private SeedsChecker seedsChecker;
+    private ImagesHandler imagesHandler;
     private String[][] seedsImages;
     private String[] containerImages, correction;
-    private int[][] seedsCoordinates, seedsDimensions, containerCoordinates, containerDimensions;
+    private int[][] seedsCoordinates, containerCoordinates, containerDimensions;
+    private int[] seedsDimensions;
     private float distanceToLeft, distanceToTop;
     private int[] dragLimits;
 
@@ -50,6 +53,7 @@ public class SeedsActivity extends ActivityTemplate {
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         seedsChecker = new SeedsChecker();
+        imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.SEEDS);
 
         getParameters();
     }
@@ -65,7 +69,7 @@ public class SeedsActivity extends ActivityTemplate {
             containerImages = new String[jsonContainerImages.length()];
             correction = new String[jsonCorrection.length()];
             seedsCoordinates = new int[SeedsConstants.NUMBER_OF_SEEDS][CommonConstants.AXIS_NUMBER];
-            seedsDimensions = new int[SeedsConstants.NUMBER_OF_SEEDS][CommonConstants.AXIS_NUMBER];
+            seedsDimensions = new int[CommonConstants.AXIS_NUMBER];
             containerCoordinates = new int[containerImages.length][CommonConstants.AXIS_NUMBER];
             containerDimensions = new int[containerImages.length][CommonConstants.AXIS_NUMBER];
             dragLimits = new int[4];
@@ -132,12 +136,11 @@ public class SeedsActivity extends ActivityTemplate {
 
                 seedsCoordinates[i][0] = seedsImagesContainer.getLeft() + constraintView.getLeft() + constraintView.getWidth()/2;
                 seedsCoordinates[i][1] = seedsImagesContainer.getTop() + constraintView.getTop() + constraintView.getHeight()/2;
-                seedsDimensions[i][0] = constraintView.getWidth();
-                seedsDimensions[i][1] = constraintView.getHeight();
-
+                seedsDimensions[0] = constraintView.getWidth();
+                seedsDimensions[1] = constraintView.getHeight();
             }
 
-            loadImages(contentContainer, seedsImages);
+            imagesHandler.loadCategoriesImages(contentContainer, seedsImages, SeedsConstants.NUMBER_OF_SEEDS, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, seedsCoordinates, seedsDimensions, correction);
         }
 
         ConstraintLayout seedsFinalContainer = (ConstraintLayout) gameParameters.findViewById(R.id.seeds_final_container);
@@ -157,109 +160,8 @@ public class SeedsActivity extends ActivityTemplate {
                 }
             }
 
-            loadContainerImages(seedsFinalContainer, containerImages);
+            imagesHandler.loadSimpleImages(seedsFinalContainer, containerImages, containerImages.length, containerImages.length);
         }
-    }
-
-    private void loadImages(RelativeLayout contentContainer, String[][] images) {
-        /* Ocurrences array for generating random index, so the images have not the same order
-           every time the child enter */
-        int[][] occurrences = new int[images.length][];
-        int[] categoryOccurrences = new int[images.length];
-        for (int i=0; i<occurrences.length; i++) {
-            occurrences[i] = new int[images[i].length];
-            categoryOccurrences[i] = 0;
-            for (int j=0; j<occurrences[i].length; j++) {
-                occurrences[i][j] = 0;
-            }
-        }
-
-        /* We ensure that at least one image of each category is displayed */
-        for (int i=0; i<images.length; i++) {
-            int randomImagesIndex = new Random().nextInt(images.length);
-            int randomCategoryIndex = new Random().nextInt(images[0].length);
-
-            while (categoryOccurrences[randomImagesIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-            }
-            categoryOccurrences[randomImagesIndex] = 1;
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-            loadImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
-        }
-
-        /* As images are chosen randomly between all the available ones, we cannot take the length of the
-           images array as reference. Instead of that, we use a number defined in activities_details */
-        for (int i=images.length; i<SeedsConstants.NUMBER_OF_SEEDS; i++) {
-            int randomImagesIndex = new Random().nextInt(images.length);
-            /* images index can be 0, as all the subarrays have always the same number of images */
-            int randomCategoryIndex = new Random().nextInt(images[0].length);
-
-            while (occurrences[randomImagesIndex][randomCategoryIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-                randomCategoryIndex = new Random().nextInt(images[0].length);
-            }
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-
-            loadImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
-        }
-    }
-
-    private void loadContainerImages(ConstraintLayout contentContainer, String[] images) {
-        int[] occurrences = new int[images.length];
-        for (int i=0; i<occurrences.length; i++) {
-            occurrences[i] = 0;
-        }
-
-        for (int i=0; i<images.length; i++) {
-            int randomImagesIndex = new Random().nextInt(images.length);
-
-            while (occurrences[randomImagesIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(images.length);
-            }
-            occurrences[randomImagesIndex] = 1;
-
-            ImageView imageView = (ImageView) contentContainer.getChildAt(i);
-            loadContainerImage(imageView, images[randomImagesIndex], i);
-        }
-    }
-
-    private void loadContainerImage(ImageView imageView, String imageName, int i) {
-        imageView.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        String tag = String.valueOf(i);
-        imageView.setTag(tag);
-    }
-
-    private void loadImage(RelativeLayout contentContainer, String imageName, int i, String correction) {
-        ImageView image = new ImageView(gameParameters);
-        image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-
-        /* 'scaleFactor' is used to set the exact width and height to the ImageView, the same as the resource it will contain */
-        Drawable drawable = image.getDrawable();
-        float scaleFactor;
-        if (seedsDimensions[i][0] < seedsDimensions[i][1]) {
-            scaleFactor = (float)seedsDimensions[i][0]/(float)drawable.getIntrinsicWidth();
-        }
-        else {
-            scaleFactor = (float)seedsDimensions[i][1]/(float)drawable.getIntrinsicHeight();
-        }
-
-        int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
-        int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
-        image.setLayoutParams(layoutParams);
-        seedsCoordinates[i][0] = seedsCoordinates[i][0] - width/2;
-        seedsCoordinates[i][1] = seedsCoordinates[i][1] - height/2;
-        image.setX(seedsCoordinates[i][0]);
-        image.setY(seedsCoordinates[i][1]);
-        String tag = i + "-" + correction;
-        image.setTag(tag);
-
-        TouchListener touchListener = new TouchListener(SeedsConstants.SEEDS_TYPE, this);
-        image.setOnTouchListener(touchListener);
-
-        contentContainer.addView(image);
     }
 
     protected boolean processTouchEvent(View view, MotionEvent event) {

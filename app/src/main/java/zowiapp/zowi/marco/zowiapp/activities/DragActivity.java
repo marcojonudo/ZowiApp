@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
@@ -27,6 +28,7 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -38,12 +40,13 @@ public class DragActivity extends ActivityTemplate {
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
     private DragChecker dragChecker;
+    private ImagesHandler imagesHandler;
     private String[][] dragImages;
     private String[] containerImages, texts, correction;
     private int containerElements, dragImagesNumber;
-    private int[][] dragCoordinates, containerCoordinates, dragDimensions, containerDimensions;
+    private int[][] dragCoordinates, containerCoordinates, containerDimensions;
     private float distanceToLeft, distanceToTop;
-    private int[] dragLimits;
+    private int[] dragLimits, dragDimensions;
 
     public DragActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -51,6 +54,7 @@ public class DragActivity extends ActivityTemplate {
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         dragChecker = new DragChecker();
+        imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.DRAG);
 
         getParameters();
     }
@@ -70,7 +74,7 @@ public class DragActivity extends ActivityTemplate {
             texts = new String[jsonTexts.length()];
             correction = new String[jsonCorrection.length()];
             dragCoordinates = new int[dragImagesNumber][CommonConstants.AXIS_NUMBER];
-            dragDimensions = new int[dragImagesNumber][CommonConstants.AXIS_NUMBER];
+            dragDimensions = new int[CommonConstants.AXIS_NUMBER];
             containerCoordinates = new int[containerElements][CommonConstants.AXIS_NUMBER];
             containerDimensions = new int[containerElements][CommonConstants.AXIS_NUMBER];
             dragLimits = new int[4];
@@ -168,11 +172,11 @@ public class DragActivity extends ActivityTemplate {
 
                 dragCoordinates[i][0] = (int)constraintView.getX() + constraintView.getWidth()/2;
                 dragCoordinates[i][1] = (int)constraintView.getY() + constraintView.getHeight()/2;
-                dragDimensions[i][0] = constraintView.getWidth();
-                dragDimensions[i][1] = constraintView.getHeight();
+                dragDimensions[0] = constraintView.getWidth();
+                dragDimensions[1] = constraintView.getHeight();
             }
 
-            loadImages(contentContainer, dragImages);
+            imagesHandler.loadCategoriesImages(contentContainer, dragImages, dragImagesNumber, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, dragCoordinates, dragDimensions, correction);
         }
 
         ConstraintLayout constraintImagesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.constraint_images_container);
@@ -193,84 +197,6 @@ public class DragActivity extends ActivityTemplate {
                 containerDimensions[i][1] = containerElementBox.getHeight();
             }
         }
-    }
-
-    private void loadImages(RelativeLayout contentContainer, String[][] images) {
-        /* Ocurrences array for generating random index, so the images have not the same order
-           every time the child enter */
-        int[][] occurrences = new int[images.length][];
-        int[] categoryOccurrences = new int[images.length];
-        for (int i=0; i<occurrences.length; i++) {
-            occurrences[i] = new int[images[i].length];
-            categoryOccurrences[i] = 0;
-            for (int j=0; j<occurrences[i].length; j++) {
-                occurrences[i][j] = 0;
-            }
-        }
-
-        /* We ensure that at least one image of each category is displayed */
-        for (int i=0; i<images.length; i++) {
-            int randomImagesIndex = new Random().nextInt(images.length);
-            int randomCategoryIndex = new Random().nextInt(images[0].length);
-
-            while (categoryOccurrences[randomImagesIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-            }
-            categoryOccurrences[randomImagesIndex] = 1;
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-            loadImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
-        }
-
-        /* As images are chosen randomly between all the available ones, we cannot take the length of the
-           images array as reference. Instead of that, we use a number defined in activities_details */
-        /* We start at 3 because indexes 0, 1 and 2 have been used just before */
-        for (int i=images.length; i<dragImagesNumber; i++) {
-            int randomImagesIndex = new Random().nextInt(images.length);
-            /* images index can be 0, as all the subarrays have always the same number of images */
-            int randomCategoryIndex = new Random().nextInt(images[0].length);
-
-            while (occurrences[randomImagesIndex][randomCategoryIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-                randomCategoryIndex = new Random().nextInt(images[0].length);
-            }
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-
-            loadImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
-        }
-    }
-
-    private void loadImage(RelativeLayout contentContainer, String imageName, int i, String correction) {
-        ImageView image = new ImageView(gameParameters);
-        image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-
-        /* 'scaleFactor' is used to set the exact width and height to the ImageView, the same as the resource it will contain */
-        Drawable drawable = image.getDrawable();
-        float scaleFactor;
-        if (dragDimensions[i][0] < dragDimensions[i][1]) {
-            scaleFactor = (float)dragDimensions[i][0]/(float)drawable.getIntrinsicWidth();
-        }
-        else {
-            scaleFactor = (float)dragDimensions[i][1]/(float)drawable.getIntrinsicHeight();
-        }
-
-        int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
-        int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
-        image.setLayoutParams(layoutParams);
-        dragCoordinates[i][0] = dragCoordinates[i][0] - width/2;
-        dragCoordinates[i][1] = dragCoordinates[i][1] - height/2;
-        image.setX(dragCoordinates[i][0]);
-        image.setY(dragCoordinates[i][1]);
-        String tag = i + "-" + correction;
-        image.setTag(tag);
-
-
-        TouchListener touchListener = new TouchListener(DragConstants.DRAG_TYPE, this);
-        image.setOnTouchListener(touchListener);
-
-        contentContainer.addView(image);
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {

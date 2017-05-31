@@ -22,6 +22,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ZowiEyesConstants
 import zowiapp.zowi.marco.zowiapp.checker.ZowiEyesChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
+import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -32,6 +33,7 @@ public class ZowiEyesActivity extends ActivityTemplate {
     private LayoutInflater inflater;
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
+    private ImagesHandler imagesHandler;
     private String[][] images;
     private int[][] imageViewsCoordinates, imagesCoordinates;
     private int[] imagesNumber;
@@ -41,7 +43,7 @@ public class ZowiEyesActivity extends ActivityTemplate {
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.ZOWI_EYES);
         getParameters();
     }
 
@@ -117,7 +119,13 @@ public class ZowiEyesActivity extends ActivityTemplate {
                 imageViewsCoordinates[i][1] = zowiEyesContainer.getTop() + imageView.getTop() + imageView.getHeight()/2;
             }
 
-            placeImages(contentContainer, images);
+            if (contentContainer != null) {
+                ConstraintLayout constrainContainer = (ConstraintLayout) contentContainer.getChildAt(0);
+
+                imagesHandler.loadZowiEyesImages(constrainContainer, images, imagesNumber[0], imagesNumber[1], ZowiEyesConstants.LAYOUT_IMAGES, imagesCoordinates, imageViewsCoordinates);
+            }
+
+//            placeImages(contentContainer, images);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "zowiEyesContainer");
@@ -144,7 +152,6 @@ public class ZowiEyesActivity extends ActivityTemplate {
 
             ImageView imageView = (ImageView) constrainContainer.getChildAt(randomImagesIndex);
             /* 0 is the index for the correct images */
-            placeImage(imageView, images[0][i], randomImagesIndex, i, 0);
         }
 
         for (int i=0; i<imagesNumber[1]; i++) {

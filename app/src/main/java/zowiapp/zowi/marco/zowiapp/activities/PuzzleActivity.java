@@ -28,6 +28,7 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -37,6 +38,7 @@ public class PuzzleActivity extends ActivityTemplate {
     private GameParameters gameParameters;
     private LayoutInflater inflater;
     private PuzzleChecker puzzleChecker;
+    private ImagesHandler imagesHandler;
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
     private String[][][] piecesImages;
@@ -52,8 +54,13 @@ public class PuzzleActivity extends ActivityTemplate {
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         puzzleChecker = new PuzzleChecker();
+        imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.PUZZLE);
 
         getParameters();
+    }
+
+    public void setCorrection(int[][] correction) {
+        this.correction = correction;
     }
 
     @Override
@@ -162,72 +169,11 @@ public class PuzzleActivity extends ActivityTemplate {
             /* The length of piecesImages[i] is the number of possible images */
             int randomImageIndex = new Random().nextInt(piecesImages[0].length);
 
-            placeImages(contentContainer, piecesImages[randomShapeIndex][randomImageIndex]);
+            imagesHandler.loadPuzzleImages(contentContainer, piecesImages[randomShapeIndex][randomImageIndex], PuzzleConstants.PIECES_NUMBER, piecesCoordinates, piecesDimensions, scaleFactorsToPuzzle, randomShapeIndex, puzzleContainerSide);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "puzzleContainer");
         }
-    }
-
-    private void placeImages(RelativeLayout contentContainer, String[] images) {
-        int[] occurrences = new int[images.length];
-        for (int i=0; i<occurrences.length; i++) {
-            occurrences[i] = 0;
-        }
-
-        for (int i=0; i<images.length; i++) {
-            int randomIndex = new Random().nextInt(images.length);
-
-            while (occurrences[randomIndex] == 1) {
-                randomIndex = new Random().nextInt(occurrences.length);
-            }
-            occurrences[randomIndex] = 1;
-
-            /* With the correction array there are no problems with different indexes between the positions and the pieces*/
-            correction[i] = puzzleCoordinates[randomIndex];
-
-            placeImage(contentContainer, images[randomIndex], randomIndex, i);
-        }
-
-    }
-
-    private void placeImage(RelativeLayout container, String imageName, int randomIndex, int i) {
-        ImageView image = new ImageView(gameParameters);
-        image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        image.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.red));
-
-        Drawable drawable = image.getDrawable();
-        float scaleFactor, scaleFactorToPuzzle;
-        int width, height;
-        if (piecesDimensions[i][0] < piecesDimensions[i][1]) {
-            scaleFactor = (float)piecesDimensions[i][0]/(float)drawable.getIntrinsicWidth();
-            width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
-            height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
-            scaleFactorToPuzzle = ((float)puzzleContainerSide*(float)PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex][randomIndex][0])/(float)width;
-            scaleFactorsToPuzzle[i][0] = scaleFactorToPuzzle;
-        }
-        else {
-            scaleFactor = (float)piecesDimensions[i][1]/(float)drawable.getIntrinsicHeight();
-            width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
-            height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
-            scaleFactorToPuzzle = ((float)puzzleContainerSide*(float)PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex][randomIndex][1])/(float)height;
-            scaleFactorsToPuzzle[i][1] = scaleFactorToPuzzle;
-        }
-
-        piecesDimensions[i][0] = width;
-        piecesDimensions[i][1] = height;
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
-        image.setLayoutParams(layoutParams);
-        piecesCoordinates[i][0] = piecesCoordinates[i][0] - width/2;
-        piecesCoordinates[i][1] = piecesCoordinates[i][1] - height/2;
-        image.setX(piecesCoordinates[i][0]);
-        image.setY(piecesCoordinates[i][1]);
-        image.setTag(i);
-
-        container.addView(image);
-
-        TouchListener touchListener = new TouchListener(PuzzleConstants.PUZZLE_TYPE, this);
-        image.setOnTouchListener(touchListener);
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {

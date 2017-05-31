@@ -20,6 +20,7 @@ import java.util.Random;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.MainActivity;
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.OperationsConstants;
@@ -140,8 +141,6 @@ public class OperationsActivity extends ActivityTemplate {
                         /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews */
                         ImageView operationsImage = (ImageView) operationContainer.getChildAt(j+(2*(j+1))-1);
                         operationsImage.setImageResource(gameParameters.getResources().getIdentifier(operationsImages[i], "drawable", gameParameters.getPackageName()));
-//                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(OperationsConstants.OPERATION_IMAGE_WIDTH_PX, OperationsConstants.OPERATION_IMAGE_WIDTH_PX);
-//                        operationsImage.setLayoutParams(layoutParams);
                     }
                     break;
                 default:
@@ -165,7 +164,7 @@ public class OperationsActivity extends ActivityTemplate {
                         @Override
                         public void onClick(View view) {
                             int index = (int)view.getTag();
-                            sendOperation(operations[index]);
+                            ZowiActions.sendOperation(operations[index]);
                         }
                     });
                 }
@@ -183,61 +182,6 @@ public class OperationsActivity extends ActivityTemplate {
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
         }
-    }
-
-    private void sendOperation(String[] operation) {
-        ArrayList<String> matrixCodeArray = new ArrayList<>();
-        killThread = false;
-        for (int i=0; i<operation.length; i++) {
-            String[] operator = (i == 1) ? ((operation[i].equals("+")) ? OperationsConstants.OPERATORS_TO_LED[0] : OperationsConstants.OPERATORS_TO_LED[1]) : OperationsConstants.NUMBERS_TO_LED[Integer.parseInt(operation[i])];
-            for (String numberColumn: operator) {
-                matrixCodeArray.add(numberColumn);
-            }
-            /* Add empty column between operators */
-            matrixCodeArray.add(OperationsConstants.COLUMN_0);
-        }
-        /* Add empty columns until the last number disappears */
-        for (int i=0; i<5; i++) {
-            matrixCodeArray.add(OperationsConstants.COLUMN_0);
-        }
-
-        StringBuilder matrixCommand = new StringBuilder();
-        matrixCommand.append("O ");
-
-        /* New thread for receiving final ack's from Zowi */
-        new Thread(new Runnable() {
-            public void run() {
-                while (!Thread.currentThread().isInterrupted() && !killThread) {
-                    int bytesAvailable = ZowiSocket.isInputStreamAvailable();
-                    if (bytesAvailable > 0) {
-                        byte[] packetBytes = new byte[bytesAvailable];
-                        ZowiSocket.readInputStream(packetBytes);
-
-                        String receivedText = new String(packetBytes, 0, bytesAvailable);
-                        /* sendFinalAck from Zowi sends an 'F' */
-                        if (receivedText.contains("F")) {
-                            sendNewInfo = true;
-                        }
-                    }
-                }
-            }
-        }).start();
-
-        for (int i=0; i<matrixCodeArray.size(); i++) {
-            matrixCommand.append(matrixCodeArray.get(i)).append(" ");
-            /* Send only 5 bits columns to avoid filling the buffer */
-            if ((i+1) % 5 == 0) {
-                matrixCommand.deleteCharAt(matrixCommand.length()-1);
-                ZowiSocket.sendCommand(matrixCommand.toString());
-                matrixCommand = new StringBuilder();
-                matrixCommand.append("O ");
-
-                while (!sendNewInfo) {}
-                sendNewInfo = false;
-            }
-        }
-        ZowiSocket.sendCommand(matrixCommand.toString());
-        killThread = true;
     }
 
 }

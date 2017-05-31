@@ -1,38 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/operations_template_container">
 
     <FrameLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:id="@+id/main_image_container">
+        android:layout_height="0dp"
+        android:id="@+id/main_image_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/food_pyramid_guideline">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleX="0.88"
             android:scaleY="0.88"
-            android:src="@drawable/food_pyramid_image"
+            android:src="@drawable/food_pyramid_image_smaller"
             android:id="@+id/food_pyramid_image"/>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/food_pyramid_text"/>
+            android:src="@drawable/food_pyramid_text_smaller"/>
 
     </FrameLayout>
 
-    <FrameLayout
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/food_pyramid_guideline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65"/>
+    
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:id="@+id/layout_behind_images">
+        android:layout_height="0dp"
+        android:id="@+id/food_pyramid_images_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/food_pyramid_guideline"
+        app:layout_constraintRight_toRightOf="parent">
 
-    </FrameLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/food_pyramid_cell_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/food_pyramid_cell_3"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/food_pyramid_cell_2"
+            android:layout_margin="@dimen/pyramid_images_margin"/>
 
-</LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/food_pyramid_cell_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/food_pyramid_cell_4"
+            app:layout_constraintLeft_toRightOf="@+id/food_pyramid_cell_1"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/pyramid_images_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/food_pyramid_cell_3"
+            app:layout_constraintTop_toBottomOf="@+id/food_pyramid_cell_1"
+            app:layout_constraintBottom_toTopOf="@+id/food_pyramid_cell_5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/food_pyramid_cell_4"
+            android:layout_margin="@dimen/pyramid_images_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/food_pyramid_cell_4"
+            app:layout_constraintTop_toBottomOf="@+id/food_pyramid_cell_2"
+            app:layout_constraintBottom_toTopOf="@+id/food_pyramid_cell_6"
+            app:layout_constraintLeft_toRightOf="@+id/food_pyramid_cell_3"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/pyramid_images_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/food_pyramid_cell_5"
+            app:layout_constraintTop_toBottomOf="@+id/food_pyramid_cell_3"
+            app:layout_constraintBottom_toTopOf="@+id/food_pyramid_cell_7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/food_pyramid_cell_6"
+            android:layout_margin="@dimen/pyramid_images_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/food_pyramid_cell_6"
+            app:layout_constraintTop_toBottomOf="@+id/food_pyramid_cell_4"
+            app:layout_constraintBottom_toTopOf="@+id/food_pyramid_cell_8"
+            app:layout_constraintLeft_toRightOf="@+id/food_pyramid_cell_5"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/pyramid_images_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/food_pyramid_cell_7"
+            app:layout_constraintTop_toBottomOf="@+id/food_pyramid_cell_5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/food_pyramid_cell_8"
+            android:layout_margin="@dimen/pyramid_images_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/food_pyramid_cell_8"
+            app:layout_constraintTop_toBottomOf="@+id/food_pyramid_cell_6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/food_pyramid_cell_7"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/pyramid_images_margin"/>
+        
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

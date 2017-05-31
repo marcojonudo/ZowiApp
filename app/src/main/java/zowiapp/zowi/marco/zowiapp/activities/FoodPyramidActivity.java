@@ -1,8 +1,7 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +24,8 @@ import zowiapp.zowi.marco.zowiapp.checker.FoodPyramidChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
+import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -36,12 +37,18 @@ public class FoodPyramidActivity extends ActivityTemplate {
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
     private FoodPyramidChecker foodPyramidChecker;
+    private ImagesHandler imagesHandler;
     private String[][] images, correctionArray;
-    private int imagesNumber, imagesCounter;
+    private static int imagesCounter;
     private String[] correction;
     private int[][] imagesCoordinates, pyramidLimitsCoordinates;
     private float distanceToLeft, distanceToTop;
-    private int[] dragLimits;
+    private int[] dragLimits, imagesDimensions;
+    private ImageView[] imageViews;
+
+    public static void setImagesCounter(int c) {
+        imagesCounter = c;
+    }
 
     public FoodPyramidActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -49,6 +56,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         foodPyramidChecker = new FoodPyramidChecker();
+        imagesHandler = new ImagesHandler(gameParameters, this, FoodPyramidConstants.FOODPYRAMID_TYPE);
 
         getParameters();
     }
@@ -60,11 +68,10 @@ public class FoodPyramidActivity extends ActivityTemplate {
             JSONArray jsonImages = activityDetails.getJSONArray(FoodPyramidConstants.JSON_PARAMETER_IMAGES);
             JSONArray jsonCorrection = activityDetails.getJSONArray(FoodPyramidConstants.JSON_PARAMETER_CORRECTION);
             images = new String[jsonImages.length()][];
-            imagesNumber = activityDetails.getInt(FoodPyramidConstants.JSON_PARAMETER_IMAGESNUMBER);
-            imagesCounter = 0;
             correction = new String[jsonCorrection.length()];
+            correctionArray = new String[FoodPyramidConstants.NUMBER_OF_IMAGES][CommonConstants.AXIS_NUMBER];
             dragLimits = new int[4];
-            correctionArray = new String[imagesNumber][2];
+            imageViews = new ImageView[FoodPyramidConstants.NUMBER_OF_IMAGES];
 
             /* The different types of food are stored in different indexes of 'images' */
             for (int i=0; i<images.length; i++) {
@@ -91,7 +98,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        LinearLayout foodPyramidActivityTemplate = (LinearLayout) inflater.inflate(R.layout.foodpyramid_activity_template, contentContainer, false);
+        ConstraintLayout foodPyramidActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.foodpyramid_activity_template, contentContainer, false);
 
         if (contentContainer != null) {
             contentContainer.addView(foodPyramidActivityTemplate);
@@ -133,90 +140,26 @@ public class FoodPyramidActivity extends ActivityTemplate {
                 }
             }
 
-            FrameLayout layoutBehindImages = (FrameLayout) gameParameters.findViewById(R.id.layout_behind_images);
+            ConstraintLayout layoutBehindImages = (ConstraintLayout) gameParameters.findViewById(R.id.food_pyramid_images_container);
 
             if (layoutBehindImages != null) {
-                float imageSide = gameParameters.getResources().getDimension(R.dimen.food_image_side);
+                imagesCoordinates = new int[FoodPyramidConstants.NUMBER_OF_IMAGES][CommonConstants.AXIS_NUMBER];
+                imagesDimensions = new int[CommonConstants.AXIS_NUMBER];
 
-                /* Limits for the images to fit the screen */
-                int leftLimit = layoutBehindImages.getLeft();
-                int rightLimit = layoutBehindImages.getLeft() + layoutBehindImages.getWidth() - (int)imageSide;
-                int upperLimit = layoutBehindImages.getTop();
-                int bottomLimit = layoutBehindImages.getTop() + layoutBehindImages.getHeight() - (int)imageSide;
+                View constraintView;
+                /* layoutBehindImages contains 8 views for display purposes, but only 7 will be filled with an image */
+                for (int i=0; i<layoutBehindImages.getChildCount()-1; i++) {
+                    constraintView = layoutBehindImages.getChildAt(i);
 
-                int[] limits = {leftLimit, rightLimit, upperLimit, bottomLimit};
-                imagesCoordinates = new int[imagesNumber][CommonConstants.AXIS_NUMBER];
-
-                for (int i=0; i<imagesNumber; i++) {
-                    int x = new Random().nextInt((limits[1] - limits[0]) + 1) + limits[0];
-                    int y = new Random().nextInt((limits[3] - limits[2]) + 1) + limits[2];
-                    imagesCoordinates[i][0] = x;
-                    imagesCoordinates[i][1] = y;
+                    imagesCoordinates[i][0] = layoutBehindImages.getLeft() + (int)constraintView.getX() + constraintView.getWidth()/2;
+                    imagesCoordinates[i][1] = (int)constraintView.getY() + constraintView.getHeight()/2;
+                    imagesDimensions[0] = constraintView.getWidth();
+                    imagesDimensions[1] = constraintView.getHeight();
                 }
 
-                placeImages(contentContainer, images);
+                imagesHandler.loadCategoriesImages(contentContainer, images, FoodPyramidConstants.NUMBER_OF_IMAGES, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, imagesCoordinates, imagesDimensions, correction);
             }
         }
-    }
-
-    private void placeImages(RelativeLayout contentContainer, String[][] images) {
-        int[][] occurrences = new int[images.length][];
-        int[] categoryOccurrences = new int[images.length];
-        for (int i=0; i<occurrences.length; i++) {
-            occurrences[i] = new int[images[i].length];
-            categoryOccurrences[i] = 0;
-            for (int j=0; j<occurrences[i].length; j++) {
-                occurrences[i][j] = 0;
-            }
-        }
-
-        /* We ensure that at least one image of each category is displayed */
-        for (int i=0; i<images.length; i++) {
-            int randomImagesIndex = new Random().nextInt(images.length);
-            int randomCategoryIndex = new Random().nextInt(images[0].length);
-
-            while (categoryOccurrences[randomImagesIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-            }
-            categoryOccurrences[randomImagesIndex] = 1;
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-            placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
-        }
-
-        /* randomImagesIndex is always 0 because we only want two images of the first category (base of the pyramid) */
-        for (int i=images.length; i<imagesNumber; i++) {
-            int randomImagesIndex = 0;
-            /* images index can be 0, as all the subarrays have always the same number of images */
-            int randomCategoryIndex = new Random().nextInt(images[0].length);
-
-            while (occurrences[randomImagesIndex][randomCategoryIndex] == 1) {
-                randomImagesIndex = 0;
-                randomCategoryIndex = new Random().nextInt(images[0].length);
-            }
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-
-            placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
-        }
-    }
-
-    private void placeImage(RelativeLayout container, String imageName, int i, String correction) {
-        int side = (int)gameParameters.getResources().getDimension(R.dimen.food_image_side);
-
-        ImageView image = new ImageView(gameParameters);
-        image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(side, side);
-        image.setLayoutParams(layoutParams);
-        image.setX(imagesCoordinates[i][0]);
-        image.setY(imagesCoordinates[i][1]);
-        String tag = i + "-" + correction;
-        image.setTag(tag);
-
-        container.addView(image);
-
-        TouchListener touchListener = new TouchListener(FoodPyramidConstants.FOODPYRAMID_TYPE, this);
-        image.setOnTouchListener(touchListener);
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {
@@ -316,21 +259,14 @@ public class FoodPyramidActivity extends ActivityTemplate {
 
                     correctionArray[imagesCounter][0] = imageCategory;
                     correctionArray[imagesCounter][1] = correction[step];
+                    imageViews[imagesCounter] = (ImageView) view;
                     imagesCounter++;
                     if (imagesCounter == FoodPyramidConstants.NUMBER_OF_IMAGES)
-                        foodPyramidChecker.check(gameParameters, correctionArray);
-//                    correctAnswer = foodPyramidChecker.check(gameParameters, imageCategory, correction[step]);
+                        foodPyramidChecker.check(gameParameters, correctionArray, imageViews, imagesCoordinates);
                 }
-//                if (!correctAnswer) {
-//                    ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), imagesCoordinates[index][0]);
-//                    animX.setDuration(1000);
-//                    ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), imagesCoordinates[index][1]);
-//                    animY.setDuration(1000);
-//
-//                    AnimatorSet animatorSet = new AnimatorSet();
-//                    animatorSet.play(animX).with(animY);
-//                    animatorSet.start();
-//                }
+                else {
+                    Animations.translateAnimation(view, imagesCoordinates, index);
+                }
                 break;
             default:
                 break;

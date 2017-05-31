@@ -10,8 +10,9 @@ public class ActivityConstants {
         public static final String INTENT_PARAMETER_NUMBER = "activityNumber";
         public static final String JSON_PARAMETER_TYPE = "type";
         protected static final String JSON_PARAMETER_DESCRIPTION = "description";
-        protected static final int AXIS_NUMBER = 2;
+        public static final int AXIS_NUMBER = 2;
         public static final int OVERLAY_HORIZONTAL_RATIO = 8;
+        protected static final int NON_REPEATED_IMAGES_CATEGORY_INDEX = -1;
     }
 
     protected static class GridConstants {
@@ -38,7 +39,7 @@ public class ActivityConstants {
         protected static final float CELL_FILLED_SPACE = 1;
     }
 
-    protected static class OperationsConstants {
+    public static class OperationsConstants {
         protected static final String JSON_PARAMETER_OPERATIONSTYPE = "operationsType";
         protected static final String JSON_PARAMETER_IMAGE = "image";
         protected static final int NUMBER_OF_OPERATIONS = 6;
@@ -67,7 +68,7 @@ public class ActivityConstants {
         private static final String COLUMN_18 = "01000";
         private static final String COLUMN_19 = "01111";
         private static final String COLUMN_20 = "01110";
-        protected static final String[][] NUMBERS_TO_LED = {
+        public static final String[][] NUMBERS_TO_LED = {
                 {COLUMN_1, COLUMN_8, COLUMN_8, COLUMN_1},
                 {COLUMN_2, COLUMN_3, COLUMN_4},
                 {COLUMN_2, COLUMN_5, COLUMN_6, COLUMN_2},
@@ -79,11 +80,12 @@ public class ActivityConstants {
                 {COLUMN_7, COLUMN_6, COLUMN_6, COLUMN_7},
                 {COLUMN_18, COLUMN_6, COLUMN_6, COLUMN_19}
         };
-        protected static final String[][] OPERATORS_TO_LED = {
+        public static final String[][] OPERATORS_TO_LED = {
                 {COLUMN_10, COLUMN_20, COLUMN_10},
                 {COLUMN_10, COLUMN_10, COLUMN_10}
         };
-        protected static final int MAX_NUMBER_BLUETOOTH_COLUMNS = 5;
+        public static final String EMPTY_COLUMN = COLUMN_0;
+        public static final int MAX_NUMBER_BLUETOOTH_COLUMNS = 5;
     }
 //    {0, {0, {0, 1, 1, 1, 0}}}
 
@@ -92,7 +94,7 @@ public class ActivityConstants {
         protected static final String JSON_PARAMETER_IMAGES = "images";
         protected static final int PIECES_NUMBER = 5;
         //TODO Change puzzle dimensions
-        protected static final double[][][] PIECES_TO_PUZZLE = {
+        public static final double[][][] PIECES_TO_PUZZLE = {
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
@@ -116,7 +118,10 @@ public class ActivityConstants {
 
     protected static class GuideConstants {
         protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final int IMAGES_MARGIN = 35;
+        protected static final String JSON_PARAMETER_CORRECTION = "correction";
+        protected static final int NUMBER_OF_IMAGES = 4;
+        /* index of the category of the correct house, only one of which can be displayed */
+        protected static final int CATEGORY_ONLY_ONE_IMAGE = 1;
     }
 
     protected static class ColouredGridConstants {
@@ -154,7 +159,6 @@ public class ActivityConstants {
     protected static class FoodPyramidConstants {
         protected static final ActivityType FOODPYRAMID_TYPE = ActivityType.FOODPYRAMID;
         protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final String JSON_PARAMETER_IMAGESNUMBER = "imagesNumber";
         protected static final String JSON_PARAMETER_CORRECTION = "correction";
         protected static final int PYRAMID_STEPS = 4;
         protected static final int PYRAMID_COORDINATES_LENGTH = 6;

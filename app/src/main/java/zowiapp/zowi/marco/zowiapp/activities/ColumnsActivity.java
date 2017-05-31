@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColumnsConstants;
@@ -27,6 +28,7 @@ import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -38,12 +40,12 @@ public class ColumnsActivity extends ActivityTemplate {
     private String activityTitle, activityDescription, leftColumnTitle, rightColumnTitle;
     private JSONObject activityDetails;
     private ColumnsChecker columnsChecker;
+    private ImagesHandler imagesHandler;
     private String[][] images;
     private String[] correction;
-    private int cellWidth, cellHeight;
     private int[][] imagesCoordinates, columnsCoordinates, columnsDimensions;
     private float distanceToLeft, distanceToTop;
-    private int[] dragLimits;
+    private int[] dragLimits, imagesDimensions;
 
     public ColumnsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -51,6 +53,7 @@ public class ColumnsActivity extends ActivityTemplate {
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         columnsChecker = new ColumnsChecker();
+        imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.COLUMNS);
 
         getParameters();
     }
@@ -128,6 +131,7 @@ public class ColumnsActivity extends ActivityTemplate {
 
             /* piecesCoordinates will contain the images' coordinates */
             imagesCoordinates = new int[ColumnsConstants.NUMBER_OF_IMAGES][CommonConstants.AXIS_NUMBER];
+            imagesDimensions = new int[CommonConstants.AXIS_NUMBER];
 
             /* Cell center coordinates are calculated based on the upper left corner of the grid */
             int index = 0;
@@ -137,10 +141,11 @@ public class ColumnsActivity extends ActivityTemplate {
                     View cell = grid.getChildAt(i);
                     imagesCoordinates[index][0] = left + cell.getLeft() + cell.getWidth()/2;
                     imagesCoordinates[index][1] = top + cell.getTop() + cell.getHeight()/2;
-                    index++;
 
-                    cellWidth = cell.getWidth();
-                    cellHeight = cell.getHeight();
+                    imagesDimensions[0] = cell.getWidth();
+                    imagesDimensions[1] = cell.getHeight();
+
+                    index++;
                 }
             }
 
@@ -169,89 +174,11 @@ public class ColumnsActivity extends ActivityTemplate {
                 new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "columns");
             }
 
-            placeImages(contentContainer, images, ColumnsConstants.NUMBER_OF_IMAGES);
+            imagesHandler.loadCategoriesImages(contentContainer, images, ColumnsConstants.NUMBER_OF_IMAGES, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, imagesCoordinates, imagesDimensions, correction);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "grid");
         }
-    }
-
-    private void placeImages(RelativeLayout contentContainer, String[][] images, int imagesNumber) {
-        /* Ocurrences array for generating random index, so the images have not the same order
-           every time the child enter */
-        int[][] occurrences = new int[images.length][];
-        int[] categoryOccurrences = new int[images.length];
-        for (int i=0; i<occurrences.length; i++) {
-            occurrences[i] = new int[images[i].length];
-            categoryOccurrences[i] = 0;
-            for (int j=0; j<occurrences[i].length; j++) {
-                occurrences[i][j] = 0;
-            }
-        }
-
-        /* We ensure that at least one image of each category is displayed */
-        for (int i=0; i<images.length; i++) {
-            int randomImagesIndex = new Random().nextInt(images.length);
-            int randomCategoryIndex = new Random().nextInt(images[0].length);
-
-            while (categoryOccurrences[randomImagesIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-            }
-            categoryOccurrences[randomImagesIndex] = 1;
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-            placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
-        }
-
-        /* As images are chosen randomly between all the available ones, we cannot take the length of the
-           images array as reference. Instead of that, we use a number defined in activities_details */
-        /* We start at 3 because indexes 0, 1 and 2 have been used just before */
-        for (int i=images.length; i<imagesNumber; i++) {
-            int randomImagesIndex = new Random().nextInt(images.length);
-            /* images index can be 0, as all the subarrays have always the same number of images */
-            int randomCategoryIndex = new Random().nextInt(images[0].length);
-
-            while (occurrences[randomImagesIndex][randomCategoryIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-                randomCategoryIndex = new Random().nextInt(images[0].length);
-            }
-            occurrences[randomImagesIndex][randomCategoryIndex] = 1;
-
-            placeImage(contentContainer, images[randomImagesIndex][randomCategoryIndex], i, correction[randomImagesIndex]);
-        }
-
-    }
-
-    private void placeImage(RelativeLayout container, String imageName, int i, String correction) {
-        ImageView image = new ImageView(gameParameters);
-        image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-
-        Drawable drawable = image.getDrawable();
-        float scaleFactor;
-        if (drawable.getIntrinsicWidth() > drawable.getIntrinsicHeight()) {
-            scaleFactor = (cellWidth*ColumnsConstants.CELL_FILLED_SPACE) / drawable.getIntrinsicWidth();
-        }
-        else {
-            scaleFactor = (cellHeight*ColumnsConstants.CELL_FILLED_SPACE) / drawable.getIntrinsicHeight();
-        }
-
-        int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
-        int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
-        image.setLayoutParams(layoutParams);
-
-        imagesCoordinates[i][0] = imagesCoordinates[i][0] - width/2;
-        imagesCoordinates[i][1] = imagesCoordinates[i][1] - height/2;
-        image.setX(imagesCoordinates[i][0]);
-        image.setY(imagesCoordinates[i][1]);
-        String tag = i + "-" + correction;
-        image.setTag(tag);
-
-        container.addView(image);
-
-        TouchListener touchListener = new TouchListener(ColumnsConstants.COLUMNS_TYPE, this);
-        image.setOnTouchListener(touchListener);
     }
 
     protected void processTouchEvent(View view, MotionEvent event) {
@@ -265,7 +192,6 @@ public class ColumnsActivity extends ActivityTemplate {
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "headerText");
         }
-
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
