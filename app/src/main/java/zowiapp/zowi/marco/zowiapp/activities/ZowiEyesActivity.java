@@ -124,56 +124,12 @@ public class ZowiEyesActivity extends ActivityTemplate {
 
                 imagesHandler.loadZowiEyesImages(constrainContainer, images, imagesNumber[0], imagesNumber[1], ZowiEyesConstants.LAYOUT_IMAGES, imagesCoordinates, imageViewsCoordinates);
             }
-
-//            placeImages(contentContainer, images);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "zowiEyesContainer");
         }
 
         ZowiEyesChecker.setImagesCoordinates(imagesCoordinates);
-    }
-
-
-    private void placeImages(RelativeLayout contentContainer, String[][] images) {
-        int[] occurrences = new int[ZowiEyesConstants.LAYOUT_IMAGES];
-        for (int i=0; i<occurrences.length; i++) {
-            occurrences[i] = 0;
-        }
-        ConstraintLayout constrainContainer = (ConstraintLayout) contentContainer.getChildAt(0);
-
-        for (int i=0; i<imagesNumber[0]; i++) {
-            int randomImagesIndex = new Random().nextInt(occurrences.length);
-
-            while (occurrences[randomImagesIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-            }
-            occurrences[randomImagesIndex] = 1;
-
-            ImageView imageView = (ImageView) constrainContainer.getChildAt(randomImagesIndex);
-            /* 0 is the index for the correct images */
-        }
-
-        for (int i=0; i<imagesNumber[1]; i++) {
-            int randomImagesIndex = new Random().nextInt(images[1].length);
-
-            while (occurrences[randomImagesIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-            }
-            occurrences[randomImagesIndex] = 1;
-
-            ImageView imageView = (ImageView) constrainContainer.getChildAt(randomImagesIndex);
-            /* 0 is the index for the wrong images */
-            placeImage(imageView, images[1][i], randomImagesIndex, imagesNumber[0]+i, 1);
-        }
-    }
-
-    private void placeImage(ImageView imageView, String imageName, int randomImagesIndex, int i, int correction) {
-        imageView.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
-        imageView.setTag(correction);
-
-        imagesCoordinates[i][0] = imageViewsCoordinates[randomImagesIndex][0];
-        imagesCoordinates[i][1] = imageViewsCoordinates[randomImagesIndex][1];
     }
 
 }
