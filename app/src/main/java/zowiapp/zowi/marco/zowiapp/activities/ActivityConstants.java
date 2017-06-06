@@ -9,45 +9,44 @@ public class ActivityConstants {
         public static final String INTENT_PARAMETER_TITLE = "activityTitle";
         public static final String INTENT_PARAMETER_NUMBER = "activityNumber";
         public static final String JSON_PARAMETER_TYPE = "type";
-        protected static final String JSON_PARAMETER_DESCRIPTION = "description";
+        static final String JSON_PARAMETER_DESCRIPTION = "description";
         public static final int AXIS_NUMBER = 2;
         public static final int OVERLAY_HORIZONTAL_RATIO = 8;
-        protected static final int NON_REPEATED_IMAGES_CATEGORY_INDEX = -1;
+        static final int NON_REPEATED_IMAGES_CATEGORY_INDEX = -1;
     }
 
-    protected static class GridConstants {
-        protected static final ActivityType GRID_TYPE = ActivityType.GRID;
-        protected static final String JSON_PARAMETER_GRIDSIZE = "gridSize";
-        protected static final String JSON_PARAMETER_CELLS = "cells";
-        protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final int COORDINATES_3X3_LENGTH = 9;
-        protected static final int COORDINATES_4X4_LENGTH = 16;
-        protected static final float CELL_FILLED_SPACE = 0.85f;
-        protected static final String INNER = "INNER";
+    static class GridConstants {
+        static final ActivityType GRID_TYPE = ActivityType.GRID;
+        static final String JSON_PARAMETER_GRIDSIZE = "gridSize";
+        static final String JSON_PARAMETER_CELLS = "cells";
+        static final String JSON_PARAMETER_IMAGES = "images";
+        static final int COORDINATES_3X3_LENGTH = 9;
+        static final int COORDINATES_4X4_LENGTH = 16;
+        static final float CELL_FILLED_SPACE = 0.85f;
+        static final String INNER = "INNER";
     }
 
-    protected static class ColumnsConstants {
-        protected static final ActivityType COLUMNS_TYPE = ActivityType.COLUMNS;
-        protected static final String JSON_PARAMETER_LEFTTITLE = "leftTitle";
-        protected static final String JSON_PARAMETER_RIGHTTITLE = "rightTitle";
-        protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final String JSON_PARAMETER_CORRECTION = "correction";
-        protected static final int NUMBER_OF_IMAGES = 5;
-        protected static final int NUMBER_OF_COLUMNS_CORNERS = 2;
-        protected static final int LEFT_COLUMN_INDEX = 0;
-        protected static final int RIGHT_COLUMN_INDEX = 1;
-        protected static final float CELL_FILLED_SPACE = 1;
+    static class ColumnsConstants {
+        static final ActivityType COLUMNS_TYPE = ActivityType.COLUMNS;
+        static final String JSON_PARAMETER_LEFTTITLE = "leftTitle";
+        static final String JSON_PARAMETER_RIGHTTITLE = "rightTitle";
+        static final String JSON_PARAMETER_IMAGES = "images";
+        static final String JSON_PARAMETER_CORRECTION = "correction";
+        static final int NUMBER_OF_IMAGES = 5;
+        static final int NUMBER_OF_COLUMNS_CORNERS = 2;
+        static final int LEFT_COLUMN_INDEX = 0;
+        static final int RIGHT_COLUMN_INDEX = 1;
     }
 
     public static class OperationsConstants {
-        protected static final String JSON_PARAMETER_OPERATIONSTYPE = "operationsType";
-        protected static final String JSON_PARAMETER_IMAGE = "image";
-        protected static final int NUMBER_OF_OPERATIONS = 6;
-        protected static final int NUMBER_OF_OPERATORS = 3;
-        protected static final String JSON_PARAMETER_OPERATIONSIMAGES = "operationsImages";
-        protected static final int RANDOM_NUMBER_LIMIT = 10;
-        protected static final String[] OPERATORS = {"+", "-"};
-        protected static final String COLUMN_0 = "00000";
+        static final String JSON_PARAMETER_OPERATIONSTYPE = "operationsType";
+        static final String JSON_PARAMETER_IMAGE = "image";
+        static final int NUMBER_OF_OPERATIONS = 6;
+        static final int NUMBER_OF_OPERATORS = 3;
+        static final String JSON_PARAMETER_OPERATIONSIMAGES = "operationsImages";
+        static final int RANDOM_NUMBER_LIMIT = 10;
+        static final String[] OPERATORS = {"+", "-"};
+        static final String COLUMN_0 = "00000";
         private static final String COLUMN_1 = "01110";
         private static final String COLUMN_2 = "01001";
         private static final String COLUMN_3 = "11111";
@@ -90,9 +89,9 @@ public class ActivityConstants {
 //    {0, {0, {0, 1, 1, 1, 0}}}
 
     public static class PuzzleConstants {
-        protected static final ActivityType PUZZLE_TYPE = ActivityType.PUZZLE;
-        protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final int PIECES_NUMBER = 5;
+        static final ActivityType PUZZLE_TYPE = ActivityType.PUZZLE;
+        static final String JSON_PARAMETER_IMAGES = "images";
+        static final int PIECES_NUMBER = 5;
         //TODO Change puzzle dimensions
         public static final double[][][] PIECES_TO_PUZZLE = {
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
@@ -100,12 +99,12 @@ public class ActivityConstants {
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
         };
         public static final int DISTANCE_LIMIT = 200;
-        protected static final double[][][] SHAPES_COORDINATES_FACTORS = {
+        static final double[][][] SHAPES_COORDINATES_FACTORS = {
                 {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
                 {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
                 {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}}
         };
-        protected static final float[][] SCALE_ANIMATION_PIVOTS = {
+        static final float[][] SCALE_ANIMATION_PIVOTS = {
                 {0, 0}, {0, 0.5f}, {0, 1}, {1, 0}, {1, 1}
         };
         //TODO This factors are correct, but I only use shape 1 for testing
@@ -116,79 +115,79 @@ public class ActivityConstants {
 //        };
     }
 
-    protected static class GuideConstants {
-        protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final String JSON_PARAMETER_CORRECTION = "correction";
-        protected static final int NUMBER_OF_IMAGES = 4;
+    static class GuideConstants {
+        static final String JSON_PARAMETER_IMAGES = "images";
+        static final String JSON_PARAMETER_CORRECTION = "correction";
+        static final int NUMBER_OF_IMAGES = 4;
         /* index of the category of the correct house, only one of which can be displayed */
-        protected static final int CATEGORY_ONLY_ONE_IMAGE = 1;
+        static final int CATEGORY_ONLY_ONE_IMAGE = 1;
     }
 
-    protected static class ColouredGridConstants {
-        protected static final ActivityType COLOUREDGRID_TYPE = ActivityType.COLOURED_GRID;
-        protected static final String JSON_PARAMETER_CELLS = "cells";
-        protected static final String JSON_PARAMETER_COLOUREDCELLS = "colouredCells";
-        protected static final int NUMBER_OF_COLORS = 3;
-        protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final int COORDINATES_4X4_LENGTH = 17;
+    static class ColouredGridConstants {
+        static final ActivityType COLOUREDGRID_TYPE = ActivityType.COLOURED_GRID;
+        static final String JSON_PARAMETER_CELLS = "cells";
+        static final String JSON_PARAMETER_COLOUREDCELLS = "colouredCells";
+        static final int NUMBER_OF_COLORS = 3;
+        static final String JSON_PARAMETER_IMAGES = "images";
+        static final int COORDINATES_4X4_LENGTH = 17;
     }
 
-    protected static class MusicConstants {
-        protected static final ActivityType MUSIC_TYPE = ActivityType.MUSIC;
-        protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final int NUMBER_OF_DICTATIONS = 3;
-        protected static final float[][] DICTATION_PERIODS = {
+    static class MusicConstants {
+        static final ActivityType MUSIC_TYPE = ActivityType.MUSIC;
+        static final String JSON_PARAMETER_IMAGES = "images";
+        static final int NUMBER_OF_DICTATIONS = 3;
+        static final float[][] DICTATION_PERIODS = {
                 {1, 1, 0.5f, 0.5f, 1, 1, 0.5f, 0.5f},
                 {1, 0, 2, 1, 1},
                 {2, 0, 0, 0.5f, 0.5f,0.5f, 0.5f}
         };
     }
 
-    protected static class DragConstants {
-        protected static final ActivityType DRAG_TYPE = ActivityType.DRAG;
-        protected static final String JSON_PARAMETER_DRAGIMAGES = "dragImages";
-        protected static final String JSON_PARAMETER_CONTAINERELEMENTS = "containerElements";
-        protected static final String JSON_PARAMETER_DRAGIMAGESNUMBER = "dragImagesNumber";
-        protected static final String JSON_PARAMETER_TEXTS = "texts";
-        protected static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
-        protected static final String JSON_PARAMETER_CORRECTION = "correction";
+    static class DragConstants {
+        static final ActivityType DRAG_TYPE = ActivityType.DRAG;
+        static final String JSON_PARAMETER_DRAGIMAGES = "dragImages";
+        static final String JSON_PARAMETER_CONTAINERELEMENTS = "containerElements";
+        static final String JSON_PARAMETER_DRAGIMAGESNUMBER = "dragImagesNumber";
+        static final String JSON_PARAMETER_TEXTS = "texts";
+        static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
+        static final String JSON_PARAMETER_CORRECTION = "correction";
     }
 
-    protected static class MemoryConstants {
-        protected static final ActivityType MEMORY_TYPE = ActivityType.MEMORY;
-        protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final int NUMBER_OF_IMAGES = 4;
-        protected static final int FLIP_DELAY = 5000;
+    static class MemoryConstants {
+        static final ActivityType MEMORY_TYPE = ActivityType.MEMORY;
+        static final String JSON_PARAMETER_IMAGES = "images";
+        static final int NUMBER_OF_IMAGES = 4;
+        static final int FLIP_DELAY = 5000;
     }
 
-    protected static class FoodPyramidConstants {
-        protected static final ActivityType FOODPYRAMID_TYPE = ActivityType.FOODPYRAMID;
-        protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final String JSON_PARAMETER_CORRECTION = "correction";
-        protected static final int PYRAMID_STEPS = 4;
-        protected static final int PYRAMID_COORDINATES_LENGTH = 6;
-        protected static final int NUMBER_OF_IMAGES = 7;
-        protected static final int[][] PYRAMID_LIMITS_FACTORS = {
+    static class FoodPyramidConstants {
+        static final ActivityType FOODPYRAMID_TYPE = ActivityType.FOODPYRAMID;
+        static final String JSON_PARAMETER_IMAGES = "images";
+        static final String JSON_PARAMETER_CORRECTION = "correction";
+        static final int PYRAMID_STEPS = 4;
+        static final int PYRAMID_COORDINATES_LENGTH = 6;
+        static final int NUMBER_OF_IMAGES = 7;
+        static final int[][] PYRAMID_LIMITS_FACTORS = {
                 {0, 2, 1, 1, 1, 1},
                 {0, 0, 1, 2, 3, 4}
         };
         protected static final int DISTANCE_LIMIT = 75;
     }
 
-    protected static class SeedsConstants {
-        protected static final ActivityType SEEDS_TYPE = ActivityType.SEEDS;
-        protected static final String JSON_PARAMETER_SEEDSIMAGES = "seedsImages";
-        protected static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
-        protected static final int NUMBER_OF_SEEDS = 16;
-        protected static final int GUIDELINE_POSITION = 8;
-        protected static final String JSON_PARAMETER_CORRECTION = "correction";
+    static class SeedsConstants {
+        static final ActivityType SEEDS_TYPE = ActivityType.SEEDS;
+        static final String JSON_PARAMETER_SEEDSIMAGES = "seedsImages";
+        static final String JSON_PARAMETER_CONTAINERIMAGES = "containerImages";
+        static final int NUMBER_OF_SEEDS = 16;
+        static final int GUIDELINE_POSITION = 8;
+        static final String JSON_PARAMETER_CORRECTION = "correction";
     }
 
     public static class ZowiEyesConstants {
-        protected static final ActivityType ZOWI_EYES_TYPE = ActivityType.ZOWI_EYES;
-        protected static final String JSON_PARAMETER_IMAGESNUMBER = "imagesNumber";
-        protected static final String JSON_PARAMETER_IMAGES = "images";
-        protected static final int LAYOUT_IMAGES = 12;
+        static final ActivityType ZOWI_EYES_TYPE = ActivityType.ZOWI_EYES;
+        static final String JSON_PARAMETER_IMAGESNUMBER = "imagesNumber";
+        static final String JSON_PARAMETER_IMAGES = "images";
+        static final int LAYOUT_IMAGES = 12;
         public static final int[][] DISTANCE_LIMITS = {
             {300, 1}, {200, 2}, {0, 3}
         };
