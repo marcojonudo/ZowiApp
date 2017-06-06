@@ -118,6 +118,8 @@ public class GuideActivity extends ActivityTemplate {
 
             imagesHandler.loadCategoriesImages(contentContainer, images, GuideConstants.NUMBER_OF_IMAGES, GuideConstants.CATEGORY_ONLY_ONE_IMAGE, imagesCoordinates, imagesDimensions, correction);
         }
+
+        guideChecker.check(gameParameters);
     }
 
 }

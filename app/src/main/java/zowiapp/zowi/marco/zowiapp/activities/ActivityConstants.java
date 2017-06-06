@@ -137,6 +137,11 @@ public class ActivityConstants {
         protected static final ActivityType MUSIC_TYPE = ActivityType.MUSIC;
         protected static final String JSON_PARAMETER_IMAGES = "images";
         protected static final int NUMBER_OF_DICTATIONS = 3;
+        protected static final float[][] DICTATION_PERIODS = {
+                {1, 1, 0.5f, 0.5f, 1, 1, 0.5f, 0.5f},
+                {1, 0, 2, 1, 1},
+                {2, 0, 0, 0.5f, 0.5f,0.5f, 0.5f}
+        };
     }
 
     protected static class DragConstants {

@@ -18,7 +18,7 @@ import zowiapp.zowi.marco.zowiapp.utils.Animations;
  */
 public class GuideChecker extends CheckerTemplate {
 
-    GuideActivity guideActivity;
+    private GuideActivity guideActivity;
     private boolean checkAnswers, killThread;
 
     public GuideChecker(GuideActivity guideActivity) {
@@ -27,7 +27,7 @@ public class GuideChecker extends CheckerTemplate {
         this.guideActivity = guideActivity;
     }
 
-    public boolean check(GameParameters gameParameters, String[][] correctionArray, ImageView[] imageViews, int[][] imagesCoordinates) {
+    public boolean check(GameParameters gameParameters) {
         sendDataToZowi(ZowiActions.ZOWI_CHECKS_ANSWERS);
 
         new Thread(new Runnable() {
