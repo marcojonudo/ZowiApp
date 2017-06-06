@@ -64,7 +64,8 @@
     <dimen name="answer_button_horizontal_margin">15dp</dimen>
 
     <!-- Music dimensions -->
-    <dimen name="dictation_button_horizontal_margin">50dp</dimen>
+    <dimen name="dictation_button_horizontal_margin">15dp</dimen>
+    <dimen name="dictation_button_vertical_margin">15dp</dimen>
 
     <!-- Memory dimensions -->
     <dimen name="memory_images_container_margin">20dp</dimen>

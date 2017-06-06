@@ -3,6 +3,7 @@ package zowiapp.zowi.marco.zowiapp.activities;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,10 +16,12 @@ import java.util.Random;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.MusicConstants;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
+import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -29,6 +32,7 @@ public class MusicActivity extends ActivityTemplate {
     private LayoutInflater inflater;
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
+    private ImagesHandler imagesHandler;
     private String[] dictationsImages;
 
     public MusicActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
@@ -36,6 +40,7 @@ public class MusicActivity extends ActivityTemplate {
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.MUSIC);
 
         getParameters();
     }
@@ -80,36 +85,17 @@ public class MusicActivity extends ActivityTemplate {
         }
     }
 
+    public void music(View v) {
+        int dictationNumber = Integer.parseInt(v.getTag().toString());
+        String command = "M " + MusicConstants.DICTATION_PERIODS[dictationNumber];
+
+        ZowiActions.sendDataToZowi(command);
+    }
+
     protected void getElementsCoordinates() {
         LinearLayout dictationsContainer = (LinearLayout) gameParameters.findViewById(R.id.dictations_container);
 
-        loadImages(dictationsContainer, dictationsImages);
-    }
-
-    private void loadImages(LinearLayout dictationsContainer, String[] images) {
-        int[] occurrences = new int[MusicConstants.NUMBER_OF_DICTATIONS];
-        for (int i=0; i<occurrences.length; i++) {
-            occurrences[i] = 0;
-        }
-
-        for (int i=0; i<MusicConstants.NUMBER_OF_DICTATIONS; i++) {
-            ConstraintLayout dictationContainer = (ConstraintLayout) dictationsContainer.getChildAt(i);
-            ConstraintLayout imageContainer = (ConstraintLayout) dictationContainer.getChildAt(0);
-            ImageView image = (ImageView) imageContainer.getChildAt(0);
-
-            int randomImagesIndex = new Random().nextInt(occurrences.length);
-
-            while (occurrences[randomImagesIndex] == 1) {
-                randomImagesIndex = new Random().nextInt(occurrences.length);
-            }
-            occurrences[randomImagesIndex] = 1;
-
-            loadImage(image, images[randomImagesIndex], i);
-        }
-    }
-
-    private void loadImage(ImageView imageView, String imageName, int i) {
-        imageView.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
+        imagesHandler.loadMusicSimpleImages(dictationsContainer, dictationsImages, MusicConstants.NUMBER_OF_DICTATIONS, dictationsImages.length);
     }
 
 }

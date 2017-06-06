@@ -2,7 +2,10 @@ package zowiapp.zowi.marco.zowiapp.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.constraint.ConstraintLayout;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import java.util.ArrayList;
@@ -11,6 +14,7 @@ import java.util.Random;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityTemplate;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
+import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
 import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
@@ -114,6 +118,30 @@ public class ImagesHandler {
         }
     }
 
+    public void loadMusicSimpleImages(ViewGroup contentContainer, String[] images, int imagesNumber, int imagesLimit) {
+        ArrayList<Integer> imagesArrayList = new ArrayList<>();
+
+        int randomImagesIndex;
+        ImageView imageView;
+        ConstraintLayout button;
+        for (int i=0; i<imagesNumber; i++) {
+            randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
+
+            imageView = (ImageView) ((ConstraintLayout)((ConstraintLayout) contentContainer.getChildAt(i)).getChildAt(0)).getChildAt(0);
+            button = (ConstraintLayout) ((ConstraintLayout) contentContainer.getChildAt(i)).getChildAt(2);
+
+            button.setTag(randomImagesIndex);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MusicActivity) activityTemplate).music(view);
+                }
+            });
+            loadMusicSimpleImageView(imageView, images[randomImagesIndex], i);
+        }
+    }
+
+
     public void loadZowiEyesImages(ViewGroup contentContainer, String[][] images, int correctImagesNumber, int wrongImagesNumber, int imagesLimit, int[][] coordinates, int[][] imageViesCoordinates) {
         ArrayList<Integer> imagesArrayList = new ArrayList<>();
 
@@ -153,6 +181,9 @@ public class ImagesHandler {
     private void loadSimpleContainerImageView(ImageView imageView, String imageName, int i) {
         imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
         imageView.setTag(i);
+    }
+    private void loadMusicSimpleImageView(ImageView imageView, String imageName, int randomIndex) {
+        imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
     }
 
     private void loadZowiEyesImageView(ImageView imageView, String imageName, int i, int randomImagesIndex, int[][] coordinates, int[][] imageViewsCoordinates, int correction) {
