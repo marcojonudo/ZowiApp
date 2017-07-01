@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="activities_titles">
-        <item>Actividad 1</item>
-        <item>Actividad 2</item>
-        <item>Actividad 3</item>
-        <item>Actividad 4</item>
-        <item>Actividad 5</item>
-        <item>Actividad 6</item>
-        <item>Actividad 7</item>
-        <item>Actividad 8</item>
-        <item>Actividad 9</item>
-        <item>Actividad 10</item>
-        <item>Actividad 11</item>
-        <item>Actividad 12</item>
-        <item>Actividad 13</item>
-        <item>Actividad 14</item>
-        <item>Actividad 15</item>
-        <item>Actividad 16</item>
-        <item>Actividad 17</item>
-        <item>Actividad 18</item>
-        <item>Actividad 19</item>
-        <item>Actividad 20</item>
-        <item>Actividad 21</item>
-        <item>Actividad 22</item>
-        <item>Actividad 23</item>
-        <item>Actividad 24</item>
-        <item>Actividad 25</item>
-        <item>Actividad 26</item>
-        <item>Actividad 27</item>
-        <item>Actividad 28</item>
-        <item>Actividad 29</item>
-        <item>Actividad 30</item>
-    </string-array>
+        <item>Actividad 1: ¡Canta y baila con Zowi!</item>
+        <item>Actividad 2: Zowi y sus tareas</item>
+        <item>Actividad 3: ¡La hora del baño!</item>
+        <item>Actividad 4: Plantando y cultivando</item>
+        <item>Actividad 5: ¿Antes o después?</item>
+        <item>Actividad 6: Cálculo</item>
+        <item>Actividad 1: Adivina adivinanza&#8230;</item>
+        <item>Actividad 2: ¡Todos a desayunar!</item>
+        <item>Actividad 3: Recoge las frutas</item>
+        <item>Actividad 4: ¡Como todo un cheff!</item>
+        <item>Actividad 5: Momentos de comer</item>
+        <item>Actividad 6: La pirámide alimenticia</item>
+        <item>Actividad 1: ¡Canta y baila con Zowi!</item>
+        <item>Actividad 2: ¡Mamá nos mima!</item>
+        <item>Actividad 3: ¡A jugar!</item>
+        <item>Actividad 4: </item>
+        <item>Actividad 5: Rompecabezas</item>
+        <item>Actividad 6: ¡No hay uno sin dos!</item>
+        <item>Actividad 1: ¡Canta y baila con Zowi!</item>
+        <item>Actividad 2: ¡A casa!</item>
+        <item>Actividad 3: </item>
+        <item>Actividad 4: ¿Cuál es tu sitio?</item>
+        <item>Actividad 5: Rompecabezas</item>
+        <item>Actividad 6: Calcula</item>
+        <item>Actividad 1: Dictados musicales con Zowi</item>
+        <item>Actividad 2: ¡Hora de ir al cole!</item>
+        <item>Actividad 3: ¡Como todo un artista!</item>
+        <item>Actividad 4: Calcula</item>
+        <item>Actividad 5: Rompecabezas</item>
+        <item>Actividad 6: ¿Qué debemos y no debemos hacer?</item>
+    </string-array>:
 
     <string-array name="activities_images">
         <item>black</item>
@@ -67,10 +67,10 @@
     </string-array>
 
     <string-array name="units_titles">
-        <item>Tema 1</item>
-        <item>Tema 2</item>
-        <item>Tema 3</item>
-        <item>Tema 4</item>
-        <item>Tema 5</item>
+        <item>Unidad 1 - ¡NOS CUIDAMOS!</item>
+        <item>Unidad 2 - ALIMENTACIÓN Y NUTRICIÓN</item>
+        <item>Unidad 3 - LA FAMILIA</item>
+        <item>Unidad 4 - ¿DÓNDE VIVO?</item>
+        <item>Unidad 5 - ¡VOY AL COLE!</item>
     </string-array>
 </resources>
