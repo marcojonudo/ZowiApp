@@ -1,14 +1,12 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
-import android.content.Context;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
-import zowiapp.zowi.marco.zowiapp.ZowiActions;
-import zowiapp.zowi.marco.zowiapp.ZowiSocket;
-import zowiapp.zowi.marco.zowiapp.activities.FoodPyramidActivity;
+import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
+import zowiapp.zowi.marco.zowiapp.zowi.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;

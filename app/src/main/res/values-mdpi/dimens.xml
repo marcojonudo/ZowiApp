@@ -56,7 +56,7 @@
     <dimen name="operation_button_horizontal_margin">10dp</dimen>
     <dimen name="operation_2_button_horizontal_margin">10dp</dimen>
     <dimen name="operation_button_vertical_margin">5dp</dimen>
-    <dimen name="operation_2_edittext_margin">3dp</dimen>
+    <dimen name="operation_2_edittext_margin">10dp</dimen>
 
     <!-- ColouredGrid dimensions -->
     <dimen name="coloured_grid_vertical_margin">15dp</dimen>

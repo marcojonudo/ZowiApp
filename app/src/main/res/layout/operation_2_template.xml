@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:background="@color/zowiBlueColor"
     android:id="@+id/operations_template_container">
 
     <android.support.constraint.ConstraintLayout
@@ -16,19 +18,26 @@
         app:layout_constraintRight_toLeftOf="@+id/operation_guideline"
         android:layout_marginStart="@dimen/operation_2_start_margin">
 
-        <EditText
+        <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:gravity="center"
-            android:inputType="number"
-            android:background="@drawable/square"
-            android:textSize="@dimen/operations_font_size"
             android:id="@+id/operation_edittext_1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/operation_image_1"
-            android:layout_margin="@dimen/operation_2_edittext_margin"/>
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_margin="@dimen/operation_2_edittext_margin">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:inputType="number"
+                android:background="@drawable/square"
+                android:textSize="@dimen/operations_font_size"/>
+
+        </android.support.constraint.ConstraintLayout>
 
         <ImageView
             android:layout_width="0dp"
@@ -37,35 +46,50 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/operation_edittext_1"
-            app:layout_constraintRight_toLeftOf="@+id/operation_edittext_2"/>
+            app:layout_constraintRight_toLeftOf="@+id/operation_edittext_2"
+            android:layout_margin="@dimen/operation_2_edittext_margin"/>
 
-        <EditText
+        <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@drawable/circle"
-            android:digits="+-"
-            android:textSize="@dimen/operations_font_size"
+            android:layout_height="0dp"
             android:id="@+id/operation_edittext_2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/operation_image_1"
             app:layout_constraintRight_toLeftOf="@+id/operation_edittext_3"
-            android:layout_margin="@dimen/operation_2_edittext_margin"/>
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_margin="@dimen/operation_2_edittext_margin">
 
-        <EditText
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@drawable/circle"
+                android:digits="+-"
+                android:textSize="@dimen/operations_font_size"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:inputType="number"
-            android:background="@drawable/square"
-            android:textSize="@dimen/operations_font_size"
+            android:layout_height="0dp"
             android:id="@+id/operation_edittext_3"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/operation_edittext_2"
             app:layout_constraintRight_toLeftOf="@+id/operation_image_2"
-            android:layout_margin="@dimen/operation_2_edittext_margin"/>
+            android:layout_margin="@dimen/operation_2_edittext_margin">
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:inputType="number"
+                android:background="@drawable/square"
+                android:textSize="@dimen/operations_font_size"/>
+
+        </android.support.constraint.ConstraintLayout>
 
         <ImageView
             android:layout_width="0dp"
@@ -74,7 +98,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/operation_edittext_3"
-            app:layout_constraintRight_toLeftOf="@+id/operations_textview_1"/>
+            app:layout_constraintRight_toLeftOf="@+id/operations_textview_1"
+            android:layout_margin="@dimen/operation_2_edittext_margin"/>
 
         <TextView
             android:layout_width="0dp"
@@ -88,19 +113,26 @@
             app:layout_constraintLeft_toRightOf="@+id/operation_image_2"
             app:layout_constraintRight_toLeftOf="@+id/operation_edittext_4"/>
 
-        <EditText
+        <android.support.constraint.ConstraintLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:inputType="number"
-            android:background="@drawable/semisquare"
-            android:textSize="@dimen/operations_font_size"
+            android:layout_height="0dp"
             android:id="@+id/operation_edittext_4"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/operations_textview_1"
             app:layout_constraintRight_toLeftOf="@+id/operation_image_3"
-            android:layout_margin="@dimen/operation_2_edittext_margin"/>
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_margin="@dimen/operation_2_edittext_margin">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:inputType="number"
+                android:background="@drawable/semisquare"
+                android:textSize="@dimen/operations_font_size"/>
+
+        </android.support.constraint.ConstraintLayout>
 
         <ImageView
             android:layout_width="0dp"
@@ -111,7 +143,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/operation_edittext_4"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/operation_2_edittext_margin"/>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -1,4 +1,4 @@
-package zowiapp.zowi.marco.zowiapp;
+package zowiapp.zowi.marco.zowiapp.zowi;
 
 public class Zowi {
 
@@ -8,7 +8,7 @@ public class Zowi {
         return connected;
     }
 
-    public static void setConnected(boolean conn) {
+    static void setConnected(boolean conn) {
         connected = conn;
     }
 }

@@ -1,7 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
-import zowiapp.zowi.marco.zowiapp.ZowiActions;
-import zowiapp.zowi.marco.zowiapp.ZowiSocket;
+import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 
 /**
  * Created by Marco on 24/01/2017.

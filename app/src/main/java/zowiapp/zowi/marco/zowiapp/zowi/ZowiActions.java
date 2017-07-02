@@ -1,4 +1,4 @@
-package zowiapp.zowi.marco.zowiapp;
+package zowiapp.zowi.marco.zowiapp.zowi;
 
 import java.util.ArrayList;
 

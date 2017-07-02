@@ -6,10 +6,13 @@ package zowiapp.zowi.marco.zowiapp.activities;
 public class ActivityConstants {
 
     public static class CommonConstants {
+        public static final String INTENT_PARAMETER_TYPE = "categoryType";
         public static final String INTENT_PARAMETER_TITLE = "activityTitle";
         public static final String INTENT_PARAMETER_NUMBER = "activityNumber";
         public static final String JSON_PARAMETER_TYPE = "type";
         static final String JSON_PARAMETER_DESCRIPTION = "description";
+        public static final String GUIDED = "GUIDED";
+        public static final String FREE = "FREE";
         public static final int AXIS_NUMBER = 2;
         public static final int OVERLAY_HORIZONTAL_RATIO = 8;
         static final int NON_REPEATED_IMAGES_CATEGORY_INDEX = -1;

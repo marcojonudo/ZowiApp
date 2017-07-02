@@ -31,7 +31,7 @@
         <item>Actividad 4: Calcula</item>
         <item>Actividad 5: Rompecabezas</item>
         <item>Actividad 6: ¿Qué debemos y no debemos hacer?</item>
-    </string-array>:
+    </string-array>
 
     <string-array name="activities_images">
         <item>black</item>
@@ -73,4 +73,14 @@
         <item>Unidad 4 - ¿DÓNDE VIVO?</item>
         <item>Unidad 5 - ¡VOY AL COLE!</item>
     </string-array>
+
+
+    <string-array name="free_game_activities_titles">
+        <item>Bloques lógicos</item>
+    </string-array>
+
+    <string-array name="free_game_activities_images">
+        <item>bloques_logicos</item>
+    </string-array>
+
 </resources>

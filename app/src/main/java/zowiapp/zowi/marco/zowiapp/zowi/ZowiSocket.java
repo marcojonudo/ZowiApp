@@ -1,4 +1,4 @@
-package zowiapp.zowi.marco.zowiapp;
+package zowiapp.zowi.marco.zowiapp.zowi;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
@@ -18,6 +18,8 @@ import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
+import zowiapp.zowi.marco.zowiapp.MainActivity;
+import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.utils.Layout;
 
 public class ZowiSocket {
@@ -37,7 +39,7 @@ public class ZowiSocket {
 
     private boolean killThread = false;
 
-    ZowiSocket(MainActivity mainActivity) {
+    public ZowiSocket(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 

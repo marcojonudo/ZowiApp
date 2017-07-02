@@ -1,9 +1,7 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
-import android.widget.Toast;
-
 import zowiapp.zowi.marco.zowiapp.GameParameters;
-import zowiapp.zowi.marco.zowiapp.ZowiActions;
+import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 
 /**
  * Created by Marco on 03/02/2017.

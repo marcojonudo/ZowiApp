@@ -4,8 +4,6 @@ import android.util.Log;
 
 import java.util.Date;
 
-import zowiapp.zowi.marco.zowiapp.MainActivity;
-import zowiapp.zowi.marco.zowiapp.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ZowiEyesConstants;
 
 /**

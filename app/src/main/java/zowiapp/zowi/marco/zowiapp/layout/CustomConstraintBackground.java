@@ -1,4 +1,4 @@
-package zowiapp.zowi.marco.zowiapp;
+package zowiapp.zowi.marco.zowiapp.layout;
 
 import android.content.Context;
 import android.content.Intent;

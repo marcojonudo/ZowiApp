@@ -5,25 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/units_separation_vertical_margin"
-    android:id="@+id/unit_container">
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/unit_title"
-        android:background="@color/paleRed"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
+    android:id="@+id/free_activities_container">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_1"
-        app:layout_constraintTop_toBottomOf="@+id/unit_title"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/activity_5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/activity_2"
@@ -44,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/activity_image_1"
-            android:background="@drawable/circular_border_red"
+            android:background="@drawable/circular_border_green"
             app:layout_constraintTop_toBottomOf="@+id/activity_text_1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -58,7 +46,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_2"
-        app:layout_constraintTop_toBottomOf="@+id/unit_title"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/activity_6"
         app:layout_constraintLeft_toRightOf="@+id/activity_1"
         app:layout_constraintRight_toLeftOf="@+id/activity_3"
@@ -79,7 +67,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/activity_image_2"
-            android:background="@drawable/circular_border_red"
+            android:background="@drawable/circular_border_green"
             app:layout_constraintTop_toBottomOf="@+id/activity_text_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -93,7 +81,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_3"
-        app:layout_constraintTop_toBottomOf="@+id/unit_title"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/activity_6"
         app:layout_constraintLeft_toRightOf="@id/activity_2"
         app:layout_constraintRight_toLeftOf="@+id/activity_4"
@@ -114,7 +102,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/activity_image_3"
-            android:background="@drawable/circular_border_red"
+            android:background="@drawable/circular_border_green"
             app:layout_constraintTop_toBottomOf="@+id/activity_text_3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -128,7 +116,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/activity_4"
-        app:layout_constraintTop_toBottomOf="@+id/unit_title"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/activity_8"
         app:layout_constraintLeft_toRightOf="@id/activity_3"
         app:layout_constraintRight_toRightOf="parent"
@@ -149,7 +137,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/activity_image_4"
-            android:background="@drawable/circular_border_red"
+            android:background="@drawable/circular_border_green"
             app:layout_constraintTop_toBottomOf="@+id/activity_text_4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -184,7 +172,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/activity_image_5"
-            android:background="@drawable/circular_border_red"
+            android:background="@drawable/circular_border_green"
             app:layout_constraintTop_toBottomOf="@+id/activity_text_5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -220,7 +208,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:id="@+id/activity_image_6"
-            android:background="@drawable/circular_border_red"
+            android:background="@drawable/circular_border_green"
             app:layout_constraintTop_toBottomOf="@+id/activity_text_6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -240,6 +228,29 @@
         app:layout_constraintRight_toLeftOf="@+id/activity_8"
         android:layout_margin="@dimen/menu_item_margin">
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:gravity="center"
+            android:id="@+id/activity_text_7"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/activity_image_7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/activity_image_7"
+            android:background="@drawable/circular_border_green"
+            app:layout_constraintTop_toBottomOf="@+id/activity_text_7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:padding="@dimen/menu_image_padding"/>
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -251,6 +262,29 @@
         app:layout_constraintLeft_toRightOf="@+id/activity_7"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="@dimen/menu_item_margin">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:gravity="center"
+            android:id="@+id/activity_text_8"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/activity_image_8"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/activity_image_8"
+            android:background="@drawable/circular_border_green"
+            app:layout_constraintTop_toBottomOf="@+id/activity_text_8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            android:padding="@dimen/menu_image_padding"/>
 
     </android.support.constraint.ConstraintLayout>
 

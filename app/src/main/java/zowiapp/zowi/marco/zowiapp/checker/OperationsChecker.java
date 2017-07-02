@@ -6,10 +6,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
-import zowiapp.zowi.marco.zowiapp.MainActivity;
 import zowiapp.zowi.marco.zowiapp.R;
-import zowiapp.zowi.marco.zowiapp.ZowiActions;
-import zowiapp.zowi.marco.zowiapp.ZowiSocket;
+import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
 /**

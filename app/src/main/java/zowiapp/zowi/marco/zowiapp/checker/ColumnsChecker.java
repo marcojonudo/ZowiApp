@@ -1,7 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
-import zowiapp.zowi.marco.zowiapp.ZowiActions;
-import zowiapp.zowi.marco.zowiapp.ZowiSocket;
+import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 
 /**

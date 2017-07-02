@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="zowiapp.zowi.marco.zowiapp.GuidedGameActivity"
-    tools:showIn="@layout/activity_guided_game"
-    android:id="@+id/guided_game_scroller">
+    tools:showIn="@layout/activity_game"
+    android:id="@+id/game_scroller">
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list_guided_activities"/>
+        android:id="@+id/list_activities"/>
 
 </LinearLayout>

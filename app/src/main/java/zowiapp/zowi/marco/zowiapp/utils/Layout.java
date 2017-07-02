@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewOverlay;
 
 import zowiapp.zowi.marco.zowiapp.R;
-import zowiapp.zowi.marco.zowiapp.Zowi;
+import zowiapp.zowi.marco.zowiapp.zowi.Zowi;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
 
 /**

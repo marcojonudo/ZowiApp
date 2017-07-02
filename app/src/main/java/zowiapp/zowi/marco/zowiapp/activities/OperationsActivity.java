@@ -2,6 +2,7 @@ package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,15 +14,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
-import zowiapp.zowi.marco.zowiapp.MainActivity;
 import zowiapp.zowi.marco.zowiapp.R;
-import zowiapp.zowi.marco.zowiapp.ZowiActions;
-import zowiapp.zowi.marco.zowiapp.ZowiSocket;
+import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.OperationsConstants;
 import zowiapp.zowi.marco.zowiapp.checker.OperationsChecker;
@@ -135,6 +132,12 @@ public class OperationsActivity extends ActivityTemplate {
                     }
                     break;
                 case 2:
+                    mainImage.setVisibility(View.GONE);
+                    Guideline guideline = (Guideline) operationsActivityTemplate.findViewById(R.id.operations_template_guideline);
+                    ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) guideline.getLayoutParams();
+                    layoutParams.guidePercent = 0;
+                    guideline.setLayoutParams(layoutParams);
+
                     operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.operation_2_template, operationsActivityTemplate, false);
                     operationContainer = (ConstraintLayout) operationsTemplate.findViewById(R.id.operation_container);
                     for (int j=0; j<operation.length; j++) {
