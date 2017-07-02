@@ -26,7 +26,7 @@ public class CustomListAdapter extends BaseAdapter {
     private int statusBarHeight, unitsSeparation, currentActivity = 0;
     private ConstraintLayout[] units;
 
-    private final int UNITS_NUMBER = 5;
+    private final int UNITS_NUMBER = 15;
     private static final int ACTIVITIES_NUMBER = 6;
 
     public CustomListAdapter(Context context, String[] unitsTitles, String[] titles, String[] images) {
@@ -70,8 +70,10 @@ public class CustomListAdapter extends BaseAdapter {
                 final CustomConstraintBackground unitContainer = (CustomConstraintBackground) inflater.inflate(R.layout.menu_unit_container_layout, viewGroup, false);
                 ViewGroup.LayoutParams l = unitContainer.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels - statusBarHeight + unitsSeparation;
-                unitContainer.setBackgroundResource(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
-//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
+//                unitContainer.setBackgroundResource(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
+                Picasso.with(context)
+                        .load(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2)
+                        .into(unitContainer);
 
                 loadContent(unitContainer, position);
 
@@ -87,8 +89,10 @@ public class CustomListAdapter extends BaseAdapter {
             if (units[position] == null) {
                 final CustomConstraintBackground unitContainer = (CustomConstraintBackground) inflater.inflate(R.layout.menu_unit_container_layout, viewGroup, false);
                 unitContainer.setLayoutParams(view.getLayoutParams());
-                unitContainer.setBackgroundResource((position == UNITS_NUMBER-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
-//                Picasso.with(context).load((position == UNITS_NUMBER-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
+//                unitContainer.setBackgroundResource((position == UNITS_NUMBER-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
+                Picasso.with(context)
+                        .load((position == UNITS_NUMBER-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2)
+                        .into(unitContainer);
 
                 loadContent(unitContainer, position);
                 units[position] = unitContainer;
@@ -111,7 +115,11 @@ public class CustomListAdapter extends BaseAdapter {
 
             activityContainer.setTag(currentActivity);
             activityTitle.setText(activitiesTitles[currentActivity].split(":")[0]);
-            activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[i], "drawable", context.getPackageName()));
+//            activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[currentActivity], "drawable", context.getPackageName()));
+            Picasso.with(context)
+                    .load(context.getResources().getIdentifier(activitiesImages[currentActivity], "drawable", context.getPackageName()))
+                    .fit()
+                    .into(activityImage);
 
             activityContainer.setOnClickListener(new View.OnClickListener() {
                 @Override

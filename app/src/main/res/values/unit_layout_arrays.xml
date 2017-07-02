@@ -31,46 +31,176 @@
         <item>Actividad 4: Calcula</item>
         <item>Actividad 5: Rompecabezas</item>
         <item>Actividad 6: ¿Qué debemos y no debemos hacer?</item>
+        <item>Actividad 1: ¡Canta y baila con Zowi!</item>
+        <item>Actividad 2: Zowi y sus tareas</item>
+        <item>Actividad 3: ¡La hora del baño!</item>
+        <item>Actividad 4: Plantando y cultivando</item>
+        <item>Actividad 5: ¿Antes o después?</item>
+        <item>Actividad 6: Cálculo</item>
+        <item>Actividad 1: Adivina adivinanza&#8230;</item>
+        <item>Actividad 2: ¡Todos a desayunar!</item>
+        <item>Actividad 3: Recoge las frutas</item>
+        <item>Actividad 4: ¡Como todo un cheff!</item>
+        <item>Actividad 5: Momentos de comer</item>
+        <item>Actividad 6: La pirámide alimenticia</item>
+        <item>Actividad 1: ¡Canta y baila con Zowi!</item>
+        <item>Actividad 2: ¡Mamá nos mima!</item>
+        <item>Actividad 3: ¡A jugar!</item>
+        <item>Actividad 4: </item>
+        <item>Actividad 5: Rompecabezas</item>
+        <item>Actividad 6: ¡No hay uno sin dos!</item>
+        <item>Actividad 1: ¡Canta y baila con Zowi!</item>
+        <item>Actividad 2: ¡A casa!</item>
+        <item>Actividad 3: </item>
+        <item>Actividad 4: ¿Cuál es tu sitio?</item>
+        <item>Actividad 5: Rompecabezas</item>
+        <item>Actividad 6: Calcula</item>
+        <item>Actividad 1: Dictados musicales con Zowi</item>
+        <item>Actividad 2: ¡Hora de ir al cole!</item>
+        <item>Actividad 3: ¡Como todo un artista!</item>
+        <item>Actividad 4: Calcula</item>
+        <item>Actividad 5: Rompecabezas</item>
+        <item>Actividad 6: ¿Qué debemos y no debemos hacer?</item>
+        <item>Actividad 1: ¡Canta y baila con Zowi!</item>
+        <item>Actividad 2: Zowi y sus tareas</item>
+        <item>Actividad 3: ¡La hora del baño!</item>
+        <item>Actividad 4: Plantando y cultivando</item>
+        <item>Actividad 5: ¿Antes o después?</item>
+        <item>Actividad 6: Cálculo</item>
+        <item>Actividad 1: Adivina adivinanza&#8230;</item>
+        <item>Actividad 2: ¡Todos a desayunar!</item>
+        <item>Actividad 3: Recoge las frutas</item>
+        <item>Actividad 4: ¡Como todo un cheff!</item>
+        <item>Actividad 5: Momentos de comer</item>
+        <item>Actividad 6: La pirámide alimenticia</item>
+        <item>Actividad 1: ¡Canta y baila con Zowi!</item>
+        <item>Actividad 2: ¡Mamá nos mima!</item>
+        <item>Actividad 3: ¡A jugar!</item>
+        <item>Actividad 4: </item>
+        <item>Actividad 5: Rompecabezas</item>
+        <item>Actividad 6: ¡No hay uno sin dos!</item>
+        <item>Actividad 1: ¡Canta y baila con Zowi!</item>
+        <item>Actividad 2: ¡A casa!</item>
+        <item>Actividad 3: </item>
+        <item>Actividad 4: ¿Cuál es tu sitio?</item>
+        <item>Actividad 5: Rompecabezas</item>
+        <item>Actividad 6: Calcula</item>
+        <item>Actividad 1: Dictados musicales con Zowi</item>
+        <item>Actividad 2: ¡Hora de ir al cole!</item>
+        <item>Actividad 3: ¡Como todo un artista!</item>
+        <item>Actividad 4: Calcula</item>
+        <item>Actividad 5: Rompecabezas</item>
+        <item>Actividad 6: ¿Qué debemos y no debemos hacer?</item>
     </string-array>:
 
     <string-array name="activities_images">
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
-        <item>black</item>
+        <item>iglu</item>
+        <item>musica</item>
+        <item>cuento</item>
+        <item>hielos</item>
+        <item>operaciones</item>
+        <item>evalua</item>
+        <item>emociones</item>
+        <item>musica</item>
+        <item>rompecabezas</item>
+        <item>cuento</item>
+        <item>operaciones</item>
+        <item>evalua</item>
+        <item>natacion</item>
+        <item>musica</item>
+        <item>cuento</item>
+        <item>operaciones</item>
+        <item>nado_sincronizado</item>
+        <item>evalua</item>
+        <item>fruta_pasion</item>
+        <item>frutero</item>
+        <item>cuento</item>
+        <item>horas_de_comer</item>
+        <item>operaciones</item>
+        <item>evalua</item>
+        <item>romanos</item>
+        <item>pergamino</item>
+        <item>acueducto</item>
+        <item>peli</item>
+        <item>operaciones</item>
+        <item>evalua</item>
+        <item>ciudad</item>
+        <item>rio</item>
+        <item>cuento</item>
+        <item>musica</item>
+        <item>operaciones</item>
+        <item>evalua</item>
+        <item>flamenco</item>
+        <item>plumas</item>
+        <item>cuento</item>
+        <item>operaciones</item>
+        <item>musica</item>
+        <item>evalua</item>
+        <item>nenufar</item>
+        <item>regadera</item>
+        <item>peli</item>
+        <item>cuento</item>
+        <item>operaciones</item>
+        <item>evalua</item>
+        <item>reciclaje</item>
+        <item>musica</item>
+        <item>cuento</item>
+        <item>operaciones</item>
+        <item>peli</item>
+        <item>evalua</item>
+        <item>inundacion</item>
+        <item>musica</item>
+        <item>rompecabezas</item>
+        <item>paraguas</item>
+        <item>bombera</item>
+        <item>evalua</item>
+        <item>pintorr</item>
+        <item>huella</item>
+        <item>rotu</item>
+        <item>operaciones</item>
+        <item>cuento</item>
+        <item>evalua</item>
+        <item>alfarera</item>
+        <item>adivinanza</item>
+        <item>cuento</item>
+        <item>operaciones</item>
+        <item>jarrones</item>
+        <item>evalua</item>
+        <item>submarino</item>
+        <item>musica</item>
+        <item>peli</item>
+        <item>operaciones</item>
+        <item>cuento</item>
+        <item>evalua</item>
+        <item>cisne</item>
+        <item>cuento</item>
+        <item>operaciones</item>
+        <item>musica</item>
+        <item>cera</item>
+        <item>evalua</item>
+        <item>sistema_solar</item>
+        <item>musica</item>
+        <item>tierra</item>
+        <item>operaciones</item>
+        <item>adivinanza</item>
+        <item>evalua</item>
     </string-array>
 
     <string-array name="units_titles">
-        <item>Unidad 1 - ¡NOS CUIDAMOS!</item>
-        <item>Unidad 2 - ALIMENTACIÓN Y NUTRICIÓN</item>
-        <item>Unidad 3 - LA FAMILIA</item>
-        <item>Unidad 4 - ¿DÓNDE VIVO?</item>
-        <item>Unidad 5 - ¡VOY AL COLE!</item>
+        <item>Unidad Didáctica 1 - VIVO EN UN IGLÚ</item>
+        <item>Unidad Didáctica 2 - LAS LÁGRIMAS</item>
+        <item>Unidad Didáctica 3 - LA NATACIÓN SINCRONIZADA</item>
+        <item>Unidad Didáctica 4 - LA FRUTA DE LA PASIÓN</item>
+        <item>Proyecto de Investigación 5 - LOS ROMANOS</item>
+        <item>Unidad Didáctica 6 - MI CUIDAD</item>
+        <item>Unidad Didáctica 7 - LOS FLAMENCOS</item>
+        <item>Unidad Didáctica 8 - LOS NENÚFARES</item>
+        <item>Unidad Didáctica 9 - EL RECICLAJE</item>
+        <item>Proyecto de Investigación 10 - LAS INUNDACIONES</item>
+        <item>Unidad Didáctica 11 - LAS ACUARELAS</item>
+        <item>Unidad Didáctica 12 - LOS ALFAREROS</item>
+        <item>Unidad Didáctica 13 - EL SUBMARINO</item>
+        <item>Unidad Didáctica 14 - EL PATITO FEO</item>
+        <item>Proyecto de Investigación 15 - AGUA ES</item>
     </string-array>
 </resources>
