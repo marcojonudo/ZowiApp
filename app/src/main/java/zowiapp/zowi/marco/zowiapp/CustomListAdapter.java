@@ -111,7 +111,7 @@ public class CustomListAdapter extends BaseAdapter {
 
             activityContainer.setTag(currentActivity);
             activityTitle.setText(activitiesTitles[currentActivity].split(":")[0]);
-            activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[i], "drawable", context.getPackageName()));
+            activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[currentActivity], "drawable", context.getPackageName()));
 
             activityContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
