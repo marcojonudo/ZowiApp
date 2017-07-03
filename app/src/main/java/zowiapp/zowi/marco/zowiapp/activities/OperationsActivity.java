@@ -39,7 +39,6 @@ public class OperationsActivity extends ActivityTemplate {
     private String[] operationsImages;
     private int[] operationsResults;
     private String[][] operations;
-    private boolean sendNewInfo, killThread;
 
     public OperationsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -60,8 +59,6 @@ public class OperationsActivity extends ActivityTemplate {
             JSONArray jsonOperationsImages = activityDetails.getJSONArray(OperationsConstants.JSON_PARAMETER_OPERATIONSIMAGES);
             operationsImages = new String[jsonOperationsImages.length()];
             operations = new String[OperationsConstants.NUMBER_OF_OPERATIONS][OperationsConstants.NUMBER_OF_OPERATORS];
-            sendNewInfo = false;
-            killThread = false;
 
             if (jsonOperationsImages.length() != 0) {
                 for (int i=0; i<jsonOperationsImages.length(); i++) {
@@ -92,8 +89,9 @@ public class OperationsActivity extends ActivityTemplate {
         operationsResults = new int[OperationsConstants.NUMBER_OF_OPERATIONS];
 
         for (int i=0; i<OperationsConstants.NUMBER_OF_OPERATIONS; i++) {
-            int firstNumber = new Random().nextInt(OperationsConstants.RANDOM_NUMBER_LIMIT);
-            int randomOperatorIndex = new Random().nextInt(OperationsConstants.OPERATORS.length);
+            Random random = new Random();
+            int firstNumber = random.nextInt(OperationsConstants.RANDOM_NUMBER_LIMIT);
+            int randomOperatorIndex = random.nextInt(OperationsConstants.OPERATORS.length);
             String operator = OperationsConstants.OPERATORS[randomOperatorIndex];
 
             int secondNumber = 0, operationResult = 0;
@@ -102,13 +100,13 @@ public class OperationsActivity extends ActivityTemplate {
                     /* We want the result to be between 0 and 9, so the second randomly generated number must be
                        between 0 and RAMDON_NUMBER_LIMIT-firstNumber-1.
                        Ej. fN = 6, RNL-fN = 10-6 = 4 --> Random number between 0 and 3 */
-                    secondNumber = new Random().nextInt(OperationsConstants.RANDOM_NUMBER_LIMIT-firstNumber);
+                    secondNumber = random.nextInt(OperationsConstants.RANDOM_NUMBER_LIMIT-firstNumber);
 
                     operationResult = firstNumber + secondNumber;
                     break;
                 case "-":
                     /* Ej. fN = 6, fN+1 = 7 --> Random number between 0 and 6 */
-                    secondNumber = new Random().nextInt(firstNumber+1);
+                    secondNumber = random.nextInt(firstNumber+1);
 
                     operationResult = firstNumber - secondNumber;
                     break;
@@ -123,7 +121,7 @@ public class OperationsActivity extends ActivityTemplate {
             ConstraintLayout operationContainer;
             switch (operationsType) {
                 case 1:
-                    operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.operation_1_template, operationsActivityTemplate, false);
+                    operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.operation_1_template, operationsContainer, false);
                     operationContainer = (ConstraintLayout) operationsTemplate.findViewById(R.id.operation_container);
 
                     for (int j=0; j<operation.length; j++) {
@@ -132,13 +130,14 @@ public class OperationsActivity extends ActivityTemplate {
                     }
                     break;
                 case 2:
+                    /* Remove the left image as it is not necessary in this mode */
                     mainImage.setVisibility(View.GONE);
                     Guideline guideline = (Guideline) operationsActivityTemplate.findViewById(R.id.operations_template_guideline);
                     ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) guideline.getLayoutParams();
                     layoutParams.guidePercent = 0;
                     guideline.setLayoutParams(layoutParams);
 
-                    operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.operation_2_template, operationsActivityTemplate, false);
+                    operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.operation_2_template, operationsContainer, false);
                     operationContainer = (ConstraintLayout) operationsTemplate.findViewById(R.id.operation_container);
                     for (int j=0; j<operation.length; j++) {
                         /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews */

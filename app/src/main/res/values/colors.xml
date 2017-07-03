@@ -13,6 +13,7 @@
     <color name="red">#FF0000</color>
     <color name="darkRed">#C90101</color>
     <color name="blue">#0000FF</color>
+    <color name="paleBlue">#7676FF</color>
     <color name="green">#00FF00</color>
     <color name="darkGreen">#01C901</color>
     <color name="backgroundPaleYellow">#FFFFD4</color>
