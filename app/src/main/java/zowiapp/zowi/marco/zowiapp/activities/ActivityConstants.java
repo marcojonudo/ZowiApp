@@ -15,7 +15,7 @@ public class ActivityConstants {
         public static final String FREE = "FREE";
         public static final int AXIS_NUMBER = 2;
         public static final int OVERLAY_HORIZONTAL_RATIO = 8;
-        static final int NON_REPEATED_IMAGES_CATEGORY_INDEX = -1;
+        public static final int NON_REPEATED_IMAGES_CATEGORY_INDEX = -1;
     }
 
     static class GridConstants {
@@ -199,5 +199,9 @@ public class ActivityConstants {
         public static final int[] DISTANCE_PERIODS = {
             1000, 500, 200
         };
+    }
+
+    static class LogicBlocksConstants {
+        static final String JSON_PARAMETER_IMAGES = "images";
     }
 }

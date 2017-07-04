@@ -36,7 +36,7 @@ public class ImagesHandler {
         this.activityType = activityType;
     }
 
-    private int generateSimpleRandomIndex(ArrayList<Integer> arrayList, int limit, boolean insert) {
+    public int generateSimpleRandomIndex(ArrayList<Integer> arrayList, int limit, boolean insert) {
         int n = new Random().nextInt(limit);
 
         n = arrayList.contains(n) ? generateSimpleRandomIndex(arrayList, limit, false) : n;
@@ -137,8 +137,32 @@ public class ImagesHandler {
                     ((MusicActivity) activityTemplate).music(view);
                 }
             });
-            loadMusicSimpleImageView(imageView, images[randomImagesIndex], i);
+            loadMusicSimpleImageView(imageView, images[randomImagesIndex]);
         }
+    }
+
+    public void loadLogicBlocksImages(ViewGroup contentContainer, String[][] images, int childsNumber, int imagesLimit) {
+        ArrayList<ArrayList<Integer>> arrayList = new ArrayList<>();
+        for (String[] category: images)
+            arrayList.add(new ArrayList<Integer>());
+
+        int imagesIndex = 0;
+        int[] indexes;
+        ImageView imageView;
+        for (int i=0; i<childsNumber; i++) {
+            if (i%2 != 0 && i != 4) {
+                indexes = generateCategoriesRandomIndex(arrayList, images.length, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, images[imagesIndex].length, true);
+
+                imageView = (ImageView) contentContainer.getChildAt(i);
+                loadSimpleLogicBlocksImageView(imageView, images[indexes[0]][indexes[1]], imagesIndex);
+
+                imagesIndex++;
+            }
+        }
+
+        /* Get the center ImageView for displaying zowi_pointer image */
+        imageView = (ImageView) contentContainer.getChildAt(4);
+        loadMusicSimpleImageView(imageView, "zowi_pointer");
     }
 
 
@@ -182,7 +206,14 @@ public class ImagesHandler {
         imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
         imageView.setTag(i);
     }
-    private void loadMusicSimpleImageView(ImageView imageView, String imageName, int randomIndex) {
+
+    private void loadSimpleLogicBlocksImageView(ImageView imageView, String imageName, int i) {
+        imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
+        String tag = i + "-" + imageName;
+        imageView.setTag(tag);
+    }
+
+    private void loadMusicSimpleImageView(ImageView imageView, String imageName) {
         imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
     }
 

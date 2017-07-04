@@ -21,7 +21,7 @@ public class FoodPyramidChecker extends CheckerTemplate {
     public FoodPyramidChecker() {
         checkAnswers = false;
         killThread = false;
-        state = 0;
+        state = WAITING_ZOWI_CHECKS;
     }
 
     public boolean check(GameParameters gameParameters, String[][] correctionArray, ImageView[] imageViews, int[][] imagesCoordinates) {

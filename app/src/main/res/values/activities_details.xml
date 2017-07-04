@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="activities_details">
+    <string-array name="guided_activities_details">
         <item>{"description": \"Llévalo hasta la casilla musical\", "type": "GRID", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"description": \"Llévalo a descansar, comer y jugar\", "type": "GRID", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"description": \"Lleva a Zowi a darse un baño\", "type": "GRID", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
@@ -37,5 +37,9 @@
         <!--<item>{"description": \"Descripcion 10\", "type": "MEMORY", "images": [zowi_pointer, green_circular_button, red_circular_button, house, zowi_3_teeth, black]}</item>-->
         <!--<item>{"description": \"Descripcion 13\", "type": "GUIDE", "images": [[house, house], [zowi_pointer, zowi_pointer], [zowi_6_teeth, zowi_6_teeth], [green_circular_button, green_circular_button]], "correction": [0, 1, 0, 0]}</item>-->
         <!--<item>{"description": \"Descripcion 15\", "type": "GRID", "gridSize": 2, "cells": [9, 1, 4], "images": [zowi_pointer, house, red_circular_button]}</item>-->
+    </string-array>
+
+    <string-array name="free_activities_details">
+        <item>{"description": \"¡Identifica la imagen correspondiente al tema!\", "type": "LOGIC_BLOCKS", "images": [[triangulo_rojo_grande, triangulo_rojo_grande], [triangulo_rojo_grande, triangulo_rojo_grande], [triangulo_rojo_grande, triangulo_rojo_grande], [triangulo_rojo_grande, triangulo_rojo_grande]]}</item>
     </string-array>
 </resources>

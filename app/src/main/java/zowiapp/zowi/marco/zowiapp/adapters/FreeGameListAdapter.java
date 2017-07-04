@@ -66,7 +66,7 @@ public class FreeGameListAdapter extends BaseAdapter {
                 final CustomConstraintBackground groupFreeActivities = (CustomConstraintBackground) inflater.inflate(R.layout.free_menu_activities_container_layout, viewGroup, false);
                 ViewGroup.LayoutParams l = groupFreeActivities.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels - statusBarHeight + unitsSeparation;
-                groupFreeActivities.setBackgroundResource(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
+                groupFreeActivities.setBackgroundResource((position >= activitiesNumber /ACTIVITIES_GROUP) ? R.drawable.footprint_background_final_2 : position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
 //                Picasso.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
 
                 loadContent(groupFreeActivities, position);

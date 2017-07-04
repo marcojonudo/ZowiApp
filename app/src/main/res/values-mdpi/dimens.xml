@@ -98,4 +98,7 @@
     <dimen name="zowi_shape_bottom_left_radius">30dp</dimen>
     <dimen name="zowi_shape_bottom_right_radius">30dp</dimen>
 
+    <!-- LogicBlocks dimensions -->
+    <dimen name="logic_grid_cell_margin">20dp</dimen>
+
 </resources>

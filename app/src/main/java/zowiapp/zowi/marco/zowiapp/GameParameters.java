@@ -16,6 +16,7 @@ import zowiapp.zowi.marco.zowiapp.activities.DragActivity;
 import zowiapp.zowi.marco.zowiapp.activities.FoodPyramidActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GridActivity;
 import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
+import zowiapp.zowi.marco.zowiapp.activities.LogicBlocksActivity;
 import zowiapp.zowi.marco.zowiapp.activities.MemoryActivity;
 import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
 import zowiapp.zowi.marco.zowiapp.activities.OperationsActivity;
@@ -40,7 +41,9 @@ public class GameParameters extends AppCompatActivity {
         int activityNumber = parameter.getInt(CommonConstants.INTENT_PARAMETER_NUMBER);
 
         /* Array with all the details needed to create the activity */
-        String[] activitiesDetails = getResources().getStringArray(R.array.activities_details);
+        String[] activitiesDetails = null;
+        if (categoryType != null)
+            activitiesDetails = categoryType.equals(CommonConstants.GUIDED) ? getResources().getStringArray(R.array.guided_activities_details) : getResources().getStringArray(R.array.free_activities_details);
 
         chooseActivityCategory(categoryType, activityTitle, activityNumber, activitiesDetails);
     }
@@ -65,7 +68,9 @@ public class GameParameters extends AppCompatActivity {
     private void chooseFreeActivityType(ActivityType activityType, String activityTitle, JSONObject activityDetails) {
         switch (activityType) {
             case LOGIC_BLOCKS:
-//                new LogicBlocksActivity(context, activityTitle, activityDetails);
+                new LogicBlocksActivity(context, activityTitle, activityDetails);
+                break;
+            default:
                 break;
         }
     }

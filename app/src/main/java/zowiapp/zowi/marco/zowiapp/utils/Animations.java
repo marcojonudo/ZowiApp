@@ -7,7 +7,10 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
@@ -82,6 +85,39 @@ public class Animations {
         setRightIn.setTarget(backView2);
         setLeftOut.start();
         setRightIn.start();
+    }
+
+    public static void rotateAndTranslate(View v, int degrees) {
+        AnimationSet animationSet = new AnimationSet(true);
+        RotateAnimation rotateAnimation = new RotateAnimation(0, degrees, v.getWidth()/2, v.getHeight()/2);
+        rotateAnimation.setDuration(TRANSLATE_ANIMATION_DURATION);
+
+        int[] translation = null;
+        switch (degrees) {
+            case 0:
+                translation = new int[]{0, -v.getHeight()};
+                break;
+            case 90:
+                translation = new int[]{-v.getWidth(), 0};
+                break;
+            case -90:
+                translation = new int[]{v.getWidth(), 0};
+                break;
+            case 180:
+                translation = new int[]{0, v.getHeight()};
+                break;
+            default:
+                translation = new int[]{0, 0};
+                break;
+        }
+        TranslateAnimation translateAnimation = new TranslateAnimation(0, translation[0], 0, translation[1]);
+        translateAnimation.setDuration(TRANSLATE_ANIMATION_DURATION);
+        translateAnimation.setFillAfter(true);
+
+        animationSet.addAnimation(rotateAnimation);
+        animationSet.addAnimation(translateAnimation);
+
+        v.startAnimation(animationSet);
     }
 
 }

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintDimensionRatio="1:1">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/logic_blocks_cell_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/logic_blocks_cell_4"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/logic_blocks_cell_2"
+            android:layout_margin="@dimen/logic_grid_cell_margin"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/logic_blocks_cell_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/logic_blocks_cell_5"
+            app:layout_constraintLeft_toRightOf="@+id/logic_blocks_cell_1"
+            app:layout_constraintRight_toLeftOf="@+id/logic_blocks_cell_3"
+            android:layout_margin="@dimen/logic_grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/logic_blocks_cell_3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/logic_blocks_cell_6"
+            app:layout_constraintLeft_toRightOf="@+id/logic_blocks_cell_2"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/logic_grid_cell_margin"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/logic_blocks_cell_4"
+            app:layout_constraintTop_toBottomOf="@+id/logic_blocks_cell_1"
+            app:layout_constraintBottom_toTopOf="@+id/logic_blocks_cell_7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/logic_blocks_cell_5"
+            android:layout_margin="@dimen/logic_grid_cell_margin"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/logic_blocks_cell_5"
+            app:layout_constraintTop_toBottomOf="@+id/logic_blocks_cell_2"
+            app:layout_constraintBottom_toTopOf="@+id/logic_blocks_cell_8"
+            app:layout_constraintLeft_toRightOf="@+id/logic_blocks_cell_4"
+            app:layout_constraintRight_toLeftOf="@+id/logic_blocks_cell_6"
+            android:layout_margin="@dimen/logic_grid_cell_margin"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/logic_blocks_cell_6"
+            app:layout_constraintTop_toBottomOf="@+id/logic_blocks_cell_3"
+            app:layout_constraintBottom_toTopOf="@+id/logic_blocks_cell_9"
+            app:layout_constraintLeft_toRightOf="@+id/logic_blocks_cell_5"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/logic_grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/logic_blocks_cell_7"
+            app:layout_constraintTop_toBottomOf="@+id/logic_blocks_cell_4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/logic_blocks_cell_8"
+            android:layout_margin="@dimen/logic_grid_cell_margin"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/logic_blocks_cell_8"
+            app:layout_constraintTop_toBottomOf="@+id/logic_blocks_cell_5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/logic_blocks_cell_7"
+            app:layout_constraintRight_toLeftOf="@+id/logic_blocks_cell_9"
+            android:layout_margin="@dimen/logic_grid_cell_margin"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:id="@+id/logic_blocks_cell_9"
+            app:layout_constraintTop_toBottomOf="@+id/logic_blocks_cell_6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/logic_blocks_cell_8"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_margin="@dimen/logic_grid_cell_margin"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
