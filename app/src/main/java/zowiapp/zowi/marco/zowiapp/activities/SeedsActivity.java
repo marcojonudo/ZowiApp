@@ -164,7 +164,7 @@ public class SeedsActivity extends ActivityTemplate {
         }
     }
 
-    protected boolean processTouchEvent(View view, MotionEvent event) {
+    boolean processTouchEvent(View view, MotionEvent event) {
         float left, right, top, bottom;
 
         LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);

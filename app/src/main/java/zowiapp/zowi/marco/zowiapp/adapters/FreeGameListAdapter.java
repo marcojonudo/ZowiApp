@@ -23,7 +23,7 @@ public class FreeGameListAdapter extends BaseAdapter {
 
     private static int activitiesNumber;
     private static final int ACTIVITIES_GROUP = 8;
-    private static final String categoryType = "FREE";
+    private static final String CATEGORY_TYPE = "FREE";
 
     public FreeGameListAdapter(Context context, String[] titles, String[] images) {
         this.context = context;
@@ -114,7 +114,7 @@ public class FreeGameListAdapter extends BaseAdapter {
                     String activityTitle = activitiesTitles[activityTag];
 
                     Intent intent = new Intent(context, GameParameters.class);
-                    intent.putExtra("categoryType", categoryType);
+                    intent.putExtra("categoryType", CATEGORY_TYPE);
                     intent.putExtra("activityTitle", activityTitle);
                     intent.putExtra("activityNumber", activityTag);
 

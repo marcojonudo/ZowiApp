@@ -24,9 +24,9 @@ public class GuidedGameListAdapter extends BaseAdapter {
     private int statusBarHeight, unitsSeparation, currentActivity = 0;
     private ConstraintLayout[] units;
 
-    private final int unitsNumber;
+    private static int unitsNumber;
     private static final int ACTIVITIES_NUMBER = 6;
-    private static final String categoryType = "GUIDED";
+    private static final String CATEGORY_TYPE = "GUIDED";
 
     public GuidedGameListAdapter(Context context, String[] unitsTitles, String[] titles, String[] images) {
         this.context = context;
@@ -120,7 +120,7 @@ public class GuidedGameListAdapter extends BaseAdapter {
                     String activityTitle = activitiesTitles[activityTag];
 
                     Intent intent = new Intent(context, GameParameters.class);
-                    intent.putExtra("categoryType", categoryType);
+                    intent.putExtra("categoryType", CATEGORY_TYPE);
                     intent.putExtra("activityTitle", activityTitle);
                     intent.putExtra("activityNumber", activityTag);
 

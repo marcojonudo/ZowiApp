@@ -181,7 +181,7 @@ public class ColumnsActivity extends ActivityTemplate {
         }
     }
 
-    protected void processTouchEvent(View view, MotionEvent event) {
+    void processTouchEvent(View view, MotionEvent event) {
         float left, right, top, bottom;
 
         LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);

@@ -37,10 +37,10 @@ public class PuzzleActivity extends ActivityTemplate {
 
     private GameParameters gameParameters;
     private LayoutInflater inflater;
-    private PuzzleChecker puzzleChecker;
-    private ImagesHandler imagesHandler;
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
+    private PuzzleChecker puzzleChecker;
+    private ImagesHandler imagesHandler;
     private String[][][] piecesImages;
     private int randomShapeIndex, puzzleContainerSide;
     private int[][] puzzleCoordinates, piecesCoordinates, piecesDimensions, correction;
@@ -176,7 +176,7 @@ public class PuzzleActivity extends ActivityTemplate {
         }
     }
 
-    protected void processTouchEvent(View view, MotionEvent event) {
+    void processTouchEvent(View view, MotionEvent event) {
         float left, right, top, bottom;
         float scaleFactorToPuzzle = -1;
 

@@ -124,19 +124,19 @@ public class LogicBlocksActivity extends ActivityTemplate {
                                 int imageIndex;
                                 if (receivedText.contains("AD")) {
                                     imageIndex = 1;
-                                    Animations.rotate(zowi, 0);
+                                    Animations.rotateAndTranslate(zowi, 0);
                                 }
                                 else if (receivedText.contains("IZ")) {
                                     imageIndex = 3;
-                                    Animations.rotate(zowi, -90);
+                                    Animations.rotateAndTranslate(zowi, -90);
                                 }
                                 else if (receivedText.contains("DE")) {
                                     imageIndex = 5;
-                                    Animations.rotate(zowi, 90);
+                                    Animations.rotateAndTranslate(zowi, 90);
                                 }
                                 else if (receivedText.contains("AT")) {
                                     imageIndex = 7;
-                                    Animations.rotate(zowi, 180);
+                                    Animations.rotateAndTranslate(zowi, 180);
                                 }
                                 else
                                     imageIndex = -1;

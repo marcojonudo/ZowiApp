@@ -117,7 +117,7 @@ public class MemoryActivity extends ActivityTemplate {
 
     }
 
-    protected void processTouchEvent(View view, MotionEvent event) {
+    void processTouchEvent(View view, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 boolean correctAnswer = false;

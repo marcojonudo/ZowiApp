@@ -172,7 +172,7 @@ public class GridActivity extends ActivityTemplate {
         container.addView(image);
     }
 
-    protected void processTouchEvent(View view, MotionEvent event) {
+    void processTouchEvent(View view, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 float x = event.getX();

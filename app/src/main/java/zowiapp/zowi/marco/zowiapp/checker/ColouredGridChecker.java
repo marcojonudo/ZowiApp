@@ -8,11 +8,12 @@ import android.widget.Toast;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
+import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 
 /**
  * Created by Marco on 03/02/2017.
  */
-public class ColouredGridChecker {
+public class ColouredGridChecker extends CheckerTemplate{
 
     public void check(GameParameters gameParameters, int index, int correctResult) {
         LinearLayout answersContainer = (LinearLayout) gameParameters.findViewById(R.id.answers_container);
@@ -29,11 +30,10 @@ public class ColouredGridChecker {
             else {
                 int answerNumber = Integer.parseInt(answer);
 
-                if (answerNumber == correctResult) {
-                    Toast.makeText(gameParameters, "¡Bien!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(gameParameters, "¡Mal!", Toast.LENGTH_SHORT).show();
-                }
+                if (answerNumber == correctResult)
+                    sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+                else
+                    sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
             }
         }
         else {
