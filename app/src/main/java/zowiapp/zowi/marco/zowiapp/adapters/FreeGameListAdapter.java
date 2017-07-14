@@ -18,10 +18,10 @@ public class FreeGameListAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater inflater;
     private String[] activitiesTitles, activitiesImages;
-    private int statusBarHeight, unitsSeparation, currentActivity = 0;
+    private int currentActivity = 0;
     private ConstraintLayout[] activitiesGroup;
 
-    private static int activitiesNumber;
+    private static int activitiesNumber, groupsNumber;
     private static final int ACTIVITIES_GROUP = 8;
     private static final String CATEGORY_TYPE = "FREE";
 
@@ -32,21 +32,12 @@ public class FreeGameListAdapter extends BaseAdapter {
         this.activitiesImages = images;
         activitiesNumber = titles.length;
         activitiesGroup = new ConstraintLayout[activitiesNumber];
-
-        int statusBarId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (statusBarId > 0) {
-            statusBarHeight = context.getResources().getDimensionPixelSize(statusBarId);
-        }
-        /* Padding that separates the activitiesGroup */
-        int unitsSeparationId = context.getResources().getIdentifier("units_separation_vertical_margin", "dimen", context.getPackageName());
-        if (unitsSeparationId > 0) {
-            unitsSeparation = context.getResources().getDimensionPixelSize(unitsSeparationId);
-        }
+        groupsNumber = (activitiesNumber-1)/ACTIVITIES_GROUP + 1;
     }
 
     @Override
     public int getCount() {
-        return activitiesNumber /ACTIVITIES_GROUP + 1;
+        return groupsNumber;
     }
 
     @Override
@@ -65,11 +56,11 @@ public class FreeGameListAdapter extends BaseAdapter {
             if (activitiesGroup[position] == null) {
                 final CustomConstraintBackground groupFreeActivities = (CustomConstraintBackground) inflater.inflate(R.layout.free_menu_activities_container_layout, viewGroup, false);
                 ViewGroup.LayoutParams l = groupFreeActivities.getLayoutParams();
-                l.height = context.getResources().getDisplayMetrics().heightPixels - statusBarHeight + unitsSeparation;
-                groupFreeActivities.setBackgroundResource((position >= activitiesNumber /ACTIVITIES_GROUP) ? R.drawable.footprint_background_final_2 : position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
+                l.height = context.getResources().getDisplayMetrics().heightPixels;//- statusBarHeight;
+                groupFreeActivities.setBackgroundResource((position >= activitiesNumber/ACTIVITIES_GROUP) ? R.drawable.footprint_background_final_2 : (position % 2 == 0 && groupsNumber > 2) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
 //                Picasso.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
 
-                loadContent(groupFreeActivities, position);
+                loadContent(groupFreeActivities);
 
                 activitiesGroup[position] = groupFreeActivities;
 
@@ -83,10 +74,10 @@ public class FreeGameListAdapter extends BaseAdapter {
             if (activitiesGroup[position] == null) {
                 final CustomConstraintBackground groupFreeActivities = (CustomConstraintBackground) inflater.inflate(R.layout.free_menu_activities_container_layout, viewGroup, false);
                 groupFreeActivities.setLayoutParams(view.getLayoutParams());
-                groupFreeActivities.setBackgroundResource((position >= activitiesNumber /ACTIVITIES_GROUP) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
+                groupFreeActivities.setBackgroundResource((position >= activitiesNumber/ACTIVITIES_GROUP) ? R.drawable.footprint_background_final_2 : (position % 2 == 0 && groupsNumber > 2) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
 //                Picasso.with(context).load((position == UNITS_NUMBER-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(groupFreeActivities);
 
-                loadContent(groupFreeActivities, position);
+                loadContent(groupFreeActivities);
                 activitiesGroup[position] = groupFreeActivities;
 
                 return groupFreeActivities;
@@ -97,36 +88,37 @@ public class FreeGameListAdapter extends BaseAdapter {
         }
     }
 
-    private void loadContent(ConstraintLayout unitContainer, int position) {
-        for (int i = 0; i< activitiesNumber; i++) {
-            ConstraintLayout activityContainer = (ConstraintLayout) unitContainer.getChildAt(i);
-            TextView activityTitle = (TextView) activityContainer.getChildAt(0);
-            ImageView activityImage = (ImageView) activityContainer.getChildAt(1);
+    private void loadContent(ConstraintLayout unitContainer) {
+        for (int j = 0; j< ACTIVITIES_GROUP; j++) {
+            ConstraintLayout activityContainer = (ConstraintLayout) unitContainer.getChildAt(j);
+            if (currentActivity < activitiesNumber) {
+                TextView activityTitle = (TextView) activityContainer.getChildAt(0);
+                ImageView activityImage = (ImageView) activityContainer.getChildAt(1);
 
-            activityContainer.setTag(currentActivity);
-            activityTitle.setText(activitiesTitles[currentActivity]);
-            activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[currentActivity], "drawable", context.getPackageName()));
+                activityContainer.setTag(currentActivity);
+                activityTitle.setText(activitiesTitles[currentActivity]);
+                activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[currentActivity], "drawable", context.getPackageName()));
 
-            activityContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int activityTag = (int) view.getTag();
-                    String activityTitle = activitiesTitles[activityTag];
+                activityContainer.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int activityTag = (int) view.getTag();
+                        String activityTitle = activitiesTitles[activityTag];
 
-                    Intent intent = new Intent(context, GameParameters.class);
-                    intent.putExtra("categoryType", CATEGORY_TYPE);
-                    intent.putExtra("activityTitle", activityTitle);
-                    intent.putExtra("activityNumber", activityTag);
+                        Intent intent = new Intent(context, GameParameters.class);
+                        intent.putExtra("categoryType", CATEGORY_TYPE);
+                        intent.putExtra("activityTitle", activityTitle);
+                        intent.putExtra("activityNumber", activityTag);
 
-                    context.startActivity(intent);
-                }
-            });
+                        context.startActivity(intent);
+                    }
+                });
+            }
+            else {
+                activityContainer.setVisibility(View.INVISIBLE);
+            }
+
             currentActivity++;
-        }
-        /* Those activities spaces that are not used are made invisible */
-        for (int i = activitiesNumber; i<ACTIVITIES_GROUP; i++) {
-            ConstraintLayout activityContainer = (ConstraintLayout) unitContainer.getChildAt(i);
-            activityContainer.setVisibility(View.INVISIBLE);
         }
     }
 

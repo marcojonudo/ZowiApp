@@ -77,9 +77,25 @@
 
     <string-array name="free_game_activities_titles">
         <item>Bloques lógicos</item>
+        <item>Bloques lógicos</item>
+        <item>Bloques lógicos</item>
+        <item>Bloques lógicos</item>
+        <item>Bloques lógicos</item>
+        <item>Bloques lógicos</item>
+        <item>Bloques lógicos</item>
+        <item>Bloques lógicos</item>
+        <item>Bloques lógicos</item>
     </string-array>
 
     <string-array name="free_game_activities_images">
+        <item>bloques_logicos</item>
+        <item>bloques_logicos</item>
+        <item>bloques_logicos</item>
+        <item>bloques_logicos</item>
+        <item>bloques_logicos</item>
+        <item>bloques_logicos</item>
+        <item>bloques_logicos</item>
+        <item>bloques_logicos</item>
         <item>bloques_logicos</item>
     </string-array>
 

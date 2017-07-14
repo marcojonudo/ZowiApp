@@ -141,20 +141,18 @@ public class ImagesHandler {
         }
     }
 
-    public void loadLogicBlocksImages(ViewGroup contentContainer, String[][] images, int childsNumber, int imagesLimit) {
-        ArrayList<ArrayList<Integer>> arrayList = new ArrayList<>();
-        for (String[] category: images)
-            arrayList.add(new ArrayList<Integer>());
+    public void loadLogicBlocksImages(ViewGroup contentContainer, String[] images, int imagesNumber, int imagesLimit) {
+        ArrayList<Integer> imagesArrayList = new ArrayList<>();
 
         int imagesIndex = 0;
-        int[] indexes;
+        int randomImagesIndex;
         ImageView imageView;
-        for (int i=0; i<childsNumber; i++) {
+        for (int i=0; i<imagesNumber; i++) {
             if (i%2 != 0 && i != 4) {
-                indexes = generateCategoriesRandomIndex(arrayList, images.length, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, images[imagesIndex].length, true);
+                randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
 
                 imageView = (ImageView) contentContainer.getChildAt(i);
-                loadSimpleLogicBlocksImageView(imageView, images[indexes[0]][indexes[1]], imagesIndex);
+                loadSimpleLogicBlocksImageView(imageView, images[randomImagesIndex], imagesIndex);
 
                 imagesIndex++;
             }
@@ -207,9 +205,9 @@ public class ImagesHandler {
         imageView.setTag(i);
     }
 
-    private void loadSimpleLogicBlocksImageView(ImageView imageView, String imageName, int i) {
+    private void loadSimpleLogicBlocksImageView(ImageView imageView, String imageName, int imagesIndex) {
         imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
-        String tag = i + "-" + imageName;
+        String tag = imagesIndex + "-" + imageName;
         imageView.setTag(tag);
     }
 

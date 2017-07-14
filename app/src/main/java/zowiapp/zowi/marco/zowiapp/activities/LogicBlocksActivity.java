@@ -30,13 +30,14 @@ import zowiapp.zowi.marco.zowiapp.zowi.ZowiSocket;
  */
 public class LogicBlocksActivity extends ActivityTemplate {
 
+    // TODO Definir variables en ActivityTemplate
     private GameParameters gameParameters;
     private LayoutInflater inflater;
     private String activityTitle, activityDescription;
     private JSONObject activityDetails;
     private LogicBlocksChecker logicBlocksChecker;
     private ImagesHandler imagesHandler;
-    private String[][] images;
+    private String[] images;
     private int correctImageIndex, state;
     boolean killThread, checkAnswers, correctAnswer;
 
@@ -62,15 +63,9 @@ public class LogicBlocksActivity extends ActivityTemplate {
         try {
             activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
             JSONArray jsonImages = activityDetails.getJSONArray(LogicBlocksConstants.JSON_PARAMETER_IMAGES);
-            images = new String[jsonImages.length()][];
+            images = new String[jsonImages.length()];
 
-            for (int i = 0; i< images.length; i++) {
-                JSONArray jsonCategoryImages = jsonImages.getJSONArray(i);
-                images[i] = new String[jsonCategoryImages.length()];
-                for (int j=0; j<images[i].length; j++) {
-                    images[i][j] = jsonCategoryImages.getString(j);
-                }
-            }
+            for (int i=0; i< images.length; i++) { images[i] = jsonImages.getString(i); }
 
             generateLayout();
         }
@@ -87,7 +82,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
         ConstraintLayout logicBlocksActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.logic_blocks_activity_template, contentContainer, false);
         ConstraintLayout grid = (ConstraintLayout) logicBlocksActivityTemplate.getChildAt(0);
 
-        imagesHandler.loadLogicBlocksImages(grid, images, grid.getChildCount(), images[0].length);
+        imagesHandler.loadLogicBlocksImages(grid, images, grid.getChildCount(), images.length);
 
         int imageViewIndex = imagesHandler.generateSimpleRandomIndex(new ArrayList<Integer>(), grid.getChildCount(), true);
         while (imageViewIndex % 2 == 0)
@@ -155,7 +150,6 @@ public class LogicBlocksActivity extends ActivityTemplate {
                 }
             }).start();
         }
-
         else
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
     }
