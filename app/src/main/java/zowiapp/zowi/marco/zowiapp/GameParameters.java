@@ -1,8 +1,11 @@
 package zowiapp.zowi.marco.zowiapp;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,6 +69,10 @@ public class GameParameters extends AppCompatActivity {
     }
 
     private void chooseFreeActivityType(ActivityType activityType, String activityTitle, JSONObject activityDetails) {
+        TextView activityTitleView = (TextView) findViewById(R.id.activity_title);
+        if (activityTitleView != null)
+            activityTitleView.setBackgroundColor(ContextCompat.getColor(this, R.color.green));
+
         switch (activityType) {
             case LOGIC_BLOCKS:
                 new LogicBlocksActivity(context, activityTitle, activityDetails);
@@ -76,6 +83,10 @@ public class GameParameters extends AppCompatActivity {
     }
 
     private void chooseGuidedActivityType(ActivityType activityType, String activityTitle, JSONObject activityDetails) {
+        TextView activityTitleView = (TextView) findViewById(R.id.activity_title);
+        if (activityTitleView != null)
+            activityTitleView.setBackgroundColor(ContextCompat.getColor(this, R.color.red));
+
         switch (activityType) {
             case GRID:
                 new GridActivity(context, activityTitle, activityDetails);

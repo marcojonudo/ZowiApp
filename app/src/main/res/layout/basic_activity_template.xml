@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/black"
-            android:background="@color/paleRed"
             android:id="@+id/activity_title"/>
 
         <TextView
