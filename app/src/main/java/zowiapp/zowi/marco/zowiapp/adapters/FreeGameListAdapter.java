@@ -15,6 +15,7 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 
 public class FreeGameListAdapter extends BaseAdapter {
+
     private Context context;
     private LayoutInflater inflater;
     private String[] activitiesTitles, activitiesImages;

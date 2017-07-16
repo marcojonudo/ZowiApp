@@ -1,17 +1,33 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.checker.CheckerTemplate;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
+import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
  * Created by Marco on 24/01/2017.
  */
 public abstract class ActivityTemplate {
+
+    protected GameParameters gameParameters;
+    protected LayoutInflater inflater;
+    protected String activityTitle, activityDescription;
+    protected JSONObject activityDetails;
+    protected CheckerTemplate checker;
+    protected ImagesHandler imagesHandler;
+    protected String[] arrayImages;
+    protected String[][] doubleArrayImages;
+    protected int correctImageIndex, state;
+    boolean killThread, checkAnswers, correctAnswer;
 
     protected void setTitleDescription(GameParameters gameParameters, String activityTitle, String activityDescription) {
         TextView title = (TextView) gameParameters.findViewById(R.id.activity_title);

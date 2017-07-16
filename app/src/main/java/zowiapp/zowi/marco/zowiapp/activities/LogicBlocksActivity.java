@@ -3,7 +3,6 @@ package zowiapp.zowi.marco.zowiapp.activities;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,28 +17,17 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.LogicBlocksConstants;
-import zowiapp.zowi.marco.zowiapp.checker.GuideChecker;
+import zowiapp.zowi.marco.zowiapp.checker.CheckerTemplate;
 import zowiapp.zowi.marco.zowiapp.checker.LogicBlocksChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiSocket;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class LogicBlocksActivity extends ActivityTemplate {
 
-    // TODO Definir variables en ActivityTemplate
-    private GameParameters gameParameters;
-    private LayoutInflater inflater;
-    private String activityTitle, activityDescription;
-    private JSONObject activityDetails;
-    private LogicBlocksChecker logicBlocksChecker;
-    private ImagesHandler imagesHandler;
-    private String[] images;
     private int correctImageIndex, state;
-    boolean killThread, checkAnswers, correctAnswer;
+    private boolean killThread, checkAnswers, correctAnswer;
 
     private static final int WAITING_ZOWI_MOVES = 0;
     private static final int ZOWI_HAS_MOVED = 1;
@@ -49,7 +37,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        logicBlocksChecker = new LogicBlocksChecker();
+        checker = new LogicBlocksChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.LOGIC_BLOCKS);
         killThread = false;
         checkAnswers = false;
@@ -63,9 +51,9 @@ public class LogicBlocksActivity extends ActivityTemplate {
         try {
             activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
             JSONArray jsonImages = activityDetails.getJSONArray(LogicBlocksConstants.JSON_PARAMETER_IMAGES);
-            images = new String[jsonImages.length()];
+            arrayImages = new String[jsonImages.length()];
 
-            for (int i=0; i< images.length; i++) { images[i] = jsonImages.getString(i); }
+            for (int i = 0; i<arrayImages.length; i++) { arrayImages[i] = jsonImages.getString(i); }
 
             generateLayout();
         }
@@ -82,11 +70,12 @@ public class LogicBlocksActivity extends ActivityTemplate {
         ConstraintLayout logicBlocksActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.logic_blocks_activity_template, contentContainer, false);
         ConstraintLayout grid = (ConstraintLayout) logicBlocksActivityTemplate.getChildAt(0);
 
-        imagesHandler.loadLogicBlocksImages(grid, images, grid.getChildCount(), images.length);
+        imagesHandler.loadLogicBlocksImages(grid, arrayImages, grid.getChildCount(), arrayImages.length);
 
         int imageViewIndex = imagesHandler.generateSimpleRandomIndex(new ArrayList<Integer>(), grid.getChildCount(), true);
         while (imageViewIndex % 2 == 0)
             imageViewIndex = imagesHandler.generateSimpleRandomIndex(new ArrayList<Integer>(), grid.getChildCount(), true);
+
         ImageView chosenImageView = (ImageView) grid.getChildAt(imageViewIndex);
         String[] imageName = chosenImageView.getTag().toString().split("-")[1].split("_");
         correctImageIndex = Integer.parseInt(chosenImageView.getTag().toString().split("-")[0]);
@@ -102,6 +91,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
         if (contentContainer != null) {
             contentContainer.addView(logicBlocksActivityTemplate);
 
+            //TODO Optimizar hilos en clase separada
             new Thread(new Runnable() {
                 public void run() {
                     while (!Thread.currentThread().isInterrupted() && !killThread) {
@@ -138,7 +128,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
                                 killThread = true;
                                 state = WAITING_ZOWI_MOVES;
 
-                                correctAnswer = logicBlocksChecker.check(gameParameters, imageIndex, correctImageIndex);
+                                correctAnswer = ((LogicBlocksChecker) checker).check(gameParameters, imageIndex, correctImageIndex);
 
                                 reactToAnswer(correctAnswer);
                             }
