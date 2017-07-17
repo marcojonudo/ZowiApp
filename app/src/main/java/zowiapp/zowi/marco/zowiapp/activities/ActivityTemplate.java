@@ -1,5 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +26,7 @@ public abstract class ActivityTemplate {
     protected CheckerTemplate checker;
     protected ImagesHandler imagesHandler;
     protected String[] arrayImages;
+    protected Point[] imagesCoordinates;
     protected String[][] doubleArrayImages;
     protected int correctImageIndex, state;
     boolean killThread, checkAnswers, correctAnswer;
@@ -45,6 +47,13 @@ public abstract class ActivityTemplate {
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "description");
         }
+    }
+
+    protected Point[] createEmptyPointArray(int length) {
+        Point[] pointArray = new Point[length];
+        for (int i=0; i<pointArray.length; i++) pointArray[i] = new Point();
+
+        return pointArray;
     }
 
     public void returnFromLayoutListener(ActivityType activityType, ActivityTemplate activity) {

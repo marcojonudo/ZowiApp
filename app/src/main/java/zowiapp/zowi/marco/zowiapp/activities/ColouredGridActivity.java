@@ -26,20 +26,10 @@ import zowiapp.zowi.marco.zowiapp.checker.ColouredGridChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class ColouredGridActivity extends ActivityTemplate {
 
-    private GameParameters gameParameters;
-    private LayoutInflater inflater;
-    private ColouredGridChecker colouredGridChecker;
-    private String activityTitle, activityDescription;
-    private String[] images;
-    private int[][] cells;
+    private int[][] elementsCells;
     private String[][] colouredCells;
-    private JSONObject activityDetails;
-    private int[][] coordinates;
     private int[] colouredCellsNumber;
     private int cellWidth, cellHeight;
 
@@ -48,7 +38,7 @@ public class ColouredGridActivity extends ActivityTemplate {
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        colouredGridChecker = new ColouredGridChecker();
+        checker = new ColouredGridChecker();
 
         getParameters();
     }
@@ -60,26 +50,27 @@ public class ColouredGridActivity extends ActivityTemplate {
             JSONArray jsonCells = activityDetails.getJSONArray(ColouredGridConstants.JSON_PARAMETER_CELLS);
             JSONArray jsonImages = activityDetails.getJSONArray(ColouredGridConstants.JSON_PARAMETER_IMAGES);
             JSONArray jsonColouredCells = activityDetails.getJSONArray(ColouredGridConstants.JSON_PARAMETER_COLOUREDCELLS);
-            cells = new int[jsonCells.length()][];
-            images = new String[jsonImages.length()];
+            elementsCells = new int[jsonCells.length()][];
+            arrayImages = new String[jsonImages.length()];
             colouredCells = new String[jsonColouredCells.length()][];
             colouredCellsNumber = new int[ColouredGridConstants.NUMBER_OF_COLORS];
+            imagesCoordinates = createEmptyPointArray(ColouredGridConstants.COORDINATES_4X4_LENGTH);
 
-            for (int i=0; i<cells.length; i++) {
+            for (int i=0; i< elementsCells.length; i++) {
                 JSONArray jsonCellsArray = jsonCells.getJSONArray(i);
                 JSONArray jsonColouredCellsArray = jsonColouredCells.getJSONArray(i);
-                cells[i] = new int[jsonCellsArray.length()];
+                elementsCells[i] = new int[jsonCellsArray.length()];
                 colouredCells[i] = new String[jsonColouredCellsArray.length()];
-                for (int j=0; j<cells[i].length; j++) {
-                    cells[i][j] = jsonCellsArray.getInt(j);
-                    colouredCells[i][j] = jsonColouredCellsArray.getString(j);
+
+                for (int j=0; j<elementsCells[i].length; j++) {
+                    elementsCells[i][j] = jsonCellsArray.getInt(j);
                 }
                 for (int j=0; j<colouredCells[i].length; j++) {
                     colouredCells[i][j] = jsonColouredCellsArray.getString(j);
                 }
             }
-            for (int i=0; i<images.length; i++) {
-                images[i] = jsonImages.getString(i);
+            for (int i=0; i<arrayImages.length; i++) {
+                arrayImages[i] = jsonImages.getString(i);
             }
 
             generateLayout();
@@ -99,7 +90,6 @@ public class ColouredGridActivity extends ActivityTemplate {
 
         /* In this activity, grid is always 4x4 */
         inflater.inflate(R.layout.grid_4x4_template, grid, true);
-        coordinates = new int[ColouredGridConstants.COORDINATES_4X4_LENGTH][CommonConstants.AXIS_NUMBER];
 
         if (contentContainer != null) {
             contentContainer.addView(colouredGridActivityTemplate);
@@ -120,7 +110,7 @@ public class ColouredGridActivity extends ActivityTemplate {
                         @Override
                         public void onClick(View view) {
                             int index = (int)view.getTag();
-                            colouredGridChecker.check(gameParameters, index, colouredCellsNumber[index]+1);
+                            ((ColouredGridChecker) checker).check(gameParameters, index, colouredCellsNumber[index]+1);
                         }
                     });
                 }
@@ -140,7 +130,7 @@ public class ColouredGridActivity extends ActivityTemplate {
         ConstraintLayout gridContainer = (ConstraintLayout) gameParameters.findViewById(R.id.coloured_grid);
 
         /* Generation of the random index to choose one of the possible different activities */
-        int randomIndex = new Random().nextInt(cells.length);
+        int randomIndex = new Random().nextInt(elementsCells.length);
 
         if (gridContainer != null) {
             ConstraintLayout gameGrid = (ConstraintLayout) gridContainer.getChildAt(0);
@@ -151,9 +141,7 @@ public class ColouredGridActivity extends ActivityTemplate {
             /* Cell center coordinates are calculated based on the upper left corner of the grid */
             for (int i=0; i<gameGrid.getChildCount(); i++) {
                 View cell = gameGrid.getChildAt(i);
-                coordinates[i][0] = left + cell.getLeft() + cell.getWidth()/2;
-                coordinates[i][1] = top + cell.getTop() + cell.getHeight()/2;
-
+                imagesCoordinates[i].set(left + cell.getLeft() + cell.getWidth()/2, top + cell.getTop() + cell.getHeight()/2);
                 cellWidth = cell.getWidth();
                 cellHeight = cell.getHeight();
 
@@ -176,18 +164,18 @@ public class ColouredGridActivity extends ActivityTemplate {
                 }
             }
 
-            placeImages(contentContainer, cells[randomIndex], images);
+            placeImages(contentContainer, elementsCells[randomIndex], arrayImages);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "gridContainer");
         }
     }
 
-    private void placeImages(RelativeLayout contentContainer, int[] cells, String[] images) {
-        /* 'cells' contains a number between 1 and 9 or 16 that indicates the cells that will contain an image */
+    private void placeImages(RelativeLayout contentContainer, int[] elementsCells, String[] images) {
+        /* 'elementsCells' contains a number between 1 and 9 or 16 that indicates the cells that will contain an image */
         /* 'images' contains the name of the resources */
-        for (int i=0; i<cells.length; i++) {
-            placeImage(contentContainer, images[i], coordinates[cells[i]-1][0], coordinates[cells[i]-1][1]);
+        for (int i=0; i<elementsCells.length; i++) {
+            placeImage(contentContainer, images[i], imagesCoordinates[elementsCells[i]-1].x, imagesCoordinates[elementsCells[i]-1].y);
         }
 
     }
