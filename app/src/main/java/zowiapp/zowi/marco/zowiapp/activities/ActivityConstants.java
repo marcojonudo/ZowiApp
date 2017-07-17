@@ -15,7 +15,8 @@ public class ActivityConstants {
         public static final String FREE = "FREE";
         public static final int AXIS_NUMBER = 2;
         public static final int OVERLAY_HORIZONTAL_RATIO = 8;
-        public static final int NON_REPEATED_IMAGES_CATEGORY_INDEX = -1;
+        static final int NON_REPEATED_IMAGES_CATEGORY_INDEX = -1;
+        static final int DRAG_LIMITS_SIZE = 4;
     }
 
     static class GridConstants {

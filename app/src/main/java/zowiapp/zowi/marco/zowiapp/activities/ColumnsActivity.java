@@ -1,13 +1,11 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,9 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColumnsConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
@@ -26,7 +21,6 @@ import zowiapp.zowi.marco.zowiapp.checker.ColumnsChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.R;
-import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
@@ -35,24 +29,17 @@ import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
  */
 public class ColumnsActivity extends ActivityTemplate {
 
-    private GameParameters gameParameters;
-    private LayoutInflater inflater;
-    private String activityTitle, activityDescription, leftColumnTitle, rightColumnTitle;
-    private JSONObject activityDetails;
-    private ColumnsChecker columnsChecker;
-    private ImagesHandler imagesHandler;
-    private String[][] images;
-    private String[] correction;
-    private int[][] imagesCoordinates, columnsCoordinates, columnsDimensions;
+    private String leftColumnTitle, rightColumnTitle;
+    private Point[] columnsDimensions;
+    private Point imagesDimensions;
     private float distanceToLeft, distanceToTop;
-    private int[] dragLimits, imagesDimensions;
 
     public ColumnsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        columnsChecker = new ColumnsChecker();
+        checker = new ColumnsChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.COLUMNS);
 
         getParameters();
@@ -66,15 +53,20 @@ public class ColumnsActivity extends ActivityTemplate {
             rightColumnTitle = activityDetails.getString(ColumnsConstants.JSON_PARAMETER_RIGHTTITLE);
             JSONArray jsonImages = activityDetails.getJSONArray(ColumnsConstants.JSON_PARAMETER_IMAGES);
             JSONArray jsonCorrection = activityDetails.getJSONArray(ColumnsConstants.JSON_PARAMETER_CORRECTION);
-            images = new String[jsonImages.length()][];
+            doubleArrayImages = new String[jsonImages.length()][];
             correction = new String[jsonCorrection.length()];
-            dragLimits = new int[4];
+            dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];
+            imagesCoordinates = createEmptyPointArray(ColumnsConstants.NUMBER_OF_IMAGES);
+            /* containerCoordinates will contain the coordinates of the corners of the columns */
+            containerCoordinates = createEmptyPointArray(ColumnsConstants.NUMBER_OF_COLUMNS_CORNERS);
+            columnsDimensions = createEmptyPointArray(ColumnsConstants.NUMBER_OF_COLUMNS_CORNERS);
+            imagesDimensions = new Point();
 
-            for (int i=0; i<images.length; i++) {
+            for (int i = 0; i< doubleArrayImages.length; i++) {
                 JSONArray jsonCategoryImages = jsonImages.getJSONArray(i);
-                images[i] = new String[jsonCategoryImages.length()];
-                for (int j=0; j<images[i].length; j++) {
-                    images[i][j] = jsonCategoryImages.getString(j);
+                doubleArrayImages[i] = new String[jsonCategoryImages.length()];
+                for (int j = 0; j< doubleArrayImages[i].length; j++) {
+                    doubleArrayImages[i][j] = jsonCategoryImages.getString(j);
                 }
             }
             for (int i=0; i<jsonCorrection.length(); i++) {
@@ -95,10 +87,10 @@ public class ColumnsActivity extends ActivityTemplate {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         ConstraintLayout beforeAfterActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.columns_activity_template, contentContainer, false);
 
-        TextView lTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.left_title);
-        TextView rTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.right_title);
-        lTitle.setText(leftColumnTitle);
-        rTitle.setText(rightColumnTitle);
+        TextView leftTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.left_title);
+        TextView rightTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.right_title);
+        leftTitle.setText(leftColumnTitle);
+        rightTitle.setText(rightColumnTitle);
 
         if (contentContainer != null) {
             contentContainer.addView(beforeAfterActivityTemplate);
@@ -129,29 +121,19 @@ public class ColumnsActivity extends ActivityTemplate {
             int left = grid.getLeft();
             int top = grid.getTop();
 
-            /* piecesCoordinates will contain the images' coordinates */
-            imagesCoordinates = new int[ColumnsConstants.NUMBER_OF_IMAGES][CommonConstants.AXIS_NUMBER];
-            imagesDimensions = new int[CommonConstants.AXIS_NUMBER];
-
             /* Cell center coordinates are calculated based on the upper left corner of the grid */
             int index = 0;
             for (int i=0; i<grid.getChildCount(); i++) {
                 /* We only store even coordinates (cells 0, 2, 4...) */
                 if (i%2 == 0) {
                     View cell = grid.getChildAt(i);
-                    imagesCoordinates[index][0] = left + cell.getLeft() + cell.getWidth()/2;
-                    imagesCoordinates[index][1] = top + cell.getTop() + cell.getHeight()/2;
+                    imagesCoordinates[index].set(left + cell.getLeft() + cell.getWidth()/2, top + cell.getTop() + cell.getHeight()/2);
 
-                    imagesDimensions[0] = cell.getWidth();
-                    imagesDimensions[1] = cell.getHeight();
+                    imagesDimensions.set(cell.getWidth(), cell.getHeight());
 
                     index++;
                 }
             }
-
-            /* columnsCoordinates will contain the coordinates of the corners of the columns */
-            columnsCoordinates = new int[ColumnsConstants.NUMBER_OF_COLUMNS_CORNERS][CommonConstants.AXIS_NUMBER];
-            columnsDimensions = new int[ColumnsConstants.NUMBER_OF_COLUMNS_CORNERS][CommonConstants.AXIS_NUMBER];
 
             LinearLayout leftColumnContainer = (LinearLayout) gameParameters.findViewById(R.id.left_column_container);
             LinearLayout rightColumnContainer = (LinearLayout) gameParameters.findViewById(R.id.right_column_container);
@@ -160,21 +142,18 @@ public class ColumnsActivity extends ActivityTemplate {
 
             if ((leftColumn != null)&&(rightColumn != null)&&(leftColumnContainer != null)&&(rightColumnContainer != null)) {
                 /* Coordinates of the corners of the columns */
-                columnsCoordinates[ColumnsConstants.LEFT_COLUMN_INDEX][0] = leftColumnContainer.getLeft();
-                columnsCoordinates[ColumnsConstants.LEFT_COLUMN_INDEX][1] = leftColumn.getTop();
-                columnsCoordinates[ColumnsConstants.RIGHT_COLUMN_INDEX][0] = rightColumnContainer.getLeft();
-                columnsCoordinates[ColumnsConstants.RIGHT_COLUMN_INDEX][1] = rightColumn.getTop();
 
-                columnsDimensions[ColumnsConstants.LEFT_COLUMN_INDEX][0] = leftColumn.getWidth();
-                columnsDimensions[ColumnsConstants.LEFT_COLUMN_INDEX][1] = leftColumn.getHeight();
-                columnsDimensions[ColumnsConstants.RIGHT_COLUMN_INDEX][0] = rightColumn.getWidth();
-                columnsDimensions[ColumnsConstants.RIGHT_COLUMN_INDEX][1] = rightColumn.getHeight();
+                containerCoordinates[ColumnsConstants.LEFT_COLUMN_INDEX].set(leftColumnContainer.getLeft(), leftColumn.getTop());
+                containerCoordinates[ColumnsConstants.RIGHT_COLUMN_INDEX].set(rightColumnContainer.getLeft(), rightColumn.getTop());
+
+                columnsDimensions[ColumnsConstants.LEFT_COLUMN_INDEX].set(leftColumn.getWidth(), leftColumn.getHeight());
+                columnsDimensions[ColumnsConstants.RIGHT_COLUMN_INDEX].set(rightColumn.getWidth(), rightColumn.getHeight());
             }
             else {
                 new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "columns");
             }
 
-            imagesHandler.loadCategoriesImages(contentContainer, images, ColumnsConstants.NUMBER_OF_IMAGES, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, imagesCoordinates, imagesDimensions, correction);
+            imagesHandler.loadCategoriesImages(contentContainer, doubleArrayImages, ColumnsConstants.NUMBER_OF_IMAGES, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, imagesCoordinates, imagesDimensions, correction);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "grid");
@@ -232,13 +211,13 @@ public class ColumnsActivity extends ActivityTemplate {
                 boolean correctAnswer = false;
                 int insideColumnIndex = -1;
                 /* We loop trought the number of containers */
-                for (int i=0; i<columnsCoordinates.length; i++) {
-                    if ((viewCenterX > columnsCoordinates[i][0])&&(viewCenterX < (columnsCoordinates[i][0]+columnsDimensions[i][0]))) {
-                        if (viewCenterY > columnsCoordinates[i][1]) {
+                for (int i = 0; i< containerCoordinates.length; i++) {
+                    if ((viewCenterX > containerCoordinates[i].x)&&(viewCenterX < (containerCoordinates[i].x+columnsDimensions[i].x))) {
+                        if (viewCenterY > containerCoordinates[i].y) {
                             insideColumnIndex = i;
 
                             String imageCategory = view.getTag().toString().split("-")[1];
-                            correctAnswer = columnsChecker.check(gameParameters, imageCategory, correction[i]);
+                            correctAnswer = ((ColumnsChecker) checker).check(gameParameters, imageCategory, correction[i]);
 
                             break;
                         }
@@ -247,18 +226,18 @@ public class ColumnsActivity extends ActivityTemplate {
 
                 if (correctAnswer) {
                     /* If the view is not completely inside the box, we move it */
-                    if (view.getX() < columnsCoordinates[insideColumnIndex][0]) {
-                        view.setX(columnsCoordinates[insideColumnIndex][0]);
+                    if (view.getX() < containerCoordinates[insideColumnIndex].x) {
+                        view.setX(containerCoordinates[insideColumnIndex].x);
                     }
-                    else if ((view.getX()+view.getWidth()) > (columnsCoordinates[insideColumnIndex][0]+columnsDimensions[insideColumnIndex][0])) {
-                        view.setX(columnsCoordinates[insideColumnIndex][0]+columnsDimensions[insideColumnIndex][0]-view.getWidth());
+                    else if ((view.getX()+view.getWidth()) > (containerCoordinates[insideColumnIndex].x+columnsDimensions[insideColumnIndex].x)) {
+                        view.setX(containerCoordinates[insideColumnIndex].x+columnsDimensions[insideColumnIndex].x-view.getWidth());
                     }
 
-                    if (view.getY() < columnsCoordinates[insideColumnIndex][1]) {
-                        view.setY(columnsCoordinates[insideColumnIndex][1]);
+                    if (view.getY() < containerCoordinates[insideColumnIndex].y) {
+                        view.setY(containerCoordinates[insideColumnIndex].y);
                     }
-                    else if ((view.getY()+view.getHeight()) > (columnsCoordinates[insideColumnIndex][1]+columnsDimensions[insideColumnIndex][1])) {
-                        view.setY(columnsCoordinates[insideColumnIndex][1]+columnsDimensions[insideColumnIndex][1]-view.getHeight());
+                    else if ((view.getY()+view.getHeight()) > (containerCoordinates[insideColumnIndex].y+columnsDimensions[insideColumnIndex].y)) {
+                        view.setY(containerCoordinates[insideColumnIndex].y+columnsDimensions[insideColumnIndex].y-view.getHeight());
                     }
                 }
                 else {

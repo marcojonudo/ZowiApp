@@ -5,6 +5,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Point;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
@@ -29,10 +30,10 @@ public class Animations {
     private static final int SCALE_ANIMATION_DURATION = 500;
     private static final int SHADE_ANIMATION_DURATION = 1000;
 
-    public static void translateAnimation(View view, int[][] coordinates, int index) {
-        ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), coordinates[index][0]);
+    public static void translateAnimation(View view, Point[] coordinates, int index) {
+        ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), coordinates[index].x);
         animX.setDuration(TRANSLATE_ANIMATION_DURATION);
-        ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), coordinates[index][1]);
+        ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), coordinates[index].y);
         animY.setDuration(TRANSLATE_ANIMATION_DURATION);
 
         AnimatorSet animatorSet = new AnimatorSet();

@@ -26,10 +26,10 @@ public abstract class ActivityTemplate {
     protected CheckerTemplate checker;
     protected ImagesHandler imagesHandler;
     protected String[] arrayImages;
-    protected Point[] imagesCoordinates;
+    protected Point[] imagesCoordinates, containerCoordinates;
     protected String[][] doubleArrayImages;
-    protected int correctImageIndex, state;
-    boolean killThread, checkAnswers, correctAnswer;
+    protected String[] correction;
+    protected int[] dragLimits;
 
     protected void setTitleDescription(GameParameters gameParameters, String activityTitle, String activityDescription) {
         TextView title = (TextView) gameParameters.findViewById(R.id.activity_title);

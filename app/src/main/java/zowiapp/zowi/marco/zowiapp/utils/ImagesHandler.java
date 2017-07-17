@@ -1,6 +1,7 @@
 package zowiapp.zowi.marco.zowiapp.utils;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
@@ -94,7 +95,7 @@ public class ImagesHandler {
         ((PuzzleActivity) activityTemplate).setCorrection(correction);
     }
 
-    public void loadCategoriesImages(ViewGroup contentContainer, String[][] images, int imagesNumber, int categoryOneImageIndex, int[][] coordinates, int[] dimensions, String[] correction) {
+    public void loadCategoriesImages(ViewGroup contentContainer, String[][] images, int imagesNumber, int categoryOneImageIndex, Point[] coordinates, Point dimensions, String[] correction) {
         ArrayList<ArrayList<Integer>> arrayList = new ArrayList<>();
         for (String[] category: images)
             arrayList.add(new ArrayList<Integer>());
@@ -223,23 +224,23 @@ public class ImagesHandler {
         coordinates[i][1] = imageViewsCoordinates[randomImagesIndex][1];
     }
 
-    private void loadImage(ViewGroup contentContainer, String imageName, int[][] coordinates, int[] dimensions, int i, String correction) {
+    private void loadImage(ViewGroup contentContainer, String imageName, Point[] coordinates, Point dimensions, int i, String correction) {
         ImageView image = new ImageView(context);
         image.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
 
         /* 'scaleFactor' is used to set the exact width and height to the ImageView, the same as the resource it will contain */
         Drawable drawable = image.getDrawable();
-        float xDimension = dimensions[0], yDimension = dimensions[1];
+        float xDimension = dimensions.x, yDimension = dimensions.y;
         float scaleFactor = xDimension < yDimension ? xDimension/(float)drawable.getIntrinsicWidth() : yDimension/(float)drawable.getIntrinsicHeight();
 
         int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
         int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
         image.setLayoutParams(layoutParams);
-        coordinates[i][0] = coordinates[i][0] - width/2;
-        coordinates[i][1] = coordinates[i][1] - height/2;
-        image.setX(coordinates[i][0]);
-        image.setY(coordinates[i][1]);
+        coordinates[i].x = coordinates[i].x - width/2;
+        coordinates[i].y = coordinates[i].y - height/2;
+        image.setX(coordinates[i].x);
+        image.setY(coordinates[i].y);
         String tag = i + "-" + correction;
         image.setTag(tag);
 
