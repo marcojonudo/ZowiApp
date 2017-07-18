@@ -24,18 +24,8 @@ import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
  */
 public class MusicActivity extends ActivityTemplate {
 
-    private GameParameters gameParameters;
-    private LayoutInflater inflater;
-    private String activityTitle, activityDescription;
-    private JSONObject activityDetails;
-    private ImagesHandler imagesHandler;
-    private String[] dictationsImages;
-
     public MusicActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
-        this.gameParameters = gameParameters;
-        this.activityTitle = activityTitle;
-        this.activityDetails = activityDetails;
-        this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
         this.imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.MUSIC);
 
         getParameters();
@@ -46,10 +36,10 @@ public class MusicActivity extends ActivityTemplate {
         try {
             activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
             JSONArray jsonDictationsImages = activityDetails.getJSONArray(MusicConstants.JSON_PARAMETER_IMAGES);
-            dictationsImages = new String[jsonDictationsImages.length()];
+            arrayImages = new String[jsonDictationsImages.length()];
 
-            for (int i=0; i<dictationsImages.length; i++) {
-                dictationsImages[i] = jsonDictationsImages.getString(i);
+            for (int i = 0; i< arrayImages.length; i++) {
+                arrayImages[i] = jsonDictationsImages.getString(i);
             }
 
             generateLayout();
@@ -91,7 +81,7 @@ public class MusicActivity extends ActivityTemplate {
     protected void getElementsCoordinates() {
         LinearLayout dictationsContainer = (LinearLayout) gameParameters.findViewById(R.id.dictations_container);
 
-        imagesHandler.loadMusicSimpleImages(dictationsContainer, dictationsImages, MusicConstants.NUMBER_OF_DICTATIONS, dictationsImages.length);
+        imagesHandler.loadMusicSimpleImages(dictationsContainer, arrayImages, MusicConstants.NUMBER_OF_DICTATIONS, arrayImages.length);
     }
 
 }
