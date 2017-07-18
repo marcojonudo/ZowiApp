@@ -21,6 +21,7 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
+import zowiapp.zowi.marco.zowiapp.utils.Functions;
 
 /**
  * Created by Marco on 24/01/2017.
@@ -73,12 +74,12 @@ public class GridActivity extends ActivityTemplate {
             case 1:
                 /* The grid is added automatically to 'grid' because the third parameter is 'true' */
                 inflater.inflate(R.layout.grid_3x3_template, grid, true);
-                imagesCoordinates = createEmptyPointArray(GridConstants.COORDINATES_3X3_LENGTH);
+                imagesCoordinates = Functions.createEmptyPointArray(GridConstants.COORDINATES_3X3_LENGTH);
                 break;
             /* 4x4 */
             case 2:
                 inflater.inflate(R.layout.grid_4x4_template, grid, true);
-                imagesCoordinates = createEmptyPointArray(GridConstants.COORDINATES_4X4_LENGTH);
+                imagesCoordinates = Functions.createEmptyPointArray(GridConstants.COORDINATES_4X4_LENGTH);
                 break;
             default:
                 break;

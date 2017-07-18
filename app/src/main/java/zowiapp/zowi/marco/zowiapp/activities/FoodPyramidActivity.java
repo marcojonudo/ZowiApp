@@ -21,6 +21,7 @@ import zowiapp.zowi.marco.zowiapp.checker.FoodPyramidChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
@@ -61,8 +62,8 @@ public class FoodPyramidActivity extends ActivityTemplate {
             doubleArrayCorrection = new String[FoodPyramidConstants.NUMBER_OF_IMAGES][CommonConstants.AXIS_NUMBER];
             dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];
             imageViews = new ImageView[FoodPyramidConstants.NUMBER_OF_IMAGES];
-            pyramidLimitsCoordinates = createEmptyPointArray(FoodPyramidConstants.PYRAMID_COORDINATES_LENGTH);
-            imagesCoordinates = createEmptyPointArray(FoodPyramidConstants.NUMBER_OF_IMAGES);
+            pyramidLimitsCoordinates = Functions.createEmptyPointArray(FoodPyramidConstants.PYRAMID_COORDINATES_LENGTH);
+            imagesCoordinates = Functions.createEmptyPointArray(FoodPyramidConstants.NUMBER_OF_IMAGES);
             imagesDimensions = new Point();
 
             /* The different types of food are stored in different indexes of 'doubleArrayImages' */

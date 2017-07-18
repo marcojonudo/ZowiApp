@@ -17,6 +17,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.GuideConstants;
 import zowiapp.zowi.marco.zowiapp.checker.GuideChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
+import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 public class GuideActivity extends ActivityTemplate {
@@ -40,7 +41,7 @@ public class GuideActivity extends ActivityTemplate {
 
             doubleArrayImages = new String[jsonImages.length()][];
             correction = new String[jsonCorrection.length()];
-            imagesCoordinates = createEmptyPointArray(GuideConstants.NUMBER_OF_IMAGES);
+            imagesCoordinates = Functions.createEmptyPointArray(GuideConstants.NUMBER_OF_IMAGES);
             imagesDimensions = new Point();
 
             for (int i = 0; i< doubleArrayImages.length; i++) {

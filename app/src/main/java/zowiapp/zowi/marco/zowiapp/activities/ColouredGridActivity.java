@@ -25,6 +25,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColouredGridConst
 import zowiapp.zowi.marco.zowiapp.checker.ColouredGridChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
+import zowiapp.zowi.marco.zowiapp.utils.Functions;
 
 public class ColouredGridActivity extends ActivityTemplate {
 
@@ -54,7 +55,7 @@ public class ColouredGridActivity extends ActivityTemplate {
             arrayImages = new String[jsonImages.length()];
             colouredCells = new String[jsonColouredCells.length()][];
             colouredCellsNumber = new int[ColouredGridConstants.NUMBER_OF_COLORS];
-            imagesCoordinates = createEmptyPointArray(ColouredGridConstants.COORDINATES_4X4_LENGTH);
+            imagesCoordinates = Functions.createEmptyPointArray(ColouredGridConstants.COORDINATES_4X4_LENGTH);
 
             for (int i=0; i< elementsCells.length; i++) {
                 JSONArray jsonCellsArray = jsonCells.getJSONArray(i);

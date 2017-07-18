@@ -22,6 +22,7 @@ import zowiapp.zowi.marco.zowiapp.checker.DragChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
@@ -60,8 +61,8 @@ public class DragActivity extends ActivityTemplate {
             arrayImages = new String[jsonContainerImages.length()];
             texts = new String[jsonTexts.length()];
             correction = new String[jsonCorrection.length()];
-            imagesCoordinates = createEmptyPointArray(dragImagesNumber);
-            containerCoordinates = createEmptyPointArray(containerElements);
+            imagesCoordinates = Functions.createEmptyPointArray(dragImagesNumber);
+            containerCoordinates = Functions.createEmptyPointArray(containerElements);
             imagesDimensions = new Point();
             containerDimensions = new Point();
             dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];

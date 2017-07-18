@@ -1,15 +1,10 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -28,38 +23,26 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class PuzzleActivity extends ActivityTemplate {
 
-    private GameParameters gameParameters;
-    private LayoutInflater inflater;
-    private String activityTitle, activityDescription;
-    private JSONObject activityDetails;
-    private PuzzleChecker puzzleChecker;
-    private ImagesHandler imagesHandler;
     private String[][][] piecesImages;
     private int randomShapeIndex, puzzleContainerSide;
-    private int[][] puzzleCoordinates, piecesCoordinates, piecesDimensions, correction;
+    private Point[] puzzleCoordinates, piecesCoordinates, piecesDimensions, correction;
     private float[][] scaleFactorsToPuzzle;
     private float distanceToLeft, distanceToTop;
-    private int[] dragLimits;
 
     public PuzzleActivity(final GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
-        this.gameParameters = gameParameters;
-        this.activityTitle = activityTitle;
-        this.activityDetails = activityDetails;
-        this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        puzzleChecker = new PuzzleChecker();
+        initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
+        checker = new PuzzleChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.PUZZLE);
 
         getParameters();
     }
 
-    public void setCorrection(int[][] correction) {
+    public void setCorrection(Point[] correction) {
         this.correction = correction;
     }
 
@@ -69,12 +52,12 @@ public class PuzzleActivity extends ActivityTemplate {
             activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
             JSONArray jsonImages = activityDetails.getJSONArray(PuzzleConstants.JSON_PARAMETER_IMAGES);
             piecesImages = new String[jsonImages.length()][][];
-            puzzleCoordinates = new int[PuzzleConstants.PIECES_NUMBER][CommonConstants.AXIS_NUMBER];
-            piecesCoordinates = new int[PuzzleConstants.PIECES_NUMBER][CommonConstants.AXIS_NUMBER];
-            piecesDimensions = new int[PuzzleConstants.PIECES_NUMBER][CommonConstants.AXIS_NUMBER];
+            puzzleCoordinates = Functions.createEmptyPointArray(PuzzleConstants.PIECES_NUMBER);
+            piecesCoordinates = Functions.createEmptyPointArray(PuzzleConstants.PIECES_NUMBER);
+            piecesDimensions = Functions.createEmptyPointArray(PuzzleConstants.PIECES_NUMBER);
             scaleFactorsToPuzzle = new float[PuzzleConstants.PIECES_NUMBER][CommonConstants.AXIS_NUMBER];
-            correction = new int[PuzzleConstants.PIECES_NUMBER][CommonConstants.AXIS_NUMBER];
-            dragLimits = new int[4];
+            correction = Functions.createEmptyPointArray(PuzzleConstants.PIECES_NUMBER);
+            dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];
 
             /* The name of the pieces images is the name of the image followed by '_number' */
             for (int i=0; i<piecesImages.length; i++) {
@@ -141,25 +124,21 @@ public class PuzzleActivity extends ActivityTemplate {
 
             /* This loop stores the coordinates of the puzzle */
             for (int i=0; i<piecesCoordinates.length; i++) {
-                puzzleCoordinates[i][0] = (int)(left + (puzzleContainerSide*coordinatesFactors[i][0]));
-                puzzleCoordinates[i][1] = (int)(top + (puzzleContainerSide*coordinatesFactors[i][1]));
+                puzzleCoordinates[i].set((int)(left + (puzzleContainerSide*coordinatesFactors[i][0])), (int)(top + (puzzleContainerSide*coordinatesFactors[i][1])));
 
                 /* The first child is 'puzzleContainer', the rest of them the pieces */
                 String pieceContainerName = "piece_" + (i+1);
                 View imagePiece = gameParameters.findViewById(gameParameters.getResources().getIdentifier(pieceContainerName, "id", gameParameters.getPackageName()));
 
                 ConstraintLayout piecesContainer;
-                if (i<3) {
+                if (i<3)
                     piecesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.left_pieces_container);
-                }
-                else {
+                else
                     piecesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.right_pieces_container);
-                }
-                if ((imagePiece != null)&&(piecesContainer != null)) {
-                    piecesCoordinates[i][0] = piecesContainer.getLeft() + imagePiece.getLeft() + imagePiece.getWidth()/2;
-                    piecesCoordinates[i][1] = piecesContainer.getTop() + imagePiece.getTop() + imagePiece.getHeight()/2;
-                    piecesDimensions[i][0] = imagePiece.getWidth();
-                    piecesDimensions[i][1] = imagePiece.getHeight();
+
+                if ((imagePiece != null) && (piecesContainer != null)) {
+                    piecesCoordinates[i].set(piecesContainer.getLeft() + imagePiece.getLeft() + imagePiece.getWidth()/2, piecesContainer.getTop() + imagePiece.getTop() + imagePiece.getHeight()/2);
+                    piecesDimensions[i].set(imagePiece.getWidth(), imagePiece.getHeight());
                 }
                 else {
                     new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "pieces");
@@ -234,7 +213,7 @@ public class PuzzleActivity extends ActivityTemplate {
             case MotionEvent.ACTION_UP:
                 index = (int) view.getTag();
 
-                boolean correctAnswer = puzzleChecker.check(gameParameters, view.getX(), view.getY(), correction[index]);
+                boolean correctAnswer = ((PuzzleChecker) checker).check(gameParameters, view.getX(), view.getY(), correction[index]);
 
                 if (correctAnswer) {
                     Animations.translateAnimation(view, correction, index);

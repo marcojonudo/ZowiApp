@@ -54,13 +54,6 @@ public abstract class ActivityTemplate {
         }
     }
 
-    Point[] createEmptyPointArray(int length) {
-        Point[] pointArray = new Point[length];
-        for (int i=0; i<pointArray.length; i++) pointArray[i] = new Point();
-
-        return pointArray;
-    }
-
     public void returnFromLayoutListener(ActivityType activityType, ActivityTemplate activity) {
         switch (activityType) {
             case GRID:

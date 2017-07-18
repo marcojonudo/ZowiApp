@@ -20,6 +20,7 @@ import zowiapp.zowi.marco.zowiapp.checker.SeedsChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 public class SeedsActivity extends ActivityTemplate {
@@ -48,9 +49,9 @@ public class SeedsActivity extends ActivityTemplate {
             doubleArrayImages = new String[jsonSeedsImages.length()][];
             containerImages = new String[jsonContainerImages.length()];
             correction = new String[jsonCorrection.length()];
-            seedsCoordinates = createEmptyPointArray(SeedsConstants.NUMBER_OF_SEEDS);
+            seedsCoordinates = Functions.createEmptyPointArray(SeedsConstants.NUMBER_OF_SEEDS);
             seedsDimensions = new Point();
-            containerCoordinates = createEmptyPointArray(containerImages.length);
+            containerCoordinates = Functions.createEmptyPointArray(containerImages.length);
             containerDimensions = new Point();
             dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];
 

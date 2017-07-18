@@ -22,6 +22,7 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 /**
@@ -56,10 +57,10 @@ public class ColumnsActivity extends ActivityTemplate {
             doubleArrayImages = new String[jsonImages.length()][];
             correction = new String[jsonCorrection.length()];
             dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];
-            imagesCoordinates = createEmptyPointArray(ColumnsConstants.NUMBER_OF_IMAGES);
+            imagesCoordinates = Functions.createEmptyPointArray(ColumnsConstants.NUMBER_OF_IMAGES);
             /* containerCoordinates will contain the coordinates of the corners of the columns */
-            containerCoordinates = createEmptyPointArray(ColumnsConstants.NUMBER_OF_COLUMNS_CORNERS);
-            columnsDimensions = createEmptyPointArray(ColumnsConstants.NUMBER_OF_COLUMNS_CORNERS);
+            containerCoordinates = Functions.createEmptyPointArray(ColumnsConstants.NUMBER_OF_COLUMNS_CORNERS);
+            columnsDimensions = Functions.createEmptyPointArray(ColumnsConstants.NUMBER_OF_COLUMNS_CORNERS);
             imagesDimensions = new Point();
 
             for (int i = 0; i< doubleArrayImages.length; i++) {
