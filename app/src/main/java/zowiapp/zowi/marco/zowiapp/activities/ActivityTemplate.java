@@ -15,9 +15,6 @@ import zowiapp.zowi.marco.zowiapp.checker.CheckerTemplate;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public abstract class ActivityTemplate {
 
     protected GameParameters gameParameters;

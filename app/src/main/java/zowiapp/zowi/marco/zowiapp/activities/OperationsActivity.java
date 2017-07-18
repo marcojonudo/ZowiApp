@@ -1,9 +1,7 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,28 +22,16 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.OperationsConstan
 import zowiapp.zowi.marco.zowiapp.checker.OperationsChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class OperationsActivity extends ActivityTemplate {
 
-    private GameParameters gameParameters;
-    private LayoutInflater inflater;
-    private String activityTitle, activityDescription;
-    private JSONObject activityDetails;
-    private OperationsChecker operationsChecker;
-    private int operationsType;
     private String image;
-    private String[] operationsImages;
+    private int operationsType;
     private int[] operationsResults;
     private String[][] operations;
 
     public OperationsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
-        this.gameParameters = gameParameters;
-        this.activityTitle = activityTitle;
-        this.activityDetails = activityDetails;
-        this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        operationsChecker = new OperationsChecker();
+        initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
+        checker = new OperationsChecker();
 
         getParameters();
     }
@@ -57,12 +43,12 @@ public class OperationsActivity extends ActivityTemplate {
             operationsType = activityDetails.getInt(OperationsConstants.JSON_PARAMETER_OPERATIONSTYPE);
             image = activityDetails.getString(OperationsConstants.JSON_PARAMETER_IMAGE);
             JSONArray jsonOperationsImages = activityDetails.getJSONArray(OperationsConstants.JSON_PARAMETER_OPERATIONSIMAGES);
-            operationsImages = new String[jsonOperationsImages.length()];
+            arrayImages = new String[jsonOperationsImages.length()];
             operations = new String[OperationsConstants.NUMBER_OF_OPERATIONS][OperationsConstants.NUMBER_OF_OPERATORS];
 
             if (jsonOperationsImages.length() != 0) {
                 for (int i=0; i<jsonOperationsImages.length(); i++) {
-                    operationsImages[i] = jsonOperationsImages.getString(i);
+                    arrayImages[i] = jsonOperationsImages.getString(i);
                 }
             }
 
@@ -142,7 +128,7 @@ public class OperationsActivity extends ActivityTemplate {
                     for (int j=0; j<operation.length; j++) {
                         /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews */
                         ImageView operationsImage = (ImageView) operationContainer.getChildAt(j+(2*(j+1))-1);
-                        operationsImage.setImageResource(gameParameters.getResources().getIdentifier(operationsImages[i], "drawable", gameParameters.getPackageName()));
+                        operationsImage.setImageResource(gameParameters.getResources().getIdentifier(arrayImages[i], "drawable", gameParameters.getPackageName()));
                     }
                     break;
                 default:
@@ -157,7 +143,7 @@ public class OperationsActivity extends ActivityTemplate {
                     @Override
                     public void onClick(View view) {
                         int index = (int)view.getTag();
-                        operationsChecker.check(gameParameters, index, operationsResults[index]);
+                        ((OperationsChecker) checker).check(gameParameters, index, operationsResults[index]);
                     }
                 });
                 if (displayButton != null) {
