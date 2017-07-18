@@ -1,22 +1,16 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Random;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
@@ -25,34 +19,19 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.SeedsConstants;
 import zowiapp.zowi.marco.zowiapp.checker.SeedsChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
-import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class SeedsActivity extends ActivityTemplate {
 
-    private GameParameters gameParameters;
-    private LayoutInflater inflater;
-    private String activityTitle, activityDescription;
-    private JSONObject activityDetails;
-    private SeedsChecker seedsChecker;
-    private ImagesHandler imagesHandler;
-    private String[][] seedsImages;
     private String[] containerImages, correction;
-    private int[][] seedsCoordinates, containerCoordinates, containerDimensions;
-    private int[] seedsDimensions;
+    private Point[] seedsCoordinates, containerCoordinates;
+    private Point seedsDimensions, containerDimensions;
     private float distanceToLeft, distanceToTop;
-    private int[] dragLimits;
 
     public SeedsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
-        this.gameParameters = gameParameters;
-        this.activityTitle = activityTitle;
-        this.activityDetails = activityDetails;
-        this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        seedsChecker = new SeedsChecker();
+        initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
+        checker = new SeedsChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.SEEDS);
 
         getParameters();
@@ -65,20 +44,21 @@ public class SeedsActivity extends ActivityTemplate {
             JSONArray jsonSeedsImages = activityDetails.getJSONArray(SeedsConstants.JSON_PARAMETER_SEEDSIMAGES);
             JSONArray jsonContainerImages = activityDetails.getJSONArray(SeedsConstants.JSON_PARAMETER_CONTAINERIMAGES);
             JSONArray jsonCorrection = activityDetails.getJSONArray(SeedsConstants.JSON_PARAMETER_CORRECTION);
-            seedsImages = new String[jsonSeedsImages.length()][];
+
+            doubleArrayImages = new String[jsonSeedsImages.length()][];
             containerImages = new String[jsonContainerImages.length()];
             correction = new String[jsonCorrection.length()];
-            seedsCoordinates = new int[SeedsConstants.NUMBER_OF_SEEDS][CommonConstants.AXIS_NUMBER];
-            seedsDimensions = new int[CommonConstants.AXIS_NUMBER];
-            containerCoordinates = new int[containerImages.length][CommonConstants.AXIS_NUMBER];
-            containerDimensions = new int[containerImages.length][CommonConstants.AXIS_NUMBER];
-            dragLimits = new int[4];
+            seedsCoordinates = createEmptyPointArray(SeedsConstants.NUMBER_OF_SEEDS);
+            seedsDimensions = new Point();
+            containerCoordinates = createEmptyPointArray(containerImages.length);
+            containerDimensions = new Point();
+            dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];
 
-            for (int i=0; i<seedsImages.length; i++) {
+            for (int i = 0; i< doubleArrayImages.length; i++) {
                 JSONArray jsonCategoryImages = jsonSeedsImages.getJSONArray(i);
-                seedsImages[i] = new String[jsonCategoryImages.length()];
-                for (int j=0; j<seedsImages[i].length; j++) {
-                    seedsImages[i][j] = jsonCategoryImages.getString(j);
+                doubleArrayImages[i] = new String[jsonCategoryImages.length()];
+                for (int j = 0; j< doubleArrayImages[i].length; j++) {
+                    doubleArrayImages[i][j] = jsonCategoryImages.getString(j);
                 }
 
                 containerImages[i] = jsonContainerImages.getString(i);
@@ -134,13 +114,12 @@ public class SeedsActivity extends ActivityTemplate {
                 }
                 constraintView = seedsImagesContainer.getChildAt(i+guidelineOmiter);
 
-                seedsCoordinates[i][0] = seedsImagesContainer.getLeft() + constraintView.getLeft() + constraintView.getWidth()/2;
-                seedsCoordinates[i][1] = seedsImagesContainer.getTop() + constraintView.getTop() + constraintView.getHeight()/2;
-                seedsDimensions[0] = constraintView.getWidth();
-                seedsDimensions[1] = constraintView.getHeight();
+                seedsCoordinates[i].set(seedsImagesContainer.getLeft() + constraintView.getLeft() + constraintView.getWidth()/2,
+                        seedsImagesContainer.getTop() + constraintView.getTop() + constraintView.getHeight()/2);
+                seedsDimensions.set(constraintView.getWidth(), constraintView.getHeight());
             }
 
-            imagesHandler.loadCategoriesImages(contentContainer, seedsImages, SeedsConstants.NUMBER_OF_SEEDS, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, seedsCoordinates, seedsDimensions, correction);
+            imagesHandler.loadCategoriesImages(contentContainer, doubleArrayImages, SeedsConstants.NUMBER_OF_SEEDS, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, seedsCoordinates, seedsDimensions, correction);
         }
 
         ConstraintLayout seedsFinalContainer = (ConstraintLayout) gameParameters.findViewById(R.id.seeds_final_container);
@@ -153,10 +132,8 @@ public class SeedsActivity extends ActivityTemplate {
                 for (int i=0; i<seedsFinalContainer.getChildCount(); i++) {
                     containerElement = seedsFinalContainer.getChildAt(i);
 
-                    containerCoordinates[i][0] = containerElement.getLeft();
-                    containerCoordinates[i][1] = seedsGuideline.getTop() + containerElement.getTop();
-                    containerDimensions[i][0] = containerElement.getWidth();
-                    containerDimensions[i][1] = containerElement.getHeight();
+                    containerCoordinates[i].set(containerElement.getLeft(), seedsGuideline.getTop() + containerElement.getTop());
+                    containerDimensions.set(containerElement.getWidth(), containerElement.getHeight());
                 }
             }
 
@@ -214,14 +191,14 @@ public class SeedsActivity extends ActivityTemplate {
 
                 boolean correctAnswer = false;
                 int insideColumnIndex = -1;
-                /* We loop trought the number of containers */
+                /* We loop through the number of containers */
                 for (int i=0; i<containerCoordinates.length; i++) {
-                    if ((viewCenterX > containerCoordinates[i][0])&&(viewCenterX < (containerCoordinates[i][0]+containerDimensions[i][0]))) {
-                        if (viewCenterY > containerCoordinates[i][1]) {
+                    if ((viewCenterX > containerCoordinates[i].x)&&(viewCenterX < (containerCoordinates[i].x+containerDimensions.x))) {
+                        if (viewCenterY > containerCoordinates[i].y) {
                             insideColumnIndex = i;
 
                             String imageCategory = view.getTag().toString().split("-")[1];
-                            correctAnswer = seedsChecker.check(gameParameters, imageCategory, correction[i]);
+                            correctAnswer = ((SeedsChecker) checker).check(gameParameters, imageCategory, correction[i]);
 
                             break;
                         }
@@ -230,18 +207,18 @@ public class SeedsActivity extends ActivityTemplate {
 
                 if (correctAnswer) {
                     /* If the view is not completely inside the box, we move it */
-                    if (view.getX() < containerCoordinates[insideColumnIndex][0]) {
-                        view.setX(containerCoordinates[insideColumnIndex][0]);
+                    if (view.getX() < containerCoordinates[insideColumnIndex].x) {
+                        view.setX(containerCoordinates[insideColumnIndex].x);
                     }
-                    else if ((view.getX()+view.getWidth()) > (containerCoordinates[insideColumnIndex][0]+containerDimensions[insideColumnIndex][0])) {
-                        view.setX(containerCoordinates[insideColumnIndex][0]+containerDimensions[insideColumnIndex][0]-view.getWidth());
+                    else if ((view.getX()+view.getWidth()) > (containerCoordinates[insideColumnIndex].x+containerDimensions.x)) {
+                        view.setX(containerCoordinates[insideColumnIndex].x+containerDimensions.x-view.getWidth());
                     }
 
-                    if (view.getY() < containerCoordinates[insideColumnIndex][1]) {
-                        view.setY(containerCoordinates[insideColumnIndex][1]);
+                    if (view.getY() < containerCoordinates[insideColumnIndex].y) {
+                        view.setY(containerCoordinates[insideColumnIndex].y);
                     }
-                    else if ((view.getY()+view.getHeight()) > (containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1])) {
-                        view.setY(containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1]-view.getHeight());
+                    else if ((view.getY()+view.getHeight()) > (containerCoordinates[insideColumnIndex].y+containerDimensions.y)) {
+                        view.setY(containerCoordinates[insideColumnIndex].y+containerDimensions.y-view.getHeight());
                     }
                 }
                 else {
