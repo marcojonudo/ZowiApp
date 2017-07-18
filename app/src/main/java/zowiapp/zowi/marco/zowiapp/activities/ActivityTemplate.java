@@ -1,5 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.content.Context;
 import android.graphics.Point;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,6 +32,13 @@ public abstract class ActivityTemplate {
     protected String[] correction;
     protected int[] dragLimits;
 
+    void initialiseCommonConstants(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
+        this.gameParameters = gameParameters;
+        this.activityTitle = activityTitle;
+        this.activityDetails = activityDetails;
+        this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
     protected void setTitleDescription(GameParameters gameParameters, String activityTitle, String activityDescription) {
         TextView title = (TextView) gameParameters.findViewById(R.id.activity_title);
         TextView description = (TextView) gameParameters.findViewById(R.id.activity_description);
@@ -49,7 +57,7 @@ public abstract class ActivityTemplate {
         }
     }
 
-    protected Point[] createEmptyPointArray(int length) {
+    Point[] createEmptyPointArray(int length) {
         Point[] pointArray = new Point[length];
         for (int i=0; i<pointArray.length; i++) pointArray[i] = new Point();
 

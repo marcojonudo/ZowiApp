@@ -1,13 +1,11 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,9 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
@@ -26,7 +21,6 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.DragConstants;
 import zowiapp.zowi.marco.zowiapp.checker.DragChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
-import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
@@ -35,25 +29,18 @@ import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
  */
 public class DragActivity extends ActivityTemplate {
 
-    private GameParameters gameParameters;
-    private LayoutInflater inflater;
-    private String activityTitle, activityDescription;
-    private JSONObject activityDetails;
-    private DragChecker dragChecker;
-    private ImagesHandler imagesHandler;
-    private String[][] dragImages;
-    private String[] containerImages, texts, correction;
+    private String[] arrayImages, texts, correction;
     private int containerElements, dragImagesNumber;
-    private int[][] dragCoordinates, containerCoordinates, containerDimensions;
+    private Point imagesDimensions, containerDimensions;
+    private int[] dragLimits;
     private float distanceToLeft, distanceToTop;
-    private int[] dragLimits, dragDimensions;
 
     public DragActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        dragChecker = new DragChecker();
+        checker = new DragChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.DRAG);
 
         getParameters();
@@ -69,26 +56,26 @@ public class DragActivity extends ActivityTemplate {
             JSONArray jsonContainerImages = activityDetails.getJSONArray(DragConstants.JSON_PARAMETER_CONTAINERIMAGES);
             JSONArray jsonTexts = activityDetails.getJSONArray(DragConstants.JSON_PARAMETER_TEXTS);
             JSONArray jsonCorrection = activityDetails.getJSONArray(DragConstants.JSON_PARAMETER_CORRECTION);
-            dragImages = new String[jsonDragImages.length()][];
-            containerImages = new String[jsonContainerImages.length()];
+            doubleArrayImages = new String[jsonDragImages.length()][];
+            arrayImages = new String[jsonContainerImages.length()];
             texts = new String[jsonTexts.length()];
             correction = new String[jsonCorrection.length()];
-            dragCoordinates = new int[dragImagesNumber][CommonConstants.AXIS_NUMBER];
-            dragDimensions = new int[CommonConstants.AXIS_NUMBER];
-            containerCoordinates = new int[containerElements][CommonConstants.AXIS_NUMBER];
-            containerDimensions = new int[containerElements][CommonConstants.AXIS_NUMBER];
-            dragLimits = new int[4];
+            imagesCoordinates = createEmptyPointArray(dragImagesNumber);
+            containerCoordinates = createEmptyPointArray(containerElements);
+            imagesDimensions = new Point();
+            containerDimensions = new Point();
+            dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];
 
             /* Drag elements number doesn't have to be the same as container elements one */
-            for (int i=0; i<dragImages.length; i++) {
+            for (int i = 0; i< doubleArrayImages.length; i++) {
                 JSONArray jsonCategoryImages = jsonDragImages.getJSONArray(i);
-                dragImages[i] = new String[jsonCategoryImages.length()];
-                for (int j=0; j<dragImages[i].length; j++) {
-                    dragImages[i][j] = jsonCategoryImages.getString(j);
+                doubleArrayImages[i] = new String[jsonCategoryImages.length()];
+                for (int j = 0; j< doubleArrayImages[i].length; j++) {
+                    doubleArrayImages[i][j] = jsonCategoryImages.getString(j);
                 }
             }
-            for (int i=0; i<containerImages.length; i++) {
-                containerImages[i] = jsonContainerImages.getString(i);
+            for (int i = 0; i< arrayImages.length; i++) {
+                arrayImages[i] = jsonContainerImages.getString(i);
             }
             for (int i=0; i<texts.length; i++) {
                 texts[i] = jsonTexts.getString(i);
@@ -170,13 +157,11 @@ public class DragActivity extends ActivityTemplate {
             for (int i=0; i<constraintImages.getChildCount(); i++) {
                 View constraintView = constraintImages.getChildAt(i);
 
-                dragCoordinates[i][0] = (int)constraintView.getX() + constraintView.getWidth()/2;
-                dragCoordinates[i][1] = (int)constraintView.getY() + constraintView.getHeight()/2;
-                dragDimensions[0] = constraintView.getWidth();
-                dragDimensions[1] = constraintView.getHeight();
+                imagesCoordinates[i].set((int)constraintView.getX() + constraintView.getWidth()/2, (int)constraintView.getY() + constraintView.getHeight()/2);
+                imagesDimensions.set(constraintView.getWidth(), constraintView.getHeight());
             }
 
-            imagesHandler.loadCategoriesImages(contentContainer, dragImages, dragImagesNumber, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, dragCoordinates, dragDimensions, correction);
+            imagesHandler.loadCategoriesImages(contentContainer, doubleArrayImages, dragImagesNumber, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, imagesCoordinates, imagesDimensions, correction);
         }
 
         ConstraintLayout constraintImagesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.constraint_images_container);
@@ -191,10 +176,8 @@ public class DragActivity extends ActivityTemplate {
                 View containerElementBox = containerElement.getChildAt(1);
                 float x = containerElement.getLeft() + containerElementBox.getLeft() + containerElementBox.getX();
                 float y = constraintImagesContainer.getTop() + containerElement.getTop() + containerElementBox.getY();
-                containerCoordinates[i][0] = (int)x;
-                containerCoordinates[i][1] = (int)y;
-                containerDimensions[i][0] = containerElementBox.getWidth();
-                containerDimensions[i][1] = containerElementBox.getHeight();
+                containerCoordinates[i].set((int)x, (int)y);
+                containerDimensions.set(containerElementBox.getWidth(), containerElementBox.getHeight());
             }
         }
     }
@@ -250,12 +233,12 @@ public class DragActivity extends ActivityTemplate {
                 int insideColumnIndex = -1;
                 /* We loop trought the number of containers */
                 for (int i=0; i<containerCoordinates.length; i++) {
-                    if ((viewCenterX > containerCoordinates[i][0])&&(viewCenterX < (containerCoordinates[i][0]+containerDimensions[i][0]))) {
-                        if (viewCenterY > containerCoordinates[i][1]) {
+                    if ((viewCenterX > containerCoordinates[i].x)&&(viewCenterX < (containerCoordinates[i].x+containerDimensions.x))) {
+                        if (viewCenterY > containerCoordinates[i].y) {
                             insideColumnIndex = i;
 
                             String imageCategory = view.getTag().toString().split("-")[1];
-                            correctAnswer = dragChecker.check(gameParameters, imageCategory, correction[i]);
+                            correctAnswer = ((DragChecker) checker).check(gameParameters, imageCategory, correction[i]);
 
                             break;
                         }
@@ -264,22 +247,22 @@ public class DragActivity extends ActivityTemplate {
 
                 if (correctAnswer) {
                     /* If the view is not completely inside the box, we move it */
-                    if (view.getX() < containerCoordinates[insideColumnIndex][0]) {
-                        view.setX(containerCoordinates[insideColumnIndex][0]);
+                    if (view.getX() < containerCoordinates[insideColumnIndex].x) {
+                        view.setX(containerCoordinates[insideColumnIndex].x);
                     }
-                    else if ((view.getX()+view.getWidth()) > (containerCoordinates[insideColumnIndex][0]+containerDimensions[insideColumnIndex][0])) {
-                        view.setX(containerCoordinates[insideColumnIndex][0]+containerDimensions[insideColumnIndex][0]-view.getWidth());
+                    else if ((view.getX()+view.getWidth()) > (containerCoordinates[insideColumnIndex].x+containerDimensions.x)) {
+                        view.setX(containerCoordinates[insideColumnIndex].x+containerDimensions.x-view.getWidth());
                     }
 
-                    if (view.getY() < containerCoordinates[insideColumnIndex][1]) {
-                        view.setY(containerCoordinates[insideColumnIndex][1]);
+                    if (view.getY() < containerCoordinates[insideColumnIndex].y) {
+                        view.setY(containerCoordinates[insideColumnIndex].y);
                     }
-                    else if ((view.getY()+view.getHeight()) > (containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1])) {
-                        view.setY(containerCoordinates[insideColumnIndex][1]+containerDimensions[insideColumnIndex][1]-view.getHeight());
+                    else if ((view.getY()+view.getHeight()) > (containerCoordinates[insideColumnIndex].y+containerDimensions.y)) {
+                        view.setY(containerCoordinates[insideColumnIndex].y+containerDimensions.y-view.getHeight());
                     }
                 }
                 else {
-                    Animations.translateAnimation(view, dragCoordinates, index);
+                    Animations.translateAnimation(view, imagesCoordinates, index);
                 }
                 break;
             default:

@@ -1,5 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
+import android.graphics.Point;
 import android.widget.ImageView;
 
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
@@ -24,7 +25,7 @@ public class FoodPyramidChecker extends CheckerTemplate {
         state = WAITING_ZOWI_CHECKS;
     }
 
-    public boolean check(GameParameters gameParameters, String[][] correctionArray, ImageView[] imageViews, int[][] imagesCoordinates) {
+    public boolean check(GameParameters gameParameters, String[][] correctionArray, ImageView[] imageViews, Point[] imagesCoordinates) {
         sendDataToZowi(ZowiActions.ZOWI_CHECKS_ANSWERS);
 
         new Thread(new Runnable() {
