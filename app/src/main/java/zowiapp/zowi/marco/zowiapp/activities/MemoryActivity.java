@@ -1,7 +1,5 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
@@ -16,15 +14,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Random;
-
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.MemoryConstants;
 import zowiapp.zowi.marco.zowiapp.checker.MemoryChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
-import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
@@ -33,22 +28,12 @@ import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
  */
 public class MemoryActivity extends ActivityTemplate {
 
-    private GameParameters gameParameters;
-    private LayoutInflater inflater;
-    private String activityTitle, activityDescription;
-    private JSONObject activityDetails;
-    private String[] memoryImages;
     private int firstImageID, firstPosition;
     private boolean first;
-    private MemoryChecker memoryChecker;
-    private ImagesHandler imagesHandler;
 
     public MemoryActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
-        this.gameParameters = gameParameters;
-        this.activityTitle = activityTitle;
-        this.activityDetails = activityDetails;
-        this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        memoryChecker = new MemoryChecker();
+        initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
+        checker = new MemoryChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.MEMORY);
 
         getParameters();
@@ -58,12 +43,12 @@ public class MemoryActivity extends ActivityTemplate {
     protected void getParameters() {
         try {
             activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
-            JSONArray jsonMemmoryImages = activityDetails.getJSONArray(MemoryConstants.JSON_PARAMETER_IMAGES);
-            memoryImages = new String[jsonMemmoryImages.length()];
+            JSONArray jsonMemoryImages = activityDetails.getJSONArray(MemoryConstants.JSON_PARAMETER_IMAGES);
+            arrayImages = new String[jsonMemoryImages.length()];
             first = true;
 
-            for (int i = 0; i< memoryImages.length; i++) {
-                memoryImages[i] = jsonMemmoryImages.getString(i);
+            for (int i = 0; i< arrayImages.length; i++) {
+                arrayImages[i] = jsonMemoryImages.getString(i);
             }
 
             generateLayout();
@@ -83,7 +68,7 @@ public class MemoryActivity extends ActivityTemplate {
         if (contentContainer != null) {
             ConstraintLayout constraintContainer = (ConstraintLayout) contentContainer.getChildAt(0);
 
-            imagesHandler.loadSimpleDoubleImages(constraintContainer, memoryImages, MemoryConstants.NUMBER_OF_IMAGES, memoryImages.length, constraintContainer.getChildCount());
+            imagesHandler.loadSimpleDoubleImages(constraintContainer, arrayImages, MemoryConstants.NUMBER_OF_IMAGES, arrayImages.length, constraintContainer.getChildCount());
 
             new CountDownTimer(MemoryConstants.FLIP_DELAY, MemoryConstants.FLIP_DELAY) {
 
@@ -130,7 +115,7 @@ public class MemoryActivity extends ActivityTemplate {
                 else {
                     int secondImageID = Integer.parseInt(view.getTag().toString().split("-")[0]);
                     secondPosition = Integer.parseInt(view.getTag().toString().split("-")[1]);
-                    correctAnswer = memoryChecker.check(gameParameters, firstImageID, secondImageID, firstPosition, secondPosition);
+                    correctAnswer = ((MemoryChecker) checker).check(gameParameters, firstImageID, secondImageID, firstPosition, secondPosition);
                     first = true;
                 }
 

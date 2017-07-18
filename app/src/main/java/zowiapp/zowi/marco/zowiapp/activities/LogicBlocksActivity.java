@@ -33,10 +33,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
     private static final int ZOWI_HAS_MOVED = 1;
 
     public LogicBlocksActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
-        this.gameParameters = gameParameters;
-        this.activityTitle = activityTitle;
-        this.activityDetails = activityDetails;
-        this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
         checker = new LogicBlocksChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.LOGIC_BLOCKS);
         killThread = false;
