@@ -165,7 +165,7 @@ public class ImagesHandler {
     }
 
 
-    public void loadZowiEyesImages(ViewGroup contentContainer, String[][] images, int correctImagesNumber, int wrongImagesNumber, int imagesLimit, int[][] coordinates, int[][] imageViesCoordinates) {
+    public void loadZowiEyesImages(ViewGroup contentContainer, String[][] images, int correctImagesNumber, int wrongImagesNumber, int imagesLimit, Point[] coordinates, Point[] imageViesCoordinates) {
         ArrayList<Integer> imagesArrayList = new ArrayList<>();
 
         int randomImagesIndex;
@@ -216,12 +216,11 @@ public class ImagesHandler {
         imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
     }
 
-    private void loadZowiEyesImageView(ImageView imageView, String imageName, int i, int randomImagesIndex, int[][] coordinates, int[][] imageViewsCoordinates, int correction) {
+    private void loadZowiEyesImageView(ImageView imageView, String imageName, int i, int randomImagesIndex, Point[] coordinates, Point[] imageViewsCoordinates, int correction) {
         imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
         imageView.setTag(correction);
 
-        coordinates[i][0] = imageViewsCoordinates[randomImagesIndex][0];
-        coordinates[i][1] = imageViewsCoordinates[randomImagesIndex][1];
+        coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
     }
 
     private void loadImage(ViewGroup contentContainer, String imageName, Point[] coordinates, Point dimensions, int i, String correction) {

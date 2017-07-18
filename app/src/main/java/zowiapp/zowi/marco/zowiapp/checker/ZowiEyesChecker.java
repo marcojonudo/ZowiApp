@@ -1,21 +1,19 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
+import android.graphics.Point;
 import android.util.Log;
 
 import java.util.Date;
 
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ZowiEyesConstants;
 
-/**
- * Created by Marco on 03/02/2017.
- */
 public class ZowiEyesChecker extends CheckerTemplate{
 
-    private static int[][] imagesCoordinates;
+    private static Point[] imagesCoordinates;
     private boolean firstTime = true;
     private Long referenceTime;
 
-    public static void setImagesCoordinates(int[][] coordinates) {
+    public static void setImagesCoordinates(Point[] coordinates) {
         imagesCoordinates = coordinates;
     }
 
@@ -26,8 +24,8 @@ public class ZowiEyesChecker extends CheckerTemplate{
             firstTime = false;
         }
 
-        for (int[] image: imagesCoordinates) {
-            distance = Math.sqrt(Math.pow(image[0]-eventX, 2) + Math.pow(image[1]-eventY, 2));
+        for (Point image: imagesCoordinates) {
+            distance = Math.sqrt(Math.pow(image.x-eventX, 2) + Math.pow(image.y-eventY, 2));
 
             if (distance < distanceToCenter) {
                 distanceToCenter = distance;
