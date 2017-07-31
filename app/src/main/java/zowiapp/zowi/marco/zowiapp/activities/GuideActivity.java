@@ -55,6 +55,7 @@ public class GuideActivity extends ActivityTemplate {
                 correction[i] = jsonCorrection.getString(i);
             }
 
+            imagesHandler.init(null, doubleArrayImages, GuideConstants.NUMBER_OF_IMAGES, GuideConstants.CATEGORY_ONLY_ONE_IMAGE, correction);
             generateLayout();
         }
         catch (JSONException e) {
@@ -93,7 +94,7 @@ public class GuideActivity extends ActivityTemplate {
                 imagesDimensions.set(constraintView.getWidth(), constraintView.getHeight());
             }
 
-            imagesHandler.loadCategoriesImages(contentContainer, doubleArrayImages, GuideConstants.NUMBER_OF_IMAGES, GuideConstants.CATEGORY_ONLY_ONE_IMAGE, imagesCoordinates, imagesDimensions, correction);
+            imagesHandler.loadCategoriesImages(contentContainer, imagesCoordinates, imagesDimensions);
         }
 
         ((GuideChecker) checker).check(gameParameters);

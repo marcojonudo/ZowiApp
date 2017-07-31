@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import java.util.ArrayList;
@@ -18,23 +17,31 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
 import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
-import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
-
-/**
- * Created by Marco on 26/05/2017.
- */
 
 public class ImagesHandler {
 
     private Context context;
     private ActivityTemplate activityTemplate;
     private ActivityType activityType;
+    private String[] arrayImages, correction;
+    private String[][] doubleArrayImages;
+    private int imagesNumber, oneImageCategoryIndex;
+
+    private static final String SEPARATOR = "-";
 
     public ImagesHandler(Context context, ActivityTemplate activityTemplate, ActivityType activityType) {
         this.context = context;
         this.activityTemplate = activityTemplate;
         this.activityType = activityType;
+    }
+
+    public void init(String[] arrayImages, String[][] doubleArrayImages, int imagesNumber, int oneImageCategoryIndex, String[] correction) {
+        this.arrayImages = arrayImages;
+        this.doubleArrayImages = doubleArrayImages;
+        this.imagesNumber = imagesNumber;
+        this.oneImageCategoryIndex = oneImageCategoryIndex;
+        this.correction = correction;
     }
 
     public int generateSimpleRandomIndex(ArrayList<Integer> arrayList, int limit, boolean insert) {
@@ -95,14 +102,15 @@ public class ImagesHandler {
         ((PuzzleActivity) activityTemplate).setCorrection(correction);
     }
 
-    public void loadCategoriesImages(ViewGroup contentContainer, String[][] images, int imagesNumber, int categoryOneImageIndex, Point[] coordinates, Point dimensions, String[] correction) {
+    public void loadCategoriesImages(ViewGroup contentContainer, Point[] coordinates, Point dimensions) {
         ArrayList<ArrayList<Integer>> arrayList = new ArrayList<>();
-        for (String[] category: images)
+        for (String[] category: doubleArrayImages)
             arrayList.add(new ArrayList<Integer>());
 
         for (int i=0; i<imagesNumber; i++) {
-            int[] indexes = generateCategoriesRandomIndex(arrayList, images.length, categoryOneImageIndex, images[0].length, true);
-            loadImage(contentContainer, images[indexes[0]][indexes[1]], coordinates, dimensions, i, correction[indexes[0]]);
+            /* Two random indexes are generated, one for the category and another one for the image */
+            int[] indexes = generateCategoriesRandomIndex(arrayList, doubleArrayImages.length, oneImageCategoryIndex, doubleArrayImages[0].length, true);
+            loadImage(contentContainer, doubleArrayImages[indexes[0]][indexes[1]], coordinates, dimensions, i, correction[indexes[0]]);
         }
     }
 
@@ -223,30 +231,48 @@ public class ImagesHandler {
         coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
     }
 
-    private void loadImage(ViewGroup contentContainer, String imageName, Point[] coordinates, Point dimensions, int i, String correction) {
-        ImageView image = new ImageView(context);
-        image.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
+    private void loadImage(ViewGroup contentContainer, String imageName, Point[] coordinates, Point dimensions, int index, String correction) {
+        ImageView imageView = new ImageView(context);
+        imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
 
+        resizeImageView(imageView, dimensions, coordinates, index);
+        setTag(imageView, index, correction);
+
+        TouchListener touchListener = new TouchListener(activityType, activityTemplate);
+        imageView.setOnTouchListener(touchListener);
+
+        contentContainer.addView(imageView);
+    }
+
+    private void resizeImageView(ImageView imageView, Point dimensions, Point[] coordinates, int index) {
         /* 'scaleFactor' is used to set the exact width and height to the ImageView, the same as the resource it will contain */
-        Drawable drawable = image.getDrawable();
+        Drawable drawable = imageView.getDrawable();
         float xDimension = dimensions.x, yDimension = dimensions.y;
         float scaleFactor = xDimension < yDimension ? xDimension/(float)drawable.getIntrinsicWidth() : yDimension/(float)drawable.getIntrinsicHeight();
 
         int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
         int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
-        image.setLayoutParams(layoutParams);
-        coordinates[i].x = coordinates[i].x - width/2;
-        coordinates[i].y = coordinates[i].y - height/2;
-        image.setX(coordinates[i].x);
-        image.setY(coordinates[i].y);
-        String tag = i + "-" + correction;
-        image.setTag(tag);
+        imageView.setLayoutParams(layoutParams);
+        coordinates[index].x = coordinates[index].x - width/2;
+        coordinates[index].y = coordinates[index].y - height/2;
+        imageView.setX(coordinates[index].x);
+        imageView.setY(coordinates[index].y);
+    }
 
-        TouchListener touchListener = new TouchListener(activityType, activityTemplate);
-        image.setOnTouchListener(touchListener);
+    private void setTag(ImageView imageView, int index, String correction) {
+        String tag;
 
-        contentContainer.addView(image);
+        switch (activityType) {
+            case COLUMNS:
+                tag = index + SEPARATOR + correction;
+                break;
+            default:
+                tag = index + SEPARATOR + correction;
+                break;
+        }
+
+        imageView.setTag(tag);
     }
 
     private void loadPuzzleImage(ViewGroup container, String imageName, Point[] coordinates, Point[] dimensions, float[][] scaleFactorsToPuzzle, int puzzleContainerSide, int randomShapeIndex, int randomIndex, int i) {

@@ -25,9 +25,6 @@ import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class ColumnsActivity extends ActivityTemplate {
 
     private String leftColumnTitle, rightColumnTitle;
@@ -74,6 +71,7 @@ public class ColumnsActivity extends ActivityTemplate {
                 correction[i] = jsonCorrection.getString(i);
             }
 
+            imagesHandler.init(null, doubleArrayImages, ColumnsConstants.NUMBER_OF_IMAGES, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, correction);
             generateLayout();
         }
         catch (JSONException e) {
@@ -86,15 +84,15 @@ public class ColumnsActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        ConstraintLayout beforeAfterActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.columns_activity_template, contentContainer, false);
+        ConstraintLayout columnsActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.columns_activity_template, contentContainer, false);
 
-        TextView leftTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.left_title);
-        TextView rightTitle = (TextView) beforeAfterActivityTemplate.findViewById(R.id.right_title);
+        TextView leftTitle = (TextView) columnsActivityTemplate.findViewById(R.id.left_title);
+        TextView rightTitle = (TextView) columnsActivityTemplate.findViewById(R.id.right_title);
         leftTitle.setText(leftColumnTitle);
         rightTitle.setText(rightColumnTitle);
 
         if (contentContainer != null) {
-            contentContainer.addView(beforeAfterActivityTemplate);
+            contentContainer.addView(columnsActivityTemplate);
 
             LayoutListener layoutListener = new LayoutListener(ColumnsConstants.COLUMNS_TYPE, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
@@ -154,7 +152,7 @@ public class ColumnsActivity extends ActivityTemplate {
                 new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "columns");
             }
 
-            imagesHandler.loadCategoriesImages(contentContainer, doubleArrayImages, ColumnsConstants.NUMBER_OF_IMAGES, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, imagesCoordinates, imagesDimensions, correction);
+            imagesHandler.loadCategoriesImages(contentContainer, imagesCoordinates, imagesDimensions);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "grid");

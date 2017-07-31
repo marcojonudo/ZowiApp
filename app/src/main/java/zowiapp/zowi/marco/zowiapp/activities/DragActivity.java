@@ -85,6 +85,7 @@ public class DragActivity extends ActivityTemplate {
                 correction[i] = jsonCorrection.getString(i);
             }
 
+            imagesHandler.init(arrayImages, null, dragImagesNumber, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, correction);
             generateLayout();
         }
         catch (JSONException e) {
@@ -162,7 +163,7 @@ public class DragActivity extends ActivityTemplate {
                 imagesDimensions.set(constraintView.getWidth(), constraintView.getHeight());
             }
 
-            imagesHandler.loadCategoriesImages(contentContainer, doubleArrayImages, dragImagesNumber, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, imagesCoordinates, imagesDimensions, correction);
+            imagesHandler.loadCategoriesImages(contentContainer, imagesCoordinates, imagesDimensions);
         }
 
         ConstraintLayout constraintImagesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.constraint_images_container);

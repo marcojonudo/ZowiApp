@@ -79,6 +79,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
                 correction[i] = jsonCorrection.getString(i);
             }
 
+            imagesHandler.init(null, doubleArrayImages, FoodPyramidConstants.NUMBER_OF_IMAGES, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, correction);
             generateLayout();
         }
         catch (JSONException e) {
@@ -145,7 +146,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
                     imagesDimensions.set(constraintView.getWidth(), constraintView.getHeight());
                 }
 
-                imagesHandler.loadCategoriesImages(contentContainer, doubleArrayImages, FoodPyramidConstants.NUMBER_OF_IMAGES, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, imagesCoordinates, imagesDimensions, correction);
+                imagesHandler.loadCategoriesImages(contentContainer, imagesCoordinates, imagesDimensions);
             }
         }
     }

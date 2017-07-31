@@ -45,6 +45,7 @@ public class GridActivity extends ActivityTemplate {
             gridSize = activityDetails.getInt(GridConstants.JSON_PARAMETER_GRIDSIZE);
             JSONArray jsonCells = activityDetails.getJSONArray(GridConstants.JSON_PARAMETER_CELLS);
             JSONArray jsonImages = activityDetails.getJSONArray(GridConstants.JSON_PARAMETER_IMAGES);
+            cellDimensions = new Point();
 
             cells = new int[jsonCells.length()];
             arrayImages = new String[jsonImages.length()];
