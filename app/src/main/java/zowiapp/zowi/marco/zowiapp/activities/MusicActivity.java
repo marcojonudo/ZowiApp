@@ -42,6 +42,7 @@ public class MusicActivity extends ActivityTemplate {
                 arrayImages[i] = jsonDictationsImages.getString(i);
             }
 
+            imagesHandler.init(arrayImages, null, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, null);
             generateLayout();
         }
         catch (JSONException e) {
@@ -81,7 +82,7 @@ public class MusicActivity extends ActivityTemplate {
     protected void getElementsCoordinates() {
         LinearLayout dictationsContainer = (LinearLayout) gameParameters.findViewById(R.id.dictations_container);
 
-        imagesHandler.loadMusicSimpleImages(dictationsContainer, arrayImages, MusicConstants.NUMBER_OF_DICTATIONS, arrayImages.length);
+        imagesHandler.loadSimpleImages(dictationsContainer, MusicConstants.NUMBER_OF_DICTATIONS, arrayImages.length);
     }
 
 }

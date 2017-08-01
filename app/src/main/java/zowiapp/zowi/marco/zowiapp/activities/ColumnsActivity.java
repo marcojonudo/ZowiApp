@@ -71,7 +71,7 @@ public class ColumnsActivity extends ActivityTemplate {
                 correction[i] = jsonCorrection.getString(i);
             }
 
-            imagesHandler.init(null, doubleArrayImages, ColumnsConstants.NUMBER_OF_IMAGES, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, correction);
+            imagesHandler.init(null, doubleArrayImages, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, correction);
             generateLayout();
         }
         catch (JSONException e) {
@@ -152,7 +152,7 @@ public class ColumnsActivity extends ActivityTemplate {
                 new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "columns");
             }
 
-            imagesHandler.loadCategoriesImages(contentContainer, imagesCoordinates, imagesDimensions);
+            imagesHandler.loadCategoriesImages(contentContainer, ColumnsConstants.NUMBER_OF_IMAGES, imagesCoordinates, imagesDimensions);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "grid");

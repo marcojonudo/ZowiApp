@@ -40,7 +40,6 @@ public class ZowiEyesActivity extends ActivityTemplate {
             doubleArrayImages = new String[jsonImages.length()][];
             imagesNumber = new int[jsonImagesNumber.length()];
             containerCoordinates = Functions.createEmptyPointArray(ZowiEyesConstants.LAYOUT_IMAGES);
-
             for (int i = 0; i< doubleArrayImages.length; i++) {
                 JSONArray jsonCategoryImages = jsonImages.getJSONArray(i);
                 doubleArrayImages[i] = new String[jsonCategoryImages.length()];
@@ -52,6 +51,7 @@ public class ZowiEyesActivity extends ActivityTemplate {
             }
             imagesCoordinates = Functions.createEmptyPointArray(imagesNumber[0]+imagesNumber[1]);
 
+            imagesHandler.init(null, doubleArrayImages, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, null);
             generateLayout();
         }
         catch (JSONException e) {
@@ -105,7 +105,7 @@ public class ZowiEyesActivity extends ActivityTemplate {
             if (contentContainer != null) {
                 ConstraintLayout constrainContainer = (ConstraintLayout) contentContainer.getChildAt(0);
 
-                imagesHandler.loadZowiEyesImages(constrainContainer, doubleArrayImages, imagesNumber[0], imagesNumber[1], ZowiEyesConstants.LAYOUT_IMAGES, imagesCoordinates, containerCoordinates);
+                imagesHandler.loadZowiEyesImages(constrainContainer, imagesNumber, ZowiEyesConstants.LAYOUT_IMAGES, imagesCoordinates, containerCoordinates);
             }
         }
         else {

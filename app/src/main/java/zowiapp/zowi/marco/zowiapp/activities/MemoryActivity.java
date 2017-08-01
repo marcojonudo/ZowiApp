@@ -1,9 +1,7 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.content.Context;
 import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -51,6 +49,7 @@ public class MemoryActivity extends ActivityTemplate {
                 arrayImages[i] = jsonMemoryImages.getString(i);
             }
 
+            imagesHandler.init(arrayImages, null, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, null);
             generateLayout();
         }
         catch (JSONException e) {
@@ -68,7 +67,7 @@ public class MemoryActivity extends ActivityTemplate {
         if (contentContainer != null) {
             ConstraintLayout constraintContainer = (ConstraintLayout) contentContainer.getChildAt(0);
 
-            imagesHandler.loadSimpleDoubleImages(constraintContainer, arrayImages, MemoryConstants.NUMBER_OF_IMAGES, arrayImages.length, constraintContainer.getChildCount());
+            imagesHandler.loadMemoryImages(constraintContainer, MemoryConstants.NUMBER_OF_IMAGES, arrayImages.length, constraintContainer.getChildCount());
 
             new CountDownTimer(MemoryConstants.FLIP_DELAY, MemoryConstants.FLIP_DELAY) {
 

@@ -66,7 +66,7 @@ public class SeedsActivity extends ActivityTemplate {
                 correction[i] = jsonCorrection.getString(i);
             }
 
-            imagesHandler.init(null, doubleArrayImages, SeedsConstants.NUMBER_OF_SEEDS, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, correction);
+            imagesHandler.init(containerImages, doubleArrayImages, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, correction);
             generateLayout();
         }
         catch (JSONException e) {
@@ -121,7 +121,7 @@ public class SeedsActivity extends ActivityTemplate {
                 seedsDimensions.set(constraintView.getWidth(), constraintView.getHeight());
             }
 
-            imagesHandler.loadCategoriesImages(contentContainer, seedsCoordinates, seedsDimensions);
+            imagesHandler.loadCategoriesImages(contentContainer, SeedsConstants.NUMBER_OF_SEEDS, seedsCoordinates, seedsDimensions);
         }
 
         ConstraintLayout seedsFinalContainer = (ConstraintLayout) gameParameters.findViewById(R.id.seeds_final_container);
@@ -139,7 +139,7 @@ public class SeedsActivity extends ActivityTemplate {
                 }
             }
 
-            imagesHandler.loadSimpleImages(seedsFinalContainer, containerImages, containerImages.length, containerImages.length);
+            imagesHandler.loadSimpleImages(seedsFinalContainer, containerImages.length, containerImages.length);
         }
     }
 

@@ -67,7 +67,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
         ConstraintLayout logicBlocksActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.logic_blocks_activity_template, contentContainer, false);
         ConstraintLayout grid = (ConstraintLayout) logicBlocksActivityTemplate.getChildAt(0);
 
-        imagesHandler.loadLogicBlocksImages(grid, arrayImages, grid.getChildCount(), arrayImages.length);
+        imagesHandler.loadSimpleImages(grid, grid.getChildCount(), arrayImages.length);
 
         int imageViewIndex = imagesHandler.generateSimpleRandomIndex(new ArrayList<Integer>(), grid.getChildCount(), true);
         while (imageViewIndex % 2 == 0)

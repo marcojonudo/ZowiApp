@@ -26,9 +26,11 @@ public class ImagesHandler {
     private ActivityType activityType;
     private String[] arrayImages, correction;
     private String[][] doubleArrayImages;
-    private int imagesNumber, oneImageCategoryIndex;
+    private int oneImageCategoryIndex;
 
     private static final String SEPARATOR = "-";
+
+    /*---------- INITIALIZATION FUNCTIONS ----------*/
 
     public ImagesHandler(Context context, ActivityTemplate activityTemplate, ActivityType activityType) {
         this.context = context;
@@ -36,13 +38,14 @@ public class ImagesHandler {
         this.activityType = activityType;
     }
 
-    public void init(String[] arrayImages, String[][] doubleArrayImages, int imagesNumber, int oneImageCategoryIndex, String[] correction) {
+    public void init(String[] arrayImages, String[][] doubleArrayImages, int oneImageCategoryIndex, String[] correction) {
         this.arrayImages = arrayImages;
         this.doubleArrayImages = doubleArrayImages;
-        this.imagesNumber = imagesNumber;
         this.oneImageCategoryIndex = oneImageCategoryIndex;
         this.correction = correction;
     }
+
+    /*---------- RANDOM INDEX GENERATION FUNCTIONS ----------*/
 
     public int generateSimpleRandomIndex(ArrayList<Integer> arrayList, int limit, boolean insert) {
         int n = new Random().nextInt(limit);
@@ -87,6 +90,138 @@ public class ImagesHandler {
         return new int[]{categoryIndex, imageIndex};
     }
 
+    /*---------- IMAGES LOAD LOGIC FUNCTIONS ----------*/
+
+    public void loadCategoriesImages(ViewGroup contentContainer, int imagesNumber, Point[] coordinates, Point dimensions) {
+        ArrayList<ArrayList<Integer>> arrayList = new ArrayList<>();
+        for (String[] category: doubleArrayImages)
+            arrayList.add(new ArrayList<Integer>());
+
+        for (int i=0; i<imagesNumber; i++) {
+            /* Two random indexes are generated, one for the category and another one for the image */
+            int[] indexes = generateCategoriesRandomIndex(arrayList, doubleArrayImages.length, oneImageCategoryIndex, doubleArrayImages[0].length, true);
+            loadImage(contentContainer, doubleArrayImages[indexes[0]][indexes[1]], coordinates, dimensions, i, correction[indexes[0]]);
+        }
+    }
+
+    private ImageView getImageView(ViewGroup contentContainer, int index) {
+        ImageView imageView;
+        switch (activityType) {
+            case MUSIC:
+                imageView = (ImageView) ((ConstraintLayout)((ConstraintLayout) contentContainer.getChildAt(index)).getChildAt(0)).getChildAt(0);
+                break;
+            case MEMORY:
+                imageView = (ImageView) ((FrameLayout) contentContainer.getChildAt(index)).getChildAt(1);
+                break;
+            default:
+                imageView = (ImageView) contentContainer.getChildAt(index);
+                break;
+        }
+
+        return imageView;
+    }
+
+    public void loadSimpleImages(ViewGroup contentContainer, int imagesNumber, int imagesLimit) {
+        ArrayList<Integer> imagesArrayList = new ArrayList<>();
+
+        int randomImagesIndex;
+        ImageView imageView;
+        for (int i=0; i<imagesNumber; i++) {
+            if (checkCondition(i)) {
+                randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
+
+                imageView = getImageView(contentContainer, i);
+                customAction(contentContainer, i, randomImagesIndex);
+                loadSimpleImage(imageView, arrayImages[randomImagesIndex], i, correction != null ? correction[i] : null);
+            }
+        }
+
+        finalAction(contentContainer);
+    }
+
+    private boolean checkCondition(int index) {
+        boolean passedCondition = false;
+
+        switch (activityType) {
+            case LOGIC_BLOCKS:
+                if (index%2 != 0 && index != 4)
+                    passedCondition = true;
+                break;
+            default:
+                passedCondition = true;
+        }
+
+        return passedCondition;
+    }
+
+    private void customAction(ViewGroup contentContainer, int index, int randomImagesIndex) {
+        switch (activityType) {
+            case MUSIC:
+                ConstraintLayout button = (ConstraintLayout) ((ConstraintLayout) contentContainer.getChildAt(index)).getChildAt(2);
+
+                button.setTag(randomImagesIndex);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((MusicActivity) activityTemplate).music(view);
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void finalAction(ViewGroup contentContainer) {
+        switch (activityType) {
+            case LOGIC_BLOCKS:
+                /* Get the center ImageView for displaying zowi_pointer image */
+                ImageView imageView = (ImageView) contentContainer.getChildAt(4);
+                loadSimpleImage(imageView, "zowi_pointer", -1, null);
+                break;
+        }
+    }
+
+    public void loadZowiEyesImages(ViewGroup contentContainer, int[] imagesNumber, int imagesLimit, Point[] coordinates, Point[] imageViewsCoordinates) {
+        ArrayList<Integer> imagesArrayList = new ArrayList<>();
+
+        int randomImagesIndex;
+        ImageView imageView;
+        for (int i=0; i<imagesNumber[0]; i++) {
+            randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
+
+            imageView = getImageView(contentContainer, i);
+            loadSimpleImage(imageView, doubleArrayImages[0][i], i, "0");
+
+            coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
+        }
+        for (int i=0; i<imagesNumber[1]; i++) {
+            randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
+
+            imageView = getImageView(contentContainer, i);
+            loadSimpleImage(imageView, doubleArrayImages[1][i], imagesNumber[0]+i, "1");
+
+            coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
+        }
+    }
+
+    public void loadMemoryImages(ViewGroup imagesContainer, int imagesNumber, int imagesLimit, int positionLimit) {
+        ArrayList<Integer> imagesArrayList = new ArrayList<>();
+        ArrayList<Integer> positionArrayList = new ArrayList<>();
+
+        int randomImagesIndex, randomPositionIndex;
+        ImageView imageView;
+        for (int i=0; i<imagesNumber; i++) {
+            randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
+            for (int j=0; j<2; j++) {
+                randomPositionIndex = generateSimpleRandomIndex(positionArrayList, positionLimit, true);
+
+                imageView = getImageView(imagesContainer, randomPositionIndex);
+                loadSimpleImage(imageView, arrayImages[randomImagesIndex], i, null);
+            }
+        }
+    }
+
     public void loadPuzzleImages(ViewGroup contentContainer, String[] images, int imagesNumber, Point[] coordinates, Point[] dimensions, float[][] scaleFactorsToPuzzle, int randomShapeIndex, int puzzleContainerSide) {
         ArrayList<Integer> imagesArrayList = new ArrayList<>();
 
@@ -102,133 +237,30 @@ public class ImagesHandler {
         ((PuzzleActivity) activityTemplate).setCorrection(correction);
     }
 
-    public void loadCategoriesImages(ViewGroup contentContainer, Point[] coordinates, Point dimensions) {
-        ArrayList<ArrayList<Integer>> arrayList = new ArrayList<>();
-        for (String[] category: doubleArrayImages)
-            arrayList.add(new ArrayList<Integer>());
+    /*---------- IMAGES LOAD FUNCTIONS ----------*/
 
-        for (int i=0; i<imagesNumber; i++) {
-            /* Two random indexes are generated, one for the category and another one for the image */
-            int[] indexes = generateCategoriesRandomIndex(arrayList, doubleArrayImages.length, oneImageCategoryIndex, doubleArrayImages[0].length, true);
-            loadImage(contentContainer, doubleArrayImages[indexes[0]][indexes[1]], coordinates, dimensions, i, correction[indexes[0]]);
-        }
-    }
+    private void setTag(ImageView imageView, int index, String correction, String imageName) {
+        String tag;
 
-    public void loadSimpleImages(ViewGroup contentContainer, String[] images, int imagesNumber, int imagesLimit) {
-        ArrayList<Integer> imagesArrayList = new ArrayList<>();
-
-        int randomImagesIndex;
-        ImageView imageView;
-        for (int i=0; i<imagesNumber; i++) {
-            randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
-
-            imageView = (ImageView) contentContainer.getChildAt(i);
-            loadSimpleContainerImageView(imageView, images[randomImagesIndex], i);
-        }
-    }
-
-    public void loadMusicSimpleImages(ViewGroup contentContainer, String[] images, int imagesNumber, int imagesLimit) {
-        ArrayList<Integer> imagesArrayList = new ArrayList<>();
-
-        int randomImagesIndex;
-        ImageView imageView;
-        ConstraintLayout button;
-        for (int i=0; i<imagesNumber; i++) {
-            randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
-
-            imageView = (ImageView) ((ConstraintLayout)((ConstraintLayout) contentContainer.getChildAt(i)).getChildAt(0)).getChildAt(0);
-            button = (ConstraintLayout) ((ConstraintLayout) contentContainer.getChildAt(i)).getChildAt(2);
-
-            button.setTag(randomImagesIndex);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((MusicActivity) activityTemplate).music(view);
-                }
-            });
-            loadMusicSimpleImageView(imageView, images[randomImagesIndex]);
-        }
-    }
-
-    public void loadLogicBlocksImages(ViewGroup contentContainer, String[] images, int imagesNumber, int imagesLimit) {
-        ArrayList<Integer> imagesArrayList = new ArrayList<>();
-
-        int imagesIndex = 0;
-        int randomImagesIndex;
-        ImageView imageView;
-        for (int i=0; i<imagesNumber; i++) {
-            if (i%2 != 0 && i != 4) {
-                randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
-
-                imageView = (ImageView) contentContainer.getChildAt(i);
-                loadSimpleLogicBlocksImageView(imageView, images[randomImagesIndex], imagesIndex);
-
-                imagesIndex++;
-            }
+        switch (activityType) {
+            case COLUMNS:
+                tag = index + SEPARATOR + correction;
+                break;
+            case MEMORY:
+                tag = String.valueOf(index);
+                break;
+            case LOGIC_BLOCKS:
+                tag = index + SEPARATOR + imageName;
+                break;
+            case ZOWI_EYES:
+                tag = correction;
+                break;
+            default:
+                tag = index + SEPARATOR + correction;
+                break;
         }
 
-        /* Get the center ImageView for displaying zowi_pointer image */
-        imageView = (ImageView) contentContainer.getChildAt(4);
-        loadMusicSimpleImageView(imageView, "zowi_pointer");
-    }
-
-
-    public void loadZowiEyesImages(ViewGroup contentContainer, String[][] images, int correctImagesNumber, int wrongImagesNumber, int imagesLimit, Point[] coordinates, Point[] imageViesCoordinates) {
-        ArrayList<Integer> imagesArrayList = new ArrayList<>();
-
-        int randomImagesIndex;
-        ImageView imageView;
-        for (int i=0; i<correctImagesNumber; i++) {
-            randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
-
-            imageView = (ImageView) contentContainer.getChildAt(randomImagesIndex);
-            loadZowiEyesImageView(imageView, images[0][i], i, randomImagesIndex, coordinates, imageViesCoordinates, 0);
-        }
-        for (int i=0; i<wrongImagesNumber; i++) {
-            randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
-
-            imageView = (ImageView) contentContainer.getChildAt(randomImagesIndex);
-            loadZowiEyesImageView(imageView, images[1][i], correctImagesNumber+i, randomImagesIndex, coordinates, imageViesCoordinates, 1);
-        }
-    }
-
-    public void loadSimpleDoubleImages(ViewGroup imagesContainer, String[] images, int imagesNumber, int imagesLimit, int positionLimit) {
-        ArrayList<Integer> imagesArrayList = new ArrayList<>();
-        ArrayList<Integer> positionArrayList = new ArrayList<>();
-
-        int randomImagesIndex, randomPositionIndex;
-        ImageView imageView;
-        for (int i=0; i<imagesNumber; i++) {
-            randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
-            for (int j=0; j<2; j++) {
-                randomPositionIndex = generateSimpleRandomIndex(positionArrayList, positionLimit, true);
-
-                imageView = (ImageView) ((FrameLayout) imagesContainer.getChildAt(randomPositionIndex)).getChildAt(1);
-                loadSimpleContainerImageView(imageView, images[randomImagesIndex], i);
-            }
-        }
-    }
-
-    private void loadSimpleContainerImageView(ImageView imageView, String imageName, int i) {
-        imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
-        imageView.setTag(i);
-    }
-
-    private void loadSimpleLogicBlocksImageView(ImageView imageView, String imageName, int imagesIndex) {
-        imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
-        String tag = imagesIndex + "-" + imageName;
         imageView.setTag(tag);
-    }
-
-    private void loadMusicSimpleImageView(ImageView imageView, String imageName) {
-        imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
-    }
-
-    private void loadZowiEyesImageView(ImageView imageView, String imageName, int i, int randomImagesIndex, Point[] coordinates, Point[] imageViewsCoordinates, int correction) {
-        imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
-        imageView.setTag(correction);
-
-        coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
     }
 
     private void loadImage(ViewGroup contentContainer, String imageName, Point[] coordinates, Point dimensions, int index, String correction) {
@@ -236,12 +268,17 @@ public class ImagesHandler {
         imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
 
         resizeImageView(imageView, dimensions, coordinates, index);
-        setTag(imageView, index, correction);
+        setTag(imageView, index, correction, null);
 
         TouchListener touchListener = new TouchListener(activityType, activityTemplate);
         imageView.setOnTouchListener(touchListener);
 
         contentContainer.addView(imageView);
+    }
+
+    private void loadSimpleImage(ImageView imageView, String imageName, int index, String correction) {
+        imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
+        setTag(imageView, index, correction, imageName);
     }
 
     private void resizeImageView(ImageView imageView, Point dimensions, Point[] coordinates, int index) {
@@ -258,21 +295,6 @@ public class ImagesHandler {
         coordinates[index].y = coordinates[index].y - height/2;
         imageView.setX(coordinates[index].x);
         imageView.setY(coordinates[index].y);
-    }
-
-    private void setTag(ImageView imageView, int index, String correction) {
-        String tag;
-
-        switch (activityType) {
-            case COLUMNS:
-                tag = index + SEPARATOR + correction;
-                break;
-            default:
-                tag = index + SEPARATOR + correction;
-                break;
-        }
-
-        imageView.setTag(tag);
     }
 
     private void loadPuzzleImage(ViewGroup container, String imageName, Point[] coordinates, Point[] dimensions, float[][] scaleFactorsToPuzzle, int puzzleContainerSide, int randomShapeIndex, int randomIndex, int i) {
