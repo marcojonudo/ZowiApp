@@ -10,9 +10,6 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 
-/**
- * Created by Marco on 03/02/2017.
- */
 public class ColouredGridChecker extends CheckerTemplate{
 
     public void check(GameParameters gameParameters, int index, int correctResult) {

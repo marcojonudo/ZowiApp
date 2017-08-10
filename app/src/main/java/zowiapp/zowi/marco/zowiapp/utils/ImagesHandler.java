@@ -29,6 +29,7 @@ public class ImagesHandler {
     private int oneImageCategoryIndex;
 
     private static final String SEPARATOR = "-";
+    private static final int UNUSED_INDEX = -1;
 
     /*---------- INITIALIZATION FUNCTIONS ----------*/
 
@@ -132,7 +133,7 @@ public class ImagesHandler {
 
                 imageView = getImageView(contentContainer, i);
                 customAction(contentContainer, i, randomImagesIndex);
-                loadSimpleImage(imageView, arrayImages[randomImagesIndex], i, correction != null ? correction[i] : null);
+                loadSimpleImage(imageView, arrayImages[randomImagesIndex], i, UNUSED_INDEX, correction != null ? correction[i] : null);
             }
         }
 
@@ -177,7 +178,7 @@ public class ImagesHandler {
             case LOGIC_BLOCKS:
                 /* Get the center ImageView for displaying zowi_pointer image */
                 ImageView imageView = (ImageView) contentContainer.getChildAt(4);
-                loadSimpleImage(imageView, "zowi_pointer", -1, null);
+                loadSimpleImage(imageView, "zowi_pointer", UNUSED_INDEX, UNUSED_INDEX, null);
                 break;
         }
     }
@@ -191,7 +192,7 @@ public class ImagesHandler {
             randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
 
             imageView = getImageView(contentContainer, i);
-            loadSimpleImage(imageView, doubleArrayImages[0][i], i, "0");
+            loadSimpleImage(imageView, doubleArrayImages[0][i], i, UNUSED_INDEX, "0");
 
             coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
         }
@@ -199,7 +200,7 @@ public class ImagesHandler {
             randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
 
             imageView = getImageView(contentContainer, i);
-            loadSimpleImage(imageView, doubleArrayImages[1][i], imagesNumber[0]+i, "1");
+            loadSimpleImage(imageView, doubleArrayImages[1][i], imagesNumber[0]+i, UNUSED_INDEX, "1");
 
             coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
         }
@@ -217,7 +218,7 @@ public class ImagesHandler {
                 randomPositionIndex = generateSimpleRandomIndex(positionArrayList, positionLimit, true);
 
                 imageView = getImageView(imagesContainer, randomPositionIndex);
-                loadSimpleImage(imageView, arrayImages[randomImagesIndex], i, null);
+                loadSimpleImage(imageView, arrayImages[randomImagesIndex], randomImagesIndex, randomPositionIndex, null);
             }
         }
     }
@@ -239,7 +240,7 @@ public class ImagesHandler {
 
     /*---------- IMAGES LOAD FUNCTIONS ----------*/
 
-    private void setTag(ImageView imageView, int index, String correction, String imageName) {
+    private void setTag(ImageView imageView, int index, int secondIndex, String correction, String imageName) {
         String tag;
 
         switch (activityType) {
@@ -247,7 +248,7 @@ public class ImagesHandler {
                 tag = index + SEPARATOR + correction;
                 break;
             case MEMORY:
-                tag = String.valueOf(index);
+                tag = String.valueOf(index) + SEPARATOR + String.valueOf(secondIndex);
                 break;
             case LOGIC_BLOCKS:
                 tag = index + SEPARATOR + imageName;
@@ -268,7 +269,7 @@ public class ImagesHandler {
         imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
 
         resizeImageView(imageView, dimensions, coordinates, index);
-        setTag(imageView, index, correction, null);
+        setTag(imageView, index, UNUSED_INDEX, correction, null);
 
         TouchListener touchListener = new TouchListener(activityType, activityTemplate);
         imageView.setOnTouchListener(touchListener);
@@ -276,9 +277,22 @@ public class ImagesHandler {
         contentContainer.addView(imageView);
     }
 
-    private void loadSimpleImage(ImageView imageView, String imageName, int index, String correction) {
+    private void loadSimpleImage(ImageView imageView, String imageName, int index, int secondIndex, String correction) {
         imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
-        setTag(imageView, index, correction, imageName);
+        setTag(imageView, index, secondIndex, correction, imageName);
+
+        loadTouchListener(imageView);
+    }
+
+    private void loadTouchListener(ImageView imageView) {
+        switch (activityType) {
+            case MEMORY:
+                TouchListener touchListener = new TouchListener(activityType, activityTemplate);
+                imageView.setOnTouchListener(touchListener);
+                break;
+            default:
+                break;
+        }
     }
 
     private void resizeImageView(ImageView imageView, Point dimensions, Point[] coordinates, int index) {

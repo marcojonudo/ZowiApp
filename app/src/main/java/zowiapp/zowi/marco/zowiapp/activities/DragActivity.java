@@ -21,20 +21,14 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.DragConstants;
 import zowiapp.zowi.marco.zowiapp.checker.DragChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
-import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class DragActivity extends ActivityTemplate {
 
-    private String[] arrayImages, texts, correction;
+    private String[] arrayImages, texts;
     private int containerElements, dragImagesNumber;
     private Point imagesDimensions, containerDimensions;
-    private int[] dragLimits;
-    private float distanceToLeft, distanceToTop;
 
     public DragActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
@@ -143,15 +137,10 @@ public class DragActivity extends ActivityTemplate {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         ConstraintLayout constraintImages = (ConstraintLayout) gameParameters.findViewById(R.id.constraint_images);
 
-        if (contentContainer != null) {
-            dragLimits[0] = 0;
-            dragLimits[1] = 0;
-            dragLimits[2] = contentContainer.getRight();
-            dragLimits[3] = contentContainer.getBottom();
-        }
-        else {
+        if (contentContainer != null)
+            setDragLimits(contentContainer);
+        else
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
-        }
 
         /* We get the coordinates and dimensions on the view and load the images in 'contentContainer' */
         /* This way, they can be dragged over the whole screen */
@@ -185,90 +174,10 @@ public class DragActivity extends ActivityTemplate {
     }
 
     void processTouchEvent(View view, MotionEvent event) {
-        float left, right, top, bottom;
-
-        LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);
-        int headerTextHeight = 0;
-        if (headerText != null) {
-            headerTextHeight = headerText.getHeight();
-        }
-        else {
-            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "headerText");
-        }
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                distanceToLeft = view.getX() - event.getRawX();
-                distanceToTop = headerTextHeight + view.getY() - event.getRawY();
-
-                view.bringToFront();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                left = event.getRawX() + distanceToLeft;
-                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
-                top = event.getRawY() + distanceToTop - headerTextHeight;
-                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
-
-                /* Mechanism to avoid the element to move outside the container.
-                   It is only moved when it is in 'contentContainer' */
-                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
-                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
-                        view.setY(top);
-                    }
-                }
-                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
-                    if ((left > dragLimits[0] && right < dragLimits[2])) {
-                        view.setX(left);
-                    }
-                }
-                else {
-                    view.setX(left);
-                    view.setY(top);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                float viewCenterX = view.getX() + view.getWidth()/2;
-                float viewCenterY = view.getY() + view.getHeight()/2;
-
-                int index = Integer.parseInt(view.getTag().toString().split("-")[0]);
-
-                boolean correctAnswer = false;
-                int insideColumnIndex = -1;
-                /* We loop trought the number of containers */
-                for (int i=0; i<containerCoordinates.length; i++) {
-                    if ((viewCenterX > containerCoordinates[i].x)&&(viewCenterX < (containerCoordinates[i].x+containerDimensions.x))) {
-                        if (viewCenterY > containerCoordinates[i].y) {
-                            insideColumnIndex = i;
-
-                            String imageCategory = view.getTag().toString().split("-")[1];
-                            correctAnswer = ((DragChecker) checker).check(gameParameters, imageCategory, correction[i]);
-
-                            break;
-                        }
-                    }
-                }
-
-                if (correctAnswer) {
-                    /* If the view is not completely inside the box, we move it */
-                    if (view.getX() < containerCoordinates[insideColumnIndex].x) {
-                        view.setX(containerCoordinates[insideColumnIndex].x);
-                    }
-                    else if ((view.getX()+view.getWidth()) > (containerCoordinates[insideColumnIndex].x+containerDimensions.x)) {
-                        view.setX(containerCoordinates[insideColumnIndex].x+containerDimensions.x-view.getWidth());
-                    }
-
-                    if (view.getY() < containerCoordinates[insideColumnIndex].y) {
-                        view.setY(containerCoordinates[insideColumnIndex].y);
-                    }
-                    else if ((view.getY()+view.getHeight()) > (containerCoordinates[insideColumnIndex].y+containerDimensions.y)) {
-                        view.setY(containerCoordinates[insideColumnIndex].y+containerDimensions.y-view.getHeight());
-                    }
-                }
-                else {
-                    Animations.translateAnimation(view, imagesCoordinates, index);
-                }
-                break;
-            default:
-                break;
+        String[] eventsResult = handleEvents(ActivityType.DRAG, view, event, containerDimensions, null);
+        if (eventsResult != null) {
+            boolean correctAnswer = ((DragChecker) checker).check(gameParameters, eventsResult[1], eventsResult[2]);
+            lastImageMovement(ActivityType.DRAG, view, containerDimensions, null, Integer.parseInt(eventsResult[0]), correctAnswer);
         }
     }
 

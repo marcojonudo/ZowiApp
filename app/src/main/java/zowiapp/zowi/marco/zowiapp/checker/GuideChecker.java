@@ -11,9 +11,6 @@ import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 
-/**
- * Created by Marco on 03/02/2017.
- */
 public class GuideChecker extends CheckerTemplate {
 
     private GuideActivity guideActivity;

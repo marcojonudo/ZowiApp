@@ -19,9 +19,6 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class MusicActivity extends ActivityTemplate {
 
     public MusicActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {

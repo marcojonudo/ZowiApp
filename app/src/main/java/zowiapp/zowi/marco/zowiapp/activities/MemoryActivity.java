@@ -21,13 +21,10 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class MemoryActivity extends ActivityTemplate {
 
-    private int firstImageID, firstPosition;
-    private boolean first;
+    int firstImageID, firstPosition, secondPosition;
+    boolean first;
 
     public MemoryActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
@@ -70,7 +67,6 @@ public class MemoryActivity extends ActivityTemplate {
             imagesHandler.loadMemoryImages(constraintContainer, MemoryConstants.NUMBER_OF_IMAGES, arrayImages.length, constraintContainer.getChildCount());
 
             new CountDownTimer(MemoryConstants.FLIP_DELAY, MemoryConstants.FLIP_DELAY) {
-
                 public void onTick(long millisUntilFinished) {}
 
                 public void onFinish() {
@@ -98,47 +94,14 @@ public class MemoryActivity extends ActivityTemplate {
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "imagesGrid");
         }
-
     }
 
     void processTouchEvent(View view, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                boolean correctAnswer = false;
-                int secondPosition = -1;
-                if (first) {
-                    firstImageID = Integer.parseInt(view.getTag().toString().split("-")[0]);
-                    firstPosition = Integer.parseInt(view.getTag().toString().split("-")[1]);
-                    first = false;
-                }
-                else {
-                    int secondImageID = Integer.parseInt(view.getTag().toString().split("-")[0]);
-                    secondPosition = Integer.parseInt(view.getTag().toString().split("-")[1]);
-                    correctAnswer = ((MemoryChecker) checker).check(gameParameters, firstImageID, secondImageID, firstPosition, secondPosition);
-                    first = true;
-                }
-
-                if (correctAnswer) {
-                    ConstraintLayout imagesGrid = (ConstraintLayout) gameParameters.findViewById(R.id.memory_images_container);
-
-                    ImageView firstImage, secondImage;
-                    View firstView, secondView;
-                    if (imagesGrid != null) {
-                        firstImage = (ImageView) ((FrameLayout) imagesGrid.getChildAt(firstPosition)).getChildAt(1);
-                        firstView = ((FrameLayout) imagesGrid.getChildAt(firstPosition)).getChildAt(0);
-                        secondImage = (ImageView) ((FrameLayout) imagesGrid.getChildAt(secondPosition)).getChildAt(1);
-                        secondView = ((FrameLayout) imagesGrid.getChildAt(secondPosition)).getChildAt(0);
-
-                        Animations.flip2WithDelay(gameParameters, firstImage, firstView, secondImage, secondView);
-                    }
-                    else {
-                        new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "imagesGrid");
-                    }
-                }
-
-                break;
-            default:
-                break;
+        String[] eventsResult = handleEvents(ActivityType.MEMORY, view, event, null, null);
+        if (eventsResult != null) {
+            boolean correctAnswer = ((MemoryChecker) checker).check(gameParameters, Integer.parseInt(eventsResult[0]), Integer.parseInt(eventsResult[1]), Integer.parseInt(eventsResult[2]), Integer.parseInt(eventsResult[3]));
+            first = true;
+            lastImageMovement(ActivityType.MEMORY, view, null, null, -1, correctAnswer);
         }
     }
 
