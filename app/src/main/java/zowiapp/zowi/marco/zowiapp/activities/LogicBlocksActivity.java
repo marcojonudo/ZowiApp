@@ -1,8 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.content.Context;
 import android.support.constraint.ConstraintLayout;
-import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,7 +15,6 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.LogicBlocksConstants;
-import zowiapp.zowi.marco.zowiapp.checker.CheckerTemplate;
 import zowiapp.zowi.marco.zowiapp.checker.LogicBlocksChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
@@ -64,7 +61,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        ConstraintLayout logicBlocksActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.logic_blocks_activity_template, contentContainer, false);
+        ConstraintLayout logicBlocksActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.free_logic_blocks_activity_template, contentContainer, false);
         ConstraintLayout grid = (ConstraintLayout) logicBlocksActivityTemplate.getChildAt(0);
 
         imagesHandler.loadSimpleImages(grid, grid.getChildCount(), arrayImages.length);

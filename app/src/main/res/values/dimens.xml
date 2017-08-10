@@ -24,7 +24,6 @@
     <dimen name="dictation_width">500dp</dimen>
 
     <!-- Drag dimensions -->
-    <dimen name="drag_cell_side">100dp</dimen>
     <dimen name="drag_image_side">80dp</dimen>
     <dimen name="none">0dp</dimen>
 

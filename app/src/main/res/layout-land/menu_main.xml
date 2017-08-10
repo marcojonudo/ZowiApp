@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     tools:context="zowiapp.zowi.marco.zowiapp.MainActivity"
-    tools:showIn="@layout/activity_main"
+    tools:showIn="@layout/menu_main"
     android:id="@+id/main_activity_container"
     android:gravity="center">
 

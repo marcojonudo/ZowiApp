@@ -17,7 +17,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.menu_activities);
 
         String activityType = getIntent().getExtras().getString("type");
 

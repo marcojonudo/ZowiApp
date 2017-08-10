@@ -21,7 +21,6 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 import zowiapp.zowi.marco.zowiapp.checker.PuzzleChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
-import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
@@ -84,7 +83,7 @@ public class PuzzleActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        ConstraintLayout puzzleActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.puzzle_activity_template, contentContainer, false);
+        ConstraintLayout puzzleActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.guided_puzzle_activity_template, contentContainer, false);
 
         if (contentContainer != null) {
             contentContainer.addView(puzzleActivityTemplate);

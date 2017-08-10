@@ -1,7 +1,5 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -52,10 +50,10 @@ public class MusicActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        LinearLayout musicActivityTemplate = (LinearLayout) inflater.inflate(R.layout.music_activity_template, contentContainer, false);
+        LinearLayout musicActivityTemplate = (LinearLayout) inflater.inflate(R.layout.guided_music_activity_template, contentContainer, false);
 
         for (int i=0; i<MusicConstants.NUMBER_OF_DICTATIONS; i++) {
-            inflater.inflate(R.layout.dictation_template, musicActivityTemplate, true);
+            inflater.inflate(R.layout.guided_music_dictation_template, musicActivityTemplate, true);
         }
 
         if (contentContainer != null) {

@@ -59,7 +59,7 @@ public class MemoryActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        inflater.inflate(R.layout.memory_activity_template, contentContainer, true);
+        inflater.inflate(R.layout.guided_memory_activity_template, contentContainer, true);
 
         if (contentContainer != null) {
             ConstraintLayout constraintContainer = (ConstraintLayout) contentContainer.getChildAt(0);

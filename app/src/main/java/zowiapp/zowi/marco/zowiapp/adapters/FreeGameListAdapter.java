@@ -55,7 +55,7 @@ public class FreeGameListAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
         if (view == null) {
             if (activitiesGroup[position] == null) {
-                final CustomConstraintBackground groupFreeActivities = (CustomConstraintBackground) inflater.inflate(R.layout.free_menu_activities_container_layout, viewGroup, false);
+                final CustomConstraintBackground groupFreeActivities = (CustomConstraintBackground) inflater.inflate(R.layout.menu_free_activities_container, viewGroup, false);
                 ViewGroup.LayoutParams l = groupFreeActivities.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels;//- statusBarHeight;
                 groupFreeActivities.setBackgroundResource((position >= activitiesNumber/ACTIVITIES_GROUP) ? R.drawable.footprint_background_final_2 : (position % 2 == 0 && groupsNumber > 2) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
@@ -73,7 +73,7 @@ public class FreeGameListAdapter extends BaseAdapter {
         }
         else {
             if (activitiesGroup[position] == null) {
-                final CustomConstraintBackground groupFreeActivities = (CustomConstraintBackground) inflater.inflate(R.layout.free_menu_activities_container_layout, viewGroup, false);
+                final CustomConstraintBackground groupFreeActivities = (CustomConstraintBackground) inflater.inflate(R.layout.menu_free_activities_container, viewGroup, false);
                 groupFreeActivities.setLayoutParams(view.getLayoutParams());
                 groupFreeActivities.setBackgroundResource((position >= activitiesNumber/ACTIVITIES_GROUP) ? R.drawable.footprint_background_final_2 : (position % 2 == 0 && groupsNumber > 2) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
 //                Picasso.with(context).load((position == UNITS_NUMBER-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(groupFreeActivities);

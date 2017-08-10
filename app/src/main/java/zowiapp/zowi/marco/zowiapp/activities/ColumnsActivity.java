@@ -21,7 +21,6 @@ import zowiapp.zowi.marco.zowiapp.checker.ColumnsChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.R;
-import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
@@ -83,7 +82,7 @@ public class ColumnsActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        ConstraintLayout columnsActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.columns_activity_template, contentContainer, false);
+        ConstraintLayout columnsActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.guided_columns_activity_template, contentContainer, false);
 
         TextView leftTitle = (TextView) columnsActivityTemplate.findViewById(R.id.left_title);
         TextView rightTitle = (TextView) columnsActivityTemplate.findViewById(R.id.right_title);

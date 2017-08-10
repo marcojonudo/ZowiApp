@@ -68,7 +68,7 @@ public class GuideActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        LinearLayout guideActivityTemplate = (LinearLayout) inflater.inflate(R.layout.guide_activity_template, contentContainer, false);
+        LinearLayout guideActivityTemplate = (LinearLayout) inflater.inflate(R.layout.guided_guide_activity_template, contentContainer, false);
 
         if (contentContainer != null) {
             contentContainer.addView(guideActivityTemplate);

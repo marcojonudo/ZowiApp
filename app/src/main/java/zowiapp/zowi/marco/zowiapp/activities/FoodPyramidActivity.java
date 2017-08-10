@@ -6,7 +6,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
@@ -18,7 +17,6 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.FoodPyramidConstants;
 import zowiapp.zowi.marco.zowiapp.checker.FoodPyramidChecker;
-import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
@@ -84,7 +82,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        ConstraintLayout foodPyramidActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.foodpyramid_activity_template, contentContainer, false);
+        ConstraintLayout foodPyramidActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.guided_foodpyramid_activity_template, contentContainer, false);
 
         if (contentContainer != null) {
             contentContainer.addView(foodPyramidActivityTemplate);

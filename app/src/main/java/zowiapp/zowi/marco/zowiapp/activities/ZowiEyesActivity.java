@@ -66,7 +66,7 @@ public class ZowiEyesActivity extends ActivityTemplate {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
 
         if (contentContainer != null) {
-            inflater.inflate(R.layout.zowi_eyes_template, contentContainer, true);
+            inflater.inflate(R.layout.guided_zowi_eyes_activity_template, contentContainer, true);
 
             LayoutListener layoutListener = new LayoutListener(ZowiEyesConstants.ZOWI_EYES_TYPE, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);

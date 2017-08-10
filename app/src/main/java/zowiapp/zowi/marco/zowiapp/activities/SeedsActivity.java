@@ -75,11 +75,11 @@ public class SeedsActivity extends ActivityTemplate {
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
 
-        ConstraintLayout seedsActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.seeds_activity_template, contentContainer, false);
+        ConstraintLayout seedsActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.guided_seeds_activity_template, contentContainer, false);
         ConstraintLayout constraintContainer = (ConstraintLayout) seedsActivityTemplate.findViewById(R.id.constraint_container);
 
-        inflater.inflate(R.layout.seeds_template, constraintContainer, true);
-        inflater.inflate(R.layout.seeds_container_1x4_template, constraintContainer, true);
+        inflater.inflate(R.layout.guided_seeds_template, constraintContainer, true);
+        inflater.inflate(R.layout.guided_seeds_container_1x4_template, constraintContainer, true);
 
         if (contentContainer != null) {
             contentContainer.addView(seedsActivityTemplate);

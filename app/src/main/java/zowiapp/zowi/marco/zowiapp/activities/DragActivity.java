@@ -93,7 +93,7 @@ public class DragActivity extends ActivityTemplate {
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
 
-        ConstraintLayout dragActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.drag_activity_template, contentContainer, false);
+        ConstraintLayout dragActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.guided_drag_activity_template, contentContainer, false);
         ConstraintLayout constraintContainer = (ConstraintLayout) dragActivityTemplate.findViewById(R.id.constraint_container);
 
         /* Generation of the drag images layout */
@@ -101,10 +101,10 @@ public class DragActivity extends ActivityTemplate {
             case 5:
                 /* It is not necessary to set the constraint relations dynamically. They can be defined in the xml,
                    so we can directly inflate the container */
-                inflater.inflate(R.layout.drag_images_1x5_template, constraintContainer, true);
+                inflater.inflate(R.layout.guided_drag_images_1x5_template, constraintContainer, true);
                 break;
             case 7:
-                inflater.inflate(R.layout.drag_images_1x7_template, constraintContainer, true);
+                inflater.inflate(R.layout.guided_drag_images_1x7_template, constraintContainer, true);
                 break;
             default:
                 break;
@@ -113,10 +113,10 @@ public class DragActivity extends ActivityTemplate {
         /* Generation of the containers layout */
         switch (containerElements) {
             case 3:
-                inflater.inflate(R.layout.drag_container_1x3_template, constraintContainer, true);
+                inflater.inflate(R.layout.guided_drag_container_1x3_template, constraintContainer, true);
                 break;
             case 5:
-                inflater.inflate(R.layout.drag_container_1x5_template, constraintContainer, true);
+                inflater.inflate(R.layout.guided_drag_container_1x5_template, constraintContainer, true);
                 break;
             default:
                 break;

@@ -86,11 +86,11 @@ public class ColouredGridActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        ConstraintLayout colouredGridActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.coloured_grid_activity_template, contentContainer, false);
+        ConstraintLayout colouredGridActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.guided_coloured_grid_activity_template, contentContainer, false);
         ConstraintLayout grid = (ConstraintLayout) colouredGridActivityTemplate.findViewById(R.id.coloured_grid);
 
         /* In this activity, grid is always 4x4 */
-        inflater.inflate(R.layout.grid_4x4_template, grid, true);
+        inflater.inflate(R.layout.guided_grid_4x4_template, grid, true);
 
         if (contentContainer != null) {
             contentContainer.addView(colouredGridActivityTemplate);

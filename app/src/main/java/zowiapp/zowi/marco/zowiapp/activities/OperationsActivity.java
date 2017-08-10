@@ -64,7 +64,7 @@ public class OperationsActivity extends ActivityTemplate {
         setTitleDescription(gameParameters, activityTitle, activityDescription);
 
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-        ConstraintLayout operationsActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.operations_activity_template, contentContainer, false);
+        ConstraintLayout operationsActivityTemplate = (ConstraintLayout) inflater.inflate(R.layout.guided_operations_activity_template, contentContainer, false);
         LinearLayout operationsContainer = (LinearLayout) operationsActivityTemplate.findViewById(R.id.operations_container);
 
         /* Set the resource of the left image */
@@ -107,7 +107,7 @@ public class OperationsActivity extends ActivityTemplate {
             ConstraintLayout operationContainer;
             switch (operationsType) {
                 case 1:
-                    operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.operation_1_template, operationsContainer, false);
+                    operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.guided_operations_operation_1_template, operationsContainer, false);
                     operationContainer = (ConstraintLayout) operationsTemplate.findViewById(R.id.operation_container);
 
                     for (int j=0; j<operation.length; j++) {
@@ -123,7 +123,7 @@ public class OperationsActivity extends ActivityTemplate {
                     layoutParams.guidePercent = 0;
                     guideline.setLayoutParams(layoutParams);
 
-                    operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.operation_2_template, operationsContainer, false);
+                    operationsTemplate = (ConstraintLayout) inflater.inflate(R.layout.guided_operations_complex_template, operationsContainer, false);
                     operationContainer = (ConstraintLayout) operationsTemplate.findViewById(R.id.operation_container);
                     for (int j=0; j<operation.length; j++) {
                         /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews */
