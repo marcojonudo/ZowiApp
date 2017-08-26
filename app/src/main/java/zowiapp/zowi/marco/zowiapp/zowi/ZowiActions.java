@@ -3,6 +3,8 @@ package zowiapp.zowi.marco.zowiapp.zowi;
 import java.util.ArrayList;
 
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.OperationsConstants;
+import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler;
+import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
 
 public class ZowiActions {
 
@@ -37,24 +39,9 @@ public class ZowiActions {
         StringBuilder matrixCommand = new StringBuilder();
         matrixCommand.append("O ");
 
-        /* New thread for receiving final ack's from Zowi */
-        new Thread(new Runnable() {
-            public void run() {
-                while (!Thread.currentThread().isInterrupted() && !killThread) {
-                    int bytesAvailable = ZowiSocket.isInputStreamAvailable();
-                    if (bytesAvailable > 0) {
-                        byte[] packetBytes = new byte[bytesAvailable];
-                        ZowiSocket.readInputStream(packetBytes);
-
-                        String receivedText = new String(packetBytes, 0, bytesAvailable);
-                        /* sendFinalAck from Zowi sends an 'F' */
-                        if (receivedText.contains("F")) {
-                            sendNewInfo = true;
-                        }
-                    }
-                }
-            }
-        }).start();
+        /* New thread for receiving final ACK's from Zowi */
+        Thread zowiProcessOperation = ThreadHandler.createThread(ThreadType.SIMPLE_FEEDBACK);
+        zowiProcessOperation.start();
 
         for (int i=0; i<matrixCodeArray.size(); i++) {
             matrixCommand.append(matrixCodeArray.get(i)).append(" ");
@@ -65,12 +52,17 @@ public class ZowiActions {
                 matrixCommand = new StringBuilder();
                 matrixCommand.append("O ");
 
-                while (!sendNewInfo) {}
-                sendNewInfo = false;
+                try {
+                    zowiProcessOperation.join();
+
+                    zowiProcessOperation = ThreadHandler.createThread(ThreadType.SIMPLE_FEEDBACK);
+                    zowiProcessOperation.start();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
         ZowiSocket.sendCommand(matrixCommand.toString());
-        killThread = true;
     }
 
 }

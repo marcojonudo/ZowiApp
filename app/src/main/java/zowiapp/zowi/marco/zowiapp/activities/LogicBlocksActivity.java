@@ -28,6 +28,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
 
     private static final int WAITING_ZOWI_MOVES = 0;
     private static final int ZOWI_HAS_MOVED = 1;
+    private static final int ZOWI_IMAGE_INDEX = 4;
 
     public LogicBlocksActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
@@ -71,13 +72,13 @@ public class LogicBlocksActivity extends ActivityTemplate {
             imageViewIndex = imagesHandler.generateSimpleRandomIndex(new ArrayList<Integer>(), grid.getChildCount(), true);
 
         ImageView chosenImageView = (ImageView) grid.getChildAt(imageViewIndex);
-        String[] imageName = chosenImageView.getTag().toString().split("-")[1].split("_");
-        correctImageIndex = Integer.parseInt(chosenImageView.getTag().toString().split("-")[0]);
+        String[] imageName = chosenImageView.getTag().toString().split(CommonConstants.TAG_SEPARATOR)[1].split("_");
+        correctImageIndex = Integer.parseInt(chosenImageView.getTag().toString().split(CommonConstants.TAG_SEPARATOR)[0]);
 
         TextView description = (TextView) gameParameters.findViewById(R.id.activity_description);
         String descriptionText = "¡Escoge el " + imageName[0] + " " + imageName[2] + " de color " + imageName[1] + "!";
 
-        final ImageView zowi = (ImageView) grid.getChildAt(4);
+        final ImageView zowi = (ImageView) grid.getChildAt(ZOWI_IMAGE_INDEX);
 
         if (description != null)
             description.setText(descriptionText);
@@ -85,7 +86,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
         if (contentContainer != null) {
             contentContainer.addView(logicBlocksActivityTemplate);
 
-            //TODO Optimizar hilos en clase separada
+            //TODO Estudiar implementacion con Zowi
             new Thread(new Runnable() {
                 public void run() {
                     while (!Thread.currentThread().isInterrupted() && !killThread) {

@@ -5,62 +5,47 @@ import android.widget.LinearLayout;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
-import zowiapp.zowi.marco.zowiapp.zowi.ZowiSocket;
 import zowiapp.zowi.marco.zowiapp.activities.GuideActivity;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
+import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
 
 public class GuideChecker extends CheckerTemplate {
 
     private GuideActivity guideActivity;
-    private boolean checkAnswers, killThread;
 
     public GuideChecker(GuideActivity guideActivity) {
-        checkAnswers = false;
-        killThread = false;
         this.guideActivity = guideActivity;
     }
 
     public boolean check(GameParameters gameParameters) {
+        Thread zowiSeeScreenThread = ThreadHandler.createThread(ThreadType.SIMPLE_FEEDBACK);
+        zowiSeeScreenThread.start();
+
         sendDataToZowi(ZowiActions.ZOWI_CHECKS_ANSWERS);
 
-        new Thread(new Runnable() {
-            public void run() {
-                while (!Thread.currentThread().isInterrupted() && !killThread) {
-                    int bytesAvailable = ZowiSocket.isInputStreamAvailable();
-                    if (bytesAvailable > 0) {
-                        byte[] packetBytes = new byte[64];
-                        ZowiSocket.readInputStream(packetBytes);
+        try {
+            zowiSeeScreenThread.join();
 
-                        String receivedText = new String(packetBytes, 0, bytesAvailable);
-                        /* sendFinalAck from Zowi sends an 'F' as response to ZOWI_CHECKS_ANSWERS */
-                        if (receivedText.contains("F")) {
-                            checkAnswers = true;
-                            killThread = true;
-                        }
+            LinearLayout guideImagesContainer = (LinearLayout) gameParameters.findViewById(R.id.guide_images_container);
 
-                    }
+            if (guideImagesContainer != null) {
+                ImageView imageView;
+                for (int i=0; i<guideImagesContainer.getChildCount(); i++) {
+                    // TODO Escoger la imagen de la casa de Zowi
+                    imageView = (ImageView) guideImagesContainer.getChildAt(i);
+                    Animations.shadeAnimation(imageView, 1.0f, 2.0f);
                 }
-                checkAnswers = false;
-                killThread = false;
             }
-        }).start();
-
-        while (!checkAnswers) {}
-
-        LinearLayout guideImagesContainer = (LinearLayout) gameParameters.findViewById(R.id.guide_images_container);
-
-        if (guideImagesContainer != null) {
-            ImageView imageView;
-            for (int i=0; i<guideImagesContainer.getChildCount(); i++) {
-                imageView = (ImageView) guideImagesContainer.getChildAt(i);
-                Animations.shadeAnimation(imageView, 1.0f, 2.0f);
+            else {
+                new NullElement(gameParameters, guideActivity.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "guideImagesContainer");
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        else {
-            new NullElement(gameParameters, guideActivity.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "guideImagesContainer");
-        }
+
         return true;
     }
 
