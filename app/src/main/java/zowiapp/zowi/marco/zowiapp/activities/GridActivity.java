@@ -23,9 +23,6 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class GridActivity extends ActivityTemplate {
 
     private int[] cells;
@@ -143,7 +140,7 @@ public class GridActivity extends ActivityTemplate {
 
     private void placeImage(RelativeLayout container, String imageName, int x, int y) {
         ImageView image = new ImageView(gameParameters);
-        image.setImageResource(gameParameters.getResources().getIdentifier(imageName, "drawable", gameParameters.getPackageName()));
+        image.setImageResource(gameParameters.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, gameParameters.getPackageName()));
 
         Drawable drawable = image.getDrawable();
         float scaleFactor;

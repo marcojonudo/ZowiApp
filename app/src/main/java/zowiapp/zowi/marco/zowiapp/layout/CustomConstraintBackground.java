@@ -20,9 +20,6 @@ import com.squareup.picasso.Target;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 
-/**
- * Created by Marco on 10/03/2017.
- */
 public class CustomConstraintBackground extends ConstraintLayout implements Target {
 
     public CustomConstraintBackground(Context context) {

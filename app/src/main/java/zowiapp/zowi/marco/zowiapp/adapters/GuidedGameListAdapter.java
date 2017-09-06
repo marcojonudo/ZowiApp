@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.layout.CustomConstraintBackground;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
@@ -68,8 +69,8 @@ public class GuidedGameListAdapter extends BaseAdapter {
                 ViewGroup.LayoutParams l = unitContainer.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels - statusBarHeight + unitsSeparation;
                 unitContainer.setBackgroundResource(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
+//                Glide.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
 //                Picasso.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
-
                 loadContent(unitContainer, position);
 
                 units[position] = unitContainer;
@@ -85,7 +86,7 @@ public class GuidedGameListAdapter extends BaseAdapter {
                 final CustomConstraintBackground unitContainer = (CustomConstraintBackground) inflater.inflate(R.layout.menu_guided_unit_container, viewGroup, false);
                 unitContainer.setLayoutParams(view.getLayoutParams());
                 unitContainer.setBackgroundResource((position == unitsNumber -1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
-//                Picasso.with(context).load((position == unitsNumber-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
+//                Glide.with(context).load((position == unitsNumber-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
 
                 loadContent(unitContainer, position);
                 units[position] = unitContainer;
@@ -108,7 +109,7 @@ public class GuidedGameListAdapter extends BaseAdapter {
 
             activityContainer.setTag(currentActivity);
             activityTitle.setText(activitiesTitles[currentActivity].split(":")[0]);
-            activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[currentActivity], "drawable", context.getPackageName()));
+            activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[currentActivity], CommonConstants.DRAWABLE, context.getPackageName()));
 
             activityContainer.setOnClickListener(new View.OnClickListener() {
                 @Override

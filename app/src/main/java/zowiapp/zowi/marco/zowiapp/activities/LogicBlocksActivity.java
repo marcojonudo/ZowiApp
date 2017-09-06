@@ -146,9 +146,9 @@ public class LogicBlocksActivity extends ActivityTemplate {
         /* Load a different image if answer is correct or not */
         if (zowi != null) {
             if (correctAnswer)
-                zowi.setImageResource(gameParameters.getResources().getIdentifier("zowi_happy_open_small", "drawable", gameParameters.getPackageName()));
+                zowi.setImageResource(gameParameters.getResources().getIdentifier("zowi_happy_open_small", CommonConstants.DRAWABLE, gameParameters.getPackageName()));
             else
-                zowi.setImageResource(gameParameters.getResources().getIdentifier("zowi_happy_sad_small", "drawable", gameParameters.getPackageName()));
+                zowi.setImageResource(gameParameters.getResources().getIdentifier("zowi_happy_sad_small", CommonConstants.DRAWABLE, gameParameters.getPackageName()));
         }
     }
 

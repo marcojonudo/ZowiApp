@@ -69,7 +69,7 @@ public class OperationsActivity extends ActivityTemplate {
 
         /* Set the resource of the left image */
         ImageView mainImage = (ImageView) operationsActivityTemplate.findViewById(R.id.main_image);
-        mainImage.setImageResource(gameParameters.getResources().getIdentifier(image, "drawable", gameParameters.getPackageName()));
+        mainImage.setImageResource(gameParameters.getResources().getIdentifier(image, CommonConstants.DRAWABLE, gameParameters.getPackageName()));
 
         /* Array that will allow the correction of the operations */
         operationsResults = new int[OperationsConstants.NUMBER_OF_OPERATIONS];
@@ -128,7 +128,7 @@ public class OperationsActivity extends ActivityTemplate {
                     for (int j=0; j<operation.length; j++) {
                         /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews */
                         ImageView operationsImage = (ImageView) operationContainer.getChildAt(j+(2*(j+1))-1);
-                        operationsImage.setImageResource(gameParameters.getResources().getIdentifier(arrayImages[i], "drawable", gameParameters.getPackageName()));
+                        operationsImage.setImageResource(gameParameters.getResources().getIdentifier(arrayImages[i], CommonConstants.DRAWABLE, gameParameters.getPackageName()));
                     }
                     break;
                 default:

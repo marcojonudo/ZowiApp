@@ -15,6 +15,7 @@ public class ActivityConstants {
         static final int NON_REPEATED_IMAGES_CATEGORY_INDEX = -1;
         static final int DRAG_LIMITS_SIZE = 4;
         static final String TAG_SEPARATOR = "-";
+        public static final String DRAWABLE = "drawable";
     }
 
     static class GridConstants {
@@ -125,13 +126,14 @@ public class ActivityConstants {
         static final int CATEGORY_ONLY_ONE_IMAGE = 1;
     }
 
-    static class ColouredGridConstants {
+    public static class ColouredGridConstants {
         static final ActivityType COLOUREDGRID_TYPE = ActivityType.COLOURED_GRID;
         static final String JSON_PARAMETER_CELLS = "cells";
         static final String JSON_PARAMETER_COLOUREDCELLS = "colouredCells";
         static final int NUMBER_OF_COLORS = 3;
         static final String JSON_PARAMETER_IMAGES = "images";
         static final int COORDINATES_4X4_LENGTH = 17;
+        public static final float CELL_FILLED_SPACE = 0.85f;
     }
 
     static class MusicConstants {
@@ -200,7 +202,8 @@ public class ActivityConstants {
         };
     }
 
-    static class LogicBlocksConstants {
+    public static class LogicBlocksConstants {
         static final String JSON_PARAMETER_IMAGES = "images";
+        public static final String ZOWI_POINTER = "zowi_pointer";
     }
 }

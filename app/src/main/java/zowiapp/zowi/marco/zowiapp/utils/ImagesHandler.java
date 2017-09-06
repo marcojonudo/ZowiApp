@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.LogicBlocksConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColouredGridConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityTemplate;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
@@ -31,7 +34,7 @@ public class ImagesHandler {
     private static final String SEPARATOR = "-";
     private static final int UNUSED_INDEX = -1;
 
-    /*---------- INITIALIZATION FUNCTIONS ----------*/
+    // region INITIALIZATION FUNCTIONS
 
     public ImagesHandler(Context context, ActivityTemplate activityTemplate, ActivityType activityType) {
         this.context = context;
@@ -46,7 +49,9 @@ public class ImagesHandler {
         this.correction = correction;
     }
 
-    /*---------- RANDOM INDEX GENERATION FUNCTIONS ----------*/
+    // endregion
+
+    // region RANDOM INDEX GENERATION FUNCTIONS
 
     public int generateSimpleRandomIndex(ArrayList<Integer> arrayList, int limit, boolean insert) {
         int n = new Random().nextInt(limit);
@@ -91,7 +96,9 @@ public class ImagesHandler {
         return new int[]{categoryIndex, imageIndex};
     }
 
-    /*---------- IMAGES LOAD LOGIC FUNCTIONS ----------*/
+    // endregion
+
+    // region IMAGES LOAD LOGIC FUNCTIONS
 
     public void loadCategoriesImages(ViewGroup contentContainer, int imagesNumber, Point[] coordinates, Point dimensions) {
         ArrayList<ArrayList<Integer>> arrayList = new ArrayList<>();
@@ -103,23 +110,6 @@ public class ImagesHandler {
             int[] indexes = generateCategoriesRandomIndex(arrayList, doubleArrayImages.length, oneImageCategoryIndex, doubleArrayImages[0].length, true);
             loadImage(contentContainer, doubleArrayImages[indexes[0]][indexes[1]], coordinates, dimensions, i, correction[indexes[0]]);
         }
-    }
-
-    private ImageView getImageView(ViewGroup contentContainer, int index) {
-        ImageView imageView;
-        switch (activityType) {
-            case MUSIC:
-                imageView = (ImageView) ((ConstraintLayout)((ConstraintLayout) contentContainer.getChildAt(index)).getChildAt(0)).getChildAt(0);
-                break;
-            case MEMORY:
-                imageView = (ImageView) ((FrameLayout) contentContainer.getChildAt(index)).getChildAt(1);
-                break;
-            default:
-                imageView = (ImageView) contentContainer.getChildAt(index);
-                break;
-        }
-
-        return imageView;
     }
 
     public void loadSimpleImages(ViewGroup contentContainer, int imagesNumber, int imagesLimit) {
@@ -138,6 +128,23 @@ public class ImagesHandler {
         }
 
         finalAction(contentContainer);
+    }
+
+    private ImageView getImageView(ViewGroup contentContainer, int index) {
+        ImageView imageView;
+        switch (activityType) {
+            case MUSIC:
+                imageView = (ImageView) ((ConstraintLayout)((ConstraintLayout) contentContainer.getChildAt(index)).getChildAt(0)).getChildAt(0);
+                break;
+            case MEMORY:
+                imageView = (ImageView) ((FrameLayout) contentContainer.getChildAt(index)).getChildAt(1);
+                break;
+            default:
+                imageView = (ImageView) contentContainer.getChildAt(index);
+                break;
+        }
+
+        return imageView;
     }
 
     private boolean checkCondition(int index) {
@@ -178,7 +185,7 @@ public class ImagesHandler {
             case LOGIC_BLOCKS:
                 /* Get the center ImageView for displaying zowi_pointer image */
                 ImageView imageView = (ImageView) contentContainer.getChildAt(4);
-                loadSimpleImage(imageView, "zowi_pointer", UNUSED_INDEX, UNUSED_INDEX, null);
+                loadSimpleImage(imageView, LogicBlocksConstants.ZOWI_POINTER , UNUSED_INDEX, UNUSED_INDEX, null);
                 break;
         }
     }
@@ -238,7 +245,34 @@ public class ImagesHandler {
         ((PuzzleActivity) activityTemplate).setCorrection(correction);
     }
 
-    /*---------- IMAGES LOAD FUNCTIONS ----------*/
+    public void loadGridImages(ViewGroup contentContainer, String[] images, Point[] coordinates, Point dimensions) {
+        for (int i=0; i<images.length; i++) {
+            loadImage(contentContainer, images[i], coordinates, dimensions, i, null);
+        }
+    }
+
+    // endregion
+
+    // region IMAGES LOAD FUNCTIONS
+
+    private void loadImage(ViewGroup contentContainer, String imageName, Point[] coordinates, Point dimensions, int index, String correction) {
+        ImageView imageView = new ImageView(context);
+        imageView.setImageResource(context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName()));
+
+        resizeImageView(imageView, dimensions, coordinates, index);
+        setTag(imageView, index, UNUSED_INDEX, correction, null);
+
+        loadTouchListener(imageView);
+
+        contentContainer.addView(imageView);
+    }
+
+    private void loadSimpleImage(ImageView imageView, String imageName, int index, int secondIndex, String correction) {
+        imageView.setImageResource(context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName()));
+        setTag(imageView, index, secondIndex, correction, imageName);
+
+        loadTouchListener(imageView);
+    }
 
     private void setTag(ImageView imageView, int index, int secondIndex, String correction, String imageName) {
         String tag;
@@ -256,32 +290,14 @@ public class ImagesHandler {
             case ZOWI_EYES:
                 tag = correction;
                 break;
+            case COLOURED_GRID:
+                tag = "";
             default:
                 tag = index + SEPARATOR + correction;
                 break;
         }
 
         imageView.setTag(tag);
-    }
-
-    private void loadImage(ViewGroup contentContainer, String imageName, Point[] coordinates, Point dimensions, int index, String correction) {
-        ImageView imageView = new ImageView(context);
-        imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
-
-        resizeImageView(imageView, dimensions, coordinates, index);
-        setTag(imageView, index, UNUSED_INDEX, correction, null);
-
-        TouchListener touchListener = new TouchListener(activityType, activityTemplate);
-        imageView.setOnTouchListener(touchListener);
-
-        contentContainer.addView(imageView);
-    }
-
-    private void loadSimpleImage(ImageView imageView, String imageName, int index, int secondIndex, String correction) {
-        imageView.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
-        setTag(imageView, index, secondIndex, correction, imageName);
-
-        loadTouchListener(imageView);
     }
 
     private void loadTouchListener(ImageView imageView) {
@@ -299,7 +315,16 @@ public class ImagesHandler {
         /* 'scaleFactor' is used to set the exact width and height to the ImageView, the same as the resource it will contain */
         Drawable drawable = imageView.getDrawable();
         float xDimension = dimensions.x, yDimension = dimensions.y;
-        float scaleFactor = xDimension < yDimension ? xDimension/(float)drawable.getIntrinsicWidth() : yDimension/(float)drawable.getIntrinsicHeight();
+
+        float scaleFactor;
+        switch (activityType) {
+            case COLOURED_GRID:
+                scaleFactor = xDimension < yDimension ? (xDimension*ColouredGridConstants.CELL_FILLED_SPACE)/(float)drawable.getIntrinsicWidth() :
+                                                        (yDimension*ColouredGridConstants.CELL_FILLED_SPACE)/(float)drawable.getIntrinsicHeight();
+                break;
+            default:
+                scaleFactor = xDimension < yDimension ? xDimension/(float)drawable.getIntrinsicWidth() : yDimension/(float)drawable.getIntrinsicHeight();
+        }
 
         int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
         int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
@@ -313,7 +338,7 @@ public class ImagesHandler {
 
     private void loadPuzzleImage(ViewGroup container, String imageName, Point[] coordinates, Point[] dimensions, float[][] scaleFactorsToPuzzle, int puzzleContainerSide, int randomShapeIndex, int randomIndex, int i) {
         ImageView image = new ImageView(context);
-        image.setImageResource(context.getResources().getIdentifier(imageName, "drawable", context.getPackageName()));
+        image.setImageResource(context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName()));
 //        image.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
 
         Drawable drawable = image.getDrawable();
@@ -349,5 +374,7 @@ public class ImagesHandler {
         TouchListener touchListener = new TouchListener(activityType, activityTemplate);
         image.setOnTouchListener(touchListener);
     }
+
+    // endregion
 
 }

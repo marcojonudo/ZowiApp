@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.layout.CustomConstraintBackground;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
@@ -98,7 +99,7 @@ public class FreeGameListAdapter extends BaseAdapter {
 
                 activityContainer.setTag(currentActivity);
                 activityTitle.setText(activitiesTitles[currentActivity]);
-                activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[currentActivity], "drawable", context.getPackageName()));
+                activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[currentActivity], CommonConstants.DRAWABLE, context.getPackageName()));
 
                 activityContainer.setOnClickListener(new View.OnClickListener() {
                     @Override

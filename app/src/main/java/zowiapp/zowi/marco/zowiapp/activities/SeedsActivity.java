@@ -16,6 +16,7 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.SeedsConstants;
 import zowiapp.zowi.marco.zowiapp.checker.SeedsChecker;
+import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
@@ -94,12 +95,10 @@ public class SeedsActivity extends ActivityTemplate {
         ConstraintLayout seedsImagesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.seeds_images_container);
 
         /* Store limits for dragging vies */
-        if (contentContainer != null) {
-            dragLimits[0] = 0;
-            dragLimits[1] = 0;
-            dragLimits[2] = contentContainer.getRight();
-            dragLimits[3] = contentContainer.getBottom();
-        }
+        if (contentContainer != null)
+            setDragLimits(contentContainer);
+        else
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
 
         if (seedsImagesContainer != null) {
             View constraintView;
