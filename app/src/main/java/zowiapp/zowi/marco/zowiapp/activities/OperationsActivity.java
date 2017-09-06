@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,7 +71,8 @@ public class OperationsActivity extends ActivityTemplate {
 
         /* Set the resource of the left image */
         ImageView mainImage = (ImageView) operationsActivityTemplate.findViewById(R.id.main_image);
-        mainImage.setImageResource(gameParameters.getResources().getIdentifier(image, CommonConstants.DRAWABLE, gameParameters.getPackageName()));
+        int resourceId = gameParameters.getResources().getIdentifier(image, CommonConstants.DRAWABLE, gameParameters.getPackageName());
+        Glide.with(gameParameters).load(resourceId).into(mainImage);
 
         /* Array that will allow the correction of the operations */
         operationsResults = new int[OperationsConstants.NUMBER_OF_OPERATIONS];
@@ -128,7 +131,8 @@ public class OperationsActivity extends ActivityTemplate {
                     for (int j=0; j<operation.length; j++) {
                         /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews */
                         ImageView operationsImage = (ImageView) operationContainer.getChildAt(j+(2*(j+1))-1);
-                        operationsImage.setImageResource(gameParameters.getResources().getIdentifier(arrayImages[i], CommonConstants.DRAWABLE, gameParameters.getPackageName()));
+                        resourceId = gameParameters.getResources().getIdentifier(arrayImages[i], CommonConstants.DRAWABLE, gameParameters.getPackageName());
+                        Glide.with(gameParameters).load(resourceId).into(operationsImage);
                     }
                     break;
                 default:

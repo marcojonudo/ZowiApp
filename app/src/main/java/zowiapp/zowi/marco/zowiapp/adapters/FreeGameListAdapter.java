@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.layout.CustomConstraintBackground;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
@@ -26,6 +28,9 @@ public class FreeGameListAdapter extends BaseAdapter {
     private static int activitiesNumber, groupsNumber;
     private static final int ACTIVITIES_GROUP = 8;
     private static final String CATEGORY_TYPE = "FREE";
+    private static final String CATEGORY_TYPE_KEY = "categoryType";
+    private static final String ACTIVITY_TITLE_KEY = "activityTitle";
+    private static final String ACTIVITY_NUMBER_KEY = "activityNumber";
 
     public FreeGameListAdapter(Context context, String[] titles, String[] images) {
         this.context = context;
@@ -59,8 +64,8 @@ public class FreeGameListAdapter extends BaseAdapter {
                 final CustomConstraintBackground groupFreeActivities = (CustomConstraintBackground) inflater.inflate(R.layout.menu_free_activities_container, viewGroup, false);
                 ViewGroup.LayoutParams l = groupFreeActivities.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels;//- statusBarHeight;
-                groupFreeActivities.setBackgroundResource((position >= activitiesNumber/ACTIVITIES_GROUP) ? R.drawable.footprint_background_final_2 : (position % 2 == 0 && groupsNumber > 2) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
-//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
+                groupFreeActivities.setBackgroundResource((position >= activitiesNumber/ACTIVITIES_GROUP) ? R.drawable.footprint_background_final : (position % 2 == 0 && groupsNumber > 2) ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom);
+//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom).into(unitContainer);
 
                 loadContent(groupFreeActivities);
 
@@ -76,8 +81,8 @@ public class FreeGameListAdapter extends BaseAdapter {
             if (activitiesGroup[position] == null) {
                 final CustomConstraintBackground groupFreeActivities = (CustomConstraintBackground) inflater.inflate(R.layout.menu_free_activities_container, viewGroup, false);
                 groupFreeActivities.setLayoutParams(view.getLayoutParams());
-                groupFreeActivities.setBackgroundResource((position >= activitiesNumber/ACTIVITIES_GROUP) ? R.drawable.footprint_background_final_2 : (position % 2 == 0 && groupsNumber > 2) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
-//                Picasso.with(context).load((position == UNITS_NUMBER-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(groupFreeActivities);
+                groupFreeActivities.setBackgroundResource((position >= activitiesNumber/ACTIVITIES_GROUP) ? R.drawable.footprint_background_final : (position % 2 == 0 && groupsNumber > 2) ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom);
+//                Picasso.with(context).load((position == UNITS_NUMBER-1) ? R.drawable.footprint_background_final : (position % 2 == 0) ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom).into(groupFreeActivities);
 
                 loadContent(groupFreeActivities);
                 activitiesGroup[position] = groupFreeActivities;
@@ -99,7 +104,8 @@ public class FreeGameListAdapter extends BaseAdapter {
 
                 activityContainer.setTag(currentActivity);
                 activityTitle.setText(activitiesTitles[currentActivity]);
-                activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[currentActivity], CommonConstants.DRAWABLE, context.getPackageName()));
+                int resourceId = context.getResources().getIdentifier(activitiesImages[currentActivity], CommonConstants.DRAWABLE, context.getPackageName());
+                Glide.with(context).load(resourceId).into(activityImage);
 
                 activityContainer.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -108,9 +114,9 @@ public class FreeGameListAdapter extends BaseAdapter {
                         String activityTitle = activitiesTitles[activityTag];
 
                         Intent intent = new Intent(context, GameParameters.class);
-                        intent.putExtra("categoryType", CATEGORY_TYPE);
-                        intent.putExtra("activityTitle", activityTitle);
-                        intent.putExtra("activityNumber", activityTag);
+                        intent.putExtra(CATEGORY_TYPE_KEY, CATEGORY_TYPE);
+                        intent.putExtra(ACTIVITY_TITLE_KEY, activityTitle);
+                        intent.putExtra(ACTIVITY_NUMBER_KEY, activityTag);
 
                         context.startActivity(intent);
                     }

@@ -205,5 +205,7 @@ public class ActivityConstants {
     public static class LogicBlocksConstants {
         static final String JSON_PARAMETER_IMAGES = "images";
         public static final String ZOWI_POINTER = "zowi_pointer";
+        static final String ZOWI_HAPPY = "zowi_happy_open_small";
+        static final String ZOWI_SAD = "zowi_happy_sad_small";
     }
 }

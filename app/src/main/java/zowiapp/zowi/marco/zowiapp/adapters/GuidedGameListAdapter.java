@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.layout.CustomConstraintBackground;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
@@ -25,6 +27,9 @@ public class GuidedGameListAdapter extends BaseAdapter {
     private static int unitsNumber;
     private static final int ACTIVITIES_NUMBER = 6;
     private static final String CATEGORY_TYPE = "GUIDED";
+    private static final String CATEGORY_TYPE_KEY = "categoryType";
+    private static final String ACTIVITY_TITLE_KEY = "activityTitle";
+    private static final String ACTIVITY_NUMBER_KEY = "activityNumber";
 
     public GuidedGameListAdapter(Context context, String[] unitsTitles, String[] titles, String[] images) {
         this.context = context;
@@ -68,9 +73,9 @@ public class GuidedGameListAdapter extends BaseAdapter {
                 final CustomConstraintBackground unitContainer = (CustomConstraintBackground) inflater.inflate(R.layout.menu_guided_unit_container, viewGroup, false);
                 ViewGroup.LayoutParams l = unitContainer.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels - statusBarHeight + unitsSeparation;
-                unitContainer.setBackgroundResource(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
-//                Glide.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
-//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
+                unitContainer.setBackgroundResource(position % 2 == 0 ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom);
+//                Glide.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom).into(unitContainer);
+//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom).into(unitContainer);
                 loadContent(unitContainer, position);
 
                 units[position] = unitContainer;
@@ -85,8 +90,8 @@ public class GuidedGameListAdapter extends BaseAdapter {
             if (units[position] == null) {
                 final CustomConstraintBackground unitContainer = (CustomConstraintBackground) inflater.inflate(R.layout.menu_guided_unit_container, viewGroup, false);
                 unitContainer.setLayoutParams(view.getLayoutParams());
-                unitContainer.setBackgroundResource((position == unitsNumber -1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2);
-//                Glide.with(context).load((position == unitsNumber-1) ? R.drawable.footprint_background_final_2 : (position % 2 == 0) ? R.drawable.footprint_background_top_2 : R.drawable.footprint_background_bottom_2).into(unitContainer);
+                unitContainer.setBackgroundResource((position == unitsNumber -1) ? R.drawable.footprint_background_final : (position % 2 == 0) ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom);
+//                Glide.with(context).load((position == unitsNumber-1) ? R.drawable.footprint_background_final : (position % 2 == 0) ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom).into(unitContainer);
 
                 loadContent(unitContainer, position);
                 units[position] = unitContainer;
@@ -109,7 +114,8 @@ public class GuidedGameListAdapter extends BaseAdapter {
 
             activityContainer.setTag(currentActivity);
             activityTitle.setText(activitiesTitles[currentActivity].split(":")[0]);
-            activityImage.setImageResource(context.getResources().getIdentifier(activitiesImages[currentActivity], CommonConstants.DRAWABLE, context.getPackageName()));
+            int resourceId = context.getResources().getIdentifier(activitiesImages[currentActivity], CommonConstants.DRAWABLE, context.getPackageName());
+            Glide.with(context).load(resourceId).into(activityImage);
 
             activityContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -118,9 +124,9 @@ public class GuidedGameListAdapter extends BaseAdapter {
                     String activityTitle = activitiesTitles[activityTag];
 
                     Intent intent = new Intent(context, GameParameters.class);
-                    intent.putExtra("categoryType", CATEGORY_TYPE);
-                    intent.putExtra("activityTitle", activityTitle);
-                    intent.putExtra("activityNumber", activityTag);
+                    intent.putExtra(CATEGORY_TYPE_KEY, CATEGORY_TYPE);
+                    intent.putExtra(ACTIVITY_TITLE_KEY, activityTitle);
+                    intent.putExtra(ACTIVITY_NUMBER_KEY, activityTag);
 
                     context.startActivity(intent);
                 }

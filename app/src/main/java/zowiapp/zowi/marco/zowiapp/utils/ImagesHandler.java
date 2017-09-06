@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -257,7 +260,9 @@ public class ImagesHandler {
 
     private void loadImage(ViewGroup contentContainer, String imageName, Point[] coordinates, Point dimensions, int index, String correction) {
         ImageView imageView = new ImageView(context);
-        imageView.setImageResource(context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName()));
+        int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
+//        imageView.setImageResource(context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName()));
+        Glide.with(context).load(resourceId).into(imageView);
 
         resizeImageView(imageView, dimensions, coordinates, index);
         setTag(imageView, index, UNUSED_INDEX, correction, null);
@@ -268,7 +273,9 @@ public class ImagesHandler {
     }
 
     private void loadSimpleImage(ImageView imageView, String imageName, int index, int secondIndex, String correction) {
-        imageView.setImageResource(context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName()));
+        int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
+//        imageView.setImageResource(resourceId);
+        Glide.with(context).load(resourceId).into(imageView);
         setTag(imageView, index, secondIndex, correction, imageName);
 
         loadTouchListener(imageView);
@@ -338,7 +345,9 @@ public class ImagesHandler {
 
     private void loadPuzzleImage(ViewGroup container, String imageName, Point[] coordinates, Point[] dimensions, float[][] scaleFactorsToPuzzle, int puzzleContainerSide, int randomShapeIndex, int randomIndex, int i) {
         ImageView image = new ImageView(context);
-        image.setImageResource(context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName()));
+        int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
+//        image.setImageResource(context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName()));
+        Glide.with(context).load(resourceId).into(image);
 //        image.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
 
         Drawable drawable = image.getDrawable();
