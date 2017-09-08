@@ -260,21 +260,20 @@ public class ImagesHandler {
 
     private void loadImage(ViewGroup contentContainer, String imageName, Point[] coordinates, Point dimensions, int index, String correction) {
         ImageView imageView = new ImageView(context);
+
+        /* ImageVew is resized to the final size based on the container (grid child) dimensions */
+        resizeImageView(imageView, dimensions, coordinates, index);
+        /* The resource is loaded into the already resized ImageView */
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
-//        imageView.setImageResource(context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName()));
         Glide.with(context).load(resourceId).into(imageView);
 
-        resizeImageView(imageView, dimensions, coordinates, index);
         setTag(imageView, index, UNUSED_INDEX, correction, null);
-
         loadTouchListener(imageView);
-
         contentContainer.addView(imageView);
     }
 
     private void loadSimpleImage(ImageView imageView, String imageName, int index, int secondIndex, String correction) {
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
-//        imageView.setImageResource(resourceId);
         Glide.with(context).load(resourceId).into(imageView);
         setTag(imageView, index, secondIndex, correction, imageName);
 
@@ -308,9 +307,14 @@ public class ImagesHandler {
     }
 
     private void loadTouchListener(ImageView imageView) {
+        TouchListener touchListener;
         switch (activityType) {
             case MEMORY:
-                TouchListener touchListener = new TouchListener(activityType, activityTemplate);
+                touchListener = new TouchListener(activityType, activityTemplate);
+                imageView.setOnTouchListener(touchListener);
+                break;
+            case SEEDS:
+                touchListener = new TouchListener(activityType, activityTemplate);
                 imageView.setOnTouchListener(touchListener);
                 break;
             default:
@@ -319,22 +323,18 @@ public class ImagesHandler {
     }
 
     private void resizeImageView(ImageView imageView, Point dimensions, Point[] coordinates, int index) {
-        /* 'scaleFactor' is used to set the exact width and height to the ImageView, the same as the resource it will contain */
-        Drawable drawable = imageView.getDrawable();
-        float xDimension = dimensions.x, yDimension = dimensions.y;
+        int width, height;
 
-        float scaleFactor;
         switch (activityType) {
             case COLOURED_GRID:
-                scaleFactor = xDimension < yDimension ? (xDimension*ColouredGridConstants.CELL_FILLED_SPACE)/(float)drawable.getIntrinsicWidth() :
-                                                        (yDimension*ColouredGridConstants.CELL_FILLED_SPACE)/(float)drawable.getIntrinsicHeight();
+                width = (int)(dimensions.x + ColouredGridConstants.CELL_FILLED_SPACE);
+                height = (int)(dimensions.y + ColouredGridConstants.CELL_FILLED_SPACE);
                 break;
             default:
-                scaleFactor = xDimension < yDimension ? xDimension/(float)drawable.getIntrinsicWidth() : yDimension/(float)drawable.getIntrinsicHeight();
+                width = dimensions.x;
+                height = dimensions.y;
         }
 
-        int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
-        int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
         imageView.setLayoutParams(layoutParams);
         coordinates[index].x = coordinates[index].x - width/2;
