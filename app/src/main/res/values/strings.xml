@@ -14,6 +14,9 @@
 
     <string name="show_house">¡Enséñale las casas a Zowi!\n¡Él te indicará cuál es la suya!</string>
 
+    <string name="correct_operation">¡Fantástico!\nLe has ahorrado a Zowi una visita al dentista.</string>
+    <string name="continue_operation_text">¡Continuar!</string>
+
     <string name="red">Rojo</string>
     <string name="blue">Azul</string>
     <string name="green">Verde</string>

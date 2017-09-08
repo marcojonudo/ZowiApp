@@ -1,8 +1,11 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,9 +30,10 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 public class OperationsActivity extends ActivityTemplate {
 
     private String image;
-    private int operationsType;
+    private int operationsType, mainImageIdentifier;
     private int[] operationsResults;
     private String[][] operations;
+    private Dialog alertDialog;
 
     public OperationsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
@@ -41,13 +45,13 @@ public class OperationsActivity extends ActivityTemplate {
     @Override
     protected void getParameters() {
         try {
+            mainImageIdentifier = 6;
             activityDescription = activityDetails.getString(CommonConstants.JSON_PARAMETER_DESCRIPTION);
             operationsType = activityDetails.getInt(OperationsConstants.JSON_PARAMETER_OPERATIONSTYPE);
             image = activityDetails.getString(OperationsConstants.JSON_PARAMETER_IMAGE);
             JSONArray jsonOperationsImages = activityDetails.getJSONArray(OperationsConstants.JSON_PARAMETER_OPERATIONSIMAGES);
             arrayImages = new String[jsonOperationsImages.length()];
             operations = new String[OperationsConstants.NUMBER_OF_OPERATIONS][OperationsConstants.NUMBER_OF_OPERATORS];
-
             if (jsonOperationsImages.length() != 0) {
                 for (int i=0; i<jsonOperationsImages.length(); i++) {
                     arrayImages[i] = jsonOperationsImages.getString(i);
@@ -71,7 +75,7 @@ public class OperationsActivity extends ActivityTemplate {
 
         /* Set the resource of the left image */
         ImageView mainImage = (ImageView) operationsActivityTemplate.findViewById(R.id.main_image);
-        int resourceId = gameParameters.getResources().getIdentifier(image, CommonConstants.DRAWABLE, gameParameters.getPackageName());
+        int resourceId = gameParameters.getResources().getIdentifier(image + "_" + mainImageIdentifier, CommonConstants.DRAWABLE, gameParameters.getPackageName());
         Glide.with(gameParameters).load(resourceId).into(mainImage);
 
         /* Array that will allow the correction of the operations */
@@ -147,7 +151,10 @@ public class OperationsActivity extends ActivityTemplate {
                     @Override
                     public void onClick(View view) {
                         int index = (int)view.getTag();
-                        ((OperationsChecker) checker).check(gameParameters, index, operationsResults[index]);
+                        boolean correctAnswer = ((OperationsChecker) checker).check(gameParameters, index, operationsResults[index]);
+
+                        if (correctAnswer)
+                            changeMainImage();
                     }
                 });
                 if (displayButton != null) {
@@ -174,6 +181,28 @@ public class OperationsActivity extends ActivityTemplate {
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
         }
+    }
+
+    private void changeMainImage() {
+        alertDialog = new Dialog(gameParameters, R.style.DialogTheme);
+        alertDialog.setContentView(R.layout.operations_alert_dialog);
+        alertDialog.show();
+
+        Button continueButton = (Button) alertDialog.findViewById(R.id.continue_operations_button);
+        continueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (alertDialog != null)
+                    alertDialog.cancel();
+            }
+        });
+
+        ImageView mainImage = (ImageView) gameParameters.findViewById(R.id.main_image);
+        mainImageIdentifier--;
+        int resourceId = gameParameters.getResources().getIdentifier(image + "_" + mainImageIdentifier, CommonConstants.DRAWABLE, gameParameters.getPackageName());
+
+        if (mainImage != null)
+            Glide.with(gameParameters).load(resourceId).into(mainImage);
     }
 
 }

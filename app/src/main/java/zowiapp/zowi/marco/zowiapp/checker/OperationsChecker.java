@@ -10,13 +10,12 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
-/**
- * Created by Marco on 03/02/2017.
- */
 public class OperationsChecker extends CheckerTemplate{
 
-    public void check(GameParameters gameParameters, int index, int correctResult) {
+    public boolean check(GameParameters gameParameters, int index, int correctResult) {
+        boolean correctAnswer = false;
         LinearLayout operationsTemplateContainer = (LinearLayout) gameParameters.findViewById(R.id.operations_container);
+
         if (operationsTemplateContainer != null) {
             ConstraintLayout currentOperation = (ConstraintLayout) operationsTemplateContainer.getChildAt(index);
             ConstraintLayout operationContainer = (ConstraintLayout) currentOperation.getChildAt(0);
@@ -31,15 +30,19 @@ public class OperationsChecker extends CheckerTemplate{
                 int answerNumber = Integer.valueOf(answer);
                 if (answerNumber == correctResult) {
                     sendDataToZowi(ZowiActions.TIC_ANSWER_COMMAND);
+                    correctAnswer = true;
                 }
                 else {
                     sendDataToZowi(ZowiActions.X_ANSWER_COMMAND);
+                    correctAnswer = false;
                 }
             }
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "operationsTemplateContainer");
         }
+
+        return correctAnswer;
     }
 
 }

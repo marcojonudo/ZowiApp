@@ -7,7 +7,7 @@
         <item>{"type": "GRID", "description": \"Lleva a Zowi a darse un baño\", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"type": "SEEDS", "description": \"Planta las semillas en sus hoyos correspondientes\", "seedsImages": [[black, black, black, black], [black, black, black, black], [black, black, black, black], [black, black, black, black]], "containerImages": [black, black, black, black], "correction": [RED, GREEN, BLUE, YELLOW]}</item>
         <item>{"type": "COLUMNS", "description": \"Coloca en cada columna lo que debemos hacer antes y después de comer\", "leftTitle": "Antes", "rightTitle": "Después", "images": [[zowi_pointer, zowi_pointer, zowi_pointer, zowi_pointer], [house, house, house, house]], "correction": [LEFT, RIGHT]}</item>
-        <item>{"type": "OPERATIONS", "description": \"Resuelve las sumas y restas y consigue todos los dientes\", "operationsType": 1, "image": "zowi_6_teeth", "operationsImages": []}</item>
+        <item>{"type": "OPERATIONS", "description": \"Resuelve las sumas y restas y consigue todos los dientes\", "operationsType": 1, "image": "zowi_teeth", "operationsImages": []}</item>
         <!-- TEMA 2 -->
         <item>{"type": "GRID", "description": \"Lleva a Zowi a resolver las adivinanzas\", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"type": "GRID", "description": \"Lleva a Zowi a desayunar\", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
