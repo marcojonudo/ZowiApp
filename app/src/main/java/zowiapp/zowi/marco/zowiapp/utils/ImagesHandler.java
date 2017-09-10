@@ -201,7 +201,7 @@ public class ImagesHandler {
         for (int i=0; i<imagesNumber[0]; i++) {
             randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
 
-            imageView = getImageView(contentContainer, i);
+            imageView = getImageView(contentContainer, randomImagesIndex);
             loadSimpleImage(imageView, doubleArrayImages[0][i], i, UNUSED_INDEX, "0");
 
             coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
@@ -298,6 +298,7 @@ public class ImagesHandler {
                 break;
             case COLOURED_GRID:
                 tag = "";
+                break;
             default:
                 tag = index + SEPARATOR + correction;
                 break;
@@ -314,6 +315,10 @@ public class ImagesHandler {
                 imageView.setOnTouchListener(touchListener);
                 break;
             case SEEDS:
+                touchListener = new TouchListener(activityType, activityTemplate);
+                imageView.setOnTouchListener(touchListener);
+                break;
+            case FOODPYRAMID:
                 touchListener = new TouchListener(activityType, activityTemplate);
                 imageView.setOnTouchListener(touchListener);
                 break;

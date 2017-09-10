@@ -17,6 +17,7 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.FoodPyramidConstants;
 import zowiapp.zowi.marco.zowiapp.checker.FoodPyramidChecker;
+import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
@@ -96,12 +97,11 @@ public class FoodPyramidActivity extends ActivityTemplate {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         FrameLayout mainImageContainer = (FrameLayout) gameParameters.findViewById(R.id.main_image_container);
 
-        if (contentContainer != null) {
-            dragLimits[0] = 0;
-            dragLimits[1] = 0;
-            dragLimits[2] = contentContainer.getRight();
-            dragLimits[3] = contentContainer.getBottom();
-        }
+        if (contentContainer != null)
+            setDragLimits(contentContainer);
+        else
+            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
+
 
         if (mainImageContainer != null) {
             /* In this case, the doubleArrayImages has been defined through xml instead of dynamically.
