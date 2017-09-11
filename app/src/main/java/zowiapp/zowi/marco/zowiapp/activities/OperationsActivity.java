@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,7 +76,7 @@ public class OperationsActivity extends ActivityTemplate {
         /* Set the resource of the left image */
         ImageView mainImage = (ImageView) operationsActivityTemplate.findViewById(R.id.main_image);
         int resourceId = gameParameters.getResources().getIdentifier(image + "_" + mainImageIdentifier, CommonConstants.DRAWABLE, gameParameters.getPackageName());
-        Glide.with(gameParameters).load(resourceId).into(mainImage);
+        Picasso.with(gameParameters).load(resourceId).into(mainImage);
 
         /* Array that will allow the correction of the operations */
         operationsResults = new int[OperationsConstants.NUMBER_OF_OPERATIONS];
@@ -136,7 +136,7 @@ public class OperationsActivity extends ActivityTemplate {
                         /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews */
                         ImageView operationsImage = (ImageView) operationContainer.getChildAt(j+(2*(j+1))-1);
                         resourceId = gameParameters.getResources().getIdentifier(arrayImages[i], CommonConstants.DRAWABLE, gameParameters.getPackageName());
-                        Glide.with(gameParameters).load(resourceId).into(operationsImage);
+                        Picasso.with(gameParameters).load(resourceId).into(operationsImage);
                     }
                     break;
                 default:
@@ -202,7 +202,7 @@ public class OperationsActivity extends ActivityTemplate {
         int resourceId = gameParameters.getResources().getIdentifier(image + "_" + mainImageIdentifier, CommonConstants.DRAWABLE, gameParameters.getPackageName());
 
         if (mainImage != null)
-            Glide.with(gameParameters).load(resourceId).into(mainImage);
+            Picasso.with(gameParameters).load(resourceId).into(mainImage);
     }
 
 }

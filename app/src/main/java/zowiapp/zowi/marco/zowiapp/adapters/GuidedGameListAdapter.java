@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.layout.CustomConstraintBackground;
@@ -115,7 +115,7 @@ public class GuidedGameListAdapter extends BaseAdapter {
             activityContainer.setTag(currentActivity);
             activityTitle.setText(activitiesTitles[currentActivity].split(":")[0]);
             int resourceId = context.getResources().getIdentifier(activitiesImages[currentActivity], CommonConstants.DRAWABLE, context.getPackageName());
-            Glide.with(context).load(resourceId).into(activityImage);
+            Picasso.with(context).load(resourceId).into(activityImage);
 
             activityContainer.setOnClickListener(new View.OnClickListener() {
                 @Override

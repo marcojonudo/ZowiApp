@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -265,7 +265,7 @@ public class ImagesHandler {
         resizeImageView(imageView, dimensions, coordinates, index);
         /* The resource is loaded into the already resized ImageView */
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
-        Glide.with(context).load(resourceId).into(imageView);
+        Picasso.with(context).load(resourceId).into(imageView);
 
         setTag(imageView, index, UNUSED_INDEX, correction, null);
         loadTouchListener(imageView);
@@ -274,7 +274,7 @@ public class ImagesHandler {
 
     private void loadSimpleImage(ImageView imageView, String imageName, int index, int secondIndex, String correction) {
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
-        Glide.with(context).load(resourceId).into(imageView);
+        Picasso.with(context).load(resourceId).into(imageView);
         setTag(imageView, index, secondIndex, correction, imageName);
 
         loadTouchListener(imageView);
@@ -351,8 +351,7 @@ public class ImagesHandler {
     private void loadPuzzleImage(ViewGroup container, String imageName, Point[] coordinates, Point[] dimensions, float[][] scaleFactorsToPuzzle, int puzzleContainerSide, int randomShapeIndex, int randomIndex, int i) {
         ImageView image = new ImageView(context);
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
-//        image.setImageResource(context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName()));
-        Glide.with(context).load(resourceId).into(image);
+        Picasso.with(context).load(resourceId).into(image);
 //        image.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
 
         Drawable drawable = image.getDrawable();
