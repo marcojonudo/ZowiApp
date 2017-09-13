@@ -97,15 +97,10 @@ public class PuzzleActivity extends ActivityTemplate {
         RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         ConstraintLayout puzzleContainer = (ConstraintLayout) gameParameters.findViewById(R.id.puzzle_image_container);
 
-        if (contentContainer != null) {
-            dragLimits[0] = 0;
-            dragLimits[1] = 0;
-            dragLimits[2] = contentContainer.getRight();
-            dragLimits[3] = contentContainer.getBottom();
-        }
-        else {
+        if (contentContainer != null)
+            setDragLimits(contentContainer);
+        else
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
-        }
 
         if (puzzleContainer != null) {
             /* The reference point is the upper left corner of the square. All the coordinates are
@@ -185,28 +180,28 @@ public class PuzzleActivity extends ActivityTemplate {
 
                 /* Bring the view to the front in order to avoid strange effects when dragging, moving the piece
                    begind the others */
-                view.bringToFront();
+//                view.bringToFront();
                 break;
             case MotionEvent.ACTION_MOVE:
-                left = event.getRawX() + distanceToLeft;
-                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
-                top = event.getRawY() + distanceToTop - headerTextHeight;
-                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
-
-                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
-                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
-                        view.setY(top);
-                    }
-                }
-                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
-                    if ((left > dragLimits[0] && right < dragLimits[2])) {
-                        view.setX(left);
-                    }
-                }
-                else {
-                    view.setX(left);
-                    view.setY(top);
-                }
+//                left = event.getRawX() + distanceToLeft;
+//                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
+//                top = event.getRawY() + distanceToTop - headerTextHeight;
+//                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
+//
+//                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
+//                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
+//                        view.setY(top);
+//                    }
+//                }
+//                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
+//                    if ((left > dragLimits[0] && right < dragLimits[2])) {
+//                        view.setX(left);
+//                    }
+//                }
+//                else {
+//                    view.setX(left);
+//                    view.setY(top);
+//                }
                 Log.i("View position", view.getX() + ", " + view.getY());
                 break;
             case MotionEvent.ACTION_UP:

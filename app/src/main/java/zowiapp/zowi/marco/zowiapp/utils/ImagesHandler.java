@@ -350,36 +350,38 @@ public class ImagesHandler {
 
     private void loadPuzzleImage(ViewGroup container, String imageName, Point[] coordinates, Point[] dimensions, float[][] scaleFactorsToPuzzle, int puzzleContainerSide, int randomShapeIndex, int randomIndex, int i) {
         ImageView image = new ImageView(context);
+
+        resizeImageView(image, dimensions[randomIndex], coordinates, randomIndex);
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
         Picasso.with(context).load(resourceId).into(image);
 //        image.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
 
-        Drawable drawable = image.getDrawable();
+//        Drawable drawable = image.getDrawable();
         float scaleFactor, scaleFactorToPuzzle;
-        int width, height;
+//        int width, height;
         if (dimensions[i].x < dimensions[i].y) {
-            scaleFactor = (float)dimensions[i].x/(float)drawable.getIntrinsicWidth();
-            width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
-            height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
-            scaleFactorToPuzzle = ((float)puzzleContainerSide*(float)PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex][randomIndex][0])/(float)width;
+//            scaleFactor = (float)dimensions[i].x/(float)drawable.getIntrinsicWidth();
+//            width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
+//            height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
+            scaleFactorToPuzzle = ((float)puzzleContainerSide*(float)PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex][randomIndex][0])/(float)dimensions[randomIndex].x;
             scaleFactorsToPuzzle[i][0] = scaleFactorToPuzzle;
         }
         else {
-            scaleFactor = (float)dimensions[i].x/(float)drawable.getIntrinsicHeight();
-            width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
-            height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
-            scaleFactorToPuzzle = ((float)puzzleContainerSide*(float) ActivityConstants.PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex][randomIndex][1])/(float)height;
+//            scaleFactor = (float)dimensions[i].x/(float)drawable.getIntrinsicHeight();
+//            width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
+//            height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
+            scaleFactorToPuzzle = ((float)puzzleContainerSide*(float) ActivityConstants.PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex][randomIndex][1])/(float)dimensions[randomIndex].y;
             scaleFactorsToPuzzle[i][1] = scaleFactorToPuzzle;
         }
-
-        dimensions[i].x = width;
-        dimensions[i].y = height;
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
-        image.setLayoutParams(layoutParams);
-        coordinates[i].x = coordinates[i].x - width/2;
-        coordinates[i].y = coordinates[i].y - height/2;
-        image.setX(coordinates[i].x);
-        image.setY(coordinates[i].y);
+//
+//        dimensions[i].x = width;
+//        dimensions[i].y = height;
+//        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
+//        image.setLayoutParams(layoutParams);
+//        coordinates[i].x = coordinates[i].x - width/2;
+//        coordinates[i].y = coordinates[i].y - height/2;
+//        image.setX(coordinates[i].x);
+//        image.setY(coordinates[i].y);
         image.setTag(i);
 
         container.addView(image);

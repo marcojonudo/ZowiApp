@@ -12,11 +12,11 @@ public class PuzzleChecker extends CheckerTemplate {
         double distanceToPoint = Math.sqrt(Math.pow(x-puzzleCoordinates.x, 2) + Math.pow(y-puzzleCoordinates.y, 2));
 
         if (distanceToPoint < PuzzleConstants.DISTANCE_LIMIT) {
-            sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+//            sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
             return true;
         }
         else {
-            sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
+//            sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
             return false;
         }
     }
