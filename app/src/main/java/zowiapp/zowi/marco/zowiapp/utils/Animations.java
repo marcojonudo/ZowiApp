@@ -6,8 +6,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
@@ -19,10 +21,6 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityTemplate;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
-
-/**
- * Created by Marco on 26/05/2017.
- */
 
 public class Animations {
 
@@ -41,12 +39,16 @@ public class Animations {
         animatorSet.start();
     }
 
-    public static void scaleAnimation(View view, float scaleFactorToPuzzle, float[][] pivots, int index) {
+    public static void scaleAnimation(View view, float scaleFactorToPuzzle, float[] pivots) {
+        int drawableWidth = ((ImageView)view).getDrawable().getIntrinsicWidth();
+        int drawableHeight = ((ImageView)view).getDrawable().getIntrinsicHeight();
+        Log.i("scaleAnimation", "scaleFactorToPuzzle: " + scaleFactorToPuzzle);
+
         ScaleAnimation anim = new ScaleAnimation(
-                scaleFactorToPuzzle, 1f,
-                scaleFactorToPuzzle, 1f,
-                ScaleAnimation.RELATIVE_TO_PARENT, pivots[index][0], // Pivot point of X scaling
-                ScaleAnimation.RELATIVE_TO_PARENT, pivots[index][1]); // Pivot point of Y scaling
+                1f, scaleFactorToPuzzle,
+                1f, scaleFactorToPuzzle,
+                Animation.RELATIVE_TO_SELF, 0,
+                Animation.RELATIVE_TO_SELF, 0);
         anim.setFillAfter(true);
         anim.setDuration(SCALE_ANIMATION_DURATION);
         view.startAnimation(anim);

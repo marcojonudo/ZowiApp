@@ -124,11 +124,7 @@ public class PuzzleActivity extends ActivityTemplate {
                 String pieceContainerName = "piece_" + (i+1);
                 View imagePiece = gameParameters.findViewById(gameParameters.getResources().getIdentifier(pieceContainerName, "id", gameParameters.getPackageName()));
 
-                ConstraintLayout piecesContainer;
-                if (i<3)
-                    piecesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.left_pieces_container);
-                else
-                    piecesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.right_pieces_container);
+                ConstraintLayout piecesContainer = (ConstraintLayout) gameParameters.findViewById(i<3 ? R.id.left_pieces_container : R.id.right_pieces_container);
 
                 if ((imagePiece != null) && (piecesContainer != null)) {
                     piecesCoordinates[i].set(piecesContainer.getLeft() + imagePiece.getLeft() + imagePiece.getWidth()/2, piecesContainer.getTop() + imagePiece.getTop() + imagePiece.getHeight()/2);
@@ -142,7 +138,7 @@ public class PuzzleActivity extends ActivityTemplate {
             /* The length of piecesImages[i] is the number of possible images */
             int randomImageIndex = new Random().nextInt(piecesImages[0].length);
 
-            imagesHandler.loadPuzzleImages(contentContainer, piecesImages[randomShapeIndex][randomImageIndex], PuzzleConstants.PIECES_NUMBER, piecesCoordinates, piecesDimensions, scaleFactorsToPuzzle, randomShapeIndex, puzzleContainerSide);
+            imagesHandler.loadPuzzleImages(contentContainer, piecesImages[randomShapeIndex][randomImageIndex], PuzzleConstants.PIECES_NUMBER, piecesCoordinates, piecesDimensions, scaleFactorsToPuzzle, PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex], puzzleContainerSide);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "puzzleContainer");
@@ -169,39 +165,39 @@ public class PuzzleActivity extends ActivityTemplate {
 
                 int index = (int) view.getTag();
 
-                if (scaleFactorsToPuzzle[(int)view.getTag()][0] != 0) {
-                    scaleFactorToPuzzle = scaleFactorsToPuzzle[index][0];
-                }
-                else {
-                    scaleFactorToPuzzle = scaleFactorsToPuzzle[index][1];
-                }
+                scaleFactorToPuzzle = scaleFactorsToPuzzle[(int)view.getTag()][0] != 0 ?
+                        scaleFactorsToPuzzle[index][0] :
+                        scaleFactorsToPuzzle[index][1];
 
-                Animations.scaleAnimation(view, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_PIVOTS, index);
+                Log.i("touchEvent", "index: " + index);
+                Log.i("touchEvent", "scaleFactorToPuzzle: " + scaleFactorToPuzzle);
+
+                Animations.scaleAnimation(view, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index]);
 
                 /* Bring the view to the front in order to avoid strange effects when dragging, moving the piece
                    begind the others */
-//                view.bringToFront();
+                view.bringToFront();
                 break;
             case MotionEvent.ACTION_MOVE:
-//                left = event.getRawX() + distanceToLeft;
-//                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
-//                top = event.getRawY() + distanceToTop - headerTextHeight;
-//                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
-//
-//                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
-//                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
-//                        view.setY(top);
-//                    }
-//                }
-//                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
-//                    if ((left > dragLimits[0] && right < dragLimits[2])) {
-//                        view.setX(left);
-//                    }
-//                }
-//                else {
-//                    view.setX(left);
-//                    view.setY(top);
-//                }
+                left = event.getRawX() + distanceToLeft;
+                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
+                top = event.getRawY() + distanceToTop - headerTextHeight;
+                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
+
+                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
+                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
+                        view.setY(top);
+                    }
+                }
+                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
+                    if ((left > dragLimits[0] && right < dragLimits[2])) {
+                        view.setX(left);
+                    }
+                }
+                else {
+                    view.setX(left);
+                    view.setY(top);
+                }
                 Log.i("View position", view.getX() + ", " + view.getY());
                 break;
             case MotionEvent.ACTION_UP:
@@ -214,7 +210,7 @@ public class PuzzleActivity extends ActivityTemplate {
                 }
                 else {
                     Animations.translateAnimation(view, piecesCoordinates, index);
-                    Animations.scaleAnimation(view, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_PIVOTS, index);
+                    Animations.scaleAnimation(view, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index]);
                 }
 
                 break;
