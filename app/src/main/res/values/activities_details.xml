@@ -2,6 +2,7 @@
 <resources>
     <string-array name="guided_activities_details">
         <!-- TEMA 1 -->
+        <item>{"type": "FOODPYRAMID", "description": \"Completa la pirámide con los alimentos en su lugar\", "images": [[zowi_pointer, zowi_pointer, zowi_pointer, zowi_pointer], [green_circular_button, green_circular_button, green_circular_button, green_circular_button], [paper_bin, paper_bin, paper_bin, paper_bin], [house, house, house, house], [zowi_teeth, zowi_teeth, zowi_teeth, zowi_teeth], [zowi_teeth_5, zowi_teeth_5, zowi_teeth_5, zowi_teeth_5]], "correction": [1, 2, 3, 4, 5, 6]}</item>
         <item>{"type": "GRID", "description": \"Llévalo hasta la casilla musical\", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"type": "GRID", "description": \"Llévalo a descansar, comer y jugar\", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"type": "GRID", "description": \"Lleva a Zowi a darse un baño\", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
@@ -14,7 +15,6 @@
         <item>{"type": "GRID", "description": \"Busca las frutas\", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"type": "GRID", "description": \"Elabora tus recetas con: pan, huevos, tomate y arroz\", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"type": "DRAG", "description": \"Ordena los momentos de alimentación del día\", "dragImages": [[zowi_pointer], [green_circular_button], [paper_bin], [green_circular_button], [house]], "dragImagesNumber": 5, "correction": [BREAKFAST, LUNCHEON, LUNCH, SNACK, DINNER], "containerElements": 5, "containerImages": [], "texts": [\"Desayuno\", \"Tentempié\", \"Comida\", \"Merienda\", \"Cena\"]}</item>
-        <item>{"type": "FOODPYRAMID", "description": \"Completa la pirámide con los alimentos en su lugar\", "images": [[zowi_pointer, zowi_pointer, zowi_pointer, zowi_pointer], [green_circular_button, green_circular_button, green_circular_button, green_circular_button], [paper_bin, paper_bin, paper_bin, paper_bin], [house, house, house, house], [zowi_teeth, zowi_teeth, zowi_teeth, zowi_teeth], [zowi_teeth_5, zowi_teeth_5, zowi_teeth_5, zowi_teeth_5]], "correction": [1, 2, 3, 4, 5, 6]}</item>
         <!-- TEMA 3 -->
         <item>{"type": "GRID", "description": \"Llévalo hasta la casilla musical\", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>
         <item>{"type": "GRID", "description": \"Lleva a Zowi con su mamá\", "gridSize": 1, "cells": [7, 2], "images": [zowi_pointer, house]}</item>

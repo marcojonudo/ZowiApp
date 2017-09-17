@@ -290,7 +290,7 @@ public abstract class ActivityTemplate {
                     doubleArrayCorrection[FoodPyramidActivity.imagesCounter][1] = correction[step];
                     ((FoodPyramidActivity)this).imageViews[FoodPyramidActivity.imagesCounter] = (ImageView) view;
                     FoodPyramidActivity.imagesCounter++;
-                    if (FoodPyramidActivity.imagesCounter == FoodPyramidConstants.NUMBER_OF_IMAGES)
+                    if (FoodPyramidActivity.imagesCounter == 1)
                         ((FoodPyramidChecker) checker).check(gameParameters, doubleArrayCorrection, ((FoodPyramidActivity)this).imageViews, imagesCoordinates);
                 }
                 else {

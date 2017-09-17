@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -14,12 +15,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityTemplate;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
 import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
+import zowiapp.zowi.marco.zowiapp.zowi.Zowi;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiSocket;
 
 public class ThreadHandler {
@@ -31,15 +34,20 @@ public class ThreadHandler {
     private static final int ZOWI_HAS_CHECKED = 1;
 
     public static Thread createThread(final ThreadType threadType) {
+        String a = "Hilo creado";
+        Log.i("createThread", a);
         return new Thread(new Runnable() {
             public void run() {
                 while (!Thread.currentThread().isInterrupted() && !killThread) {
                     int bytesAvailable = ZowiSocket.isInputStreamAvailable();
                     if (bytesAvailable > 0) {
-                        byte[] packetBytes = new byte[bytesAvailable];
+                        byte[] packetBytes = new byte[64];
                         ZowiSocket.readInputStream(packetBytes);
 
                         switch (threadType) {
+                            case ZOWI_CONNECTED:
+                                zowiConnected(packetBytes, bytesAvailable);
+                                break;
                             case SIMPLE_FEEDBACK:
                                 zowiStates(packetBytes, bytesAvailable);
                                 break;
@@ -57,6 +65,16 @@ public class ThreadHandler {
                 killThread = false;
             }
         });
+    }
+
+    private static void zowiConnected(byte[] packetBytes, int bytesAvailable) {
+        String receivedText = new String(packetBytes, 0, bytesAvailable);
+        Log.i("zowiConnected", receivedText);
+        /* sendFinalAck from Zowi sends an 'F' */
+        if (receivedText.contains(ZowiSocket.ZOWI_PROGRAM_ID)) {
+            ZowiSocket.setConnected();
+            killThread = true;
+        }
     }
 
     private static void zowiStates(byte[] packetBytes, int bytesAvailable) {
@@ -113,7 +131,7 @@ public class ThreadHandler {
     }
 
     public enum ThreadType {
-        SIMPLE_FEEDBACK, ZOWI_STATES, ZOWI_CHECKS, ZOWI_MOVES_360, ZOWI_OPERATIONS
+        ZOWI_CONNECTED, SIMPLE_FEEDBACK, ZOWI_STATES, ZOWI_CHECKS, ZOWI_MOVES_360, ZOWI_OPERATIONS
     }
 
 }

@@ -8,7 +8,7 @@ public class Zowi {
         return connected;
     }
 
-    static void setConnected(boolean conn) {
+    public static void setConnected(boolean conn) {
         connected = conn;
     }
 }
