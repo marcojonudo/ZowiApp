@@ -4,7 +4,6 @@ import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import org.json.JSONArray;
@@ -20,17 +19,16 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 import zowiapp.zowi.marco.zowiapp.checker.PuzzleChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
-import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 
 public class PuzzleActivity extends ActivityTemplate {
 
+    static int imagesCounter;
     private String[][][] piecesImages;
-    private int randomShapeIndex, puzzleContainerSide;
-    private Point[] puzzleCoordinates, piecesCoordinates, piecesDimensions, correction;
-    private float[][] scaleFactorsToPuzzle;
-    private float distanceToLeft, distanceToTop;
+    private Point[] puzzleCoordinates, piecesDimensions;
+    Point[] piecesCoordinates, correction;
+    float[] scaleFactorsToPuzzle;
 
     public PuzzleActivity(final GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
@@ -53,7 +51,7 @@ public class PuzzleActivity extends ActivityTemplate {
             puzzleCoordinates = Functions.createEmptyPointArray(PuzzleConstants.PIECES_NUMBER);
             piecesCoordinates = Functions.createEmptyPointArray(PuzzleConstants.PIECES_NUMBER);
             piecesDimensions = Functions.createEmptyPointArray(PuzzleConstants.PIECES_NUMBER);
-            scaleFactorsToPuzzle = new float[PuzzleConstants.PIECES_NUMBER][CommonConstants.AXIS_NUMBER];
+            scaleFactorsToPuzzle = new float[PuzzleConstants.PIECES_NUMBER];
             correction = Functions.createEmptyPointArray(PuzzleConstants.PIECES_NUMBER);
             dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];
 
@@ -108,10 +106,10 @@ public class PuzzleActivity extends ActivityTemplate {
             int top = puzzleContainer.getTop();
 
             /* 'puzzleContainer' has a 1:1 aspect ratio */
-            puzzleContainerSide = puzzleContainer.getWidth();
+            int puzzleContainerSide = puzzleContainer.getWidth();
 
             /* The length of piecesImages is the number of possible shapes */
-            randomShapeIndex = new Random().nextInt(piecesImages.length);
+            int randomShapeIndex = new Random().nextInt(piecesImages.length);
             /* Depending on the shape of the puzzle, the coordinates factors are stored */
             double[][] coordinatesFactors = PuzzleConstants.PUZZLE_SHAPES_COORDINATES_FACTORS[randomShapeIndex];
 
@@ -147,72 +145,9 @@ public class PuzzleActivity extends ActivityTemplate {
     }
 
     void processTouchEvent(View view, MotionEvent event) {
-        float left, right, top, bottom;
-
-        LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);
-        int headerTextHeight = 0;
-        if (headerText != null) {
-            headerTextHeight = headerText.getHeight();
-        }
-        else {
-            new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "headerText");
-        }
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                distanceToLeft = view.getX() - event.getRawX();
-                distanceToTop = headerTextHeight + view.getY() - event.getRawY();
-
-                int index = (int) view.getTag();
-
-                float scaleFactorToPuzzle = scaleFactorsToPuzzle[(int)view.getTag()][0] != 0 ?
-                        scaleFactorsToPuzzle[index][0] :
-                        scaleFactorsToPuzzle[index][1];
-
-                Animations.scaleAnimation(view, true, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_INCREASE_PIVOTS[index]);
-
-                /* Bring the view to the front in order to avoid strange effects when dragging, moving the piece
-                   begind the others */
-                view.bringToFront();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                left = event.getRawX() + distanceToLeft;
-                right = event.getRawX() + (view.getWidth()+ distanceToLeft);
-                top = event.getRawY() + distanceToTop - headerTextHeight;
-                bottom = event.getRawY() + (view.getHeight()+ distanceToTop);
-
-                if ((left <= dragLimits[0] || right >= dragLimits[2])) {
-                    if ((top > dragLimits[1]) && (bottom < dragLimits[3])) {
-                        view.setY(top);
-                    }
-                }
-                else if ((top <= dragLimits[1]) || (bottom >= dragLimits[3])) {
-                    if ((left > dragLimits[0] && right < dragLimits[2])) {
-                        view.setX(left);
-                    }
-                }
-                else {
-                    view.setX(left);
-                    view.setY(top);
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                index = (int) view.getTag();
-
-//                boolean correctAnswer = ((PuzzleChecker) checker).check(gameParameters, view.getX()/2, view.getY()/2, correction[index]);
-
-//                if (correctAnswer) {
-//                    Animations.translateAnimation(view, puzzleCoordinates, index);
-//                }
-//                else {
-//                    Animations.translateAnimation(view, piecesCoordinates, index);
-//                    Animations.scaleAnimation(view, false, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_DECREASE_PIVOTS[index]);
-//                }
-
-                break;
-            default:
-                break;
-        }
+        String[] eventsResult = handleEvents(ActivityType.PUZZLE, view, event, null, null);
+        if (eventsResult != null)
+            ((PuzzleChecker) checker).check(gameParameters, piecesCoordinates, correction);
     }
 
 }

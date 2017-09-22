@@ -6,9 +6,6 @@ import android.view.View;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityTemplate;
 
-/**
- * Created by Marco on 24/01/2017.
- */
 public class TouchListener implements View.OnTouchListener {
 
     private ActivityType activityType;

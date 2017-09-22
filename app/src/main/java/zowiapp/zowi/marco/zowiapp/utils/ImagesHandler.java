@@ -255,7 +255,7 @@ public class ImagesHandler {
         dimensions[index].set(width, height);
     }
 
-    public void loadPuzzleImages(ViewGroup contentContainer, String[] images, int imagesNumber, Point[] puzzleCoordinates, Point[] coordinates, Point[] dimensions, float[][] scaleFactorsToPuzzle, double[][] piecesToPuzzle, double[][] piecesToCorrection, int puzzleContainerSide) {
+    public void loadPuzzleImages(ViewGroup contentContainer, String[] images, int imagesNumber, Point[] puzzleCoordinates, Point[] coordinates, Point[] dimensions, float[] scaleFactorsToPuzzle, double[][] piecesToPuzzle, double[][] piecesToCorrection, int puzzleContainerSide) {
         ArrayList<Integer> imagesArrayList = new ArrayList<>();
 
         int randomImagesIndex;
@@ -346,6 +346,10 @@ public class ImagesHandler {
                 touchListener = new TouchListener(activityType, activityTemplate);
                 imageView.setOnTouchListener(touchListener);
                 break;
+            case PUZZLE:
+                touchListener = new TouchListener(activityType, activityTemplate);
+                imageView.setOnTouchListener(touchListener);
+                break;
             default:
                 break;
         }
@@ -372,7 +376,7 @@ public class ImagesHandler {
         imageView.setY(coordinates[index].y);
     }
 
-    private void loadPuzzleImage(final ViewGroup container, String imageName, final Point[] coordinates, final Point[] dimensions, final float[][] scaleFactorsToPuzzle, final int puzzleContainerSide, final double[][] piecesToPuzzle, final int randomImagesIndex, final int index) {
+    private void loadPuzzleImage(final ViewGroup container, String imageName, final Point[] coordinates, final Point[] dimensions, final float[] scaleFactorsToPuzzle, final int puzzleContainerSide, final double[][] piecesToPuzzle, final int randomImagesIndex, final int index) {
         final ImageView image = new ImageView(context);
 
         resizeImageView(image, dimensions[index], coordinates, index);
@@ -384,18 +388,17 @@ public class ImagesHandler {
                         ((float)puzzleContainerSide*(float)piecesToPuzzle[randomImagesIndex][0])/(float)dimensions[index].x :
                         ((float)puzzleContainerSide*(float)piecesToPuzzle[randomImagesIndex][1])/(float)dimensions[index].y;
 
-                scaleFactorsToPuzzle[index][dimensions[index].x < dimensions[index].y ? 0 : 1] = scaleFactorToPuzzle;
+                scaleFactorsToPuzzle[index] = scaleFactorToPuzzle;
             }
 
             @Override
             public void onError() {}
         });
         image.setTag(index);
+        loadTouchListener(image);
 
         container.addView(image);
 
-        TouchListener touchListener = new TouchListener(activityType, activityTemplate);
-        image.setOnTouchListener(touchListener);
     }
 
     // endregion

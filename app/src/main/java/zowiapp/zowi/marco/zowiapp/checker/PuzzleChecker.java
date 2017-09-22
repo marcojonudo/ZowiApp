@@ -3,22 +3,36 @@ package zowiapp.zowi.marco.zowiapp.checker;
 import android.graphics.Point;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
+import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler;
+import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 
 public class PuzzleChecker extends CheckerTemplate {
 
-    public boolean check(GameParameters gameParameters, float x, float y, Point puzzleCoordinates) {
-        double distanceToPoint = Math.sqrt(Math.pow(x-puzzleCoordinates.x, 2) + Math.pow(y-puzzleCoordinates.y, 2));
+    public boolean check(GameParameters gameParameters, Point[] piecesCoordinates, Point[] correction) {
+        Thread zowiSeeScreenThread = ThreadHandler.createThread(ThreadType.SIMPLE_FEEDBACK);
+        zowiSeeScreenThread.start();
 
-        if (distanceToPoint < PuzzleConstants.DISTANCE_LIMIT) {
-//            sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+        sendDataToZowi(ZowiActions.ZOWI_CHECKS_ANSWERS);
+
+        try {
+            zowiSeeScreenThread.join();
+
+            double distance;
+            for (int i=0; i<piecesCoordinates.length; i++) {
+                distance = Math.sqrt(Math.pow(piecesCoordinates[i].x-correction[i].x, 2) + Math.pow(piecesCoordinates[i].x-correction[i].y, 2));
+                if (distance > PuzzleConstants.DISTANCE_LIMIT) {
+                    return false;
+                }
+            }
+            sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
             return true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else {
-//            sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
-            return false;
-        }
+
+        return false;
     }
 
 }

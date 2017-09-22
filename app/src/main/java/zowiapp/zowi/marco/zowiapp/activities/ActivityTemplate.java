@@ -23,6 +23,7 @@ import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.FoodPyramidConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 
 public abstract class ActivityTemplate {
 
@@ -171,7 +172,6 @@ public abstract class ActivityTemplate {
                 return downAction(activityType, view, event, headerTextHeight);
             case MotionEvent.ACTION_MOVE:
                 moveAction(activityType, view, event, headerTextHeight);
-
                 break;
             case MotionEvent.ACTION_UP:
                 return checkViewInsideContainer(activityType, view, containerCoordinates, containerDimension, containerDimensions);
@@ -195,6 +195,17 @@ public abstract class ActivityTemplate {
                     ((MemoryActivity)this).secondPosition = Integer.parseInt(view.getTag().toString().split("-")[1]);
                     return new String[]{String.valueOf(((MemoryActivity)this).firstImageID), String.valueOf(secondImageID), String.valueOf(((MemoryActivity)this).firstPosition), String.valueOf(((MemoryActivity)this).secondPosition)};
                 }
+                break;
+            case PUZZLE:
+                distanceToLeft = view.getX() - event.getRawX();
+                distanceToTop = headerTextHeight + view.getY() - event.getRawY();
+
+                int index = (int) view.getTag();
+                float scaleFactorToPuzzle = ((PuzzleActivity)this).scaleFactorsToPuzzle[(int)view.getTag()];
+
+                Animations.scaleAnimation(view, true, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_INCREASE_PIVOTS[index]);
+
+                view.bringToFront();
                 break;
             default:
                 distanceToLeft = view.getX() - event.getRawX();
@@ -296,6 +307,15 @@ public abstract class ActivityTemplate {
                 else {
                     Animations.translateAnimation(view, imagesCoordinates, index);
                 }
+                break;
+            case PUZZLE:
+                index = (int)view.getTag();
+                ((PuzzleActivity)this).piecesCoordinates[index].set((int)view.getX(), (int)view.getY());
+                PuzzleActivity.imagesCounter++;
+
+                if (PuzzleActivity.imagesCounter == PuzzleConstants.PIECES_NUMBER)
+                    /* eventsResult is created only to identify the end of pieces movements */
+                    eventsResult = new String[0];
                 break;
             case MEMORY:
                 break;
