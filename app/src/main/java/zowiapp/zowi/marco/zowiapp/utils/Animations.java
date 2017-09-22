@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -16,6 +17,7 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
@@ -39,19 +41,20 @@ public class Animations {
         animatorSet.start();
     }
 
-    public static void scaleAnimation(View view, float scaleFactorToPuzzle, float[] pivots) {
-        int drawableWidth = ((ImageView)view).getDrawable().getIntrinsicWidth();
-        int drawableHeight = ((ImageView)view).getDrawable().getIntrinsicHeight();
-        Log.i("scaleAnimation", "scaleFactorToPuzzle: " + scaleFactorToPuzzle);
+    public static void scaleAnimation(View view, boolean increaseSize, float scaleFactorToPuzzle, float[] pivots) {
+        float scale = increaseSize ? scaleFactorToPuzzle : 1f/scaleFactorToPuzzle;
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", scale);
+        scaleX.setDuration(SCALE_ANIMATION_DURATION);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(view, "scaleY",scale);
+        scaleY.setDuration(SCALE_ANIMATION_DURATION);
 
-        ScaleAnimation anim = new ScaleAnimation(
-                1f, scaleFactorToPuzzle,
-                1f, scaleFactorToPuzzle,
-                Animation.RELATIVE_TO_SELF, 0,
-                Animation.RELATIVE_TO_SELF, 0);
-        anim.setFillAfter(true);
-        anim.setDuration(SCALE_ANIMATION_DURATION);
-        view.startAnimation(anim);
+        /* Pivots are set to 0 to avoid problems getting x and y position of the views */
+        view.setPivotX(0);
+        view.setPivotY(0);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(scaleX).with(scaleY);
+        animatorSet.start();
     }
 
     public static void shadeAnimation(View view, float from, float to) {

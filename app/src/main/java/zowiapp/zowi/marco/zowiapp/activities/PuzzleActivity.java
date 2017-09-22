@@ -2,7 +2,6 @@ package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -114,7 +113,7 @@ public class PuzzleActivity extends ActivityTemplate {
             /* The length of piecesImages is the number of possible shapes */
             randomShapeIndex = new Random().nextInt(piecesImages.length);
             /* Depending on the shape of the puzzle, the coordinates factors are stored */
-            double[][] coordinatesFactors = PuzzleConstants.SHAPES_COORDINATES_FACTORS[randomShapeIndex];
+            double[][] coordinatesFactors = PuzzleConstants.PUZZLE_SHAPES_COORDINATES_FACTORS[randomShapeIndex];
 
             /* This loop stores the coordinates of the puzzle */
             for (int i=0; i<piecesCoordinates.length; i++) {
@@ -138,7 +137,9 @@ public class PuzzleActivity extends ActivityTemplate {
             /* The length of piecesImages[i] is the number of possible images */
             int randomImageIndex = new Random().nextInt(piecesImages[0].length);
 
-            imagesHandler.loadPuzzleImages(contentContainer, piecesImages[randomShapeIndex][randomImageIndex], PuzzleConstants.PIECES_NUMBER, piecesCoordinates, piecesDimensions, scaleFactorsToPuzzle, PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex], puzzleContainerSide);
+            imagesHandler.loadPuzzleImages(contentContainer, piecesImages[randomShapeIndex][randomImageIndex], PuzzleConstants.PIECES_NUMBER,
+                    puzzleCoordinates, piecesCoordinates, piecesDimensions, scaleFactorsToPuzzle, PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex],
+                    PuzzleConstants.CORRECTION_SHAPES_COORDINATES_FACTORS[randomShapeIndex], puzzleContainerSide);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "puzzleContainer");
@@ -147,7 +148,6 @@ public class PuzzleActivity extends ActivityTemplate {
 
     void processTouchEvent(View view, MotionEvent event) {
         float left, right, top, bottom;
-        float scaleFactorToPuzzle = -1;
 
         LinearLayout headerText = (LinearLayout) gameParameters.findViewById(R.id.header_text);
         int headerTextHeight = 0;
@@ -165,14 +165,11 @@ public class PuzzleActivity extends ActivityTemplate {
 
                 int index = (int) view.getTag();
 
-                scaleFactorToPuzzle = scaleFactorsToPuzzle[(int)view.getTag()][0] != 0 ?
+                float scaleFactorToPuzzle = scaleFactorsToPuzzle[(int)view.getTag()][0] != 0 ?
                         scaleFactorsToPuzzle[index][0] :
                         scaleFactorsToPuzzle[index][1];
 
-                Log.i("touchEvent", "index: " + index);
-                Log.i("touchEvent", "scaleFactorToPuzzle: " + scaleFactorToPuzzle);
-
-                Animations.scaleAnimation(view, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index]);
+                Animations.scaleAnimation(view, true, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_INCREASE_PIVOTS[index]);
 
                 /* Bring the view to the front in order to avoid strange effects when dragging, moving the piece
                    begind the others */
@@ -198,20 +195,19 @@ public class PuzzleActivity extends ActivityTemplate {
                     view.setX(left);
                     view.setY(top);
                 }
-                Log.i("View position", view.getX() + ", " + view.getY());
                 break;
             case MotionEvent.ACTION_UP:
                 index = (int) view.getTag();
 
-                boolean correctAnswer = ((PuzzleChecker) checker).check(gameParameters, view.getX(), view.getY(), correction[index]);
+//                boolean correctAnswer = ((PuzzleChecker) checker).check(gameParameters, view.getX()/2, view.getY()/2, correction[index]);
 
-                if (correctAnswer) {
-                    Animations.translateAnimation(view, correction, index);
-                }
-                else {
-                    Animations.translateAnimation(view, piecesCoordinates, index);
-                    Animations.scaleAnimation(view, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_PIVOTS[index]);
-                }
+//                if (correctAnswer) {
+//                    Animations.translateAnimation(view, puzzleCoordinates, index);
+//                }
+//                else {
+//                    Animations.translateAnimation(view, piecesCoordinates, index);
+//                    Animations.scaleAnimation(view, false, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_DECREASE_PIVOTS[index]);
+//                }
 
                 break;
             default:

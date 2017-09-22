@@ -1,6 +1,7 @@
 package zowiapp.zowi.marco.zowiapp.utils;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
@@ -16,15 +17,16 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.LogicBlocksConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColouredGridConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityTemplate;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
 import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
-import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 
 public class ImagesHandler {
 
@@ -234,7 +236,26 @@ public class ImagesHandler {
         }
     }
 
-    public void loadPuzzleImages(ViewGroup contentContainer, String[] images, int imagesNumber, Point[] coordinates, Point[] dimensions, float[][] scaleFactorsToPuzzle, double[][] piecesToPuzzle, int puzzleContainerSide) {
+    private void fixDimensions(String image, Point[] dimensions, int index) {
+        int resourceId = context.getResources().getIdentifier(image, CommonConstants.DRAWABLE, context.getPackageName());
+
+        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+        bitmapOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(context.getResources(), resourceId, bitmapOptions);
+        int bitmapHeight = bitmapOptions.outHeight;
+        int bitmapWidth =  bitmapOptions.outWidth;
+
+        float scaleFactor = bitmapWidth < bitmapHeight || bitmapWidth == bitmapHeight ?
+                (float)dimensions[index].y/(float)bitmapHeight : (float)dimensions[index].x/(float)bitmapWidth;
+
+        /* ImageView dimensions are scale to fit the content (and to avoid problems with correction later) */
+        int width = (int)(bitmapWidth*scaleFactor);
+        int height = (int)(bitmapHeight*scaleFactor);
+
+        dimensions[index].set(width, height);
+    }
+
+    public void loadPuzzleImages(ViewGroup contentContainer, String[] images, int imagesNumber, Point[] puzzleCoordinates, Point[] coordinates, Point[] dimensions, float[][] scaleFactorsToPuzzle, double[][] piecesToPuzzle, double[][] piecesToCorrection, int puzzleContainerSide) {
         ArrayList<Integer> imagesArrayList = new ArrayList<>();
 
         int randomImagesIndex;
@@ -242,7 +263,9 @@ public class ImagesHandler {
         for (int i=0; i<imagesNumber; i++) {
             randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, images.length, true);
 
-            correction[i] = coordinates[randomImagesIndex];
+            correction[i] = puzzleCoordinates[randomImagesIndex];
+
+            fixDimensions(images[randomImagesIndex], dimensions, i);
             loadPuzzleImage(contentContainer, images[randomImagesIndex], coordinates, dimensions, scaleFactorsToPuzzle, puzzleContainerSide, piecesToPuzzle, randomImagesIndex, i);
         }
 
@@ -357,7 +380,7 @@ public class ImagesHandler {
         Picasso.with(context).load(resourceId).into(image, new Callback() {
             @Override
             public void onSuccess() {
-                float scaleFactorToPuzzle = dimensions[index].x < dimensions[index].y ?
+                float scaleFactorToPuzzle = dimensions[index].x < dimensions[index].y || dimensions[index].x == dimensions[index].y ?
                         ((float)puzzleContainerSide*(float)piecesToPuzzle[randomImagesIndex][0])/(float)dimensions[index].x :
                         ((float)puzzleContainerSide*(float)piecesToPuzzle[randomImagesIndex][1])/(float)dimensions[index].y;
 
@@ -367,8 +390,6 @@ public class ImagesHandler {
             @Override
             public void onError() {}
         });
-        image.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
-
         image.setTag(index);
 
         container.addView(image);

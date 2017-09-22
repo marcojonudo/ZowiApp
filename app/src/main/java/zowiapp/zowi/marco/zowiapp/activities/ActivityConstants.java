@@ -96,19 +96,27 @@ public class ActivityConstants {
         static final String JSON_PARAMETER_IMAGES = "images";
         static final int PIECES_NUMBER = 5;
         //TODO Change puzzle dimensions
-        public static final double[][][] PIECES_TO_PUZZLE = {
+        static final double[][][] PIECES_TO_PUZZLE = {
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
         };
         public static final int DISTANCE_LIMIT = 200;
-        static final double[][][] SHAPES_COORDINATES_FACTORS = {
-                {{0.25, 0.25}, {0.25, 0.5}, {0.25, 0.75}, {0.75, 0.25}, {0.75, 0.75}},
-                {{0.25, 0.25}, {0.25, 0.5}, {0.25, 0.75}, {0.75, 0.25}, {0.75, 0.75}},
-                {{0.25, 0.25}, {0.25, 0.5}, {0.25, 0.75}, {0.75, 0.25}, {0.75, 0.75}}
+        static final double[][][] PUZZLE_SHAPES_COORDINATES_FACTORS = {
+                {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
+                {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
+                {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}}
         };
-        static final float[][] SCALE_ANIMATION_PIVOTS = {
+        static final double[][][] CORRECTION_SHAPES_COORDINATES_FACTORS = {
+                {{0.25, 0.25}, {0.25, 0.5}, {0.25, 0.25}, {0.25, 0.25}, {0.25, 0.25}},
+                {{0.25, 0.25}, {0.25, 0.5}, {0.25, 0.25}, {0.25, 0.25}, {0.25, 0.25}},
+                {{0.25, 0.25}, {0.25, 0.5}, {0.25, 0.25}, {0.25, 0.25}, {0.25, 0.25}}
+        };
+        static final float[][] SCALE_ANIMATION_INCREASE_PIVOTS = {
                 {0, 0}, {0, 0.5f}, {0, 1}, {1, 0}, {1, 1}
+        };
+        static final float[][] SCALE_ANIMATION_DECREASE_PIVOTS = {
+                {1, 1}, {1, 0.5f}, {1, 0}, {0, 1}, {0, 0}
         };
         //TODO This factors are correct, but I only use shape 1 for testing
 //        protected static final double[][][] SHAPES_COORDINATES_FACTORS = {
