@@ -3,18 +3,18 @@ package zowiapp.zowi.marco.zowiapp.utils;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewOverlay;
+import android.widget.Button;
 
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.zowi.Zowi;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
-
-/**
- * Created by Marco on 26/05/2017.
- */
 
 public class Layout {
 
@@ -57,5 +57,18 @@ public class Layout {
     public static void closeAlertDialog() {
         if (alertDialog != null)
             alertDialog.cancel();
+    }
+
+    public static Button createFloatingCheckButton(LayoutInflater inflater, ViewGroup contentContainer, Point coordinates, Point dimensions) {
+        Button checkButton = (Button) inflater.inflate(R.layout.floating_check_button, contentContainer, false);
+
+        checkButton.setWidth(dimensions.x);
+        checkButton.setHeight(dimensions.y);
+        checkButton.setX(coordinates.x);
+        checkButton.setY(coordinates.y);
+
+        contentContainer.addView(checkButton);
+
+        return checkButton;
     }
 }

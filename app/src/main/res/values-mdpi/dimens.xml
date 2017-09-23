@@ -21,6 +21,8 @@
     <dimen name="progress_dialog_width">475dp</dimen>
     <dimen name="progress_dialog_height">300dp</dimen>
     <dimen name="progress_dialog_padding">40dp</dimen>
+    <dimen name="floating_check_button_width">250dp</dimen>
+    <dimen name="floating_check_button_height">90dp</dimen>
 
     <!-- Main activity dimensions -->
     <dimen name="main_title_font_size">75sp</dimen>
