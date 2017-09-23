@@ -302,7 +302,7 @@ public abstract class ActivityTemplate {
                     ((FoodPyramidActivity)this).imageViews[FoodPyramidActivity.imagesCounter] = (ImageView) view;
                     FoodPyramidActivity.imagesCounter++;
                     if (FoodPyramidActivity.imagesCounter == FoodPyramidConstants.NUMBER_OF_IMAGES)
-                        ((FoodPyramidChecker) checker).check(gameParameters, doubleArrayCorrection, ((FoodPyramidActivity)this).imageViews, imagesCoordinates);
+                        eventsResult = new String[0];
                 }
                 else {
                     Animations.translateAnimation(view, imagesCoordinates, index);

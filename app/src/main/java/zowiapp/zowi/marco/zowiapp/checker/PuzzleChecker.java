@@ -28,7 +28,7 @@ public class PuzzleChecker extends CheckerTemplate {
             }
             sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
             return true;
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 

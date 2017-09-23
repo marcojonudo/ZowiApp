@@ -151,9 +151,8 @@ public class PuzzleActivity extends ActivityTemplate {
         String[] eventsResult = handleEvents(ActivityType.PUZZLE, view, event, null, null);
         if (eventsResult != null) {
             RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
-            ConstraintLayout puzzleContainer = (ConstraintLayout) gameParameters.findViewById(R.id.puzzle_image_container);
 
-            if (contentContainer != null && puzzleContainer != null) {
+            if (contentContainer != null) {
                 Point dimensions = new Point((int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_width),
                                                 (int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_height));
                 Point outCoordinates = new Point(contentContainer.getWidth() - dimensions.x,

@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -19,14 +20,17 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.FoodPyramidConsta
 import zowiapp.zowi.marco.zowiapp.checker.FoodPyramidChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
+import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
+import zowiapp.zowi.marco.zowiapp.utils.Layout;
 
 public class FoodPyramidActivity extends ActivityTemplate {
 
     static int imagesCounter;
     private Point imagesDimensions;
     ImageView[] imageViews;
+    private boolean correctAnswer;
 
     public static void setImagesCounter(int c) {
         imagesCounter = c;
@@ -144,8 +148,26 @@ public class FoodPyramidActivity extends ActivityTemplate {
     void processTouchEvent(View view, MotionEvent event) {
         String[] eventsResult = handleEvents(ActivityType.FOODPYRAMID, view, event, null, null);
         if (eventsResult != null) {
-            boolean correctAnswer = ((FoodPyramidChecker) checker).check(gameParameters, doubleArrayCorrection, imageViews, imagesCoordinates);
-            lastImageMovement(ActivityType.FOODPYRAMID, view, null, null, Integer.parseInt(eventsResult[0]), correctAnswer);
+            RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
+
+            if (contentContainer != null) {
+                Point dimensions = new Point((int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_width),
+                        (int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_height));
+                Point outCoordinates = new Point(contentContainer.getWidth() - dimensions.x,
+                        contentContainer.getHeight());
+                Point inCoordinates = new Point(contentContainer.getWidth() - dimensions.x,
+                        contentContainer.getHeight() - dimensions.y);
+
+                Button checkButton = Layout.createFloatingCheckButton(inflater, contentContainer, outCoordinates, dimensions);
+                checkButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        correctAnswer = ((FoodPyramidChecker) checker).check(gameParameters, doubleArrayCorrection, imageViews, imagesCoordinates);
+                    }
+                });
+
+                Animations.translateAnimation(checkButton, new Point[]{inCoordinates}, 0);
+            }
         }
     }
 
