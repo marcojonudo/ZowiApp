@@ -301,6 +301,7 @@ public abstract class ActivityTemplate {
                     doubleArrayCorrection[FoodPyramidActivity.imagesCounter][1] = correction[step];
                     ((FoodPyramidActivity)this).imageViews[FoodPyramidActivity.imagesCounter] = (ImageView) view;
                     FoodPyramidActivity.imagesCounter++;
+
                     if (FoodPyramidActivity.imagesCounter == FoodPyramidConstants.NUMBER_OF_IMAGES)
                         eventsResult = new String[0];
                 }

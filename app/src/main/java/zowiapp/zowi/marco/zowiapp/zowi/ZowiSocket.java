@@ -12,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.StringBuilderPrinter;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,21 +23,24 @@ import java.util.UUID;
 import zowiapp.zowi.marco.zowiapp.MainActivity;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.utils.Layout;
+import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler;
+import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
 
 public class ZowiSocket {
 
-    private MainActivity mainActivity;
+    private static MainActivity mainActivity;
 
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothReceiver bluetoothReceiver;
     private static OutputStream outputStream;
     private static InputStream inputStream;
 
-    private static final String ZOWI_PROGRAM_ID = "SUPER_ZOWI";
+    public static final String ZOWI_PROGRAM_ID = "SUPER_ZOWI";
     private static final int REQUEST_COARSE_LOCATION = 2;
     private static final String ZOWI_NAME = "Zowi";
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final int BOND_NONE = 10;
+    private static StringBuilder zowiReceivedText = new StringBuilder();
 
     private boolean killThread = false;
 
@@ -124,29 +129,31 @@ public class ZowiSocket {
             inputStream = bluetoothSocket.getInputStream();
 
             Log.i("connectDevice", "Creando hilo");
-            new Thread(new Runnable() {
-                public void run() {
-                    while (!Thread.currentThread().isInterrupted() && !killThread) {
-                        int bytesAvailable = ZowiSocket.isInputStreamAvailable();
-                        if (bytesAvailable > 0) {
-                            byte[] packetBytes = new byte[bytesAvailable];
-                            ZowiSocket.readInputStream(packetBytes);
-
-                            String receivedText = new String(packetBytes, 0, bytesAvailable);
-                            if (receivedText.contains(ZOWI_PROGRAM_ID)) {
-                                Zowi.setConnected(true);
-
-                                Layout.closeProgressDialog();
-                                Layout.drawOverlay(mainActivity, mainActivity.findViewById(R.id.main_activity_container));
-                                Log.i("connectDevice", "ZowiSocket conectado");
-
-                                killThread = true;
-                            }
-
-                        }
-                    }
-                }
-            }).start();
+            Thread zowiSeeScreenThread = ThreadHandler.createThread(ThreadType.ZOWI_CONNECTED);
+            zowiSeeScreenThread.start();
+//            new Thread(new Runnable() {
+//                public void run() {
+//                    while (!Thread.currentThread().isInterrupted() && !killThread) {
+//                        int bytesAvailable = ZowiSocket.isInputStreamAvailable();
+//                        if (bytesAvailable > 0) {
+//                            byte[] packetBytes = new byte[bytesAvailable];
+//                            ZowiSocket.readInputStream(packetBytes);
+//
+//                            String receivedText = new String(packetBytes, 0, bytesAvailable);
+//                            if (receivedText.contains(ZOWI_PROGRAM_ID)) {
+//                                Zowi.setConnected(true);
+//
+//                                Layout.closeProgressDialog();
+//                                Layout.drawOverlay(mainActivity, mainActivity.findViewById(R.id.main_activity_container));
+//                                Log.i("connectDevice", "ZowiSocket conectado");
+//
+//                                killThread = true;
+//                            }
+//
+//                        }
+//                    }
+//                }
+//            }).start();
         }
         catch (IOException e) {
             Layout.drawAlertDialog(mainActivity);
@@ -154,7 +161,15 @@ public class ZowiSocket {
         }
     }
 
-    public static void sendCommand(String command) {
+    public static void setConnected() {
+        Zowi.setConnected(true);
+
+        Layout.closeProgressDialog();
+        Layout.drawOverlay(mainActivity, mainActivity.findViewById(R.id.main_activity_container));
+        Log.i("connectDevice", "ZowiSocket conectado");
+    }
+
+    static void sendCommand(String command) {
         char r = '\r';
 
         try {
@@ -178,7 +193,20 @@ public class ZowiSocket {
 
     public static int readInputStream(byte[] bytes) {
         try {
-            return inputStream.read(bytes);
+            byte[] receivedBytes = new byte[64];
+            int bytesAvailable = isInputStreamAvailable();
+            while (bytesAvailable > 0) {
+                byte[] receivedFragment = new byte[bytesAvailable];
+                inputStream.read(receivedFragment);
+                zowiReceivedText.append(new String(receivedFragment, 0, receivedFragment.length));
+
+                bytesAvailable = isInputStreamAvailable();
+            }
+            int a = inputStream.read(bytes);
+            int v = inputStream.read(bytes);
+            int c = inputStream.read(bytes);
+            int d = inputStream.read(bytes);
+            return a;
         }
         catch (IOException e) {
             e.printStackTrace();
