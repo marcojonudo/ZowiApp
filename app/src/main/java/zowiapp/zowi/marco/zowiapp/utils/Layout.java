@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.ViewOverlay;
 import android.widget.Button;
 
+import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.zowi.Zowi;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
@@ -59,7 +60,12 @@ public class Layout {
             alertDialog.cancel();
     }
 
-    public static Button createFloatingCheckButton(LayoutInflater inflater, ViewGroup contentContainer, Point coordinates, Point dimensions) {
+    public static Button createFloatingCheckButton(GameParameters gameParameters, LayoutInflater inflater, ViewGroup contentContainer) {
+        Point dimensions = new Point((int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_width),
+                (int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_height));
+        Point coordinates = new Point(contentContainer.getWidth() - dimensions.x,
+                contentContainer.getHeight() - dimensions.y);
+
         Button checkButton = (Button) inflater.inflate(R.layout.floating_check_button, contentContainer, false);
 
         checkButton.setWidth(dimensions.x);

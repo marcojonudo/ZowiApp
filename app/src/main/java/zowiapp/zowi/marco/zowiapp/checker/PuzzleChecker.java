@@ -21,8 +21,9 @@ public class PuzzleChecker extends CheckerTemplate {
 
             double distance;
             for (int i=0; i<piecesCoordinates.length; i++) {
-                distance = Math.sqrt(Math.pow(piecesCoordinates[i].x-correction[i].x, 2) + Math.pow(piecesCoordinates[i].x-correction[i].y, 2));
+                distance = Math.sqrt(Math.pow(piecesCoordinates[i].x-correction[i].x, 2) + Math.pow(piecesCoordinates[i].y-correction[i].y, 2));
                 if (distance > PuzzleConstants.DISTANCE_LIMIT) {
+                    sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
                     return false;
                 }
             }

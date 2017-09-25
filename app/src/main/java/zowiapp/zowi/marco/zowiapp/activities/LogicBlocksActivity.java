@@ -89,53 +89,53 @@ public class LogicBlocksActivity extends ActivityTemplate {
             contentContainer.addView(logicBlocksActivityTemplate);
 
             //TODO Estudiar implementacion con Zowi
-            new Thread(new Runnable() {
-                public void run() {
-                    while (!Thread.currentThread().isInterrupted() && !killThread) {
-                        int bytesAvailable = ZowiSocket.isInputStreamAvailable();
-                        if (bytesAvailable > 0) {
-                            byte[] packetBytes = new byte[64];
-                            ZowiSocket.readInputStream(packetBytes);
-
-                            String receivedText = new String(packetBytes, 0, bytesAvailable);
-                            /* sendFinalAck from Zowi sends an 'F' as response to ZOWI_CHECKS_ANSWERS */
-                            if (receivedText.contains("F") && state == WAITING_ZOWI_MOVES) {
-                                state = ZOWI_HAS_MOVED;
-                            }
-                            else if (receivedText.contains("F") && state == ZOWI_HAS_MOVED) {
-                                int imageIndex;
-                                if (receivedText.contains("AD")) {
-                                    imageIndex = 1;
-                                    Animations.rotateAndTranslate(zowi, 0);
-                                }
-                                else if (receivedText.contains("IZ")) {
-                                    imageIndex = 3;
-                                    Animations.rotateAndTranslate(zowi, -90);
-                                }
-                                else if (receivedText.contains("DE")) {
-                                    imageIndex = 5;
-                                    Animations.rotateAndTranslate(zowi, 90);
-                                }
-                                else if (receivedText.contains("AT")) {
-                                    imageIndex = 7;
-                                    Animations.rotateAndTranslate(zowi, 180);
-                                }
-                                else
-                                    imageIndex = -1;
-                                killThread = true;
-                                state = WAITING_ZOWI_MOVES;
-
-                                correctAnswer = ((LogicBlocksChecker) checker).check(gameParameters, imageIndex, correctImageIndex);
-
-                                reactToAnswer(correctAnswer);
-                            }
-
-                        }
-                    }
-                    checkAnswers = false;
-                    killThread = false;
-                }
-            }).start();
+//            new Thread(new Runnable() {
+//                public void run() {
+//                    while (!Thread.currentThread().isInterrupted() && !killThread) {
+//                        int bytesAvailable = ZowiSocket.isInputStreamAvailable();
+//                        if (bytesAvailable > 0) {
+//                            byte[] packetBytes = new byte[64];
+//                            ZowiSocket.readInputStream(packetBytes);
+//
+//                            String receivedText = new String(packetBytes, 0, bytesAvailable);
+//                            /* sendFinalAck from Zowi sends an 'F' as response to ZOWI_CHECKS_ANSWERS */
+//                            if (receivedText.contains("F") && state == WAITING_ZOWI_MOVES) {
+//                                state = ZOWI_HAS_MOVED;
+//                            }
+//                            else if (receivedText.contains("F") && state == ZOWI_HAS_MOVED) {
+//                                int imageIndex;
+//                                if (receivedText.contains("AD")) {
+//                                    imageIndex = 1;
+//                                    Animations.rotateAndTranslate(zowi, 0);
+//                                }
+//                                else if (receivedText.contains("IZ")) {
+//                                    imageIndex = 3;
+//                                    Animations.rotateAndTranslate(zowi, -90);
+//                                }
+//                                else if (receivedText.contains("DE")) {
+//                                    imageIndex = 5;
+//                                    Animations.rotateAndTranslate(zowi, 90);
+//                                }
+//                                else if (receivedText.contains("AT")) {
+//                                    imageIndex = 7;
+//                                    Animations.rotateAndTranslate(zowi, 180);
+//                                }
+//                                else
+//                                    imageIndex = -1;
+//                                killThread = true;
+//                                state = WAITING_ZOWI_MOVES;
+//
+//                                correctAnswer = ((LogicBlocksChecker) checker).check(gameParameters, imageIndex, correctImageIndex);
+//
+//                                reactToAnswer(correctAnswer);
+//                            }
+//
+//                        }
+//                    }
+//                    checkAnswers = false;
+//                    killThread = false;
+//                }
+//            }).start();
         }
         else
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");

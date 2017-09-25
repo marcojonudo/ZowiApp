@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -61,6 +62,8 @@ public class FoodPyramidActivity extends ActivityTemplate {
             imagesCoordinates = Functions.createEmptyPointArray(FoodPyramidConstants.NUMBER_OF_IMAGES);
             imagesDimensions = new Point();
 
+            imagesCounter = -1;
+
             /* The different types of food are stored in different indexes of 'doubleArrayImages' */
             for (int i = 0; i< doubleArrayImages.length; i++) {
                 JSONArray foodTypeImages = jsonImages.getJSONArray(i);
@@ -106,7 +109,6 @@ public class FoodPyramidActivity extends ActivityTemplate {
         else
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
 
-
         if (mainImageContainer != null) {
             /* In this case, the doubleArrayImages has been defined through xml instead of dynamically.
             It still has to be checked if the dps work as expected, and they are rescaled correctly */
@@ -142,32 +144,28 @@ public class FoodPyramidActivity extends ActivityTemplate {
 
                 imagesHandler.loadCategoriesImages(contentContainer, FoodPyramidConstants.NUMBER_OF_IMAGES, imagesCoordinates, imagesDimensions);
             }
+
+            createCheckButton(contentContainer);
         }
+    }
+
+    private void createCheckButton(ViewGroup contentContainer) {
+        Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer);
+
+        checkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean correctAnswer = ((FoodPyramidChecker) checker).check(gameParameters, doubleArrayCorrection, imageViews, imagesCoordinates);
+                if (!correctAnswer)
+                    imageViews = new ImageView[FoodPyramidConstants.NUMBER_OF_IMAGES];
+            }
+        });
     }
 
     void processTouchEvent(View view, MotionEvent event) {
         String[] eventsResult = handleEvents(ActivityType.FOODPYRAMID, view, event, null, null);
         if (eventsResult != null) {
-            RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
 
-            if (contentContainer != null) {
-                Point dimensions = new Point((int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_width),
-                        (int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_height));
-                Point outCoordinates = new Point(contentContainer.getWidth() - dimensions.x,
-                        contentContainer.getHeight());
-                Point inCoordinates = new Point(contentContainer.getWidth() - dimensions.x,
-                        contentContainer.getHeight() - dimensions.y);
-
-                Button checkButton = Layout.createFloatingCheckButton(inflater, contentContainer, outCoordinates, dimensions);
-                checkButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        correctAnswer = ((FoodPyramidChecker) checker).check(gameParameters, doubleArrayCorrection, imageViews, imagesCoordinates);
-                    }
-                });
-
-                Animations.translateAnimation(checkButton, new Point[]{inCoordinates}, 0);
-            }
         }
     }
 

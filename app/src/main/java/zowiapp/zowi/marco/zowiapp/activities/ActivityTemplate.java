@@ -275,35 +275,36 @@ public abstract class ActivityTemplate {
                 /* The center of the view is inside the pyramid */
                 if ((leftOrRight1 < 0)&&(leftOrRight2 > 0) && (aboveOrBelow<0)) {
                     int step;
-                    if (viewCenterY > containerCoordinates[2].y) {
+                    if (viewCenterY > containerCoordinates[2].y)
                         step = 0;
-                    }
                     else if (viewCenterY > containerCoordinates[3].y) {
-                        if (viewCenterX > containerCoordinates[3].x) {
+                        if (viewCenterX > containerCoordinates[3].x)
                             step = 1;
-                        }
-                        else {
+                        else
                             step = 2;
-                        }
                     }
                     else if (viewCenterY > containerCoordinates[4].y) {
-                        if (viewCenterX > containerCoordinates[4].x) {
+                        if (viewCenterX > containerCoordinates[4].x)
                             step = 3;
-                        }
-                        else {
+                        else
                             step = 4;
-                        }
                     }
-                    else {
+                    else
                         step = 5;
+
+                    boolean alreadyInArray = false;
+                    for (int i=0; i<FoodPyramidConstants.NUMBER_OF_IMAGES; i++) {
+                        if (((FoodPyramidActivity)this).imageViews[i] == view)
+                            alreadyInArray = true;
                     }
+
+                    if (!alreadyInArray) {
+                        FoodPyramidActivity.imagesCounter++;
+                        ((FoodPyramidActivity)this).imageViews[FoodPyramidActivity.imagesCounter] = (ImageView) view;
+                    }
+
                     doubleArrayCorrection[FoodPyramidActivity.imagesCounter][0] = imageCategory;
                     doubleArrayCorrection[FoodPyramidActivity.imagesCounter][1] = correction[step];
-                    ((FoodPyramidActivity)this).imageViews[FoodPyramidActivity.imagesCounter] = (ImageView) view;
-                    FoodPyramidActivity.imagesCounter++;
-
-                    if (FoodPyramidActivity.imagesCounter == FoodPyramidConstants.NUMBER_OF_IMAGES)
-                        eventsResult = new String[0];
                 }
                 else {
                     Animations.translateAnimation(view, imagesCoordinates, index);

@@ -31,13 +31,13 @@ public class ZowiSocket {
     private static MainActivity mainActivity;
 
     private BluetoothAdapter bluetoothAdapter;
-    private BluetoothReceiver bluetoothReceiver;
     private static OutputStream outputStream;
     private static InputStream inputStream;
 
     public static final String ZOWI_PROGRAM_ID = "SUPER_ZOWI";
     private static final int REQUEST_COARSE_LOCATION = 2;
     private static final String ZOWI_NAME = "Zowi";
+    private static final String END_COMMAND_IDENTIFIER = "%%";
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final int BOND_NONE = 10;
     private static StringBuilder zowiReceivedText = new StringBuilder();
@@ -107,7 +107,7 @@ public class ZowiSocket {
     }
 
     public void startDiscovery() {
-        bluetoothReceiver = new BluetoothReceiver();
+        BluetoothReceiver bluetoothReceiver = new BluetoothReceiver();
 
         IntentFilter bluetoothFilter = new IntentFilter();
         bluetoothFilter.addAction(BluetoothDevice.ACTION_FOUND);
@@ -191,27 +191,33 @@ public class ZowiSocket {
         return 0;
     }
 
-    public static int readInputStream(byte[] bytes) {
-        try {
-            byte[] receivedBytes = new byte[64];
-            int bytesAvailable = isInputStreamAvailable();
-            while (bytesAvailable > 0) {
-                byte[] receivedFragment = new byte[bytesAvailable];
-                inputStream.read(receivedFragment);
-                zowiReceivedText.append(new String(receivedFragment, 0, receivedFragment.length));
+    public static String readInputStream() {
+        int bytesAvailable = isInputStreamAvailable();
+        String receivedText = storeString(bytesAvailable);
 
-                bytesAvailable = isInputStreamAvailable();
-            }
-            int a = inputStream.read(bytes);
-            int v = inputStream.read(bytes);
-            int c = inputStream.read(bytes);
-            int d = inputStream.read(bytes);
-            return a;
+        while (!receivedText.contains(END_COMMAND_IDENTIFIER)) {
+            bytesAvailable = isInputStreamAvailable();
+            receivedText = storeString(bytesAvailable);
+        }
+
+        zowiReceivedText = new StringBuilder();
+        Log.i("readInputStream", receivedText);
+        return receivedText;
+    }
+
+    private static String storeString(int bytesAvailable) {
+        try {
+            byte[] receivedFragment = new byte[bytesAvailable];
+            inputStream.read(receivedFragment);
+            zowiReceivedText.append(new String(receivedFragment, 0, receivedFragment.length));
+
+            return zowiReceivedText.toString();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        return 0;
+
+        return "";
     }
 
     private class BluetoothReceiver extends BroadcastReceiver {

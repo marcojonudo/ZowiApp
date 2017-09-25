@@ -4,6 +4,7 @@ import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
@@ -141,35 +142,29 @@ public class PuzzleActivity extends ActivityTemplate {
             imagesHandler.loadPuzzleImages(contentContainer, piecesImages[randomShapeIndex][randomImageIndex], PuzzleConstants.PIECES_NUMBER,
                     puzzleCoordinates, piecesCoordinates, piecesDimensions, scaleFactorsToPuzzle, PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex],
                     PuzzleConstants.CORRECTION_SHAPES_COORDINATES_FACTORS[randomShapeIndex], puzzleContainerSide);
+
+            createCheckButton(contentContainer);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "puzzleContainer");
         }
     }
 
+    private void createCheckButton(ViewGroup contentContainer) {
+        Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer);
+
+        checkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((PuzzleChecker) checker).check(gameParameters, piecesCoordinates, correction);
+            }
+        });
+    }
+
     void processTouchEvent(View view, MotionEvent event) {
         String[] eventsResult = handleEvents(ActivityType.PUZZLE, view, event, null, null);
         if (eventsResult != null) {
-            RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
 
-            if (contentContainer != null) {
-                Point dimensions = new Point((int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_width),
-                                                (int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_height));
-                Point outCoordinates = new Point(contentContainer.getWidth() - dimensions.x,
-                                                contentContainer.getHeight());
-                Point inCoordinates = new Point(contentContainer.getWidth() - dimensions.x,
-                                                contentContainer.getHeight() - dimensions.y);
-
-                Button checkButton = Layout.createFloatingCheckButton(inflater, contentContainer, outCoordinates, dimensions);
-                checkButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                    ((PuzzleChecker) checker).check(gameParameters, piecesCoordinates, correction);
-                    }
-                });
-
-                Animations.translateAnimation(checkButton, new Point[]{inCoordinates}, 0);
-            }
         }
     }
 

@@ -8,9 +8,6 @@ import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
 
 public class ZowiActions {
 
-    private static boolean killThread = false;
-    private static boolean sendNewInfo = false;
-
     public static final String CORRECT_ANSWER_COMMAND = "C 1";
     public static final String WRONG_ANSWER_COMMAND = "C 2";
     public static final String TIC_ANSWER_COMMAND = "D 1";
