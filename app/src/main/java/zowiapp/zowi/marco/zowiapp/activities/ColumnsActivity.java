@@ -31,10 +31,7 @@ public class ColumnsActivity extends ActivityTemplate {
     private Point imagesDimensions;
 
     public ColumnsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
-        this.gameParameters = gameParameters;
-        this.activityTitle = activityTitle;
-        this.activityDetails = activityDetails;
-        this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
         checker = new ColumnsChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.COLUMNS);
 
@@ -156,6 +153,12 @@ public class ColumnsActivity extends ActivityTemplate {
         String[] eventsResult = handleEvents(ActivityType.COLUMNS, view, event, null, columnsDimensions);
         if (eventsResult != null) {
             boolean correctAnswer = ((ColumnsChecker) checker).check(gameParameters, eventsResult[1], eventsResult[2]);
+            if (correctAnswer)
+                correctResults++;
+
+            if (correctResults == ColumnsConstants.NUMBER_OF_IMAGES)
+                finishActivity(ActivityType.COLUMNS);
+
             lastImageMovement(ActivityType.COLUMNS, view, null, columnsDimensions, Integer.parseInt(eventsResult[0]), correctAnswer);
         }
     }

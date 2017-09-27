@@ -10,7 +10,6 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/correct_operation_text"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/operations_dialog_guideline"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -18,10 +17,10 @@
         android:paddingBottom="@dimen/button_border_width">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/correct_operation_text"
             android:textSize="@dimen/operations_dialog_text_size"
-            android:text="@string/correct_operation"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:layout_alignParentTop="true"/>
@@ -38,14 +37,28 @@
     <Button
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/continue_operations_button"
+        android:id="@+id/restart_activity_button"
         android:background="@drawable/radius_button_zowi_color"
-        android:text="@string/continue_operation_text"
+        android:text="@string/restart_activity_text"
         android:textAllCaps="false"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/operations_dialog_guideline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/finish_activity_button"
+        app:layout_constraintDimensionRatio="2:1"/>
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/finish_activity_button"
+        android:background="@drawable/radius_button_zowi_color"
+        android:text="@string/finish_activity_text"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/operations_dialog_guideline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/restart_activity_button"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintDimensionRatio="2:1"/>
 

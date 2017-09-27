@@ -350,6 +350,10 @@ public class ImagesHandler {
                 touchListener = new TouchListener(activityType, activityTemplate);
                 imageView.setOnTouchListener(touchListener);
                 break;
+            case COLUMNS:
+                touchListener = new TouchListener(activityType, activityTemplate);
+                imageView.setOnTouchListener(touchListener);
+                break;
             default:
                 break;
         }

@@ -1,11 +1,9 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Guideline;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,7 +31,6 @@ public class OperationsActivity extends ActivityTemplate {
     private int operationsType, mainImageIdentifier;
     private int[] operationsResults;
     private String[][] operations;
-    private Dialog alertDialog;
 
     public OperationsActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
@@ -52,6 +49,7 @@ public class OperationsActivity extends ActivityTemplate {
             JSONArray jsonOperationsImages = activityDetails.getJSONArray(OperationsConstants.JSON_PARAMETER_OPERATIONSIMAGES);
             arrayImages = new String[jsonOperationsImages.length()];
             operations = new String[OperationsConstants.NUMBER_OF_OPERATIONS][OperationsConstants.NUMBER_OF_OPERATORS];
+
             if (jsonOperationsImages.length() != 0) {
                 for (int i=0; i<jsonOperationsImages.length(); i++) {
                     arrayImages[i] = jsonOperationsImages.getString(i);
@@ -153,8 +151,26 @@ public class OperationsActivity extends ActivityTemplate {
                         int index = (int)view.getTag();
                         boolean correctAnswer = ((OperationsChecker) checker).check(gameParameters, index, operationsResults[index]);
 
-                        if (correctAnswer)
+                        if (correctAnswer) {
+                            correctResults++;
                             changeMainImage();
+
+                            if (correctResults == OperationsConstants.NUMBER_OF_OPERATIONS) {
+                                ZowiActions.sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+
+                                /* A timer is created for letting the kids see Zowi mouth with all teeth!! */
+                                new CountDownTimer(3000, 3000) {
+
+                                    @Override
+                                    public void onTick(long l) {}
+
+                                    @Override
+                                    public void onFinish() {
+                                        finishActivity(ActivityType.OPERATIONS);
+                                    }
+                                }.start();
+                            }
+                        }
                     }
                 });
                 if (displayButton != null) {
@@ -184,19 +200,6 @@ public class OperationsActivity extends ActivityTemplate {
     }
 
     private void changeMainImage() {
-        alertDialog = new Dialog(gameParameters, R.style.DialogTheme);
-        alertDialog.setContentView(R.layout.operations_alert_dialog);
-        alertDialog.show();
-
-        Button continueButton = (Button) alertDialog.findViewById(R.id.continue_operations_button);
-        continueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (alertDialog != null)
-                    alertDialog.cancel();
-            }
-        });
-
         ImageView mainImage = (ImageView) gameParameters.findViewById(R.id.main_image);
         mainImageIdentifier--;
         int resourceId = gameParameters.getResources().getIdentifier(image + "_" + mainImageIdentifier, CommonConstants.DRAWABLE, gameParameters.getPackageName());

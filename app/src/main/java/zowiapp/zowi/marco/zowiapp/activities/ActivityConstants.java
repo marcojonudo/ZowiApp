@@ -9,13 +9,13 @@ public class ActivityConstants {
         public static final String JSON_PARAMETER_TYPE = "type";
         static final String JSON_PARAMETER_DESCRIPTION = "description";
         public static final String GUIDED = "GUIDED";
-        public static final String FREE = "FREE";
         static final int AXIS_NUMBER = 2;
         public static final int OVERLAY_HORIZONTAL_RATIO = 8;
         static final int NON_REPEATED_IMAGES_CATEGORY_INDEX = -1;
         static final int DRAG_LIMITS_SIZE = 4;
         static final String TAG_SEPARATOR = "-";
         public static final String DRAWABLE = "drawable";
+        static final int RANDOM_CORRECT_RESULTS_SENCENCE_LIMIT = 6;
     }
 
     static class GridConstants {

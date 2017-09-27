@@ -10,7 +10,7 @@ import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
-public class OperationsChecker extends CheckerTemplate{
+public class OperationsChecker extends CheckerTemplate {
 
     public boolean check(GameParameters gameParameters, int index, int correctResult) {
         boolean correctAnswer = false;

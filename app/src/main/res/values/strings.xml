@@ -15,7 +15,6 @@
     <string name="show_house">¡Enséñale las casas a Zowi!\n¡Él te indicará cuál es la suya!</string>
 
     <string name="correct_operation">¡Fantástico!\nLe has ahorrado a Zowi una visita al dentista.</string>
-    <string name="continue_operation_text">¡Continuar!</string>
 
     <string name="red">Rojo</string>
     <string name="blue">Azul</string>
@@ -28,4 +27,21 @@
 
     <string name="zowi_not_found_title">¡Vaya!</string>
     <string name="zowi_not_found_text">No hemos podido contactar con Zowi ¿Está a tu lado?\n¡Haz clic en su carita para intentarlo de nuevo!"</string>
+
+    <string name="restart_activity_text">¡Otra vez!</string>
+    <string name="finish_activity_text">¡Volver al menú!</string>
+
+    <string name="correct_result_1">¡Genial!\n¡Lo has clavado!</string>
+    <string name="correct_result_2">¡Muy bien!\n¡Eres un fenómeno!</string>
+    <string name="correct_result_3">¡Estupendo!\n¡No se te resiste nada!</string>
+    <string name="correct_result_4">¡Increíble!\n¡No se puede hacer mejor!</string>
+    <string name="correct_result_5">¡Así se hace!\n¡No dejes de aprender!</string>
+    <string name="correct_result_6">¡Enhorabuena!\n¡Zowi está orgulloso de ti!</string>
+    <string name="correct_result_7">¡Mejor imposible!\n¡Lo has clavado!</string>
+
+    <string name="logic_blocks_content_description_1">Imagen que aparece encima de Zowi</string>
+    <string name="logic_blocks_content_description_2">Imagen que aparece a la izquerda de Zowi</string>
+    <string name="logic_blocks_content_description_3">Imagen que aparece en el centro de la cuadrícula</string>
+    <string name="logic_blocks_content_description_4">Imagen que aparece a la derecha de Zowi</string>
+    <string name="logic_blocks_content_description_5">Imagen que aparece debajo de Zowi</string>
 </resources>

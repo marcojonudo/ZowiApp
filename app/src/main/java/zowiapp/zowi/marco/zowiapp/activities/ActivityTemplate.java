@@ -1,12 +1,15 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,10 +17,12 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.util.Random;
+
+import zowiapp.zowi.marco.zowiapp.GameActivity;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.checker.CheckerTemplate;
-import zowiapp.zowi.marco.zowiapp.checker.FoodPyramidChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
@@ -26,6 +31,8 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 
 public abstract class ActivityTemplate {
+
+    static int correctResults = 0;
 
     protected GameParameters gameParameters;
     protected LayoutInflater inflater;
@@ -43,11 +50,16 @@ public abstract class ActivityTemplate {
     private float distanceToLeft, distanceToTop;
     private int insideColumnIndex;
 
+    protected abstract void getParameters();
+    protected abstract void generateLayout();
+
     void initialiseCommonConstants(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         this.gameParameters = gameParameters;
         this.activityTitle = activityTitle;
         this.activityDetails = activityDetails;
         this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        correctResults = 0;
     }
 
     protected void setTitleDescription(GameParameters gameParameters, String activityTitle, String activityDescription) {
@@ -377,10 +389,49 @@ public abstract class ActivityTemplate {
                     Animations.translateAnimation(view, imagesCoordinates, index);
                 }
         }
-
     }
 
-    protected abstract void getParameters();
-    protected abstract void generateLayout();
+    void finishActivity(ActivityType activityType) {
+        correctResults = 0;
+        showFinishAlert(activityType);
+    }
+
+    private void showFinishAlert(ActivityType activityType) {
+        final Dialog alertDialog = new Dialog(gameParameters, R.style.DialogTheme);
+        alertDialog.setContentView(R.layout.finish_alert_dialog);
+        TextView correctOperationText = (TextView) alertDialog.findViewById(R.id.correct_operation_text);
+        String text;
+        switch (activityType) {
+            case OPERATIONS:
+                text = gameParameters.getResources().getString(R.string.correct_operation);
+                break;
+            default:
+                String resource = "correct_result_" + (new Random().nextInt(CommonConstants.RANDOM_CORRECT_RESULTS_SENCENCE_LIMIT) + 1);
+                text = gameParameters.getResources().getString(gameParameters.getResources().getIdentifier(resource, "string", gameParameters.getPackageName()));
+                break;
+        }
+        correctOperationText.setText(text);
+        alertDialog.show();
+
+        Button restartButton = (Button) alertDialog.findViewById(R.id.restart_activity_button);
+        restartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.cancel();
+                gameParameters.recreate();
+            }
+        });
+
+        Button finishButton = (Button) alertDialog.findViewById(R.id.finish_activity_button);
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.cancel();
+                Intent intent = new Intent(gameParameters.getApplicationContext(), GameActivity.class);
+                intent.putExtra("type", "GUIDED");
+                gameParameters.startActivity(intent);
+            }
+        });
+    }
 
 }
