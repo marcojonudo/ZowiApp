@@ -364,8 +364,8 @@ public class ImagesHandler {
 
         switch (activityType) {
             case COLOURED_GRID:
-                width = (int)(dimensions.x + ColouredGridConstants.CELL_FILLED_SPACE);
-                height = (int)(dimensions.y + ColouredGridConstants.CELL_FILLED_SPACE);
+                width = (int)(dimensions.x * ColouredGridConstants.CELL_FILLED_SPACE);
+                height = (int)(dimensions.y * ColouredGridConstants.CELL_FILLED_SPACE);
                 break;
             default:
                 width = dimensions.x;
