@@ -23,6 +23,7 @@
             android:background="@color/black"/>
 
         <ImageView
+            android:contentDescription="@string/memory_content_description_1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/backgroundPaleYellow"/>
@@ -45,6 +46,7 @@
             android:background="@color/black"/>
 
         <ImageView
+            android:contentDescription="@string/memory_content_description_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/backgroundPaleYellow"/>
@@ -67,6 +69,7 @@
             android:background="@color/black"/>
 
         <ImageView
+            android:contentDescription="@string/memory_content_description_3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/backgroundPaleYellow"/>
@@ -89,6 +92,7 @@
             android:background="@color/black"/>
 
         <ImageView
+            android:contentDescription="@string/memory_content_description_4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/backgroundPaleYellow"/>
@@ -111,6 +115,7 @@
             android:background="@color/black"/>
 
         <ImageView
+            android:contentDescription="@string/memory_content_description_5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/backgroundPaleYellow"/>
@@ -133,6 +138,7 @@
             android:background="@color/black"/>
 
         <ImageView
+            android:contentDescription="@string/memory_content_description_6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/backgroundPaleYellow"/>
@@ -155,6 +161,7 @@
             android:background="@color/black"/>
 
         <ImageView
+            android:contentDescription="@string/memory_content_description_7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/backgroundPaleYellow"/>
@@ -177,6 +184,7 @@
             android:background="@color/black"/>
 
         <ImageView
+            android:contentDescription="@string/memory_content_description_8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/backgroundPaleYellow"/>

@@ -7,6 +7,7 @@
     android:id="@+id/zowi_eyes_template">
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_1"
@@ -17,6 +18,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_2"
@@ -27,6 +29,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_3"
@@ -37,6 +40,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_4"
@@ -47,6 +51,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_5"
@@ -57,6 +62,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_6"
@@ -67,6 +73,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_7"
@@ -77,6 +84,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_8"
@@ -87,6 +95,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_9"
@@ -97,6 +106,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_10"
@@ -107,6 +117,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_11"
@@ -117,6 +128,7 @@
         android:layout_margin="@dimen/zowi_eyes_images_margin"/>
 
     <ImageView
+        android:contentDescription="@string/zowi_eyes_image_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/eyes_image_12"

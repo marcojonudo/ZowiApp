@@ -20,6 +20,7 @@
         android:layout_marginEnd="@dimen/control_horizontal_margin">
 
         <ImageView
+            android:contentDescription="@string/grid_content_description_1"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/outer_control"
@@ -31,6 +32,7 @@
             app:layout_constraintRight_toRightOf="parent"/>
 
         <ImageView
+            android:contentDescription="@string/grid_content_description_2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/inner_control"

@@ -39,9 +39,32 @@
     <string name="correct_result_6">¡Enhorabuena!\n¡Zowi está orgulloso de ti!</string>
     <string name="correct_result_7">¡Mejor imposible!\n¡Lo has clavado!</string>
 
+    <string name="custom_alert_dialog_content_description">Imagen de Zowi en el Alert Dialog</string>
     <string name="logic_blocks_content_description_1">Imagen que aparece encima de Zowi</string>
     <string name="logic_blocks_content_description_2">Imagen que aparece a la izquerda de Zowi</string>
     <string name="logic_blocks_content_description_3">Imagen que aparece en el centro de la cuadrícula</string>
     <string name="logic_blocks_content_description_4">Imagen que aparece a la derecha de Zowi</string>
     <string name="logic_blocks_content_description_5">Imagen que aparece debajo de Zowi</string>
+    <string name="food_pyramid_content_description_1">Pirámide alimenticia</string>
+    <string name="food_pyramid_content_description_2">Texto de la pirámide alimenticia</string>
+    <string name="grid_content_description_1">Control exterior</string>
+    <string name="grid_content_description_2">Control interior</string>
+    <string name="memory_content_description_1">Primera imagen del Memory</string>
+    <string name="memory_content_description_2">Segunda imagen del Memory</string>
+    <string name="memory_content_description_3">Tercera imagen del Memory</string>
+    <string name="memory_content_description_4">Cuarta imagen del Memory</string>
+    <string name="memory_content_description_5">Quinta imagen del Memory</string>
+    <string name="memory_content_description_6">Sexta imagen del Memory</string>
+    <string name="memory_content_description_7">Séptmia imagen del Memory</string>
+    <string name="memory_content_description_8">Ocatva imagen del Memory</string>
+    <string name="music_dictation_content_description">Dicatdo musical</string>
+    <string name="operations_main_image_content_description">Imagen principal</string>
+    <string name="operations_2_operator_image_1_content_description">Imagen del primer operador</string>
+    <string name="operations_2_operator_image_2_content_description">Imagen del segundo operador</string>
+    <string name="operations_2_result_image_content_description">Imagen del resultado</string>
+    <string name="seeds_container_1_content_description">Primer contenedor de semillas</string>
+    <string name="seeds_container_2_content_description">Segundo contenedor de semillas</string>
+    <string name="seeds_container_3_content_description">Tercer contenedor de semillas</string>
+    <string name="seeds_container_4_content_description">Cuarto contenedor de semillas</string>
+    <string name="zowi_eyes_image_content_description">Celda de la cuadrícula de imágenes</string>
 </resources>

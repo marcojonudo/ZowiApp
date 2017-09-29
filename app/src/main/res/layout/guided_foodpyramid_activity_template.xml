@@ -16,6 +16,7 @@
         app:layout_constraintRight_toLeftOf="@+id/food_pyramid_guideline">
 
         <ImageView
+            android:contentDescription="@string/food_pyramid_content_description_1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleX="0.88"
@@ -24,6 +25,7 @@
             android:id="@+id/food_pyramid_image"/>
 
         <ImageView
+            android:contentDescription="@string/food_pyramid_content_description_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/food_pyramid_text_smaller"/>
