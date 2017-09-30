@@ -27,6 +27,8 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 
 public class OperationsActivity extends ActivityTemplate {
 
+    private static final String ZOWI_TEETH_IDENTIFIER = "dientes";
+
     private String image;
     private int operationsType, mainImageIdentifier;
     private int[] operationsResults;
@@ -153,7 +155,8 @@ public class OperationsActivity extends ActivityTemplate {
 
                         if (correctAnswer) {
                             correctResults++;
-                            changeMainImage();
+                            if (activityDescription.indexOf(ZOWI_TEETH_IDENTIFIER) > -1)
+                                changeMainImage();
 
                             if (correctResults == OperationsConstants.NUMBER_OF_OPERATIONS) {
                                 ZowiActions.sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
