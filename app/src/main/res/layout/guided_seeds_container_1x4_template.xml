@@ -15,53 +15,45 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/seeds_container_1"
-        android:background="@drawable/square"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/seeds_container_2"
-        android:layout_margin="@dimen/seeds_final_container_margin"
-        android:padding="@dimen/seeds_final_container_padding"/>
+        android:layout_margin="@dimen/seeds_final_container_margin"/>
 
     <ImageView
         android:contentDescription="@string/seeds_container_2_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/seeds_container_2"
-        android:background="@drawable/square"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/seeds_container_1"
         app:layout_constraintRight_toLeftOf="@+id/seeds_container_3"
-        android:layout_margin="@dimen/seeds_final_container_margin"
-        android:padding="@dimen/seeds_final_container_padding"/>
+        android:layout_margin="@dimen/seeds_final_container_margin"/>
 
     <ImageView
         android:contentDescription="@string/seeds_container_3_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/seeds_container_3"
-        android:background="@drawable/square"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/seeds_container_2"
         app:layout_constraintRight_toLeftOf="@+id/seeds_container_4"
-        android:layout_margin="@dimen/seeds_final_container_margin"
-        android:padding="@dimen/seeds_final_container_padding"/>
+        android:layout_margin="@dimen/seeds_final_container_margin"/>
 
     <ImageView
         android:contentDescription="@string/seeds_container_4_content_description"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:id="@+id/seeds_container_4"
-        android:background="@drawable/square"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/seeds_container_3"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_margin="@dimen/seeds_final_container_margin"
-        android:padding="@dimen/seeds_final_container_padding"/>
+        android:layout_margin="@dimen/seeds_final_container_margin"/>
 
 </android.support.constraint.ConstraintLayout>
