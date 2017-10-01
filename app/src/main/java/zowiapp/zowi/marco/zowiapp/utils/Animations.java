@@ -93,6 +93,31 @@ public class Animations {
         setRightIn.start();
     }
 
+    public static void rotateAnimation(View view, String actualDirection, String nextDirection) {
+        float fromValue = 0, toValue = 0;
+        switch (actualDirection) {
+            case "TOP":
+                fromValue = 0;
+                toValue = nextDirection.equals("LEFT") ? -90 : 90;
+                break;
+            case "LEFT":
+                fromValue = -90;
+                toValue = nextDirection.equals("BOTTOM") ? -180 : 0;
+                break;
+            case "BOTTOM":
+                fromValue = -180;
+                toValue = nextDirection.equals("RIGHT") ? -270 : -90;
+                break;
+            case "RIGHT":
+                fromValue = -270;
+                toValue = nextDirection.equals("TOP") ? -360 : -180;
+                break;
+        }
+        ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(view, "rotation", fromValue, toValue);
+        rotateAnimation.setDuration(TRANSLATE_ANIMATION_DURATION);
+        rotateAnimation.start();
+    }
+
     public static void rotateAndTranslate(View v, int degrees) {
         AnimationSet animationSet = new AnimationSet(true);
         RotateAnimation rotateAnimation = new RotateAnimation(0, degrees, v.getWidth()/2, v.getHeight()/2);

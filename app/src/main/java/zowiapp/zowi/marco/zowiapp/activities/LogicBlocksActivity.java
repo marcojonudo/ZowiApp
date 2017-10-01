@@ -1,6 +1,9 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.support.constraint.ConstraintLayout;
+import android.view.View;
+import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +30,8 @@ public class LogicBlocksActivity extends ActivityTemplate {
 
     private int correctImageIndex, state;
     private boolean killThread, checkAnswers, correctAnswer;
+    private String zowiDirection;
+    private String[] nextZowiDirection;
 
     private static final int WAITING_ZOWI_MOVES = 0;
     private static final int ZOWI_HAS_MOVED = 1;
@@ -36,9 +41,6 @@ public class LogicBlocksActivity extends ActivityTemplate {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
         checker = new LogicBlocksChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.LOGIC_BLOCKS);
-        killThread = false;
-        checkAnswers = false;
-        state = WAITING_ZOWI_MOVES;
 
         getParameters();
     }
@@ -50,8 +52,12 @@ public class LogicBlocksActivity extends ActivityTemplate {
             JSONArray jsonImages = activityDetails.getJSONArray(LogicBlocksConstants.JSON_PARAMETER_IMAGES);
             arrayImages = new String[jsonImages.length()];
 
+            zowiDirection = "TOP";
+            nextZowiDirection = new String[]{"LEFT", "TOP", "RIGHT", "BOTTOM"};
+
             for (int i = 0; i<arrayImages.length; i++) { arrayImages[i] = jsonImages.getString(i); }
 
+            imagesHandler.init(arrayImages, null, CommonConstants.NON_REPEATED_IMAGES_CATEGORY_INDEX, null);
             generateLayout();
         }
         catch (JSONException e) {
@@ -84,6 +90,27 @@ public class LogicBlocksActivity extends ActivityTemplate {
 
         if (description != null)
             description.setText(descriptionText);
+
+        Button turnLeftButton = (Button) logicBlocksActivityTemplate.findViewById(R.id.logic_blocks_left_button);
+        Button turnRightButton = (Button) logicBlocksActivityTemplate.findViewById(R.id.logic_blocks_right_button);
+        if (turnLeftButton != null && turnRightButton != null) {
+            turnLeftButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String actualDirection = zowiDirection;
+                    zowiDirection = getNextZowiDirection(true);
+                    Animations.rotateAnimation(zowi, actualDirection, zowiDirection);
+                }
+            });
+            turnRightButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String actualDirection = zowiDirection;
+                    zowiDirection = getNextZowiDirection(false);
+                    Animations.rotateAnimation(zowi, actualDirection, zowiDirection);
+                }
+            });
+        }
 
         if (contentContainer != null) {
             contentContainer.addView(logicBlocksActivityTemplate);
@@ -150,6 +177,17 @@ public class LogicBlocksActivity extends ActivityTemplate {
             int resourceId = gameParameters.getResources().getIdentifier(correctAnswer ? LogicBlocksConstants.ZOWI_HAPPY : LogicBlocksConstants.ZOWI_SAD, CommonConstants.DRAWABLE, gameParameters.getPackageName());
             Picasso.with(gameParameters).load(resourceId).into(zowi);
         }
+    }
+
+    private String getNextZowiDirection(boolean turnLeft) {
+        int currentDirectionIndex = 1;
+        for (int i=0; i<nextZowiDirection.length; i++) {
+            if (nextZowiDirection[i].equals(zowiDirection))
+                currentDirectionIndex = i;
+        }
+
+        currentDirectionIndex = currentDirectionIndex == 0 ? (currentDirectionIndex + nextZowiDirection.length + (turnLeft ? -1 : 1))%4 : (currentDirectionIndex + (turnLeft ? -1 : 1))%4;
+        return nextZowiDirection[currentDirectionIndex];
     }
 
 }

@@ -155,7 +155,7 @@ public class OperationsActivity extends ActivityTemplate {
 
                         if (correctAnswer) {
                             correctResults++;
-                            if (activityDescription.indexOf(ZOWI_TEETH_IDENTIFIER) > -1)
+                            if (activityDescription.contains(ZOWI_TEETH_IDENTIFIER))
                                 changeMainImage();
 
                             if (correctResults == OperationsConstants.NUMBER_OF_OPERATIONS) {
