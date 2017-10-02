@@ -1,6 +1,8 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
+import android.support.constraint.ConstraintLayout;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -59,7 +61,7 @@ public class MusicActivity extends ActivityTemplate {
         if (contentContainer != null) {
             contentContainer.addView(musicActivityTemplate);
 
-            LayoutListener layoutListener = new LayoutListener(MusicConstants.MUSIC_TYPE, contentContainer, this);
+            LayoutListener layoutListener = new LayoutListener(ActivityType.MUSIC, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
         else {
@@ -78,6 +80,14 @@ public class MusicActivity extends ActivityTemplate {
         LinearLayout dictationsContainer = (LinearLayout) gameParameters.findViewById(R.id.dictations_container);
 
         imagesHandler.loadSimpleImages(dictationsContainer, MusicConstants.NUMBER_OF_DICTATIONS, arrayImages.length);
+
+        /* Images tags are loaded into buttons for identifying dictation when clicking */
+        if (dictationsContainer != null) {
+            for (int i=0; i<dictationsContainer.getChildCount(); i++) {
+                ImageView imageView = (ImageView)((ConstraintLayout)((ConstraintLayout) dictationsContainer.getChildAt(0)).getChildAt(0)).getChildAt(0);
+                dictationsContainer.getChildAt(2).setTag(imageView.getTag());
+            }
+        }
     }
 
 }

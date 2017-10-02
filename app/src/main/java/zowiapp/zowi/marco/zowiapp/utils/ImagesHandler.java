@@ -129,7 +129,7 @@ public class ImagesHandler {
 
                 imageView = getImageView(contentContainer, i);
                 customAction(contentContainer, i, randomImagesIndex);
-                loadSimpleImage(imageView, arrayImages[randomImagesIndex], i, UNUSED_INDEX, correction != null ? correction[i] : null);
+                loadSimpleImage(imageView, arrayImages[randomImagesIndex], i, UNUSED_INDEX, randomImagesIndex, correction != null ? correction[i] : null);
             }
         }
 
@@ -191,7 +191,7 @@ public class ImagesHandler {
             case LOGIC_BLOCKS:
                 /* Get the center ImageView for displaying zowi_pointer image */
                 ImageView imageView = (ImageView) contentContainer.getChildAt(4);
-                loadSimpleImage(imageView, LogicBlocksConstants.ZOWI_POINTER , UNUSED_INDEX, UNUSED_INDEX, null);
+                loadSimpleImage(imageView, LogicBlocksConstants.ZOWI_POINTER, UNUSED_INDEX, UNUSED_INDEX, UNUSED_INDEX, null);
                 break;
         }
     }
@@ -205,7 +205,7 @@ public class ImagesHandler {
             randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
 
             imageView = getImageView(contentContainer, randomImagesIndex);
-            loadSimpleImage(imageView, doubleArrayImages[0][i], i, UNUSED_INDEX, "0");
+            loadSimpleImage(imageView, doubleArrayImages[0][i], i, UNUSED_INDEX, UNUSED_INDEX, "0");
 
             coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
         }
@@ -213,7 +213,7 @@ public class ImagesHandler {
             randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
 
             imageView = getImageView(contentContainer, i);
-            loadSimpleImage(imageView, doubleArrayImages[1][i], imagesNumber[0]+i, UNUSED_INDEX, "1");
+            loadSimpleImage(imageView, doubleArrayImages[1][i], imagesNumber[0]+i, UNUSED_INDEX, UNUSED_INDEX, "1");
 
             coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
         }
@@ -231,7 +231,7 @@ public class ImagesHandler {
                 randomPositionIndex = generateSimpleRandomIndex(positionArrayList, positionLimit, true);
 
                 imageView = getImageView(imagesContainer, randomPositionIndex);
-                loadSimpleImage(imageView, arrayImages[randomImagesIndex], randomImagesIndex, randomPositionIndex, null);
+                loadSimpleImage(imageView, arrayImages[randomImagesIndex], randomImagesIndex, randomPositionIndex, UNUSED_INDEX, null);
             }
         }
     }
@@ -291,20 +291,20 @@ public class ImagesHandler {
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
         Picasso.with(context).load(resourceId).into(imageView);
 
-        setTag(imageView, index, UNUSED_INDEX, correction, null);
+        setTag(imageView, index, UNUSED_INDEX, UNUSED_INDEX, correction, null);
         loadTouchListener(imageView);
         contentContainer.addView(imageView);
     }
 
-    private void loadSimpleImage(ImageView imageView, String imageName, int index, int secondIndex, String correction) {
+    private void loadSimpleImage(ImageView imageView, String imageName, int index, int secondIndex, int randomImageIndex, String correction) {
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
         Picasso.with(context).load(resourceId).into(imageView);
-        setTag(imageView, index, secondIndex, correction, imageName);
+        setTag(imageView, index, secondIndex, randomImageIndex, correction, imageName);
 
         loadTouchListener(imageView);
     }
 
-    private void setTag(ImageView imageView, int index, int secondIndex, String correction, String imageName) {
+    private void setTag(ImageView imageView, int index, int secondIndex, int randomImageIndex, String correction, String imageName) {
         String tag;
 
         switch (activityType) {
@@ -322,6 +322,9 @@ public class ImagesHandler {
                 break;
             case COLOURED_GRID:
                 tag = "";
+                break;
+            case MUSIC:
+                tag = String.valueOf(randomImageIndex);
                 break;
             default:
                 tag = index + SEPARATOR + correction;
