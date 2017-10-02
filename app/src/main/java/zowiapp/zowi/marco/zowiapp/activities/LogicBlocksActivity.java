@@ -25,12 +25,15 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 import zowiapp.zowi.marco.zowiapp.utils.Layout;
+import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler;
+import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
+import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
 
 public class LogicBlocksActivity extends ActivityTemplate {
 
-    private int correctImageIndex, state;
+    private int state;
     private boolean killThread, checkAnswers, correctAnswer;
-    private String zowiDirection;
+    private String correctZowiDirection, zowiDirection;
     private String[] nextZowiDirection;
 
     private static final int WAITING_ZOWI_MOVES = 0;
@@ -81,7 +84,23 @@ public class LogicBlocksActivity extends ActivityTemplate {
 
         ImageView chosenImageView = (ImageView) grid.getChildAt(imageViewIndex);
         String[] imageName = chosenImageView.getTag().toString().split(CommonConstants.TAG_SEPARATOR)[1].split("_");
-        correctImageIndex = Integer.parseInt(chosenImageView.getTag().toString().split(CommonConstants.TAG_SEPARATOR)[0]);
+        int correctImageIndex = Integer.parseInt(chosenImageView.getTag().toString().split(CommonConstants.TAG_SEPARATOR)[0]);
+
+        /* Correct direction is defined for checking the activity later */
+        switch (correctImageIndex) {
+            case 1:
+                correctZowiDirection = "TOP";
+                break;
+            case 3:
+                correctZowiDirection = "LEFT";
+                break;
+            case 5:
+                correctZowiDirection = "RIGHT";
+                break;
+            case 7:
+                correctZowiDirection = "BOTTOM";
+                break;
+        }
 
         TextView description = (TextView) gameParameters.findViewById(R.id.activity_description);
         String descriptionText = "¡Escoge el " + imageName[0] + " " + imageName[2] + " de color " + imageName[1] + "!";
@@ -100,6 +119,8 @@ public class LogicBlocksActivity extends ActivityTemplate {
                     String actualDirection = zowiDirection;
                     zowiDirection = getNextZowiDirection(true);
                     Animations.rotateAnimation(zowi, actualDirection, zowiDirection);
+
+                    ZowiActions.sendDataToZowi(ZowiActions.TURN_LEFT);
                 }
             });
             turnRightButton.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +129,8 @@ public class LogicBlocksActivity extends ActivityTemplate {
                     String actualDirection = zowiDirection;
                     zowiDirection = getNextZowiDirection(false);
                     Animations.rotateAnimation(zowi, actualDirection, zowiDirection);
+
+                    ZowiActions.sendDataToZowi(ZowiActions.TURN_RIGHT);
                 }
             });
         }
@@ -175,9 +198,23 @@ public class LogicBlocksActivity extends ActivityTemplate {
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                boolean correctAnswer = ((LogicBlocksChecker) checker).check(gameParameters, imageIndex, correctImageIndex);
-//                if (!correctAnswer)
-//                    imageViews = new ImageView[FoodPyramidConstants.NUMBER_OF_IMAGES];
+                boolean correctAnswer = ((LogicBlocksChecker) checker).check(gameParameters, zowiDirection, correctZowiDirection);
+                if (correctAnswer) {
+                    Thread zowiGoesForwardThread = ThreadHandler.createThread(ThreadType.SIMPLE_FEEDBACK);
+                    zowiGoesForwardThread.start();
+
+                    ZowiActions.sendDataToZowi(ZowiActions.ZOWI_GO_FORWARD);
+
+                    try {
+                        zowiGoesForwardThread.join();
+
+                        finishActivity(ActivityType.LOGIC_BLOCKS);
+                    }
+                    catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
         });
     }

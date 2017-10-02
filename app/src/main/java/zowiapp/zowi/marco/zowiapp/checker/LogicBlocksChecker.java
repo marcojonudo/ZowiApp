@@ -5,9 +5,9 @@ import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 
 public class LogicBlocksChecker extends CheckerTemplate {
 
-    public boolean check(GameParameters gameParameters, int chosenImageTag, int correctIndex) {
-        if (chosenImageTag == correctIndex)
-            sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+    public boolean check(GameParameters gameParameters, String zowiDirection, String correctZowiDirection) {
+        if (zowiDirection.equals(correctZowiDirection))
+            return true;
         else
             sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
 
