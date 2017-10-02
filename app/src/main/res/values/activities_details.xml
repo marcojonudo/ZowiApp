@@ -39,6 +39,6 @@
     </string-array>
 
     <string-array name="free_activities_details">
-        <item>{"type": "LOGIC_BLOCKS", "description": \"¡Identifica la imagen correspondiente al tema!\", "images": [triangulo_rojo_grande, triangulo_rojo_grande, triangulo_rojo_grande, triangulo_rojo_grande, triangulo_rojo_grande, triangulo_rojo_grande, triangulo_rojo_grande, triangulo_rojo_grande]}</item>
+        <item>{"type": "LOGIC_BLOCKS", "description": \"¡Identifica la imagen correspondiente al tema!\", "images": [triangulo_rojo_grande, cuadrado_verde_grande, triangulo_rojo_pequeno, cuadrado_azul_grande, cuadrado_azul_pequeno, cuadrado_verde_pequeno, circulo_amarillo_grande, circulo_amarillo_pequeno]}</item>
     </string-array>
 </resources>

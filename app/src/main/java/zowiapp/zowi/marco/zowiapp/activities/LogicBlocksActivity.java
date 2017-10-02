@@ -2,7 +2,7 @@ package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
-import android.view.animation.Animation;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -24,7 +24,7 @@ import zowiapp.zowi.marco.zowiapp.checker.LogicBlocksChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
-import zowiapp.zowi.marco.zowiapp.zowi.ZowiSocket;
+import zowiapp.zowi.marco.zowiapp.utils.Layout;
 
 public class LogicBlocksActivity extends ActivityTemplate {
 
@@ -115,6 +115,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
         if (contentContainer != null) {
             contentContainer.addView(logicBlocksActivityTemplate);
 
+            createCheckButton(contentContainer);
             //TODO Estudiar implementacion con Zowi
 //            new Thread(new Runnable() {
 //                public void run() {
@@ -166,6 +167,19 @@ public class LogicBlocksActivity extends ActivityTemplate {
         }
         else
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
+    }
+
+    private void createCheckButton(ViewGroup contentContainer) {
+        Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer);
+
+        checkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                boolean correctAnswer = ((LogicBlocksChecker) checker).check(gameParameters, imageIndex, correctImageIndex);
+//                if (!correctAnswer)
+//                    imageViews = new ImageView[FoodPyramidConstants.NUMBER_OF_IMAGES];
+            }
+        });
     }
 
     private void reactToAnswer(boolean correctAnswer) {
