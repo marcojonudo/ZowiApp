@@ -22,6 +22,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.LogicBlocksConstants;
 import zowiapp.zowi.marco.zowiapp.checker.LogicBlocksChecker;
 import zowiapp.zowi.marco.zowiapp.errors.NullElement;
+import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
 import zowiapp.zowi.marco.zowiapp.utils.Layout;
@@ -138,83 +139,32 @@ public class LogicBlocksActivity extends ActivityTemplate {
         if (contentContainer != null) {
             contentContainer.addView(logicBlocksActivityTemplate);
 
-            createCheckButton(contentContainer);
-            //TODO Estudiar implementacion con Zowi
-//            new Thread(new Runnable() {
-//                public void run() {
-//                    while (!Thread.currentThread().isInterrupted() && !killThread) {
-//                        int bytesAvailable = ZowiSocket.isInputStreamAvailable();
-//                        if (bytesAvailable > 0) {
-//                            byte[] packetBytes = new byte[64];
-//                            ZowiSocket.readInputStream(packetBytes);
-//
-//                            String receivedText = new String(packetBytes, 0, bytesAvailable);
-//                            /* sendFinalAck from Zowi sends an 'F' as response to ZOWI_CHECKS_ANSWERS */
-//                            if (receivedText.contains("F") && state == WAITING_ZOWI_MOVES) {
-//                                state = ZOWI_HAS_MOVED;
-//                            }
-//                            else if (receivedText.contains("F") && state == ZOWI_HAS_MOVED) {
-//                                int imageIndex;
-//                                if (receivedText.contains("AD")) {
-//                                    imageIndex = 1;
-//                                    Animations.rotateAndTranslate(zowi, 0);
-//                                }
-//                                else if (receivedText.contains("IZ")) {
-//                                    imageIndex = 3;
-//                                    Animations.rotateAndTranslate(zowi, -90);
-//                                }
-//                                else if (receivedText.contains("DE")) {
-//                                    imageIndex = 5;
-//                                    Animations.rotateAndTranslate(zowi, 90);
-//                                }
-//                                else if (receivedText.contains("AT")) {
-//                                    imageIndex = 7;
-//                                    Animations.rotateAndTranslate(zowi, 180);
-//                                }
-//                                else
-//                                    imageIndex = -1;
-//                                killThread = true;
-//                                state = WAITING_ZOWI_MOVES;
-//
-//                                correctAnswer = ((LogicBlocksChecker) checker).check(gameParameters, imageIndex, correctImageIndex);
-//
-//                                reactToAnswer(correctAnswer);
-//                            }
-//
-//                        }
-//                    }
-//                    checkAnswers = false;
-//                    killThread = false;
-//                }
-//            }).start();
+            LayoutListener layoutListener = new LayoutListener(ActivityType.LOGIC_BLOCKS, contentContainer, this);
+            contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
         else
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
     }
 
-    private void createCheckButton(ViewGroup contentContainer) {
-        Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer);
+    protected void getElementsCoordinates() {
+        RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
+
+        createCheckButton(contentContainer, false);
+    }
+
+    private void createCheckButton(ViewGroup contentContainer, boolean guidedActivity) {
+        Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer, guidedActivity);
 
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean correctAnswer = ((LogicBlocksChecker) checker).check(gameParameters, zowiDirection, correctZowiDirection);
                 if (correctAnswer) {
-                    Thread zowiGoesForwardThread = ThreadHandler.createThread(ThreadType.SIMPLE_FEEDBACK);
-                    zowiGoesForwardThread.start();
+                    ZowiActions.sendDataToZowi(ZowiActions.ZOWI_WALKS_FORWARD);
 
-                    ZowiActions.sendDataToZowi(ZowiActions.ZOWI_GO_FORWARD);
-
-                    try {
-                        zowiGoesForwardThread.join();
-
-                        finishActivity(ActivityType.LOGIC_BLOCKS);
-                    }
-                    catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    ZowiActions.sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+                    finishActivity(ActivityType.LOGIC_BLOCKS, false);
                 }
-
             }
         });
     }

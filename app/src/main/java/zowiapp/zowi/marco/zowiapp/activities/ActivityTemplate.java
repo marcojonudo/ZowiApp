@@ -129,6 +129,10 @@ public abstract class ActivityTemplate {
                 GuideActivity guideActivity = (GuideActivity) activity;
                 guideActivity.getElementsCoordinates();
                 break;
+            case LOGIC_BLOCKS:
+                LogicBlocksActivity logicBlocksActivity = (LogicBlocksActivity) activity;
+                logicBlocksActivity.getElementsCoordinates();
+                break;
             default:
                 break;
         }
@@ -391,12 +395,12 @@ public abstract class ActivityTemplate {
         }
     }
 
-    void finishActivity(ActivityType activityType) {
+    void finishActivity(ActivityType activityType, boolean guidedActivity) {
         correctResults = 0;
-        showFinishAlert(activityType);
+        showFinishAlert(activityType, guidedActivity);
     }
 
-    private void showFinishAlert(ActivityType activityType) {
+    private void showFinishAlert(ActivityType activityType, final boolean guidedActivity) {
         final Dialog alertDialog = new Dialog(gameParameters, R.style.DialogTheme);
         alertDialog.setContentView(R.layout.finish_alert_dialog);
         TextView correctOperationText = (TextView) alertDialog.findViewById(R.id.correct_operation_text);
@@ -428,7 +432,7 @@ public abstract class ActivityTemplate {
             public void onClick(View view) {
                 alertDialog.cancel();
                 Intent intent = new Intent(gameParameters.getApplicationContext(), GameActivity.class);
-                intent.putExtra("type", "GUIDED");
+                intent.putExtra("type", guidedActivity ? "GUIDED" : "FREE");
                 gameParameters.startActivity(intent);
             }
         });

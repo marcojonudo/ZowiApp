@@ -60,13 +60,14 @@ public class Layout {
             alertDialog.cancel();
     }
 
-    public static Button createFloatingCheckButton(GameParameters gameParameters, LayoutInflater inflater, ViewGroup contentContainer) {
+    public static Button createFloatingCheckButton(GameParameters gameParameters, LayoutInflater inflater, ViewGroup contentContainer, boolean guidedActivity) {
         Point dimensions = new Point((int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_width),
                 (int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_height));
         Point coordinates = new Point(contentContainer.getWidth() - dimensions.x,
                 contentContainer.getHeight() - dimensions.y);
 
         Button checkButton = (Button) inflater.inflate(R.layout.floating_check_button, contentContainer, false);
+        checkButton.setBackground(ContextCompat.getDrawable(gameParameters, guidedActivity ? R.drawable.floating_red_check_button : R.drawable.floating_green_check_button));
 
         checkButton.setWidth(dimensions.x);
         checkButton.setHeight(dimensions.y);

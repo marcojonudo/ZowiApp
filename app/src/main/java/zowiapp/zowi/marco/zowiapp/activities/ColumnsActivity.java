@@ -157,7 +157,7 @@ public class ColumnsActivity extends ActivityTemplate {
                 correctResults++;
 
             if (correctResults == ColumnsConstants.NUMBER_OF_IMAGES)
-                finishActivity(ActivityType.COLUMNS);
+                finishActivity(ActivityType.COLUMNS, true);
 
             lastImageMovement(ActivityType.COLUMNS, view, null, columnsDimensions, Integer.parseInt(eventsResult[0]), correctAnswer);
         }

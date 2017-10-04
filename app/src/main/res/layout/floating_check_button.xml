@@ -4,5 +4,4 @@
     android:id="@+id/floating_check_button"
     android:layout_width="@dimen/floating_check_button_width"
     android:layout_height="@dimen/floating_check_button_height"
-    android:background="@drawable/floating_check_button"
     android:text="@string/check"/>

@@ -95,7 +95,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
         if (contentContainer != null) {
             contentContainer.addView(foodPyramidActivityTemplate);
 
-            LayoutListener layoutListener = new LayoutListener(FoodPyramidConstants.FOODPYRAMID_TYPE, contentContainer, this);
+            LayoutListener layoutListener = new LayoutListener(ActivityType.FOODPYRAMID, contentContainer, this);
             contentContainer.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         }
     }
@@ -145,12 +145,12 @@ public class FoodPyramidActivity extends ActivityTemplate {
                 imagesHandler.loadCategoriesImages(contentContainer, FoodPyramidConstants.NUMBER_OF_IMAGES, imagesCoordinates, imagesDimensions);
             }
 
-            createCheckButton(contentContainer);
+            createCheckButton(contentContainer, true);
         }
     }
 
-    private void createCheckButton(ViewGroup contentContainer) {
-        Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer);
+    private void createCheckButton(ViewGroup contentContainer, boolean guidedActivity) {
+        Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer, guidedActivity);
 
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override

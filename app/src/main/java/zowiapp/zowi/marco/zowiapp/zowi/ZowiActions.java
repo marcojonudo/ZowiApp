@@ -13,7 +13,7 @@ public class ZowiActions {
     public static final String TIC_ANSWER_COMMAND = "D 1";
     public static final String X_ANSWER_COMMAND = "D 2";
     public static final String ZOWI_CHECKS_ANSWERS = "E";
-    public static final String ZOWI_GO_FORWARD = "G";
+    public static final String ZOWI_WALKS_FORWARD = "W";
     public static final String TURN_LEFT = "T 1";
     public static final String TURN_RIGHT = "T 2";
 

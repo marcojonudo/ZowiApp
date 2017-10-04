@@ -143,15 +143,15 @@ public class PuzzleActivity extends ActivityTemplate {
                     puzzleCoordinates, piecesCoordinates, piecesDimensions, scaleFactorsToPuzzle, PuzzleConstants.PIECES_TO_PUZZLE[randomShapeIndex],
                     PuzzleConstants.CORRECTION_SHAPES_COORDINATES_FACTORS[randomShapeIndex], puzzleContainerSide);
 
-            createCheckButton(contentContainer);
+            createCheckButton(contentContainer, true);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "puzzleContainer");
         }
     }
 
-    private void createCheckButton(ViewGroup contentContainer) {
-        Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer);
+    private void createCheckButton(ViewGroup contentContainer, boolean guidedActivity) {
+        Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer, guidedActivity);
 
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override

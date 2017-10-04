@@ -169,7 +169,7 @@ public class OperationsActivity extends ActivityTemplate {
 
                                     @Override
                                     public void onFinish() {
-                                        finishActivity(ActivityType.OPERATIONS);
+                                        finishActivity(ActivityType.OPERATIONS, true);
                                     }
                                 }.start();
                             }

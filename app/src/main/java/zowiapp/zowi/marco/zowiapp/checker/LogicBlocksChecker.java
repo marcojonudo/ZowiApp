@@ -11,7 +11,7 @@ public class LogicBlocksChecker extends CheckerTemplate {
         else
             sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
 
-        return true;
+        return false;
     }
 
 }
