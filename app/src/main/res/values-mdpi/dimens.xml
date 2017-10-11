@@ -45,6 +45,8 @@
     <dimen name="control_vertical_margin">175dp</dimen>
     <dimen name="control_horizontal_margin">20dp</dimen>
 
+    <dimen name="go_text_size">50sp</dimen>
+
     <dimen name="grid_vertical_margin">25dp</dimen>
     <dimen name="grid_horizontal_margin">20dp</dimen>
     <dimen name="grid_cell_margin">4dp</dimen>

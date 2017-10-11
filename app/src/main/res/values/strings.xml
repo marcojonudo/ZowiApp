@@ -12,6 +12,8 @@
 
     <string name="equals">=</string>
 
+    <string name="grid_go">¡Ir!</string>
+
     <string name="show_house">¡Enséñale las casas a Zowi!\n¡Él te indicará cuál es la suya!</string>
 
     <string name="correct_operation">¡Fantástico!\nLe has ahorrado a Zowi una visita al dentista.</string>
@@ -31,6 +33,9 @@
     <string name="restart_activity_text">¡Otra vez!</string>
     <string name="finish_activity_text">¡Volver al menú!</string>
 
+    <string name="logic_blocks_turn_left">Girar izquierda</string>
+    <string name="logic_blocks_turn_right">Girar derecha</string>
+
     <string name="correct_result_1">¡Genial!\n¡Lo has clavado!</string>
     <string name="correct_result_2">¡Muy bien!\n¡Eres un fenómeno!</string>
     <string name="correct_result_3">¡Estupendo!\n¡No se te resiste nada!</string>
@@ -45,6 +50,7 @@
     <string name="logic_blocks_content_description_3">Imagen que aparece en el centro de la cuadrícula</string>
     <string name="logic_blocks_content_description_4">Imagen que aparece a la derecha de Zowi</string>
     <string name="logic_blocks_content_description_5">Imagen que aparece debajo de Zowi</string>
+    <string name="grid_movement_cell_content_description">Celda para las flechas de dirección</string>
     <string name="food_pyramid_content_description_1">Pirámide alimenticia</string>
     <string name="food_pyramid_content_description_2">Texto de la pirámide alimenticia</string>
     <string name="grid_content_description_1">Control exterior</string>

@@ -118,37 +118,43 @@ public class Animations {
         rotateAnimation.start();
     }
 
-    public static void rotateAndTranslate(View v, int degrees) {
-        AnimationSet animationSet = new AnimationSet(true);
-        RotateAnimation rotateAnimation = new RotateAnimation(0, degrees, v.getWidth()/2, v.getHeight()/2);
-        rotateAnimation.setDuration(TRANSLATE_ANIMATION_DURATION);
+    public static AnimatorSet rotateAndTranslate(View view, String actualDirection, String nextDirection, Point[] coordinates, int index) {
+        ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), coordinates[index].x);
+        animX.setDuration(TRANSLATE_ANIMATION_DURATION);
+        ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), coordinates[index].y);
+        animY.setDuration(TRANSLATE_ANIMATION_DURATION);
 
-        int[] translation = null;
-        switch (degrees) {
-            case 0:
-                translation = new int[]{0, -v.getHeight()};
+        float fromValue = 0, toValue = 0;
+        switch (actualDirection) {
+            case "UP":
+                fromValue = 0;
+                toValue = nextDirection.equals("LEFT") ? -90 : 90;
                 break;
-            case 90:
-                translation = new int[]{-v.getWidth(), 0};
+            case "LEFT":
+                fromValue = -90;
+                toValue = nextDirection.equals("BOTTOM") ? -180 : 0;
                 break;
-            case -90:
-                translation = new int[]{v.getWidth(), 0};
+            case "DOWN":
+                fromValue = -180;
+                toValue = nextDirection.equals("RIGHT") ? -270 : -90;
                 break;
-            case 180:
-                translation = new int[]{0, v.getHeight()};
-                break;
-            default:
-                translation = new int[]{0, 0};
+            case "RIGHT":
+                fromValue = -270;
+                toValue = nextDirection.equals("UP") ? -360 : -180;
                 break;
         }
-        TranslateAnimation translateAnimation = new TranslateAnimation(0, translation[0], 0, translation[1]);
-        translateAnimation.setDuration(TRANSLATE_ANIMATION_DURATION);
-        translateAnimation.setFillAfter(true);
+        toValue = nextDirection.equals(actualDirection) ? 0 : 0;
 
-        animationSet.addAnimation(rotateAnimation);
-        animationSet.addAnimation(translateAnimation);
+        ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(view, "rotation", fromValue, toValue);
+        rotateAnimation.setDuration(TRANSLATE_ANIMATION_DURATION);
+        rotateAnimation.start();
 
-        v.startAnimation(animationSet);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(rotateAnimation);
+        animatorSet.play(animX).with(animY).after(TRANSLATE_ANIMATION_DURATION);
+        animatorSet.start();
+
+        return animatorSet;
     }
 
 }

@@ -25,19 +25,19 @@
             android:layout_height="0dp"
             android:src="@drawable/outer_control"
             android:id="@+id/outer_control"
-            android:tag="OUTER"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
 
-        <ImageView
+        <Button
             android:contentDescription="@string/grid_content_description_2"
+            android:textSize="@dimen/default_font_size"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@drawable/inner_control"
+            android:background="@drawable/inner_control"
             android:id="@+id/inner_control"
-            android:tag="INNER"
+            android:text="@string/grid_go"
             android:scaleX="0.32"
             android:scaleY="0.32"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/guideline1"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25"/>
+        app:layout_constraintGuide_percent="0.3"/>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/guideline2"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75"/>
+        app:layout_constraintGuide_percent="0.8"/>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
@@ -96,7 +96,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintDimensionRatio="1:7">
 
-            <View
+            <ImageView
+                android:contentDescription="@string/grid_movement_cell_content_description"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:id="@+id/movement_cell1"
@@ -108,7 +109,8 @@
                 app:layout_constraintDimensionRatio="1:1"
                 android:layout_margin="@dimen/movements_cell_margin"/>
 
-            <View
+            <ImageView
+                android:contentDescription="@string/grid_movement_cell_content_description"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:id="@+id/movement_cell2"
@@ -120,7 +122,8 @@
                 app:layout_constraintDimensionRatio="1:1"
                 android:layout_margin="@dimen/movements_cell_margin"/>
 
-            <View
+            <ImageView
+                android:contentDescription="@string/grid_movement_cell_content_description"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:id="@+id/movement_cell3"
@@ -132,7 +135,8 @@
                 app:layout_constraintDimensionRatio="1:1"
                 android:layout_margin="@dimen/movements_cell_margin"/>
 
-            <View
+            <ImageView
+                android:contentDescription="@string/grid_movement_cell_content_description"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:id="@+id/movement_cell4"
@@ -144,7 +148,8 @@
                 app:layout_constraintDimensionRatio="1:1"
                 android:layout_margin="@dimen/movements_cell_margin"/>
 
-            <View
+            <ImageView
+                android:contentDescription="@string/grid_movement_cell_content_description"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:id="@+id/movement_cell5"
@@ -156,7 +161,8 @@
                 app:layout_constraintDimensionRatio="1:1"
                 android:layout_margin="@dimen/movements_cell_margin"/>
 
-            <View
+            <ImageView
+                android:contentDescription="@string/grid_movement_cell_content_description"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:id="@+id/movement_cell6"
@@ -168,7 +174,8 @@
                 app:layout_constraintDimensionRatio="1:1"
                 android:layout_margin="@dimen/movements_cell_margin"/>
 
-            <View
+            <ImageView
+                android:contentDescription="@string/grid_movement_cell_content_description"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:id="@+id/movement_cell7"
@@ -181,7 +188,6 @@
                 android:layout_margin="@dimen/movements_cell_margin"/>
 
         </android.support.constraint.ConstraintLayout>
-
 
         <Button
             android:layout_width="50dp"

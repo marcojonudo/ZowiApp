@@ -66,18 +66,15 @@ public abstract class ActivityTemplate {
         TextView title = (TextView) gameParameters.findViewById(R.id.activity_title);
         TextView description = (TextView) gameParameters.findViewById(R.id.activity_description);
 
-        if (title != null) {
+        if (title != null)
             title.setText(activityTitle);
-        }
-        else {
+        else
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "title");
-        }
-        if (description != null) {
+
+        if (description != null)
             description.setText(activityDescription);
-        }
-        else {
+        else
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "description");
-        }
     }
 
     void setDragLimits(ViewGroup contentContainer) {
@@ -223,6 +220,26 @@ public abstract class ActivityTemplate {
 
                 view.bringToFront();
                 break;
+            case GRID:
+                float x = event.getX();
+                float y = event.getY();
+                float rightCorner = view.getWidth();
+                String touchedZone = "";
+                /* Lines ecuations are used to determine where the user has touched the control */
+                if (x > y) {
+                    if (y < (rightCorner - x))
+                        touchedZone = "UP";
+                    else
+                        touchedZone = "RIGHT";
+                }
+                else {
+                    if (y > (rightCorner - x))
+                        touchedZone = "DOWN";
+                    else
+                        touchedZone = "LEFT";
+                }
+
+                return new String[]{touchedZone};
             default:
                 distanceToLeft = view.getX() - event.getRawX();
                 distanceToTop = headerTextHeight + view.getY() - event.getRawY();
@@ -237,6 +254,8 @@ public abstract class ActivityTemplate {
     private void moveAction(ActivityType activityType, View view, MotionEvent event, int headerTextHeight) {
         switch (activityType) {
             case MEMORY:
+                break;
+            case GRID:
                 break;
             default:
                 float left = event.getRawX() + distanceToLeft;
@@ -267,7 +286,9 @@ public abstract class ActivityTemplate {
     private String[] checkViewInsideContainer(ActivityType activityType, View view, Point[] containerCoordinates, Point containerDimension, Point[] containerDimensions) {
         float viewCenterX = view.getX() + view.getWidth()/2;
         float viewCenterY = view.getY() + view.getHeight()/2;
-        int index = Integer.parseInt(view.getTag().toString().split(CommonConstants.TAG_SEPARATOR)[0]);
+        int index = 0;
+        if (view.getTag() != null)
+            index = Integer.parseInt(view.getTag().toString().split(CommonConstants.TAG_SEPARATOR)[0]);
 
         String[] eventsResult = null;
         String imageCategory;
@@ -336,6 +357,8 @@ public abstract class ActivityTemplate {
                     eventsResult = new String[0];
                 break;
             case MEMORY:
+                break;
+            case GRID:
                 break;
             default:
                 for (int i=0; i<containerCoordinates.length; i++) {

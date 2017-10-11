@@ -16,12 +16,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Random;
 
-import zowiapp.zowi.marco.zowiapp.R;
-import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.LogicBlocksConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColouredGridConstants;
-import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.GridConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityTemplate;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
@@ -196,6 +194,18 @@ public class ImagesHandler {
         }
     }
 
+    public void loadGridImages(ViewGroup contentContainer, Point[] imagesCoordinates, Point dimensions, int[] cells, String[] images) {
+        /* 'cells' contains a number between 1 and 9 or 16 that indicates the cells that will contain an image */
+        /* 'arrayImages' contains the name of the resources */
+        Point[] coordinates = Functions.createEmptyPointArray(images.length);
+        for (int i=0; i<coordinates.length; i++) {
+            coordinates[i].set(imagesCoordinates[cells[i]-1].x, imagesCoordinates[cells[i]-1].y);
+        }
+        for (int i=0; i<cells.length; i++) {
+            loadImage(contentContainer, images[i], coordinates, dimensions, i, null);
+        }
+    }
+
     public void loadZowiEyesImages(ViewGroup contentContainer, int[] imagesNumber, int imagesLimit, Point[] coordinates, Point[] imageViewsCoordinates) {
         ArrayList<Integer> imagesArrayList = new ArrayList<>();
 
@@ -272,7 +282,7 @@ public class ImagesHandler {
         ((PuzzleActivity) activityTemplate).setCorrection(correction);
     }
 
-    public void loadGridImages(ViewGroup contentContainer, String[] images, Point[] coordinates, Point dimensions) {
+    public void loadColouredGridImages(ViewGroup contentContainer, String[] images, Point[] coordinates, Point dimensions) {
         for (int i=0; i<images.length; i++) {
             loadImage(contentContainer, images[i], coordinates, dimensions, i, null);
         }
@@ -323,6 +333,9 @@ public class ImagesHandler {
             case COLOURED_GRID:
                 tag = "";
                 break;
+            case GRID:
+                tag = "zowi" + SEPARATOR + index;
+                break;
             case MUSIC:
                 tag = String.valueOf(randomImageIndex);
                 break;
@@ -366,6 +379,10 @@ public class ImagesHandler {
         int width, height;
 
         switch (activityType) {
+            case GRID:
+                width = (int)(dimensions.x * GridConstants.CELL_FILLED_SPACE);
+                height = (int)(dimensions.y * GridConstants.CELL_FILLED_SPACE);
+                break;
             case COLOURED_GRID:
                 width = (int)(dimensions.x * ColouredGridConstants.CELL_FILLED_SPACE);
                 height = (int)(dimensions.y * ColouredGridConstants.CELL_FILLED_SPACE);

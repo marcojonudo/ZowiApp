@@ -169,7 +169,7 @@ public class ColouredGridActivity extends ActivityTemplate {
             for (int i=0; i<gridImagesCoordinates.length; i++)
                 gridImagesCoordinates[i] = imagesCoordinates[elementsCells[randomIndex][i]];
 
-            imagesHandler.loadGridImages(contentContainer, arrayImages, gridImagesCoordinates, cellDimensions);
+            imagesHandler.loadColouredGridImages(contentContainer, arrayImages, gridImagesCoordinates, cellDimensions);
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "gridContainer");

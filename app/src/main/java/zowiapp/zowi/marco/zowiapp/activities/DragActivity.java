@@ -31,10 +31,7 @@ public class DragActivity extends ActivityTemplate {
     private Point imagesDimensions, containerDimensions;
 
     public DragActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
-        this.gameParameters = gameParameters;
-        this.activityTitle = activityTitle;
-        this.activityDetails = activityDetails;
-        this.inflater = (LayoutInflater) gameParameters.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
         checker = new DragChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.DRAG);
 

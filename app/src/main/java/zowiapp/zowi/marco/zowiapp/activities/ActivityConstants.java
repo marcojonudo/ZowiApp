@@ -18,15 +18,15 @@ public class ActivityConstants {
         static final int RANDOM_CORRECT_RESULTS_SENCENCE_LIMIT = 6;
     }
 
-    static class GridConstants {
-        static final ActivityType GRID_TYPE = ActivityType.GRID;
+    public static class GridConstants {
         static final String JSON_PARAMETER_GRIDSIZE = "gridSize";
         static final String JSON_PARAMETER_CELLS = "cells";
         static final String JSON_PARAMETER_IMAGES = "images";
         static final int COORDINATES_3X3_LENGTH = 9;
         static final int COORDINATES_4X4_LENGTH = 16;
-        static final float CELL_FILLED_SPACE = 0.85f;
+        public static final float CELL_FILLED_SPACE = 0.85f;
         static final String INNER = "INNER";
+        static final int MAX_MOVEMENTS = 7;
     }
 
     static class ColumnsConstants {
