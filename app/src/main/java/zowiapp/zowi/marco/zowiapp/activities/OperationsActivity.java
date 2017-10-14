@@ -75,7 +75,8 @@ public class OperationsActivity extends ActivityTemplate {
 
         /* Set the resource of the left image */
         ImageView mainImage = (ImageView) operationsActivityTemplate.findViewById(R.id.main_image);
-        int resourceId = gameParameters.getResources().getIdentifier(image + "_" + mainImageIdentifier, CommonConstants.DRAWABLE, gameParameters.getPackageName());
+        String mainImageName = activityDescription.contains(ZOWI_TEETH_IDENTIFIER) ? image + "_" + mainImageIdentifier : image;
+        int resourceId = gameParameters.getResources().getIdentifier(mainImageName, CommonConstants.DRAWABLE, gameParameters.getPackageName());
         Picasso.with(gameParameters).load(resourceId).into(mainImage);
 
         /* Array that will allow the correction of the operations */
