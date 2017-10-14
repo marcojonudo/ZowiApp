@@ -175,6 +175,8 @@ public class DragActivity extends ActivityTemplate {
         if (eventsResult != null) {
             boolean correctAnswer = ((DragChecker) checker).check(gameParameters, eventsResult[1], eventsResult[2]);
             lastImageMovement(ActivityType.DRAG, view, containerDimensions, null, Integer.parseInt(eventsResult[0]), correctAnswer);
+
+            checkFinishActivity(ActivityType.DRAG, correctAnswer, dragImagesNumber, true);
         }
     }
 

@@ -17,7 +17,7 @@
 
     <!-- Drag dimensions -->
     <dimen name="drag_images_margin">20dp</dimen>
-    <dimen name="drag_images_container_margin">20dp</dimen>
+    <dimen name="drag_images_container_margin">10dp</dimen>
 
     <!-- Grid dimensions -->
     <dimen name="control_vertical_margin">175dp</dimen>

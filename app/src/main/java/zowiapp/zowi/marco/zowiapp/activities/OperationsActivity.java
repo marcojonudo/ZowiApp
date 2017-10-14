@@ -162,17 +162,21 @@ public class OperationsActivity extends ActivityTemplate {
                             if (correctResults == OperationsConstants.NUMBER_OF_OPERATIONS) {
                                 ZowiActions.sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
 
-                                /* A timer is created for letting the kids see Zowi mouth with all teeth!! */
-                                new CountDownTimer(3000, 3000) {
+                                if (activityDescription.contains(ZOWI_TEETH_IDENTIFIER)) {
+                                    /* A timer is created for letting the kids see Zowi mouth with all teeth!! */
+                                    new CountDownTimer(3000, 3000) {
 
-                                    @Override
-                                    public void onTick(long l) {}
+                                        @Override
+                                        public void onTick(long l) {}
 
-                                    @Override
-                                    public void onFinish() {
-                                        finishActivity(ActivityType.OPERATIONS, true);
-                                    }
-                                }.start();
+                                        @Override
+                                        public void onFinish() {
+                                            finishActivity(ActivityType.OPERATIONS, true);
+                                        }
+                                    }.start();
+                                }
+                                else
+                                    finishActivity(ActivityType.OPERATIONS, true);
                             }
                         }
                     }

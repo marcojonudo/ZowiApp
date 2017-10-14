@@ -11,6 +11,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/drag_guideline"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.35"/>
+        app:layout_constraintGuide_percent="0.45"/>
 
 </android.support.constraint.ConstraintLayout>

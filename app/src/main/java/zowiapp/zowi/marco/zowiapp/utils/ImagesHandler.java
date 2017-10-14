@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Random;
 
+import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.LogicBlocksConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.ColouredGridConstants;
@@ -303,7 +304,6 @@ public class ImagesHandler {
 
     private void loadImage(ViewGroup contentContainer, String imageName, Point[] coordinates, Point dimensions, int index, String correction) {
         ImageView imageView = new ImageView(context);
-
         /* ImageVew is resized to the final size based on the container (grid child) dimensions */
         resizeImageView(imageView, dimensions, coordinates, index);
         /* The resource is loaded into the already resized ImageView */
@@ -387,6 +387,10 @@ public class ImagesHandler {
                 touchListener = new TouchListener(activityType, activityTemplate);
                 imageView.setOnTouchListener(touchListener);
                 break;
+            case DRAG:
+                touchListener = new TouchListener(activityType, activityTemplate);
+                imageView.setOnTouchListener(touchListener);
+                break;
             default:
                 break;
         }
@@ -407,6 +411,7 @@ public class ImagesHandler {
             default:
                 width = dimensions.x;
                 height = dimensions.y;
+                break;
         }
 
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
