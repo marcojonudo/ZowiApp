@@ -415,7 +415,11 @@ public abstract class ActivityTemplate {
                 else {
                     Animations.translateAnimation(view, imagesCoordinates, index);
                 }
+                break;
         }
+
+        if (correctAnswer)
+            view.setOnTouchListener(null);
     }
 
     void finishActivity(ActivityType activityType, boolean guidedActivity) {

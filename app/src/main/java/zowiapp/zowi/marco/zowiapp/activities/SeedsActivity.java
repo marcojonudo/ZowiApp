@@ -34,6 +34,10 @@ public class SeedsActivity extends ActivityTemplate {
         getParameters();
     }
 
+    public void setCorrection(String[] correction) {
+        this.correction = correction;
+    }
+
     @Override
     protected void getParameters() {
         try {

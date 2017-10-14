@@ -24,6 +24,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityTemplate;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.activities.MusicActivity;
 import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
+import zowiapp.zowi.marco.zowiapp.activities.SeedsActivity;
 import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 
 public class ImagesHandler {
@@ -36,6 +37,7 @@ public class ImagesHandler {
     private int oneImageCategoryIndex;
 
     private static final String SEPARATOR = "-";
+    private static final String CONTAINER = "CONTAINER";
     private static final int UNUSED_INDEX = -1;
 
     // region INITIALIZATION FUNCTIONS
@@ -118,6 +120,7 @@ public class ImagesHandler {
 
     public void loadSimpleImages(ViewGroup contentContainer, int imagesNumber, int imagesLimit) {
         ArrayList<Integer> imagesArrayList = new ArrayList<>();
+        String[] newCorrection = new String[correction.length];
 
         int randomImagesIndex;
         ImageView imageView;
@@ -126,12 +129,12 @@ public class ImagesHandler {
                 randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
 
                 imageView = getImageView(contentContainer, i);
-                customAction(contentContainer, i, randomImagesIndex);
-                loadSimpleImage(imageView, arrayImages[randomImagesIndex], i, UNUSED_INDEX, randomImagesIndex, correction != null ? correction[i] : null);
+                customAction(contentContainer, i, randomImagesIndex, newCorrection);
+                loadSimpleImage(imageView, arrayImages[randomImagesIndex], i, UNUSED_INDEX, randomImagesIndex, correction != null ? correction[randomImagesIndex] : null);
             }
         }
 
-        finalAction(contentContainer);
+        finalAction(contentContainer, newCorrection);
     }
 
     private ImageView getImageView(ViewGroup contentContainer, int index) {
@@ -166,7 +169,7 @@ public class ImagesHandler {
         return passedCondition;
     }
 
-    private void customAction(ViewGroup contentContainer, int index, int randomImagesIndex) {
+    private void customAction(ViewGroup contentContainer, int index, int randomImagesIndex, String[] newCorrection) {
         switch (activityType) {
             case MUSIC:
                 ConstraintLayout button = (ConstraintLayout) ((ConstraintLayout) contentContainer.getChildAt(index)).getChildAt(2);
@@ -179,17 +182,23 @@ public class ImagesHandler {
                     }
                 });
                 break;
+            case SEEDS:
+                newCorrection[index] = correction[randomImagesIndex];
+                break;
             default:
                 break;
         }
     }
 
-    private void finalAction(ViewGroup contentContainer) {
+    private void finalAction(ViewGroup contentContainer, String[] newCorrection) {
         switch (activityType) {
             case LOGIC_BLOCKS:
                 /* Get the center ImageView for displaying zowi_pointer image */
                 ImageView imageView = (ImageView) contentContainer.getChildAt(4);
                 loadSimpleImage(imageView, LogicBlocksConstants.ZOWI_POINTER, UNUSED_INDEX, UNUSED_INDEX, UNUSED_INDEX, null);
+                break;
+            case SEEDS:
+                ((SeedsActivity) activityTemplate).setCorrection(newCorrection);
                 break;
         }
     }
@@ -339,6 +348,12 @@ public class ImagesHandler {
             case MUSIC:
                 tag = String.valueOf(randomImageIndex);
                 break;
+            case SEEDS:
+                if (imageView.getTag() != null && imageView.getTag().equals(CONTAINER))
+                    tag = imageView.getTag().toString();
+                else
+                    tag = index + SEPARATOR + correction;
+                break;
             default:
                 tag = index + SEPARATOR + correction;
                 break;
@@ -355,8 +370,10 @@ public class ImagesHandler {
                 imageView.setOnTouchListener(touchListener);
                 break;
             case SEEDS:
-                touchListener = new TouchListener(activityType, activityTemplate);
-                imageView.setOnTouchListener(touchListener);
+                if (!imageView.getTag().equals(CONTAINER)) {
+                    touchListener = new TouchListener(activityType, activityTemplate);
+                    imageView.setOnTouchListener(touchListener);
+                }
                 break;
             case FOODPYRAMID:
                 touchListener = new TouchListener(activityType, activityTemplate);
