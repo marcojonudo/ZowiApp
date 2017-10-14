@@ -146,6 +146,8 @@ public class SeedsActivity extends ActivityTemplate {
         if (eventsResult != null) {
             boolean correctAnswer = ((SeedsChecker) checker).check(gameParameters, eventsResult[1], eventsResult[2]);
             lastImageMovement(ActivityType.SEEDS, view, containerDimensions, null, Integer.parseInt(eventsResult[0]), correctAnswer);
+
+            checkFinishActivity(ActivityType.SEEDS, correctAnswer, SeedsConstants.NUMBER_OF_SEEDS, true);
         }
     }
 

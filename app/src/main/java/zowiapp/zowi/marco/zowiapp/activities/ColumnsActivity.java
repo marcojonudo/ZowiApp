@@ -153,13 +153,9 @@ public class ColumnsActivity extends ActivityTemplate {
         String[] eventsResult = handleEvents(ActivityType.COLUMNS, view, event, null, columnsDimensions);
         if (eventsResult != null) {
             boolean correctAnswer = ((ColumnsChecker) checker).check(gameParameters, eventsResult[1], eventsResult[2]);
-            if (correctAnswer)
-                correctResults++;
-
-            if (correctResults == ColumnsConstants.NUMBER_OF_IMAGES)
-                finishActivity(ActivityType.COLUMNS, true);
-
             lastImageMovement(ActivityType.COLUMNS, view, null, columnsDimensions, Integer.parseInt(eventsResult[0]), correctAnswer);
+
+            checkFinishActivity(ActivityType.COLUMNS, correctAnswer, ColumnsConstants.NUMBER_OF_IMAGES, true);
         }
     }
 

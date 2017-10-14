@@ -156,17 +156,16 @@ public class FoodPyramidActivity extends ActivityTemplate {
             @Override
             public void onClick(View view) {
                 boolean correctAnswer = ((FoodPyramidChecker) checker).check(gameParameters, doubleArrayCorrection, imageViews, imagesCoordinates);
-                if (!correctAnswer)
+                if (correctAnswer)
+                    finishActivity(ActivityType.FOODPYRAMID, true);
+                else
                     imageViews = new ImageView[FoodPyramidConstants.NUMBER_OF_IMAGES];
             }
         });
     }
 
     void processTouchEvent(View view, MotionEvent event) {
-        String[] eventsResult = handleEvents(ActivityType.FOODPYRAMID, view, event, null, null);
-        if (eventsResult != null) {
-
-        }
+        handleEvents(ActivityType.FOODPYRAMID, view, event, null, null);
     }
 
 }

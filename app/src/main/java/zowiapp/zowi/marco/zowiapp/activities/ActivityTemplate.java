@@ -32,7 +32,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 
 public abstract class ActivityTemplate {
 
-    static int correctResults = 0;
+    static int correctResults;
 
     protected GameParameters gameParameters;
     protected LayoutInflater inflater;
@@ -420,6 +420,14 @@ public abstract class ActivityTemplate {
 
         if (correctAnswer)
             view.setOnTouchListener(null);
+    }
+
+    void checkFinishActivity(ActivityType activityType, boolean correctAnswer, int totalResults, boolean guidedActivity) {
+        if (correctAnswer)
+            correctResults++;
+
+        if (correctResults == totalResults)
+            finishActivity(activityType, guidedActivity);
     }
 
     void finishActivity(ActivityType activityType, boolean guidedActivity) {
