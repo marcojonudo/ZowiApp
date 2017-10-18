@@ -162,10 +162,7 @@ public class PuzzleActivity extends ActivityTemplate {
     }
 
     void processTouchEvent(View view, MotionEvent event) {
-        String[] eventsResult = handleEvents(ActivityType.PUZZLE, view, event, null, null);
-        if (eventsResult != null) {
-
-        }
+        handleEvents(ActivityType.PUZZLE, view, event, null, null);
     }
 
 }

@@ -98,8 +98,8 @@ public class ActivityConstants {
         //TODO Change puzzle dimensions
         static final double[][][] PIECES_TO_PUZZLE = {
             {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
-            {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
-            {{0.5, 0.5}, {0.5, 1}, {0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}},
+            {{0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}, {0.25, 1}, {0.25, 1}},
+            {{0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}, {1, 0.5}, {0.5, 0.5}},
         };
         public static final int DISTANCE_LIMIT = 200;
         static final double[][][] PUZZLE_SHAPES_COORDINATES_FACTORS = {

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -265,8 +264,9 @@ public class ImagesHandler {
         int bitmapHeight = bitmapOptions.outHeight;
         int bitmapWidth =  bitmapOptions.outWidth;
 
-        float scaleFactor = bitmapWidth < bitmapHeight || bitmapWidth == bitmapHeight ?
-                (float)dimensions[index].y/(float)bitmapHeight : (float)dimensions[index].x/(float)bitmapWidth;
+        float scaleFactor = dimensions[index].x < dimensions[index].y ?
+                bitmapHeight < dimensions[index].y ? (float)dimensions[index].x/(float)bitmapWidth : (float)dimensions[index].y/(float)bitmapHeight :
+                bitmapWidth < dimensions[index].x ? (float)dimensions[index].y/(float)bitmapHeight : (float)dimensions[index].x/(float)bitmapWidth;
 
         /* ImageView dimensions are scale to fit the content (and to avoid problems with correction later) */
         int width = (int)(bitmapWidth*scaleFactor);
@@ -430,7 +430,7 @@ public class ImagesHandler {
         Picasso.with(context).load(resourceId).into(image, new Callback() {
             @Override
             public void onSuccess() {
-                float scaleFactorToPuzzle = dimensions[index].x < dimensions[index].y || dimensions[index].x == dimensions[index].y ?
+                float scaleFactorToPuzzle = dimensions[index].x <= dimensions[index].y ?
                         ((float)puzzleContainerSide*(float)piecesToPuzzle[randomImagesIndex][0])/(float)dimensions[index].x :
                         ((float)puzzleContainerSide*(float)piecesToPuzzle[randomImagesIndex][1])/(float)dimensions[index].y;
 
