@@ -74,7 +74,6 @@ public class ImagesHandler {
         Random random = new Random();
         int categoryIndex = random.nextInt(categoryLimit);
         int imageIndex = random.nextInt(imageLimit);
-        Log.i("generateCatRandomIndex", ""+insert+": ["+categoryIndex+", "+imageIndex+"]");
 
         if (categoryIndex == individualCategoryLimit && arrayList.get(individualCategoryLimit).size() > 0)
             generateCategoriesRandomIndex(arrayList, categoryLimit, individualCategoryLimit, imageLimit, false);
@@ -135,7 +134,7 @@ public class ImagesHandler {
 
     public void loadSimpleImages(ViewGroup contentContainer, int imagesNumber, int imagesLimit) {
         ArrayList<Integer> imagesArrayList = new ArrayList<>();
-        String[] newCorrection = new String[correction.length];
+        String[] newCorrection = correction != null ? new String[correction.length] : null;
 
         int randomImagesIndex;
         ImageView imageView;
