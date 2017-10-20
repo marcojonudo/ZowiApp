@@ -49,7 +49,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Rojo"
+                android:text="@string/red"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -83,6 +83,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:inputType="number"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toRightOf="@+id/answer_1_guideline_2"
@@ -117,7 +118,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:textAllCaps="false"
-                    android:text="¡Corregir!"/>
+                    android:text="@string/check"/>
 
             </android.support.constraint.ConstraintLayout>
 
@@ -136,7 +137,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Azul"
+                android:text="@string/blue"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -203,7 +204,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:textAllCaps="false"
-                    android:text="¡Corregir!"/>
+                    android:text="@string/check"/>
 
             </android.support.constraint.ConstraintLayout>
 
@@ -222,7 +223,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Verde"
+                android:text="@string/green"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -283,13 +284,13 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:gravity="center"
-                    android:background="@drawable/circle"
+                    android:background="@drawable/radius_button_red"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:textAllCaps="false"
-                    android:text="¡Corregir!"/>
+                    android:text="@string/check"/>
 
             </android.support.constraint.ConstraintLayout>
 
