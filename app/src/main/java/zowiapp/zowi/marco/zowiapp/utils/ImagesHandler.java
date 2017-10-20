@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -73,6 +74,7 @@ public class ImagesHandler {
         Random random = new Random();
         int categoryIndex = random.nextInt(categoryLimit);
         int imageIndex = random.nextInt(imageLimit);
+        Log.i("generateCatRandomIndex", ""+insert+": ["+categoryIndex+", "+imageIndex+"]");
 
         if (categoryIndex == individualCategoryLimit && arrayList.get(individualCategoryLimit).size() > 0)
             generateCategoriesRandomIndex(arrayList, categoryLimit, individualCategoryLimit, imageLimit, false);
@@ -115,6 +117,19 @@ public class ImagesHandler {
             /* Two random indexes are generated, one for the category and another one for the image */
             int[] indexes = generateCategoriesRandomIndex(arrayList, doubleArrayImages.length, oneImageCategoryIndex, doubleArrayImages[0].length, true);
             loadImage(contentContainer, doubleArrayImages[indexes[0]][indexes[1]], coordinates, dimensions, i, correction[indexes[0]]);
+        }
+    }
+    public void loadGuideImages(ViewGroup contentContainer, int imagesNumber, Point[] coordinates, Point dimensions) {
+        ArrayList<ArrayList<Integer>> arrayList = new ArrayList<>();
+        for (String[] category: doubleArrayImages)
+            arrayList.add(new ArrayList<Integer>());
+
+        ImageView imageView;
+        for (int i=0; i<imagesNumber; i++) {
+            /* Two random indexes are generated, one for the category and another one for the image */
+            int[] indexes = generateCategoriesRandomIndex(arrayList, doubleArrayImages.length, oneImageCategoryIndex, doubleArrayImages[0].length, true);
+            imageView = (ImageView) contentContainer.getChildAt(i);
+            loadSimpleImage(imageView, doubleArrayImages[indexes[0]][indexes[1]], i, UNUSED_INDEX, indexes[0], correction[indexes[0]]);
         }
     }
 
@@ -353,6 +368,9 @@ public class ImagesHandler {
                     tag = imageView.getTag().toString();
                 else
                     tag = index + SEPARATOR + correction;
+                break;
+            case GUIDE:
+                tag = correction;
                 break;
             default:
                 tag = index + SEPARATOR + correction;

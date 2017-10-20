@@ -1,5 +1,7 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
+import android.support.constraint.ConstraintLayout;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -29,14 +31,15 @@ public class GuideChecker extends CheckerTemplate {
         try {
             zowiSeeScreenThread.join();
 
-            LinearLayout guideImagesContainer = (LinearLayout) gameParameters.findViewById(R.id.guide_images_container);
+            ConstraintLayout guideImagesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.guide_images_container);
 
             if (guideImagesContainer != null) {
-                ImageView imageView;
+                View view;
                 for (int i=0; i<guideImagesContainer.getChildCount(); i++) {
                     // TODO Escoger la imagen de la casa de Zowi
-                    imageView = (ImageView) guideImagesContainer.getChildAt(i);
-                    Animations.shadeAnimation(imageView, 1.0f, 2.0f);
+                    view = guideImagesContainer.getChildAt(i);
+                    if (view.getTag().toString().equals("0"))
+                        Animations.shadeAnimation(view, 1.0f, 0.1f);
                 }
             }
             else {

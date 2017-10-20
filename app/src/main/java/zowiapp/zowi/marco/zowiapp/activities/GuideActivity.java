@@ -1,6 +1,7 @@
 package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.graphics.Point;
+import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -94,10 +95,16 @@ public class GuideActivity extends ActivityTemplate {
                 imagesDimensions.set(constraintView.getWidth(), constraintView.getHeight());
             }
 
-            imagesHandler.loadCategoriesImages(contentContainer, GuideConstants.NUMBER_OF_IMAGES, imagesCoordinates, imagesDimensions);
+            // TODO Revisar bucle infinito imágenes
+            imagesHandler.loadGuideImages(constraintImages, GuideConstants.NUMBER_OF_IMAGES, imagesCoordinates, imagesDimensions);
         }
+        new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {}
 
-        ((GuideChecker) checker).check(gameParameters);
+            public void onFinish() {
+                ((GuideChecker) checker).check(gameParameters);
+            }
+        }.start();
     }
 
 }

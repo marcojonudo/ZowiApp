@@ -16,7 +16,7 @@
 
     <string name="container">CONTAINER</string>
 
-    <string name="show_house">¡Enséñale las casas a Zowi!\n¡Él te indicará cuál es la suya!</string>
+    <string name="show_house">¡Enséñale las casas a Zowi!\n\n¡Él te indicará cuál es la suya!</string>
 
     <string name="correct_operation">¡Fantástico!\nLe has ahorrado a Zowi una visita al dentista.</string>
 
@@ -75,4 +75,5 @@
     <string name="seeds_container_3_content_description">Tercer contenedor de semillas</string>
     <string name="seeds_container_4_content_description">Cuarto contenedor de semillas</string>
     <string name="zowi_eyes_image_content_description">Celda de la cuadrícula de imágenes</string>
+    <string name="guide_image_content_description">Imágen de una casa</string>
 </resources>
