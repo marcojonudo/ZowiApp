@@ -213,10 +213,9 @@ public abstract class ActivityTemplate {
                 distanceToLeft = view.getX() - event.getRawX();
                 distanceToTop = headerTextHeight + view.getY() - event.getRawY();
 
-                int index = (int) view.getTag();
                 float scaleFactorToPuzzle = ((PuzzleActivity)this).scaleFactorsToPuzzle[(int)view.getTag()];
 
-                Animations.scaleAnimation(view, true, scaleFactorToPuzzle, PuzzleConstants.SCALE_ANIMATION_INCREASE_PIVOTS[index]);
+                Animations.scaleAnimation(view, true, scaleFactorToPuzzle);
 
                 view.bringToFront();
                 break;

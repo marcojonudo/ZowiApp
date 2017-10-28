@@ -152,7 +152,7 @@ public class OperationsActivity extends ActivityTemplate {
                     @Override
                     public void onClick(View view) {
                         int index = (int)view.getTag();
-                        boolean correctAnswer = ((OperationsChecker) checker).check(gameParameters, index, operationsResults[index]);
+                        boolean correctAnswer = ((OperationsChecker) checker).check(gameParameters, index, operationsResults[index], operationsType);
 
                         if (correctAnswer) {
                             correctResults++;

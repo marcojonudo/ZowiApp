@@ -41,7 +41,7 @@ public class Animations {
         animatorSet.start();
     }
 
-    public static void scaleAnimation(View view, boolean increaseSize, float scaleFactorToPuzzle, float[] pivots) {
+    public static void scaleAnimation(View view, boolean increaseSize, float scaleFactorToPuzzle) {
         float scale = increaseSize ? scaleFactorToPuzzle : 1f/scaleFactorToPuzzle;
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", scale);
         scaleX.setDuration(SCALE_ANIMATION_DURATION);

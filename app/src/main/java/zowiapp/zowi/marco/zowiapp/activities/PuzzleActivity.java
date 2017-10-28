@@ -156,7 +156,8 @@ public class PuzzleActivity extends ActivityTemplate {
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((PuzzleChecker) checker).check(gameParameters, piecesCoordinates, correction);
+                boolean correctAnswer = ((PuzzleChecker) checker).check(gameParameters, piecesCoordinates, correction);
+                checkFinishActivity(ActivityType.PUZZLE, correctAnswer, 1, true);
             }
         });
     }

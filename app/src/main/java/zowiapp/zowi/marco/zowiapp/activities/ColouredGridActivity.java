@@ -112,7 +112,9 @@ public class ColouredGridActivity extends ActivityTemplate {
                         @Override
                         public void onClick(View view) {
                             int index = (int)view.getTag();
-                            ((ColouredGridChecker) checker).check(gameParameters, index, colouredCellsNumber[index]+1);
+                            boolean correctAnswer = ((ColouredGridChecker) checker).check(gameParameters, index, colouredCellsNumber[index]+1);
+
+                            checkFinishActivity(ActivityType.COLOURED_GRID, correctAnswer, ColouredGridConstants.NUMBER_OF_COLORS, true);
                         }
                     });
                 }
