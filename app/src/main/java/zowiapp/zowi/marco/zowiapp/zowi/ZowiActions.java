@@ -16,6 +16,7 @@ public class ZowiActions {
     public static final String ZOWI_WALKS_FORWARD = "W";
     public static final String TURN_LEFT = "T 1";
     public static final String TURN_RIGHT = "T 2";
+    public static final String GUIDE = "G";
 
     public static void sendDataToZowi(String command) {
         ZowiSocket.sendCommand(command);

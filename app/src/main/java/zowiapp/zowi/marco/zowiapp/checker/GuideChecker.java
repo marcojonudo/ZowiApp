@@ -36,7 +36,6 @@ public class GuideChecker extends CheckerTemplate {
             if (guideImagesContainer != null) {
                 View view;
                 for (int i=0; i<guideImagesContainer.getChildCount(); i++) {
-                    // TODO Escoger la imagen de la casa de Zowi
                     view = guideImagesContainer.getChildAt(i);
                     if (view.getTag().toString().equals("0"))
                         Animations.shadeAnimation(view, 1.0f, 0.1f);
@@ -49,6 +48,7 @@ public class GuideChecker extends CheckerTemplate {
             e.printStackTrace();
         }
 
+        sendDataToZowi(ZowiActions.GUIDE);
         return true;
     }
 

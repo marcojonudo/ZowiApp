@@ -26,11 +26,11 @@ public class FoodPyramidChecker extends CheckerTemplate {
 
             int correctAnswers = 0;
             for (String[] correctionStep: correctionArray) {
-                if (!correctionStep[0].equals(correctionStep[1])) {
+                if (correctionStep[0] == null || !correctionStep[0].equals(correctionStep[1])) {
                     for (int i=0; i<imageViews.length; i++) {
-                        if (!correctionArray[i][0].equals(correctionArray[i][1]))
+                        if (correctionArray[i][0] != null && !correctionArray[i][0].equals(correctionArray[i][1]))
                             Animations.translateAnimation(imageViews[i], imagesCoordinates, i);
-                        else
+                        else if (correctionArray[i][0] != null && correctionArray[i][0].equals(correctionArray[i][1]))
                             correctAnswers++;
                     }
                     FoodPyramidActivity.setImagesCounter(correctAnswers-1);
