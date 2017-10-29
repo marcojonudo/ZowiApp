@@ -29,6 +29,7 @@ public class GuideChecker extends CheckerTemplate {
         sendDataToZowi(ZowiActions.ZOWI_CHECKS_ANSWERS);
 
         try {
+            // TODO Revisar bloqueo interfaz
             zowiSeeScreenThread.join();
 
             ConstraintLayout guideImagesContainer = (ConstraintLayout) gameParameters.findViewById(R.id.guide_images_container);

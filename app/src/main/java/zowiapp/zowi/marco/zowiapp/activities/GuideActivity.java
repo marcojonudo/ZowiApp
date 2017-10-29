@@ -83,7 +83,6 @@ public class GuideActivity extends ActivityTemplate {
     }
 
     protected void getElementsCoordinates() {
-        RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
         ConstraintLayout constraintImages = (ConstraintLayout) gameParameters.findViewById(R.id.guide_images_container);
 
         if (constraintImages != null) {

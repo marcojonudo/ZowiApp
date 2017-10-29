@@ -153,6 +153,7 @@ public class PuzzleActivity extends ActivityTemplate {
     private void createCheckButton(ViewGroup contentContainer, boolean guidedActivity) {
         Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer, guidedActivity);
 
+        // TODO Revisar la mierda de la imagen arriba a la derecha
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

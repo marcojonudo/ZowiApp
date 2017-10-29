@@ -101,11 +101,11 @@ public class ActivityConstants {
             {{0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}, {0.25, 1}, {0.25, 1}},
             {{0.5, 0.5}, {0.5, 0.5}, {0.5, 0.5}, {1, 0.5}, {0.5, 0.5}},
         };
-        public static final int DISTANCE_LIMIT = 200;
+        public static final int DISTANCE_LIMIT = 50;
         static final double[][][] PUZZLE_SHAPES_COORDINATES_FACTORS = {
                 {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.5, 0.5}},
-                {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.75, 0.5}},
-                {{0, 0}, {0, 0.5}, {0, 0.5}, {0, 0.5}, {0.5, 0.5}}
+                {{0, 0}, {0, 0}, {0, 0.5}, {0.5, 0}, {0.75, 0}},
+                {{0, 0}, {0, 0.5}, {0.5, 0}, {0, 0.5}, {0.5, 0.5}}
         };
         static final double[][][] CORRECTION_SHAPES_COORDINATES_FACTORS = {
                 {{0.25, 0.25}, {0.25, 0.5}, {0.25, 0.25}, {0.25, 0.25}, {0.25, 0.25}},
