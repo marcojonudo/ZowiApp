@@ -27,11 +27,7 @@ import zowiapp.zowi.marco.zowiapp.zowi.ZowiSocket;
 
 public class ThreadHandler {
 
-    private static HashMap<ActivityType, ThreadType> activityThreadAssignment;
     private static boolean killThread;
-    private static int state;
-    private static final int WAITING_ZOWI_CHECKS = 0;
-    private static final int ZOWI_HAS_CHECKED = 1;
 
     public static Thread createThread(final ThreadType threadType) {
         return new Thread(new Runnable() {

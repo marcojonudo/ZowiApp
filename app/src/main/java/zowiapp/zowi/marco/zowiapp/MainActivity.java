@@ -10,6 +10,7 @@ import android.view.View;
 
 import uk.co.chrisjenx.calligraphy. CalligraphyContextWrapper;
 import zowiapp.zowi.marco.zowiapp.utils.Layout;
+import zowiapp.zowi.marco.zowiapp.zowi.Zowi;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiSocket;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +30,14 @@ public class MainActivity extends AppCompatActivity {
         zowiSocket.connectToZowi();
 
         Layout.drawOverlay(this, findViewById(R.id.main_activity_container));
+    }
+
+    @Override
+    protected void onResume() {
+        if (!ZowiSocket.isConnected()) {
+            String zowiAddress = Zowi.getAddress();
+            ZowiSocket.connectDevice(zowiAddress);
+        }
     }
 
     @Override

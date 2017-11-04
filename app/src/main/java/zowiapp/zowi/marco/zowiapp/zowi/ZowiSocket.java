@@ -30,9 +30,10 @@ public class ZowiSocket {
 
     private static MainActivity mainActivity;
 
-    private BluetoothAdapter bluetoothAdapter;
+    private static BluetoothAdapter bluetoothAdapter;
     private static OutputStream outputStream;
     private static InputStream inputStream;
+    private static BluetoothSocket bluetoothSocket;
 
     public static final String ZOWI_PROGRAM_ID = "SUPER_ZOWI";
     private static final int REQUEST_COARSE_LOCATION = 2;
@@ -41,8 +42,6 @@ public class ZowiSocket {
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static final int BOND_NONE = 10;
     private static StringBuilder zowiReceivedText = new StringBuilder();
-
-    private boolean killThread = false;
 
     public ZowiSocket(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -53,7 +52,18 @@ public class ZowiSocket {
         boolean bluetoothAvailable = checkBluetoothConnectivity(bluetoothAdapter);
 
         if (bluetoothAvailable) {
-            checkLocationPermission();
+            boolean locationPermission = checkLocationPermission();
+
+            if (locationPermission) {
+                String zowiAddress = getZowiAddress();
+                if (zowiAddress.equals("")) {
+                    startDiscovery();
+                }
+                else {
+                    Log.i("ConnectionStep", "Conectando dispositivo");
+                    connectDevice(zowiAddress);
+                }
+            }
         }
     }
 
@@ -70,23 +80,16 @@ public class ZowiSocket {
         return true;
     }
 
-    private void checkLocationPermission() {
+    private boolean checkLocationPermission() {
         int accessCoarseLocation = ContextCompat.checkSelfPermission(mainActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION);
 
         if (accessCoarseLocation != PackageManager.PERMISSION_GRANTED) {
             Log.i("ConnectionStep", "Solicitando permismos de localización");
             ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_COARSE_LOCATION);
+            return false;
         }
         else {
-            String zowiAddress = getZowiAddress();
-            if (zowiAddress.equals("")) {
-
-                startDiscovery();
-            }
-            else {
-                Log.i("ConnectionStep", "Conectando dispositivo");
-                connectDevice(zowiAddress);
-            }
+            return true;
         }
     }
 
@@ -120,40 +123,17 @@ public class ZowiSocket {
         bluetoothAdapter.startDiscovery();
     }
 
-    private void connectDevice(String zowiAddress) {
-        BluetoothDevice zowiDevice = bluetoothAdapter.getRemoteDevice(zowiAddress);
+    public static void connectDevice(String zowiAddress) {
+        BluetoothDevice zowiDevice = Zowi.getBluetoothDevice(bluetoothAdapter, zowiAddress);
         try {
-            BluetoothSocket bluetoothSocket = zowiDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
+            bluetoothSocket = zowiDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
             bluetoothSocket.connect();
             outputStream = bluetoothSocket.getOutputStream();
             inputStream = bluetoothSocket.getInputStream();
 
             Log.i("connectDevice", "Creando hilo");
-            Thread zowiSeeScreenThread = ThreadHandler.createThread(ThreadType.ZOWI_CONNECTED);
-            zowiSeeScreenThread.start();
-//            new Thread(new Runnable() {
-//                public void run() {
-//                    while (!Thread.currentThread().isInterrupted() && !killThread) {
-//                        int bytesAvailable = ZowiSocket.isInputStreamAvailable();
-//                        if (bytesAvailable > 0) {
-//                            byte[] packetBytes = new byte[bytesAvailable];
-//                            ZowiSocket.readInputStream(packetBytes);
-//
-//                            String receivedText = new String(packetBytes, 0, bytesAvailable);
-//                            if (receivedText.contains(ZOWI_PROGRAM_ID)) {
-//                                Zowi.setConnected(true);
-//
-//                                Layout.closeProgressDialog();
-//                                Layout.drawOverlay(mainActivity, mainActivity.findViewById(R.id.main_activity_container));
-//                                Log.i("connectDevice", "ZowiSocket conectado");
-//
-//                                killThread = true;
-//                            }
-//
-//                        }
-//                    }
-//                }
-//            }).start();
+            Thread zowiConnectThread = ThreadHandler.createThread(ThreadType.ZOWI_CONNECTED);
+            zowiConnectThread.start();
         }
         catch (IOException e) {
             Layout.drawAlertDialog(mainActivity);
@@ -189,6 +169,10 @@ public class ZowiSocket {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static boolean isConnected() {
+        return bluetoothSocket != null && bluetoothSocket.isConnected();
     }
 
     public static String readInputStream() {
