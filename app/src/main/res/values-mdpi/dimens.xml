@@ -17,7 +17,7 @@
     <dimen name="operations_dialog_width">600dp</dimen>
     <dimen name="operations_dialog_height">400dp</dimen>
     <dimen name="operations_dialog_padding">40dp</dimen>
-    <dimen name="operations_dialog_text_size">50sp</dimen>
+    <dimen name="operations_dialog_text_size">40sp</dimen>
     <dimen name="progress_dialog_width">475dp</dimen>
     <dimen name="progress_dialog_height">300dp</dimen>
     <dimen name="progress_dialog_padding">40dp</dimen>
