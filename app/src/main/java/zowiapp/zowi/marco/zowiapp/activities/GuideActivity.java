@@ -95,7 +95,7 @@ public class GuideActivity extends ActivityTemplate {
             }
 
             // TODO Revisar bucle infinito imágenes
-            imagesHandler.loadGuideImages(constraintImages, GuideConstants.NUMBER_OF_IMAGES, imagesCoordinates, imagesDimensions);
+            imagesHandler.loadGuideImages(constraintImages, GuideConstants.NUMBER_OF_IMAGES);
         }
         new CountDownTimer(1000, 1000) {
             public void onTick(long millisUntilFinished) {}

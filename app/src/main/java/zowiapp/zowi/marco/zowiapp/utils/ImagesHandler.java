@@ -118,7 +118,7 @@ public class ImagesHandler {
             loadImage(contentContainer, doubleArrayImages[indexes[0]][indexes[1]], coordinates, dimensions, i, correction[indexes[0]]);
         }
     }
-    public void loadGuideImages(ViewGroup contentContainer, int imagesNumber, Point[] coordinates, Point dimensions) {
+    public void loadGuideImages(ViewGroup contentContainer, int imagesNumber) {
         ArrayList<ArrayList<Integer>> arrayList = new ArrayList<>();
         for (String[] category: doubleArrayImages)
             arrayList.add(new ArrayList<Integer>());
