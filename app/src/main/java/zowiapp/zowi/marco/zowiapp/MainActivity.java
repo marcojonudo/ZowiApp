@@ -24,26 +24,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.menu_main);
 
         Layout.drawProgressDialog(this);
-        Log.i("ConnectionStep", "ProgressDialog shown");
 
-        zowiSocket = new ZowiSocket(this);
-        zowiSocket.connectToZowi();
+        if (!ZowiSocket.isConnected()) {
+            zowiSocket = new ZowiSocket(this);
+            zowiSocket.connectToZowi();
+        }
 
         Layout.drawOverlay(this, findViewById(R.id.main_activity_container));
     }
 
     @Override
     protected void onResume() {
-        if (!ZowiSocket.isConnected()) {
-            String zowiAddress = Zowi.getAddress();
-            ZowiSocket.connectDevice(zowiAddress);
-        }
+        super.onResume();
+        Log.i("Steps", "onResume");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        unregisterReceiver(bluetoothReceiver);
+
+        Log.i("Steps", "onDestroy");
+        if (ZowiSocket.isConnected())
+            ZowiSocket.closeConnection();
+        
+        unregisterReceiver(zowiSocket.getDisconnectionReceiver());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("Steps", "onStop");
+
     }
 
     @Override

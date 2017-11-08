@@ -9,10 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.util.StringBuilderPrinter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +34,7 @@ public class ZowiSocket {
     private static OutputStream outputStream;
     private static InputStream inputStream;
     private static BluetoothSocket bluetoothSocket;
+    private static BluetoothReceiver disconnectionReceiver;
 
     public static final String ZOWI_PROGRAM_ID = "SUPER_ZOWI";
     private static final int REQUEST_COARSE_LOCATION = 2;
@@ -43,8 +44,27 @@ public class ZowiSocket {
     private static final int BOND_NONE = 10;
     private static StringBuilder zowiReceivedText = new StringBuilder();
 
-    public ZowiSocket(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public ZowiSocket(MainActivity mainActivityParam) {
+        mainActivity = mainActivityParam;
+    }
+
+    public BluetoothReceiver getDisconnectionReceiver() {
+        return disconnectionReceiver;
+    }
+
+    public static void closeConnection() {
+        try {
+            bluetoothSocket.close();
+            inputStream.close();
+            outputStream.close();
+            Zowi.setConnected(false);
+            mainActivity.unregisterReceiver(disconnectionReceiver);
+
+            Log.i("bluetoothConnection", "closeConnection");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void connectToZowi() {
@@ -67,7 +87,7 @@ public class ZowiSocket {
         }
     }
 
-    private boolean checkBluetoothConnectivity(BluetoothAdapter bluetoothAdapter) {
+    private static boolean checkBluetoothConnectivity(BluetoothAdapter bluetoothAdapter) {
         if (bluetoothAdapter == null) {
             Log.i("ConnectionStep", "Bluetooth no disponible");
             return false;
@@ -123,26 +143,29 @@ public class ZowiSocket {
         bluetoothAdapter.startDiscovery();
     }
 
-    public static void connectDevice(String zowiAddress) {
-        BluetoothDevice zowiDevice = Zowi.getBluetoothDevice(bluetoothAdapter, zowiAddress);
-        try {
-            bluetoothSocket = zowiDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
-            bluetoothSocket.connect();
-            outputStream = bluetoothSocket.getOutputStream();
-            inputStream = bluetoothSocket.getInputStream();
+    private void registerDisconnectionReceiver() {
+        disconnectionReceiver = new BluetoothReceiver();
 
-            Log.i("connectDevice", "Creando hilo");
-            Thread zowiConnectThread = ThreadHandler.createThread(ThreadType.ZOWI_CONNECTED);
-            zowiConnectThread.start();
-        }
-        catch (IOException e) {
-            Layout.drawAlertDialog(mainActivity);
-            e.printStackTrace();
-        }
+        IntentFilter bluetoothFilter = new IntentFilter();
+        bluetoothFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+
+        mainActivity.registerReceiver(disconnectionReceiver, bluetoothFilter);
+    }
+
+    private void connectDevice(String zowiAddress) {
+        new BluetoothConnection().execute(zowiAddress);
     }
 
     public static void setConnected() {
         Zowi.setConnected(true);
+
+        Layout.closeProgressDialog();
+        Layout.drawOverlay(mainActivity, mainActivity.findViewById(R.id.main_activity_container));
+        Log.i("connectDevice", "ZowiSocket conectado");
+    }
+
+    private static void setDisconnected() {
+        Zowi.setConnected(false);
 
         Layout.closeProgressDialog();
         Layout.drawOverlay(mainActivity, mainActivity.findViewById(R.id.main_activity_container));
@@ -219,14 +242,14 @@ public class ZowiSocket {
                     Log.i("BluetoothReceiver", "Discovery finished");
                     device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-                    if (device.getBondState() == BOND_NONE) {
+                    if (device == null || device.getBondState() == BOND_NONE) {
                         Layout.drawAlertDialog(mainActivity);
                     }
                     break;
                 case BluetoothDevice.ACTION_FOUND:
                     device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-                    if (device.getName().equals(ZOWI_NAME)) {
+                    if (device.getName() != null && device.getName().equals(ZOWI_NAME)) {
                         bluetoothAdapter.cancelDiscovery();
                         device.createBond();
                     }
@@ -242,7 +265,45 @@ public class ZowiSocket {
                     }
                     Log.i("BluetoothReceiver", "Device bond changed " + device.getName() + ": " + device.getBondState());
                     break;
+                case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+                    Log.i("BluetoothReciver", "Nah, hemos muerto");
+                    setDisconnected();
+                    Layout.drawAlertDialog(mainActivity);
+                    break;
             }
         }
     }
+
+    private class BluetoothConnection extends AsyncTask<String, Integer, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            BluetoothDevice zowiDevice = Zowi.getBluetoothDevice(bluetoothAdapter, params[0]);
+            try {
+                bluetoothSocket = zowiDevice.createInsecureRfcommSocketToServiceRecord(MY_UUID);
+                bluetoothSocket.connect();
+                outputStream = bluetoothSocket.getOutputStream();
+                inputStream = bluetoothSocket.getInputStream();
+
+                registerDisconnectionReceiver();
+
+                Thread zowiConnectThread = ThreadHandler.createThread(ThreadType.ZOWI_CONNECTED);
+                zowiConnectThread.start();
+
+                return true;
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean connected) {
+            if (!connected)
+                Layout.drawAlertDialog(mainActivity);
+        }
+
+    }
+
 }
