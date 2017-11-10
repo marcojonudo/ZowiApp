@@ -21,14 +21,14 @@
             android:layout_height="match_parent"
             android:scaleX="0.88"
             android:scaleY="0.88"
-            android:src="@drawable/food_pyramid_image_smaller"
+            android:src="@drawable/unit_2_food_pyramid_image"
             android:id="@+id/food_pyramid_image"/>
 
         <ImageView
             android:contentDescription="@string/food_pyramid_content_description_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/food_pyramid_text_smaller"/>
+            android:src="@drawable/unit_2_food_pyramid_text"/>
 
     </FrameLayout>
 

@@ -80,7 +80,7 @@
     </string-array>
 
     <string-array name="free_game_activities_images">
-        <item>bloques_logicos</item>
+        <item>activity_logic_blocks</item>
     </string-array>
 
 </resources>

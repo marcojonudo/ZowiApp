@@ -5,7 +5,7 @@
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:id="@+id/seeds_images_container"
-    android:background="@drawable/seeds_seed_container"
+    android:background="@drawable/unit_1_seeds_seed_container"
     app:layout_constraintDimensionRatio="4:1"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toTopOf="@+id/seeds_guideline"

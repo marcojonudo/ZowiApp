@@ -73,9 +73,9 @@ public class GuidedGameListAdapter extends BaseAdapter {
                 final CustomConstraintBackground unitContainer = (CustomConstraintBackground) inflater.inflate(R.layout.menu_guided_unit_container, viewGroup, false);
                 ViewGroup.LayoutParams l = unitContainer.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels - statusBarHeight + unitsSeparation;
-                unitContainer.setBackgroundResource(position % 2 == 0 ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom);
-//                Glide.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom).into(unitContainer);
-//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom).into(unitContainer);
+                unitContainer.setBackgroundResource(position % 2 == 0 ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom);
+//                Glide.with(context).load(position % 2 == 0 ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).into(unitContainer);
+//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).into(unitContainer);
                 loadContent(unitContainer, position);
 
                 units[position] = unitContainer;
@@ -90,8 +90,8 @@ public class GuidedGameListAdapter extends BaseAdapter {
             if (units[position] == null) {
                 final CustomConstraintBackground unitContainer = (CustomConstraintBackground) inflater.inflate(R.layout.menu_guided_unit_container, viewGroup, false);
                 unitContainer.setLayoutParams(view.getLayoutParams());
-                unitContainer.setBackgroundResource((position == unitsNumber -1) ? R.drawable.footprint_background_final : (position % 2 == 0) ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom);
-//                Glide.with(context).load((position == unitsNumber-1) ? R.drawable.footprint_background_final : (position % 2 == 0) ? R.drawable.footprint_background_top : R.drawable.footprint_background_bottom).into(unitContainer);
+                unitContainer.setBackgroundResource((position == unitsNumber -1) ? R.drawable.menu_footprint_background_final : (position % 2 == 0) ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom);
+//                Glide.with(context).load((position == unitsNumber-1) ? R.drawable.menu_footprint_background_final : (position % 2 == 0) ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).into(unitContainer);
 
                 loadContent(unitContainer, position);
                 units[position] = unitContainer;
