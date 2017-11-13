@@ -15,7 +15,7 @@ public class ActivityConstants {
         static final int DRAG_LIMITS_SIZE = 4;
         static final String TAG_SEPARATOR = "-";
         public static final String DRAWABLE = "drawable";
-        public static final int RANDOM_CORRECT_RESULTS_SENCENCE_LIMIT = 6;
+        static final int RANDOM_CORRECT_RESULTS_SENTENCE_LIMIT = 6;
     }
 
     public static class GridConstants {
@@ -25,7 +25,6 @@ public class ActivityConstants {
         static final int COORDINATES_3X3_LENGTH = 9;
         static final int COORDINATES_4X4_LENGTH = 16;
         public static final float CELL_FILLED_SPACE = 0.85f;
-        static final String INNER = "INNER";
         static final int MAX_MOVEMENTS = 7;
     }
 

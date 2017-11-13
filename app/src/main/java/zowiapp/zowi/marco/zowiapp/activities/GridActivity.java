@@ -36,7 +36,7 @@ import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 
 public class GridActivity extends ActivityTemplate {
 
-    private int[] cells, obstacles;
+    private int[] cells, obstacles, totalCells;
     private ArrayList<Integer> nextCells;
     private int gridSize, movementsNumber, zowiCell, destinyCell, nextCell, directionsIndex;
     private Point cellDimensions;
@@ -63,8 +63,9 @@ public class GridActivity extends ActivityTemplate {
             zowiCell = jsonCells.getInt(0);
             nextCell = zowiCell;
             destinyCell = jsonCells.getInt(jsonCells.length()-1);
-            cells = new int[jsonCells.length()];
+            cells = new int[jsonCells.length()>2 ? jsonCells.length()-1 : jsonCells.length()];
             obstacles = new int[jsonCells.length()-2];
+            totalCells = new int[jsonCells.length()];
             arrayImages = new String[jsonImages.length()];
             directions = new ArrayList<>();
             nextCells = new ArrayList<>();
@@ -73,12 +74,20 @@ public class GridActivity extends ActivityTemplate {
             directionsIndex = 0;
             startedMoving = false;
 
+            int obstaclesIndex = 0;
+            int cellsIndex = 0;
             for (int i=0; i<jsonCells.length(); i++) {
-                cells[i] = jsonCells.getInt(i);
+                if (i!=0 && i!=jsonCells.length()-1) {
+                    obstacles[obstaclesIndex] = jsonCells.getInt(i);
+                    obstaclesIndex++;
+                }
+                else {
+                    cells[cellsIndex] = jsonCells.getInt(i);
+                    cellsIndex++;
+                }
+                totalCells[i] = jsonCells.getInt(i);
+
                 arrayImages[i] = jsonImages.getString(i);
-            }
-            for (int i=1; i<jsonCells.length()-1; i++) {
-                obstacles[i] = jsonCells.getInt(i);
             }
 
             generateLayout();
@@ -148,6 +157,7 @@ public class GridActivity extends ActivityTemplate {
                         lastMovementCell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.white));
                     }
                     nextCells.remove(arrowIndex);
+                    directions.remove(arrowIndex-1);
 
                     zowiCell = nextCells.get((GridConstants.MAX_MOVEMENTS - 1) - lastMovementIndex);
                     nextCell = zowiCell;
@@ -298,7 +308,7 @@ public class GridActivity extends ActivityTemplate {
                 cellDimensions.set(cell.getWidth(), cell.getHeight());
             }
 
-            imagesHandler.loadGridImages(contentContainer, imagesCoordinates, cellDimensions, cells, arrayImages);
+            imagesHandler.loadGridImages(contentContainer, imagesCoordinates, cellDimensions, totalCells, arrayImages);
             gameGrid.getChildAt(zowiCell-1).setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.paleRed));
         }
         else {

@@ -444,7 +444,7 @@ public abstract class ActivityTemplate {
                 text = gameParameters.getResources().getString(R.string.correct_operation);
                 break;
             default:
-                String resource = "correct_result_" + (new Random().nextInt(CommonConstants.RANDOM_CORRECT_RESULTS_SENCENCE_LIMIT) + 1);
+                String resource = "correct_result_" + (new Random().nextInt(CommonConstants.RANDOM_CORRECT_RESULTS_SENTENCE_LIMIT) + 1);
                 text = gameParameters.getResources().getString(gameParameters.getResources().getIdentifier(resource, "string", gameParameters.getPackageName()));
                 break;
         }
