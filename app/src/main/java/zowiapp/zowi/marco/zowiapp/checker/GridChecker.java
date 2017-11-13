@@ -5,32 +5,41 @@ import android.widget.Toast;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.GridConstants;
+import zowiapp.zowi.marco.zowiapp.utils.Layout;
 
 public class GridChecker extends CheckerTemplate {
 
-    private static int lastCell = 0;
+    private int lastCell = 0;
 
-    public int checkMovement(GameParameters gameParameters, int gridSize, int initialCell, String nextDirection, int lastCell, int[] obstacles) {
-        boolean correctDirection = checkCorrectDirection(gameParameters, gridSize, initialCell, nextDirection);
+    public int checkMovement(GameParameters gameParameters, int gridSize, String nextDirection, int zowiCell, int[] obstacles) {
+        if (lastCell == 0)
+            lastCell = zowiCell;
+
+        boolean correctDirection = checkCorrectDirection(gameParameters, gridSize, nextDirection);
 
         if (correctDirection) {
-            int nextCell = getNextCell(lastCell, nextDirection);
+            int nextCell = getNextCell(zowiCell, nextDirection);
 
             if (nextCell != 0) {
                 boolean nextObstacle = checkObstacle(obstacles, nextCell);
 
-                if (!nextObstacle)
+                if (!nextObstacle) {
+                    lastCell = nextCell;
                     return nextCell;
+                }
+                else {
+                    String text = "¡Oh, no! ¡Zowi se ha encontrado un obstáculo y no puede avanzar!";
+                    Layout.showAlertDialog(gameParameters, true, false, text);
+                }
             }
         }
 
         return 0;
     }
 
-    private boolean checkCorrectDirection(GameParameters gameParameters, int gridSize, int initialCell, String newDirection) {
+    private boolean checkCorrectDirection(GameParameters gameParameters, int gridSize, String newDirection) {
         boolean correctDirection = true;
-        lastCell = lastCell == 0 ? initialCell : getNextCell(lastCell, newDirection);
-        Log.i("cell", String.valueOf(lastCell));
+
         int cellsNumber = gridSize == 1 ? 9 : 16;
         int cellsStep = gridSize == 1 ? 3 : 4;
         switch (newDirection) {
@@ -40,8 +49,9 @@ public class GridChecker extends CheckerTemplate {
                     correctDirection = false;
                 break;
             case "LEFT":
-                for (int i=1; i<cellsNumber; i=i+cellsStep) {
-                    if (lastCell % i == 0)
+                int moduleCorrection = gridSize == 1 ? 3 : 4;
+                for (int i=moduleCorrection; i<cellsNumber; i=i+cellsStep) {
+                    if ((lastCell+moduleCorrection-1) % i == 0)
                         correctDirection = false;
                 }
                 break;
@@ -60,8 +70,10 @@ public class GridChecker extends CheckerTemplate {
                 break;
         }
 
-        if (!correctDirection)
-            Toast.makeText(gameParameters, "¡Cuidado, que sacas a Zowi fuera de la cuadrícula!", Toast.LENGTH_LONG).show();
+        if (!correctDirection) {
+            String text = "¡Vaya! ¡Zowi ha estado a punto de salirse de la cuadrícula!";
+            Layout.showAlertDialog(gameParameters, true, false, text);
+        }
 
         return correctDirection;
     }
@@ -83,8 +95,6 @@ public class GridChecker extends CheckerTemplate {
                 break;
         }
 
-//        nextCells.add(nextCell);
-//            nextCells.set(movementsNumber, nextCell);
         return nextCell;
     }
 

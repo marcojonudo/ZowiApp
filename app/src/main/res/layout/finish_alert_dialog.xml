@@ -27,6 +27,7 @@
 
         <ImageView
             android:contentDescription="@string/finish_activity_dialog_content_description"
+            android:id="@+id/finish_dialog_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/zowi_happy_open_small"

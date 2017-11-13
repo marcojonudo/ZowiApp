@@ -23,7 +23,7 @@
             android:contentDescription="@string/grid_content_description_1"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@drawable/outer_control"
+            android:src="@drawable/grid_outer_control"
             android:id="@+id/outer_control"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -32,10 +32,10 @@
 
         <Button
             android:contentDescription="@string/grid_content_description_2"
-            android:textSize="@dimen/default_font_size"
+            android:textSize="@dimen/dialog_title_font_size"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/inner_control"
+            android:background="@drawable/grid_inner_control"
             android:id="@+id/inner_control"
             android:text="@string/grid_go"
             android:scaleX="0.32"

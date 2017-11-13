@@ -15,7 +15,7 @@ public class ActivityConstants {
         static final int DRAG_LIMITS_SIZE = 4;
         static final String TAG_SEPARATOR = "-";
         public static final String DRAWABLE = "drawable";
-        static final int RANDOM_CORRECT_RESULTS_SENCENCE_LIMIT = 6;
+        public static final int RANDOM_CORRECT_RESULTS_SENCENCE_LIMIT = 6;
     }
 
     public static class GridConstants {

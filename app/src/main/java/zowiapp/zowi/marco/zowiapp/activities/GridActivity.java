@@ -4,15 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
-import android.os.CountDownTimer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -37,14 +32,16 @@ import zowiapp.zowi.marco.zowiapp.listeners.TouchListener;
 import zowiapp.zowi.marco.zowiapp.utils.Animations;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
+import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 
 public class GridActivity extends ActivityTemplate {
 
     private int[] cells, obstacles;
     private ArrayList<Integer> nextCells;
-    private int gridSize, movementsNumber, zowiCell, destinyCell, directionsIndex;
+    private int gridSize, movementsNumber, zowiCell, destinyCell, nextCell, directionsIndex;
     private Point cellDimensions;
     private ArrayList<String> directions;
+    private boolean startedMoving;
 
     public GridActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
@@ -64,14 +61,17 @@ public class GridActivity extends ActivityTemplate {
             cellDimensions = new Point();
 
             zowiCell = jsonCells.getInt(0);
+            nextCell = zowiCell;
             destinyCell = jsonCells.getInt(jsonCells.length()-1);
             cells = new int[jsonCells.length()];
             obstacles = new int[jsonCells.length()-2];
             arrayImages = new String[jsonImages.length()];
             directions = new ArrayList<>();
             nextCells = new ArrayList<>();
+            nextCells.add(zowiCell);
             movementsNumber = 0;
             directionsIndex = 0;
+            startedMoving = false;
 
             for (int i=0; i<jsonCells.length(); i++) {
                 cells[i] = jsonCells.getInt(i);
@@ -131,7 +131,7 @@ public class GridActivity extends ActivityTemplate {
             public void onClick(View view) {
                 ConstraintLayout movementsGrid = (ConstraintLayout) gameParameters.findViewById(R.id.movements_grid);
 
-                if (movementsGrid != null) {
+                if (movementsGrid != null && startedMoving) {
                     int lastMovementIndex = 0;
                     while (movementsGrid.getChildAt(lastMovementIndex).getTag() == null)
                         lastMovementIndex++;
@@ -140,8 +140,22 @@ public class GridActivity extends ActivityTemplate {
                     lastMovementView.setImageDrawable(null);
                     lastMovementView.setTag(null);
 
-                    nextCells.remove((GridConstants.MAX_MOVEMENTS - 1) - lastMovementIndex);
-                    zowiCell = nextCells.get((GridConstants.MAX_MOVEMENTS - 2) - lastMovementIndex);
+                    int arrowIndex = GridConstants.MAX_MOVEMENTS - lastMovementIndex;
+                    ConstraintLayout gameGrid = (ConstraintLayout) gameParameters.findViewById(R.id.grid);
+                    if (gameGrid != null) {
+                        ConstraintLayout grid = (ConstraintLayout) gameGrid.getChildAt(0);
+                        View lastMovementCell = grid.getChildAt(nextCells.get(arrowIndex)-1);
+                        lastMovementCell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.white));
+                    }
+                    nextCells.remove(arrowIndex);
+
+                    zowiCell = nextCells.get((GridConstants.MAX_MOVEMENTS - 1) - lastMovementIndex);
+                    nextCell = zowiCell;
+                    if (zowiCell == nextCells.get(0))
+                        startedMoving = false;
+                }
+                else {
+                    Toast.makeText(gameParameters, "¡No hay movimientos que borrar!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -159,9 +173,10 @@ public class GridActivity extends ActivityTemplate {
 
     private void zowiMovement() {
         if (directionsIndex < directions.size()) {
-            int nextCell = ((GridChecker) checker).checkMovement(gameParameters, gridSize, zowiCell, directions.get(directionsIndex), zowiCell, obstacles);
+            int nextCell = ((GridChecker) checker).checkMovement(gameParameters, gridSize, directions.get(directionsIndex), zowiCell, obstacles);
 
             if (nextCell != 0) {
+                sendDataToZowi(directionsIndex != 0 ? directions.get(directionsIndex-1) : "UP", directions.get(directionsIndex));
                 RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
                 AnimatorSet zowiAnimations = null;
                 if (contentContainer != null) {
@@ -173,21 +188,95 @@ public class GridActivity extends ActivityTemplate {
 
                     zowiAnimations = Animations.rotateAndTranslate(zowi, directionsIndex != 0 ? directions.get(directionsIndex-1) : "UP", directions.get(directionsIndex),
                             movementCoordinates, nextCell-1);
-                }
 
-                zowiCell = nextCell;
+                    zowiCell = nextCell;
 
-                if (zowiAnimations != null) {
-                    zowiAnimations.addListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animator) {
-                            directionsIndex++;
-                            zowiMovement();
-                        }
-                    });
+                    if (zowiAnimations != null) {
+                        zowiAnimations.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animator) {
+                                directionsIndex++;
+                                zowiMovement();
+                            }
+                        });
+                    }
+
+                    if (zowiCell == destinyCell) {
+                        zowi.bringToFront();
+                        finishActivity(ActivityType.GRID, true);
+                        ZowiActions.sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+                    }
                 }
             }
         }
+    }
+
+    private void sendDataToZowi(String actualDirection, String nextDirection) {
+        String[] commands = new String[2];
+        switch (nextDirection) {
+            case "UP":
+                switch (actualDirection) {
+                    case "LEFT":
+                        commands[0] = ZowiActions.TURN_RIGHT;
+                        break;
+                    case "RIGHT":
+                        commands[0] = ZowiActions.TURN_LEFT;
+                        break;
+                    case "DOWN":
+                        commands[0] = ZowiActions.TURN_LEFT;
+                        commands[1] = ZowiActions.TURN_LEFT;
+                        break;
+                }
+                break;
+            case "LEFT":
+                switch (actualDirection) {
+                    case "UP":
+                        commands[0] = ZowiActions.TURN_LEFT;
+                        break;
+                    case "RIGHT":
+                        commands[0] = ZowiActions.TURN_LEFT;
+                        commands[1] = ZowiActions.TURN_LEFT;
+                        break;
+                    case "DOWN":
+                        commands[0] = ZowiActions.TURN_RIGHT;
+                        break;
+                }
+                break;
+            case "RIGHT":
+                switch (actualDirection) {
+                    case "LEFT":
+                        commands[0] = ZowiActions.TURN_LEFT;
+                        commands[1] = ZowiActions.TURN_LEFT;
+                        break;
+                    case "UP":
+                        commands[0] = ZowiActions.TURN_RIGHT;
+                        break;
+                    case "DOWN":
+                        commands[0] = ZowiActions.TURN_LEFT;
+                        break;
+                }
+                break;
+            case "DOWN":
+                switch (actualDirection) {
+                    case "LEFT":
+                        commands[0] = ZowiActions.TURN_RIGHT;
+                        break;
+                    case "RIGHT":
+                        commands[0] = ZowiActions.TURN_LEFT;
+                        break;
+                    case "UP":
+                        commands[0] = ZowiActions.TURN_LEFT;
+                        commands[1] = ZowiActions.TURN_LEFT;
+                        break;
+                }
+                break;
+        }
+
+        for (String command : commands) {
+            if (command != null)
+                ZowiActions.sendDataToZowi(command);
+        }
+        ZowiActions.sendDataToZowi(ZowiActions.ZOWI_WALKS_FORWARD);
     }
 
     protected void getElementsCoordinates() {
@@ -210,121 +299,60 @@ public class GridActivity extends ActivityTemplate {
             }
 
             imagesHandler.loadGridImages(contentContainer, imagesCoordinates, cellDimensions, cells, arrayImages);
-//            placeImages(contentContainer, cells, arrayImages);
+            gameGrid.getChildAt(zowiCell-1).setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.paleRed));
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "gridContainer");
         }
     }
 
-//    private void placeImages(RelativeLayout contentContainer, int[] cells, String[] images) {
-//        /* 'cells' contains a number between 1 and 9 or 16 that indicates the cells that will contain an image */
-//        /* 'arrayImages' contains the name of the resources */
-//        for (int i=0; i<cells.length; i++) {
-//            placeImage(contentContainer, images[i], imagesCoordinates[cells[i]-1].x, imagesCoordinates[cells[i]-1].y);
-//        }
-//
-//    }
-//
-//    private void placeImage(RelativeLayout container, String imageName, int x, int y) {
-//        ImageView image = new ImageView(gameParameters);
-//        image.setImageResource(gameParameters.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, gameParameters.getPackageName()));
-//
-//        Drawable drawable = image.getDrawable();
-//        float scaleFactor;
-//        if (drawable.getIntrinsicWidth() > drawable.getIntrinsicHeight()) {
-//            scaleFactor = (cellDimensions.x*GridConstants.CELL_FILLED_SPACE) / drawable.getIntrinsicWidth();
-//        }
-//        else {
-//            scaleFactor = (cellDimensions.y*GridConstants.CELL_FILLED_SPACE) / drawable.getIntrinsicHeight();
-//        }
-//
-//        int width = (int)(drawable.getIntrinsicWidth() * scaleFactor);
-//        int height = (int)(drawable.getIntrinsicHeight() * scaleFactor);
-//        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
-//        image.setLayoutParams(layoutParams);
-//        image.setX(x - width/2);
-//        image.setY(y - height/2);
-//
-//        container.addView(image);
-//    }
-
     void processTouchEvent(View view, MotionEvent event) {
         String[] eventsResult = handleEvents(ActivityType.GRID, view, event, null, null);
         if (eventsResult != null) {
             if (movementsNumber < GridConstants.MAX_MOVEMENTS) {
-//                boolean correctMovement = checkCorrectMovement(eventsResult[0]);
-//                if (correctMovement) {
                     directions.add(eventsResult[0]);
-//                    directions.set(movementsNumber, eventsResult[0]);
                     movementsNumber++;
 
                     fillDirectionsGrid(eventsResult[0]);
-//                    setNextCell(eventsResult[0]);
-//                }
+                    colourNextCell(eventsResult[0]);
             }
         }
     }
 
-    private boolean checkCorrectMovement(String newDirection) {
-        boolean correctDirection = true;
-        int cellsNumber = gridSize == 1 ? 9 : 16;
-        int cellsStep = gridSize == 1 ? 3 : 4;
+    private void colourNextCell(String newDirection) {
+        ConstraintLayout gridContainer = (ConstraintLayout) gameParameters.findViewById(R.id.grid);
+
+        if (gridContainer != null) {
+            int nextCell = getNextCell(newDirection);
+
+            ConstraintLayout grid = (ConstraintLayout) gridContainer.getChildAt(0);
+            if (nextCell >= 0 && nextCell < 10) {
+                View cell = grid.getChildAt(nextCell-1);
+
+                cell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.paleRed));
+            }
+        }
+    }
+
+    private int getNextCell(String newDirection) {
         switch (newDirection) {
             case "UP":
-                int rightUpLimit = gridSize == 1 ? 4 : 5;
-                if (zowiCell > 0 && zowiCell < rightUpLimit)
-                    correctDirection = false;
+                nextCell = nextCell>3 ? nextCell - 3 : nextCell;
                 break;
             case "LEFT":
-                for (int i=1; i<cellsNumber; i=i+cellsStep) {
-                    if (zowiCell % i == 0)
-                        correctDirection = false;
-                }
+                nextCell = (nextCell+2)%3 != 0 ? nextCell - 1 : nextCell;
                 break;
             case "RIGHT":
-                int checkStart = gridSize == 1 ? 3 : 4;
-                for (int i=checkStart; i<cellsNumber; i=i+cellsStep) {
-                    if (zowiCell % i == 0)
-                        correctDirection = false;
-                }
+                nextCell = nextCell%3 != 0 ? nextCell + 1 : nextCell;
                 break;
             case "DOWN":
-                int leftDownLimit = gridSize == 1 ? 6 : 12;
-                int rightDownLimit = gridSize == 1 ? 10 : 17;
-                if (zowiCell > leftDownLimit && zowiCell < rightDownLimit)
-                    correctDirection = false;
+                nextCell = nextCell<7 ? nextCell + 3 : nextCell;
                 break;
         }
+        nextCells.add(nextCell);
+        startedMoving = true;
 
-        if (!correctDirection)
-            Toast.makeText(gameParameters, "¡Cuidado, que sacas a Zowi fuera de la cuadrícula!", Toast.LENGTH_LONG).show();
-
-        return correctDirection;
-    }
-
-    private void setNextCell(String newDirection) {
-        if (nextCells.size() < GridConstants.MAX_MOVEMENTS) {
-            int nextCell = 0;
-            switch (newDirection) {
-                case "UP":
-                    nextCell = zowiCell - 3;
-                    break;
-                case "LEFT":
-                    nextCell = zowiCell - 1;
-                    break;
-                case "RIGHT":
-                    nextCell = zowiCell + 1;
-                    break;
-                case "DOWN":
-                    nextCell = zowiCell + 3;
-                    break;
-            }
-
-            nextCells.add(nextCell);
-//            nextCells.set(movementsNumber, nextCell);
-            zowiCell = nextCell;
-        }
+        return nextCell;
     }
 
     private void fillDirectionsGrid(String newDirection) {
@@ -351,6 +379,7 @@ public class GridActivity extends ActivityTemplate {
                     resourceId = R.drawable.grid_arrow_down;
                     break;
             }
+
             if (resourceId != 0) {
                 ImageView movementCell = (ImageView) movementsGrid.getChildAt(newDirectionIndex);
                 Picasso.with(gameParameters)

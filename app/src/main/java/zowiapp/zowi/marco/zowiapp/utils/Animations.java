@@ -27,6 +27,8 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 public class Animations {
 
     private static final int TRANSLATE_ANIMATION_DURATION = 1000;
+    private static final int GRID_ROTATE_ANIMATION_DURATION = 6000;
+    private static final int GRID_TRANSLATE_ANIMATION_DURATION = 3500;
     private static final int SCALE_ANIMATION_DURATION = 500;
     private static final int SHADE_ANIMATION_DURATION = 1000;
 
@@ -120,38 +122,37 @@ public class Animations {
 
     public static AnimatorSet rotateAndTranslate(View view, String actualDirection, String nextDirection, Point[] coordinates, int index) {
         ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), coordinates[index].x);
-        animX.setDuration(TRANSLATE_ANIMATION_DURATION);
+        animX.setDuration(GRID_TRANSLATE_ANIMATION_DURATION);
         ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY", view.getY(), coordinates[index].y);
-        animY.setDuration(TRANSLATE_ANIMATION_DURATION);
+        animY.setDuration(GRID_TRANSLATE_ANIMATION_DURATION);
 
         float fromValue = 0, toValue = 0;
         switch (actualDirection) {
             case "UP":
                 fromValue = 0;
-                toValue = nextDirection.equals("LEFT") ? -90 : 90;
+                toValue = nextDirection.equals(actualDirection) ? 0 : (nextDirection.equals("LEFT") ? -90 : 90);
                 break;
             case "LEFT":
                 fromValue = -90;
-                toValue = nextDirection.equals("BOTTOM") ? -180 : 0;
+                toValue = nextDirection.equals(actualDirection) ? -90 : (nextDirection.equals("BOTTOM") ? -180 : 0);
                 break;
             case "DOWN":
                 fromValue = -180;
-                toValue = nextDirection.equals("RIGHT") ? -270 : -90;
+                toValue = nextDirection.equals(actualDirection) ? -180 : (nextDirection.equals("RIGHT") ? -270 : -90);
                 break;
             case "RIGHT":
-                fromValue = -270;
-                toValue = nextDirection.equals("UP") ? -360 : -180;
+                fromValue = nextDirection.equals(actualDirection) ? 90 : -270;
+                toValue = nextDirection.equals(actualDirection) ? 90 : (nextDirection.equals("UP") ? -360 : -180);
                 break;
         }
-        toValue = nextDirection.equals(actualDirection) ? 0 : 0;
 
         ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(view, "rotation", fromValue, toValue);
-        rotateAnimation.setDuration(TRANSLATE_ANIMATION_DURATION);
+        rotateAnimation.setDuration(GRID_ROTATE_ANIMATION_DURATION);
         rotateAnimation.start();
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(rotateAnimation);
-        animatorSet.play(animX).with(animY).after(TRANSLATE_ANIMATION_DURATION);
+        animatorSet.play(animX).with(animY).after(GRID_ROTATE_ANIMATION_DURATION);
         animatorSet.start();
 
         return animatorSet;

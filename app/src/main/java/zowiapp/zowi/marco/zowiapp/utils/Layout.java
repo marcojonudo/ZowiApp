@@ -3,6 +3,7 @@ package zowiapp.zowi.marco.zowiapp.utils;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
@@ -11,11 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOverlay;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.util.Random;
+
+import zowiapp.zowi.marco.zowiapp.GameActivity;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.zowi.Zowi;
-import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 
 public class Layout {
 
@@ -29,7 +36,7 @@ public class Layout {
         guidedGameScroller.post(new Runnable() {
             @Override
             public void run() {
-                smallZowi.setBounds(guidedGameScroller.getWidth()-guidedGameScroller.getWidth()/ ActivityConstants.CommonConstants.OVERLAY_HORIZONTAL_RATIO, guidedGameScroller.getHeight()-guidedGameScroller.getWidth()/ ActivityConstants.CommonConstants.OVERLAY_HORIZONTAL_RATIO, guidedGameScroller.getWidth(), guidedGameScroller.getHeight());
+                        smallZowi.setBounds(guidedGameScroller.getWidth()-guidedGameScroller.getWidth()/ CommonConstants.OVERLAY_HORIZONTAL_RATIO, guidedGameScroller.getHeight()-guidedGameScroller.getWidth()/ CommonConstants.OVERLAY_HORIZONTAL_RATIO, guidedGameScroller.getWidth(), guidedGameScroller.getHeight());
                 overlay.add(smallZowi);
             }
         });
@@ -78,4 +85,39 @@ public class Layout {
 
         return checkButton;
     }
+
+    public static void showAlertDialog(final GameParameters gameParameters, final boolean guidedActivity, boolean correct, String text) {
+        final Dialog alertDialog = new Dialog(gameParameters, R.style.DialogTheme);
+        alertDialog.setContentView(R.layout.finish_alert_dialog);
+
+        TextView correctOperationText = (TextView) alertDialog.findViewById(R.id.correct_operation_text);
+        correctOperationText.setText(text);
+
+        ImageView finishDialogImage = (ImageView) alertDialog.findViewById(R.id.finish_dialog_image);
+        finishDialogImage.setImageResource(
+                gameParameters.getResources().getIdentifier(correct ? "zowi_happy_open_small" : "zowi_sad_open_small", CommonConstants.DRAWABLE, gameParameters.getPackageName()));
+
+        alertDialog.show();
+
+        Button restartButton = (Button) alertDialog.findViewById(R.id.restart_activity_button);
+        restartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.cancel();
+                gameParameters.recreate();
+            }
+        });
+
+        Button finishButton = (Button) alertDialog.findViewById(R.id.finish_activity_button);
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.cancel();
+                Intent intent = new Intent(gameParameters.getApplicationContext(), GameActivity.class);
+                intent.putExtra("type", guidedActivity ? "GUIDED" : "FREE");
+                gameParameters.startActivity(intent);
+            }
+        });
+    }
+
 }
