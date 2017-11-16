@@ -33,10 +33,10 @@ public class ZowiEyesChecker extends CheckerTemplate{
         }
 
         for (int i=0; i < ZowiEyesConstants.DISTANCE_LIMITS.length; i++) {
-            if (distanceToCenter > ZowiEyesConstants.DISTANCE_LIMITS[i][0]) {
-                Log.i("ZowiEyes", String.valueOf(distanceToCenter));
+            if (distanceToCenter > ZowiEyesConstants.DISTANCE_LIMITS[i]) {
+                Log.i("ZowiEyes", eventX + ", " + eventY + ":   " + distanceToCenter);
                 if (new Date().getTime() - referenceTime >= ZowiEyesConstants.DISTANCE_PERIODS[i]) {
-                    sendDataToZowi("S " + String.valueOf(ZowiEyesConstants.DISTANCE_LIMITS[i][1]));
+                    sendDataToZowi("S " + String.valueOf(ZowiEyesConstants.FREQUENCY_LIST[i]));
                     referenceTime = new Date().getTime();
                 }
                 break;

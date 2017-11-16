@@ -2,6 +2,8 @@ package zowiapp.zowi.marco.zowiapp.activities;
 
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -106,6 +108,19 @@ public class ZowiEyesActivity extends ActivityTemplate {
                 ConstraintLayout constrainContainer = (ConstraintLayout) contentContainer.getChildAt(0);
 
                 imagesHandler.loadZowiEyesImages(constrainContainer, imagesNumber, ZowiEyesConstants.LAYOUT_IMAGES, imagesCoordinates, containerCoordinates);
+            }
+
+            for (int i =0; i<containerCoordinates.length; i++) {
+                ConstraintLayout constrainContainer = (ConstraintLayout) contentContainer.getChildAt(0);
+
+                View v = new View(gameParameters);
+                ViewGroup.LayoutParams l = new ViewGroup.LayoutParams(5,5);
+                v.setLayoutParams(l);
+                v.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.red));
+                v.setX(containerCoordinates[i].x);
+                v.setY(containerCoordinates[i].y);
+
+                constrainContainer.addView(v);
             }
         }
         else {

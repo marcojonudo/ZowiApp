@@ -31,7 +31,6 @@ public class FoodPyramidActivity extends ActivityTemplate {
     static int imagesCounter;
     private Point imagesDimensions;
     ImageView[] imageViews;
-    private boolean correctAnswer;
 
     public static void setImagesCounter(int c) {
         imagesCounter = c;
@@ -40,7 +39,6 @@ public class FoodPyramidActivity extends ActivityTemplate {
     public FoodPyramidActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
         checker = new FoodPyramidChecker();
-        //TODO Comprobar a meter imagesHandler en ActivityTemplate
         imagesHandler = new ImagesHandler(gameParameters, this, FoodPyramidConstants.FOODPYRAMID_TYPE);
 
         getParameters();

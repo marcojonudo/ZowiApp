@@ -30,8 +30,11 @@ public class FoodPyramidChecker extends CheckerTemplate {
                     for (int i=0; i<imageViews.length; i++) {
                         if (correctionArray[i][0] != null && !correctionArray[i][0].equals(correctionArray[i][1]))
                             Animations.translateAnimation(imageViews[i], imagesCoordinates, i);
-                        else if (correctionArray[i][0] != null && correctionArray[i][0].equals(correctionArray[i][1]))
+                        else if (correctionArray[i][0] != null && correctionArray[i][0].equals(correctionArray[i][1])) {
                             correctAnswers++;
+                            if (imageViews[i] != null)
+                                imageViews[i].setOnTouchListener(null);
+                        }
                     }
                     FoodPyramidActivity.setImagesCounter(correctAnswers-1);
                     sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);

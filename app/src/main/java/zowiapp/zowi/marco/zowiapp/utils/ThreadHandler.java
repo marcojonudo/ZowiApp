@@ -44,8 +44,6 @@ public class ThreadHandler {
                             case SIMPLE_FEEDBACK:
                                 zowiStates(receivedText);
                                 break;
-                            case ZOWI_MOVES_360:
-                                break;
                             case ZOWI_OPERATIONS:
                                 zowiOperations(receivedText);
                                 break;
@@ -73,41 +71,6 @@ public class ThreadHandler {
         }
     }
 
-    private static void zowiMoves360(byte[] packetBytes, int bytesAvailable) {
-//        String receivedText = new String(packetBytes, 0, bytesAvailable);
-//                            /* sendFinalAck from Zowi sends an 'F' as response to ZOWI_CHECKS_ANSWERS */
-//        if (receivedText.contains("F") && state == WAITING_ZOWI_MOVES) {
-//            state = ZOWI_HAS_MOVED;
-//        }
-//        else if (receivedText.contains("F") && state == ZOWI_HAS_MOVED) {
-//            int imageIndex;
-//            if (receivedText.contains("AD")) {
-//                imageIndex = 1;
-//                Animations.rotateAndTranslate(zowi, 0);
-//            }
-//            else if (receivedText.contains("IZ")) {
-//                imageIndex = 3;
-//                Animations.rotateAndTranslate(zowi, -90);
-//            }
-//            else if (receivedText.contains("DE")) {
-//                imageIndex = 5;
-//                Animations.rotateAndTranslate(zowi, 90);
-//            }
-//            else if (receivedText.contains("AT")) {
-//                imageIndex = 7;
-//                Animations.rotateAndTranslate(zowi, 180);
-//            }
-//            else
-//                imageIndex = -1;
-//            killThread = true;
-//            state = WAITING_ZOWI_MOVES;
-//
-//            correctAnswer = ((LogicBlocksChecker) checker).check(gameParameters, imageIndex, correctImageIndex);
-//
-//            reactToAnswer(correctAnswer);
-//        }
-    }
-
     private static void zowiOperations(String receivedText) {
         if (receivedText.contains("F")) {
             killThread = true;
@@ -115,7 +78,7 @@ public class ThreadHandler {
     }
 
     public enum ThreadType {
-        ZOWI_CONNECTED, SIMPLE_FEEDBACK, ZOWI_STATES, ZOWI_CHECKS, ZOWI_MOVES_360, ZOWI_OPERATIONS, EMPTY_INPUT_BUFFER
+        ZOWI_CONNECTED, SIMPLE_FEEDBACK, ZOWI_OPERATIONS
     }
 
 }

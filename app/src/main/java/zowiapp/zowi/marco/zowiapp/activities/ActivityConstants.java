@@ -88,7 +88,6 @@ public class ActivityConstants {
         public static final String EMPTY_COLUMN = COLUMN_0;
         public static final int MAX_NUMBER_BLUETOOTH_COLUMNS = 5;
     }
-//    {0, {0, {0, 1, 1, 1, 0}}}
 
     public static class PuzzleConstants {
         static final ActivityType PUZZLE_TYPE = ActivityType.PUZZLE;
@@ -189,17 +188,15 @@ public class ActivityConstants {
         static final String JSON_PARAMETER_IMAGESNUMBER = "imagesNumber";
         static final String JSON_PARAMETER_IMAGES = "images";
         static final int LAYOUT_IMAGES = 12;
-        public static final int[][] DISTANCE_LIMITS = {
-            {300, 1}, {200, 2}, {0, 3}
-        };
-        public static final int[] DISTANCE_PERIODS = {
-            1000, 500, 200
-        };
+        // TODO Revisar limites en tablet
+        public static final int[] DISTANCE_LIMITS = {150, 75, 0};
+        public static final int[] DISTANCE_PERIODS = {2000, 1000, 500};
+        public static final int[] FREQUENCY_LIST = {1, 2, 3};
     }
 
     public static class LogicBlocksConstants {
         static final String JSON_PARAMETER_IMAGES = "images";
-        public static final String ZOWI_POINTER = "zowi_pointer";
+        public static final String ZOWI_POINTER = "grid_zowi_pointer";
         static final String ZOWI_HAPPY = "zowi_happy_open_small";
         static final String ZOWI_SAD = "zowi_happy_sad_small";
     }

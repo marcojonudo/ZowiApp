@@ -266,7 +266,6 @@ public class ZowiSocket {
                     Log.i("BluetoothReceiver", "Device bond changed " + device.getName() + ": " + device.getBondState());
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
-                    Log.i("BluetoothReciver", "Nah, hemos muerto");
                     setDisconnected();
                     Layout.drawAlertDialog(mainActivity);
                     break;

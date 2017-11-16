@@ -190,13 +190,16 @@
         </android.support.constraint.ConstraintLayout>
 
         <Button
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/paper_bin"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/grid_paper_bin"
             android:id="@+id/paper_bin"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/movements_grid"
-            android:layout_marginStart="@dimen/paper_bin_left_margin"/>
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginStart="@dimen/paper_bin_left_margin"
+            android:layout_marginTop="@dimen/paper_bin_top_margin"/>
 
     </android.support.constraint.ConstraintLayout>
 

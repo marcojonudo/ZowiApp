@@ -102,6 +102,8 @@ public class MemoryActivity extends ActivityTemplate {
             boolean correctAnswer = ((MemoryChecker) checker).check(gameParameters, Integer.parseInt(eventsResult[0]), Integer.parseInt(eventsResult[1]), Integer.parseInt(eventsResult[2]), Integer.parseInt(eventsResult[3]));
             first = true;
             lastImageMovement(ActivityType.MEMORY, view, null, null, -1, correctAnswer);
+
+            checkFinishActivity(ActivityType.MEMORY, correctAnswer, MemoryConstants.NUMBER_OF_IMAGES, true);
         }
     }
 

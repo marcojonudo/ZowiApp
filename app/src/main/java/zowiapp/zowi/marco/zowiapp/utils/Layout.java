@@ -47,7 +47,7 @@ public class Layout {
             progressDialog = new ProgressDialog(context, R.style.DialogTheme);
         progressDialog.show();
         progressDialog.setContentView(R.layout.custom_progress_dialog);
-        progressDialog.setCancelable(true);
+        progressDialog.setCancelable(false);
     }
 
     public static void closeProgressDialog() {
@@ -59,6 +59,7 @@ public class Layout {
         if (alertDialog == null)
             alertDialog = new Dialog(context, R.style.DialogTheme);
         alertDialog.setContentView(R.layout.custom_alert_dialog);
+        alertDialog.setCancelable(true);
         alertDialog.show();
     }
 

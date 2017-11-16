@@ -207,7 +207,7 @@ public class ImagesHandler {
     private void finalAction(ViewGroup contentContainer, String[] newCorrection) {
         switch (activityType) {
             case LOGIC_BLOCKS:
-                /* Get the center ImageView for displaying zowi_pointer image */
+                /* Get the center ImageView for displaying grid_zowi_pointer image */
                 ImageView imageView = (ImageView) contentContainer.getChildAt(4);
                 loadSimpleImage(imageView, LogicBlocksConstants.ZOWI_POINTER, UNUSED_INDEX, UNUSED_INDEX, UNUSED_INDEX, null);
                 break;
@@ -232,23 +232,23 @@ public class ImagesHandler {
     public void loadZowiEyesImages(ViewGroup contentContainer, int[] imagesNumber, int imagesLimit, Point[] coordinates, Point[] imageViewsCoordinates) {
         ArrayList<Integer> imagesArrayList = new ArrayList<>();
 
-        int randomImagesIndex;
+        int randomImagesIndex, index;
         ImageView imageView;
-        for (int i=0; i<imagesNumber[0]; i++) {
+        for (index=0; index<imagesNumber[0]; index++) {
             randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
 
             imageView = getImageView(contentContainer, randomImagesIndex);
-            loadSimpleImage(imageView, doubleArrayImages[0][i], i, UNUSED_INDEX, UNUSED_INDEX, "0");
+            loadSimpleImage(imageView, doubleArrayImages[0][index], index, UNUSED_INDEX, UNUSED_INDEX, "0");
 
-            coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
+            coordinates[index].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
         }
-        for (int i=0; i<imagesNumber[1]; i++) {
+        for (int j=index; j<index+imagesNumber[1]; j++) {
             randomImagesIndex = generateSimpleRandomIndex(imagesArrayList, imagesLimit, true);
 
-            imageView = getImageView(contentContainer, i);
-            loadSimpleImage(imageView, doubleArrayImages[1][i], imagesNumber[0]+i, UNUSED_INDEX, UNUSED_INDEX, "1");
+            imageView = getImageView(contentContainer, randomImagesIndex);
+            loadSimpleImage(imageView, doubleArrayImages[1][j-index], imagesNumber[0]+j, UNUSED_INDEX, UNUSED_INDEX, "1");
 
-            coordinates[i].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
+            coordinates[j].set(imageViewsCoordinates[randomImagesIndex].x, imageViewsCoordinates[randomImagesIndex].y);
         }
     }
 
@@ -278,9 +278,19 @@ public class ImagesHandler {
         int bitmapHeight = bitmapOptions.outHeight;
         int bitmapWidth =  bitmapOptions.outWidth;
 
-        float scaleFactor = dimensions[index].x < dimensions[index].y ?
-                bitmapHeight < dimensions[index].y ? (float)dimensions[index].x/(float)bitmapWidth : (float)dimensions[index].y/(float)bitmapHeight :
-                bitmapWidth < dimensions[index].x ? (float)dimensions[index].y/(float)bitmapHeight : (float)dimensions[index].x/(float)bitmapWidth;
+        float scaleFactor;
+        if (dimensions[index].x < dimensions[index].y) {
+            if (bitmapHeight < dimensions[index].y)
+                scaleFactor = (float)dimensions[index].x/(float)bitmapWidth;
+            else
+                scaleFactor = (float)dimensions[index].y/(float)bitmapHeight;
+        }
+        else {
+            if (bitmapWidth < dimensions[index].x && (dimensions[index].x - bitmapWidth) > 100)
+                scaleFactor = (float)dimensions[index].y/(float)bitmapHeight;
+            else
+                scaleFactor = (float)dimensions[index].x/(float)bitmapWidth;
+        }
 
         /* ImageView dimensions are scale to fit the content (and to avoid problems with correction later) */
         int width = (int)(bitmapWidth*scaleFactor);
@@ -302,6 +312,7 @@ public class ImagesHandler {
             fixDimensions(images[randomImagesIndex], dimensions, i);
             loadPuzzleImage(contentContainer, images[randomImagesIndex], coordinates, dimensions, scaleFactorsToPuzzle, puzzleContainerSide, piecesToPuzzle, randomImagesIndex, i);
         }
+        Log.i("dimensions", "-------------------------");
 
         ((PuzzleActivity) activityTemplate).setCorrection(correction);
     }
@@ -439,7 +450,7 @@ public class ImagesHandler {
         imageView.setY(coordinates[index].y);
     }
 
-    private void loadPuzzleImage(final ViewGroup container, String imageName, final Point[] coordinates, final Point[] dimensions, final float[] scaleFactorsToPuzzle, final int puzzleContainerSide, final double[][] piecesToPuzzle, final int randomImagesIndex, final int index) {
+    private void loadPuzzleImage(final ViewGroup container, final String imageName, final Point[] coordinates, final Point[] dimensions, final float[] scaleFactorsToPuzzle, final int puzzleContainerSide, final double[][] piecesToPuzzle, final int randomImagesIndex, final int index) {
         final ImageView image = new ImageView(context);
 
         resizeImageView(image, dimensions[index], coordinates, index);
@@ -447,9 +458,10 @@ public class ImagesHandler {
         Picasso.with(context).load(resourceId).into(image, new Callback() {
             @Override
             public void onSuccess() {
-                float scaleFactorToPuzzle = dimensions[index].x <= dimensions[index].y ?
+                float scaleFactorToPuzzle = dimensions[index].x > dimensions[index].y ?
                         ((float)puzzleContainerSide*(float)piecesToPuzzle[randomImagesIndex][0])/(float)dimensions[index].x :
                         ((float)puzzleContainerSide*(float)piecesToPuzzle[randomImagesIndex][1])/(float)dimensions[index].y;
+                Log.i("dimensions", scaleFactorToPuzzle + " --- " + dimensions[index].x + ", " + dimensions[index].y + " | " + imageName + ": " + puzzleContainerSide + " - " + piecesToPuzzle[randomImagesIndex][0] + ", " + piecesToPuzzle[randomImagesIndex][1]);
 
                 scaleFactorsToPuzzle[index] = scaleFactorToPuzzle;
             }

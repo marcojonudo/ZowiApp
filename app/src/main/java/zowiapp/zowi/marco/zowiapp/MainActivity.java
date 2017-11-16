@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
         Log.i("Steps", "onDestroy");
         if (ZowiSocket.isConnected())
             ZowiSocket.closeConnection();
-        
-        unregisterReceiver(zowiSocket.getDisconnectionReceiver());
+
+        if (zowiSocket.getDisconnectionReceiver() != null)
+            unregisterReceiver(zowiSocket.getDisconnectionReceiver());
     }
 
     @Override

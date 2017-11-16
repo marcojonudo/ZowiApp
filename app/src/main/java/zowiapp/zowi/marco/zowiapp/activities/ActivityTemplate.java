@@ -337,6 +337,7 @@ public abstract class ActivityTemplate {
                     if (!alreadyInArray) {
                         FoodPyramidActivity.imagesCounter++;
                         ((FoodPyramidActivity)this).imageViews[FoodPyramidActivity.imagesCounter] = (ImageView) view;
+                        System.out.println(FoodPyramidActivity.imagesCounter);
                     }
 
                     doubleArrayCorrection[FoodPyramidActivity.imagesCounter][0] = imageCategory;
@@ -437,11 +438,21 @@ public abstract class ActivityTemplate {
     private void showFinishAlert(ActivityType activityType, final boolean guidedActivity) {
         final Dialog alertDialog = new Dialog(gameParameters, R.style.DialogTheme);
         alertDialog.setContentView(R.layout.finish_alert_dialog);
+        alertDialog.setCancelable(false);
+
         TextView correctOperationText = (TextView) alertDialog.findViewById(R.id.correct_operation_text);
-        String text;
+        String text = "";
         switch (activityType) {
             case OPERATIONS:
-                text = gameParameters.getResources().getString(R.string.correct_operation);
+                ImageView mainImage = (ImageView) gameParameters.findViewById(R.id.main_image);
+                if (mainImage != null) {
+                    if (mainImage.getTag() == "TEETH")
+                        text = gameParameters.getResources().getString(R.string.correct_operation);
+                    else {
+                        String resource = "correct_result_" + (new Random().nextInt(CommonConstants.RANDOM_CORRECT_RESULTS_SENTENCE_LIMIT) + 1);
+                        text = gameParameters.getResources().getString(gameParameters.getResources().getIdentifier(resource, "string", gameParameters.getPackageName()));
+                    }
+                }
                 break;
             default:
                 String resource = "correct_result_" + (new Random().nextInt(CommonConstants.RANDOM_CORRECT_RESULTS_SENTENCE_LIMIT) + 1);

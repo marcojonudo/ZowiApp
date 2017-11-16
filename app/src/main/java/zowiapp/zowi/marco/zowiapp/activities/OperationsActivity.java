@@ -77,6 +77,7 @@ public class OperationsActivity extends ActivityTemplate {
         ImageView mainImage = (ImageView) operationsActivityTemplate.findViewById(R.id.main_image);
         String mainImageName = activityDescription.contains(ZOWI_TEETH_IDENTIFIER) ? image + "_" + mainImageIdentifier : image;
         int resourceId = gameParameters.getResources().getIdentifier(mainImageName, CommonConstants.DRAWABLE, gameParameters.getPackageName());
+        mainImage.setTag(activityDescription.contains(ZOWI_TEETH_IDENTIFIER) ? "TEETH" : "");
         Picasso.with(gameParameters).load(resourceId).into(mainImage);
 
         /* Array that will allow the correction of the operations */
@@ -145,7 +146,7 @@ public class OperationsActivity extends ActivityTemplate {
             }
 
             if (operationsTemplate != null) {
-                ConstraintLayout checkButton = (ConstraintLayout) operationsTemplate.findViewById(R.id.operations_button);
+                final ConstraintLayout checkButton = (ConstraintLayout) operationsTemplate.findViewById(R.id.operations_button);
                 ConstraintLayout displayButton = (ConstraintLayout) operationsTemplate.findViewById(R.id.display_operation_button);
                 checkButton.setTag(i);
                 checkButton.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +156,7 @@ public class OperationsActivity extends ActivityTemplate {
                         boolean correctAnswer = ((OperationsChecker) checker).check(gameParameters, index, operationsResults[index], operationsType);
 
                         if (correctAnswer) {
+                            checkButton.setOnClickListener(null);
                             correctResults++;
                             if (activityDescription.contains(ZOWI_TEETH_IDENTIFIER))
                                 changeMainImage();
