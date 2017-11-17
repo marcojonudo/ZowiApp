@@ -54,8 +54,8 @@
     <dimen name="movements_vertical_margin">25dp</dimen>
     <dimen name="movements_horizontal_margin">20dp</dimen>
     <dimen name="movements_cell_margin">1dp</dimen>
-    <dimen name="paper_bin_left_margin">20dp</dimen>
-    <dimen name="paper_bin_top_margin">210dp</dimen>
+    <dimen name="paper_bin_left_margin">30dp</dimen>
+    <dimen name="paper_bin_top_margin">450dp</dimen>
 
     <!-- Operations dimensions -->
     <dimen name="main_image_margin">15dp</dimen>

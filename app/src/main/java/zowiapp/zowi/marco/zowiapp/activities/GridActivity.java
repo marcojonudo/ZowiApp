@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.graphics.Point;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +39,7 @@ public class GridActivity extends ActivityTemplate {
 
     private int[] obstacles, totalCells;
     private ArrayList<Integer> nextCells;
-    private int gridSize, movementsNumber, zowiCell, destinyCell, nextCell, directionsIndex;
+    private int gridSize, movementsNumber, zowiCell, destinyCell, nextCell, directionsIndex, out;
     private Point cellDimensions;
     private ArrayList<String> directions;
     private boolean startedMoving;
@@ -72,9 +73,9 @@ public class GridActivity extends ActivityTemplate {
             movementsNumber = 0;
             directionsIndex = 0;
             startedMoving = false;
+            out = 0;
 
             int obstaclesIndex = 0;
-            int cellsIndex = 0;
             for (int i=0; i<jsonCells.length(); i++) {
                 if (i!=0 && i!=jsonCells.length()-1) {
                     obstacles[obstaclesIndex] = jsonCells.getInt(i);
@@ -146,13 +147,17 @@ public class GridActivity extends ActivityTemplate {
 
                     int arrowIndex = GridConstants.MAX_MOVEMENTS - lastMovementIndex;
                     ConstraintLayout gameGrid = (ConstraintLayout) gameParameters.findViewById(R.id.grid);
-                    if (gameGrid != null) {
+                    if (gameGrid != null && out==0) {
                         ConstraintLayout grid = (ConstraintLayout) gameGrid.getChildAt(0);
                         View lastMovementCell = grid.getChildAt(nextCells.get(arrowIndex)-1);
                         lastMovementCell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.white));
                     }
+                    if (out != 0)
+                        out--;
+
                     nextCells.remove(arrowIndex);
                     directions.remove(arrowIndex-1);
+                    movementsNumber--;
 
                     zowiCell = nextCells.get((GridConstants.MAX_MOVEMENTS - 1) - lastMovementIndex);
                     nextCell = zowiCell;
@@ -189,7 +194,7 @@ public class GridActivity extends ActivityTemplate {
                 paperBin.setOnTouchListener(null);
 
             finishActivity(ActivityType.GRID, true);
-            ZowiActions.sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+//            ZowiActions.sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
         }
         if (directionsIndex < directions.size()) {
             int nextCell = ((GridChecker) checker).checkMovement(gameParameters, gridSize, directions.get(directionsIndex), zowiCell, obstacles);
@@ -289,10 +294,10 @@ public class GridActivity extends ActivityTemplate {
         }
 
         for (String command : commands) {
-            if (command != null)
-                ZowiActions.sendDataToZowi(command);
+//            if (command != null)
+//                ZowiActions.sendDataToZowi(command);
         }
-        ZowiActions.sendDataToZowi(ZowiActions.ZOWI_WALKS_FORWARD);
+//        ZowiActions.sendDataToZowi(ZowiActions.ZOWI_WALKS_FORWARD);
     }
 
     protected void getElementsCoordinates() {
@@ -326,11 +331,11 @@ public class GridActivity extends ActivityTemplate {
         String[] eventsResult = handleEvents(ActivityType.GRID, view, event, null, null);
         if (eventsResult != null) {
             if (movementsNumber < GridConstants.MAX_MOVEMENTS) {
-                    directions.add(eventsResult[0]);
-                    movementsNumber++;
+                directions.add(eventsResult[0]);
+                movementsNumber++;
 
-                    fillDirectionsGrid(eventsResult[0]);
-                    colourNextCell(eventsResult[0]);
+                fillDirectionsGrid(eventsResult[0]);
+                colourNextCell(eventsResult[0]);
             }
         }
     }
@@ -342,27 +347,41 @@ public class GridActivity extends ActivityTemplate {
             int nextCell = getNextCell(newDirection);
 
             ConstraintLayout grid = (ConstraintLayout) gridContainer.getChildAt(0);
-            if (nextCell >= 0 && nextCell < 10) {
+            if (nextCell >= 0 && nextCell < (gridSize == 1 ? 10 : 17)) {
                 View cell = grid.getChildAt(nextCell-1);
 
-                cell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.paleRed));
+                if (out == 0)
+                    cell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.paleRed));
             }
         }
     }
 
     private int getNextCell(String newDirection) {
+        boolean smallGrid = gridSize == 1;
         switch (newDirection) {
             case "UP":
-                nextCell = nextCell>3 ? nextCell - 3 : nextCell;
+                if (nextCell>(smallGrid ? 3 : 4) && out==0)
+                    nextCell = nextCell - (smallGrid ? 3 : 4);
+                else
+                    out++;
                 break;
             case "LEFT":
-                nextCell = (nextCell+2)%3 != 0 ? nextCell - 1 : nextCell;
+                if ((nextCell+(smallGrid ? 2 : 3))%(smallGrid ? 3 : 4) != 0 && out==0)
+                    nextCell = nextCell - 1;
+                else
+                    out++;
                 break;
             case "RIGHT":
-                nextCell = nextCell%3 != 0 ? nextCell + 1 : nextCell;
+                if (nextCell%(smallGrid ? 3 : 4) != 0 && out==0)
+                    nextCell = nextCell + 1;
+                else
+                    out++;
                 break;
             case "DOWN":
-                nextCell = nextCell<7 ? nextCell + 3 : nextCell;
+                if (nextCell<(smallGrid ? 7 : 13) && out==0)
+                    nextCell = nextCell + (smallGrid ? 3 : 4);
+                else
+                    out++;
                 break;
         }
         nextCells.add(nextCell);
