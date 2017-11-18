@@ -18,19 +18,21 @@
         android:paddingBottom="@dimen/button_border_width">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/dialog_title_font_size"
             android:text="@string/zowi_not_found_title"
             android:textColor="@color/black"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:textAlignment="center"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/zowi_not_found_text"
             android:textColor="@color/black"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:textAlignment="center"/>
 
     </RelativeLayout>
 
