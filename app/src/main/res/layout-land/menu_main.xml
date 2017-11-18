@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/chooseGameTypeText"
         android:text="@string/choose_game_type_text"
-        android:textSize="@dimen/main_title_font_size"/>
+        android:textSize="@dimen/main_title_font_size"
+        android:gravity="center"/>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

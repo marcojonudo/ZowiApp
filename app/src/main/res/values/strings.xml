@@ -35,8 +35,8 @@
     <string name="restart_activity_text">¡Otra vez!</string>
     <string name="finish_activity_text">¡Volver al menú!</string>
 
-    <string name="logic_blocks_turn_left">Girar izquierda</string>
-    <string name="logic_blocks_turn_right">Girar derecha</string>
+    <string name="logic_blocks_turn_left">Girar\nizquierda</string>
+    <string name="logic_blocks_turn_right">Girar\nderecha</string>
 
     <string name="correct_result_1">¡Genial!\n¡Lo has logrado!</string>
     <string name="correct_result_2">¡Muy bien!\n¡Sigue así!</string>

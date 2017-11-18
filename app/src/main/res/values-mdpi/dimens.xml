@@ -21,7 +21,7 @@
     <dimen name="progress_dialog_width">475dp</dimen>
     <dimen name="progress_dialog_height">300dp</dimen>
     <dimen name="progress_dialog_padding">40dp</dimen>
-    <dimen name="floating_check_button_width">120dp</dimen>
+    <dimen name="floating_check_button_width">250dp</dimen>
     <dimen name="floating_check_button_height">90dp</dimen>
 
     <!-- Main activity dimensions -->
@@ -109,5 +109,7 @@
 
     <!-- LogicBlocks dimensions -->
     <dimen name="logic_grid_cell_margin">20dp</dimen>
+    <dimen name="logic_button_start_margin">100dp</dimen>
+    <dimen name="logic_button_end_margin">20dp</dimen>
 
 </resources>
