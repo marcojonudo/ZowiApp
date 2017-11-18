@@ -39,10 +39,11 @@ public class GridActivity extends ActivityTemplate {
 
     private int[] obstacles, totalCells;
     private ArrayList<Integer> nextCells;
-    private int gridSize, movementsNumber, zowiCell, destinyCell, nextCell, directionsIndex, out;
+    private int gridSize, movementsNumber, zowiCell, destinyCell, nextCell, directionsIndex, out, completedSteps;
     private Point cellDimensions;
     private ArrayList<String> directions;
     private boolean startedMoving;
+    private static final String ZOWI_NAME = "zowi-0";
 
     public GridActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
@@ -74,6 +75,7 @@ public class GridActivity extends ActivityTemplate {
             directionsIndex = 0;
             startedMoving = false;
             out = 0;
+            completedSteps = 0;
 
             int obstaclesIndex = 0;
             for (int i=0; i<jsonCells.length(); i++) {
@@ -141,28 +143,31 @@ public class GridActivity extends ActivityTemplate {
                     while (movementsGrid.getChildAt(lastMovementIndex).getTag() == null)
                         lastMovementIndex++;
 
-                    ImageView lastMovementView = (ImageView) movementsGrid.getChildAt(lastMovementIndex);
-                    lastMovementView.setImageDrawable(null);
-                    lastMovementView.setTag(null);
-
                     int arrowIndex = GridConstants.MAX_MOVEMENTS - lastMovementIndex;
-                    ConstraintLayout gameGrid = (ConstraintLayout) gameParameters.findViewById(R.id.grid);
-                    if (gameGrid != null && out==0) {
-                        ConstraintLayout grid = (ConstraintLayout) gameGrid.getChildAt(0);
-                        View lastMovementCell = grid.getChildAt(nextCells.get(arrowIndex)-1);
-                        lastMovementCell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.white));
+
+                    if (arrowIndex > completedSteps) {
+                        ImageView lastMovementView = (ImageView) movementsGrid.getChildAt(lastMovementIndex);
+                        lastMovementView.setImageDrawable(null);
+                        lastMovementView.setTag(null);
+
+                        ConstraintLayout gameGrid = (ConstraintLayout) gameParameters.findViewById(R.id.grid);
+                        if (gameGrid != null && out==0) {
+                            ConstraintLayout grid = (ConstraintLayout) gameGrid.getChildAt(0);
+                            View lastMovementCell = grid.getChildAt(nextCells.get(arrowIndex)-1);
+                            lastMovementCell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.white));
+                        }
+                        if (out != 0)
+                            out--;
+
+                        nextCells.remove(arrowIndex);
+                        directions.remove(arrowIndex-1);
+                        movementsNumber--;
+
+                        zowiCell = nextCells.get((GridConstants.MAX_MOVEMENTS - 1) - lastMovementIndex);
+                        nextCell = zowiCell;
+                        if (zowiCell == nextCells.get(0))
+                            startedMoving = false;
                     }
-                    if (out != 0)
-                        out--;
-
-                    nextCells.remove(arrowIndex);
-                    directions.remove(arrowIndex-1);
-                    movementsNumber--;
-
-                    zowiCell = nextCells.get((GridConstants.MAX_MOVEMENTS - 1) - lastMovementIndex);
-                    nextCell = zowiCell;
-                    if (zowiCell == nextCells.get(0))
-                        startedMoving = false;
                 }
                 else {
                     Toast.makeText(gameParameters, "¡No hay movimientos que borrar!", Toast.LENGTH_SHORT).show();
@@ -194,7 +199,7 @@ public class GridActivity extends ActivityTemplate {
                 paperBin.setOnTouchListener(null);
 
             finishActivity(ActivityType.GRID, true);
-//            ZowiActions.sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+            ZowiActions.sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
         }
         if (directionsIndex < directions.size()) {
             int nextCell = ((GridChecker) checker).checkMovement(gameParameters, gridSize, directions.get(directionsIndex), zowiCell, obstacles);
@@ -204,28 +209,35 @@ public class GridActivity extends ActivityTemplate {
                 RelativeLayout contentContainer = (RelativeLayout) gameParameters.findViewById(R.id.content_container);
                 AnimatorSet zowiAnimations;
                 if (contentContainer != null) {
-                    View zowi = contentContainer.getChildAt(1);
+                    View zowi = null;
+                    for (int i=0; i<contentContainer.getChildCount(); i++) {
+                        String tag = contentContainer.getChildAt(i).getTag() != null ? contentContainer.getChildAt(i).getTag().toString() : "";
+                        if (tag.equals(ZOWI_NAME))
+                            zowi = contentContainer.getChildAt(i);
+                    }
+                    if (zowi != null) {
+                        Point[] movementCoordinates = Functions.createEmptyPointArray(imagesCoordinates.length);
+                        for (int j=0; j<imagesCoordinates.length; j++)
+                            movementCoordinates[j].set(imagesCoordinates[j].x - zowi.getWidth()/2, imagesCoordinates[j].y - zowi.getHeight()/2);
 
-                    Point[] movementCoordinates = Functions.createEmptyPointArray(imagesCoordinates.length);
-                    for (int j=0; j<imagesCoordinates.length; j++)
-                        movementCoordinates[j].set(imagesCoordinates[j].x - zowi.getWidth()/2, imagesCoordinates[j].y - zowi.getHeight()/2);
+                        zowiAnimations = Animations.rotateAndTranslate(zowi, directionsIndex != 0 ? directions.get(directionsIndex-1) : "UP", directions.get(directionsIndex),
+                                movementCoordinates, nextCell-1);
 
-                    zowiAnimations = Animations.rotateAndTranslate(zowi, directionsIndex != 0 ? directions.get(directionsIndex-1) : "UP", directions.get(directionsIndex),
-                            movementCoordinates, nextCell-1);
+                        zowiCell = nextCell;
+                        completedSteps++;
 
-                    zowiCell = nextCell;
+                        if (directionsIndex == directions.size()-1)
+                            zowi.bringToFront();
 
-                    if (directionsIndex == directions.size()-1)
-                        zowi.bringToFront();
-
-                    if (zowiAnimations != null) {
-                        zowiAnimations.addListener(new AnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(Animator animator) {
-                                directionsIndex++;
-                                zowiMovement();
-                            }
-                        });
+                        if (zowiAnimations != null) {
+                            zowiAnimations.addListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animator) {
+                                    directionsIndex++;
+                                    zowiMovement();
+                                }
+                            });
+                        }
                     }
                 }
             }
@@ -294,10 +306,10 @@ public class GridActivity extends ActivityTemplate {
         }
 
         for (String command : commands) {
-//            if (command != null)
-//                ZowiActions.sendDataToZowi(command);
+            if (command != null)
+                ZowiActions.sendDataToZowi(command);
         }
-//        ZowiActions.sendDataToZowi(ZowiActions.ZOWI_WALKS_FORWARD);
+        ZowiActions.sendDataToZowi(ZowiActions.ZOWI_WALKS_FORWARD);
     }
 
     protected void getElementsCoordinates() {

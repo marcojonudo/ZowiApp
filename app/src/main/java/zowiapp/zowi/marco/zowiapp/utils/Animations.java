@@ -6,23 +6,11 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import zowiapp.zowi.marco.zowiapp.R;
-import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants;
-import zowiapp.zowi.marco.zowiapp.activities.ActivityTemplate;
-import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 
 public class Animations {
 
@@ -31,6 +19,7 @@ public class Animations {
     private static final int GRID_TRANSLATE_ANIMATION_DURATION = 3500;
     private static final int SCALE_ANIMATION_DURATION = 500;
     private static final int SHADE_ANIMATION_DURATION = 1000;
+    private static final int CERO_DURATION = 0;
 
     public static void translateAnimation(View view, Point[] coordinates, int index) {
         ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX", view.getX(), coordinates[index].x);
@@ -147,12 +136,12 @@ public class Animations {
         }
 
         ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(view, "rotation", fromValue, toValue);
-        rotateAnimation.setDuration(GRID_ROTATE_ANIMATION_DURATION);
+        rotateAnimation.setDuration(actualDirection.equals(nextDirection) ? CERO_DURATION : GRID_ROTATE_ANIMATION_DURATION);
         rotateAnimation.start();
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(rotateAnimation);
-        animatorSet.play(animX).with(animY).after(GRID_ROTATE_ANIMATION_DURATION);
+        animatorSet.play(animX).with(animY).after(actualDirection.equals(nextDirection) ? CERO_DURATION : GRID_ROTATE_ANIMATION_DURATION);
         animatorSet.start();
 
         return animatorSet;
