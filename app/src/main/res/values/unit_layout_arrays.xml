@@ -38,35 +38,39 @@
     </string-array>
 
     <string-array name="activities_images">
-        <item>activity_1_1</item>
+        <item>activity_grid_music</item>
         <item>activity_1_2</item>
         <item>activity_1_3</item>
         <item>activity_1_4</item>
         <item>activity_1_5</item>
-        <item>activity_1_6</item>
+        <item>activity_operations</item>
+
         <item>activity_2_1</item>
         <item>activity_2_2</item>
         <item>activity_2_3</item>
         <item>activity_2_4</item>
         <item>activity_2_5</item>
         <item>activity_2_6</item>
-        <item>activity_1_1</item>
+
+        <item>activity_grid_music</item>
         <item>activity_3_2</item>
         <item>activity_3_3</item>
         <item>activity_3_4</item>
-        <item>activity_3_5</item>
+        <item>activity_puzzle</item>
         <item>activity_3_6</item>
+
         <item>activity_1_1</item>
         <item>activity_4_2</item>
         <item>activity_4_3</item>
         <item>activity_4_4</item>
-        <item>activity_4_5</item>
-        <item>activity_4_6</item>
-        <item>activity_1_1</item>
+        <item>activity_puzzle</item>
+        <item>activity_operations</item>
+
+        <item>activity_grid_music</item>
         <item>activity_5_2</item>
         <item>activity_5_3</item>
-        <item>activity_5_4</item>
-        <item>activity_5_5</item>
+        <item>activity_operations</item>
+        <item>activity_puzzle</item>
         <item>activity_5_6</item>
     </string-array>
 
