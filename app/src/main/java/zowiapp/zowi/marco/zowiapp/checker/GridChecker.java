@@ -18,7 +18,7 @@ public class GridChecker extends CheckerTemplate {
         boolean correctDirection = checkCorrectDirection(gameParameters, gridSize, nextDirection);
 
         if (correctDirection) {
-            int nextCell = getNextCell(zowiCell, nextDirection);
+            int nextCell = getNextCell(zowiCell, nextDirection, gridSize);
 
             if (nextCell != 0) {
                 boolean nextObstacle = checkObstacle(obstacles, nextCell);
@@ -78,11 +78,12 @@ public class GridChecker extends CheckerTemplate {
         return correctDirection;
     }
 
-    private int getNextCell(int lastCell, String nextDirection) {
+    private int getNextCell(int lastCell, String nextDirection, int gridSize) {
+        boolean smallGrid = gridSize == 1;
         int nextCell = 0;
         switch (nextDirection) {
             case "UP":
-                nextCell = lastCell - 3;
+                nextCell = lastCell - (smallGrid ? 3 : 4);
                 break;
             case "LEFT":
                 nextCell = lastCell - 1;
@@ -91,7 +92,7 @@ public class GridChecker extends CheckerTemplate {
                 nextCell = lastCell + 1;
                 break;
             case "DOWN":
-                nextCell = lastCell + 3;
+                nextCell = lastCell + (smallGrid ? 3 : 4);
                 break;
         }
 

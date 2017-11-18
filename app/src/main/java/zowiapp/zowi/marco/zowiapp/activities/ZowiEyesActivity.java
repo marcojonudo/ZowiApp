@@ -109,19 +109,6 @@ public class ZowiEyesActivity extends ActivityTemplate {
 
                 imagesHandler.loadZowiEyesImages(constrainContainer, imagesNumber, ZowiEyesConstants.LAYOUT_IMAGES, imagesCoordinates, containerCoordinates);
             }
-
-            for (int i =0; i<containerCoordinates.length; i++) {
-                ConstraintLayout constrainContainer = (ConstraintLayout) contentContainer.getChildAt(0);
-
-                View v = new View(gameParameters);
-                ViewGroup.LayoutParams l = new ViewGroup.LayoutParams(5,5);
-                v.setLayoutParams(l);
-                v.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.red));
-                v.setX(containerCoordinates[i].x);
-                v.setY(containerCoordinates[i].y);
-
-                constrainContainer.addView(v);
-            }
         }
         else {
             new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "zowiEyesContainer");

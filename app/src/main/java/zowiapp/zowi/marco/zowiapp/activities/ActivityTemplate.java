@@ -329,19 +329,16 @@ public abstract class ActivityTemplate {
                         step = 5;
 
                     boolean alreadyInArray = false;
-                    for (int i=0; i<FoodPyramidConstants.NUMBER_OF_IMAGES; i++) {
-                        if (((FoodPyramidActivity)this).imageViews[i] == view)
+                    for (int i=0; i<((FoodPyramidActivity)this).imageViews.size(); i++) {
+                        if (((FoodPyramidActivity)this).imageViews.get(i) == view)
                             alreadyInArray = true;
                     }
 
                     if (!alreadyInArray) {
-                        FoodPyramidActivity.imagesCounter++;
-                        ((FoodPyramidActivity)this).imageViews[FoodPyramidActivity.imagesCounter] = (ImageView) view;
-                        System.out.println(FoodPyramidActivity.imagesCounter);
+                        ((FoodPyramidActivity)this).imageViews.add((ImageView)view);
                     }
 
-                    doubleArrayCorrection[FoodPyramidActivity.imagesCounter][0] = imageCategory;
-                    doubleArrayCorrection[FoodPyramidActivity.imagesCounter][1] = correction[step];
+                    ((FoodPyramidActivity)this).dynamicCorrection.add(new String[]{imageCategory, correction[step]});
                 }
                 else {
                     Animations.translateAnimation(view, imagesCoordinates, index);

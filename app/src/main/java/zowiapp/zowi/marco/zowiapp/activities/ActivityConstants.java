@@ -22,6 +22,7 @@ public class ActivityConstants {
         static final String JSON_PARAMETER_GRIDSIZE = "gridSize";
         static final String JSON_PARAMETER_CELLS = "cells";
         static final String JSON_PARAMETER_IMAGES = "images";
+        static final String JSON_PARAMETER_EXTERNAL_LINK = "externalLink";
         static final int COORDINATES_3X3_LENGTH = 9;
         static final int COORDINATES_4X4_LENGTH = 16;
         public static final float CELL_FILLED_SPACE = 0.85f;
@@ -138,8 +139,8 @@ public class ActivityConstants {
                 "1 1 0.5 1 1 0.5 ",
                 "0.5 0 2 1 1",
                 "2 0 0 0.5 0.5",
-                "2 0 0 0.5 0.5",
-                "0.5 0 2 1 1",
+                "0.5 0 2 0 0.5",
+                "2 0 0 2",
         };
     }
 
@@ -160,13 +161,13 @@ public class ActivityConstants {
         static final int FLIP_DELAY = 5000;
     }
 
-    static class FoodPyramidConstants {
+    public static class FoodPyramidConstants {
         static final ActivityType FOODPYRAMID_TYPE = ActivityType.FOODPYRAMID;
         static final String JSON_PARAMETER_IMAGES = "images";
         static final String JSON_PARAMETER_CORRECTION = "correction";
         static final int PYRAMID_STEPS = 4;
         static final int PYRAMID_COORDINATES_LENGTH = 6;
-        static final int NUMBER_OF_IMAGES = 7;
+        public static final int NUMBER_OF_IMAGES = 7;
         static final int[][] PYRAMID_LIMITS_FACTORS = {
                 {0, 2, 1, 1, 1, 1},
                 {0, 0, 1, 2, 3, 4}

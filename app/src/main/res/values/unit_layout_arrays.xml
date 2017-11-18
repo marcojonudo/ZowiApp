@@ -29,8 +29,8 @@
         <item>Actividad 5: Rompecabezas</item>
         <item>Actividad 6: Calcula</item>
 
-        <item>Actividad 1: Dictados musicales con Zowi</item>
-        <item>Actividad 2: ¡Hora de ir al cole!</item>
+        <item>Actividad 1: ¡Canta y baila con Zowi!</item>
+        <item>Actividad 2: Dictados musicales con Zowi</item>
         <item>Actividad 3: ¡Como todo un artista!</item>
         <item>Actividad 4: Calcula</item>
         <item>Actividad 5: Rompecabezas</item>
@@ -55,11 +55,11 @@
         <item>activity_grid_music</item>
         <item>activity_3_2</item>
         <item>activity_3_3</item>
-        <item>activity_3_4</item>
+        <item>activity_operations</item>
         <item>activity_puzzle</item>
         <item>activity_3_6</item>
 
-        <item>activity_1_1</item>
+        <item>activity_grid_music</item>
         <item>activity_4_2</item>
         <item>activity_4_3</item>
         <item>activity_4_4</item>

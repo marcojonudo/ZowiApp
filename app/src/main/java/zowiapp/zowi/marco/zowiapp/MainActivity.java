@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_main);
 
-        Layout.drawProgressDialog(this);
+//        Layout.drawProgressDialog(this);
 
         if (!ZowiSocket.isConnected()) {
             zowiSocket = new ZowiSocket(this);

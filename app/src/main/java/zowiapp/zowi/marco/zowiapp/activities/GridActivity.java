@@ -3,7 +3,9 @@ package zowiapp.zowi.marco.zowiapp.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.content.Intent;
 import android.graphics.Point;
+import android.net.Uri;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -44,6 +46,7 @@ public class GridActivity extends ActivityTemplate {
     private ArrayList<String> directions;
     private boolean startedMoving;
     private static final String ZOWI_NAME = "zowi-0";
+    private String externalLink;
 
     public GridActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
@@ -60,6 +63,7 @@ public class GridActivity extends ActivityTemplate {
             gridSize = activityDetails.getInt(GridConstants.JSON_PARAMETER_GRIDSIZE);
             JSONArray jsonCells = activityDetails.getJSONArray(GridConstants.JSON_PARAMETER_CELLS);
             JSONArray jsonImages = activityDetails.getJSONArray(GridConstants.JSON_PARAMETER_IMAGES);
+            externalLink = activityDetails.getString(GridConstants.JSON_PARAMETER_EXTERNAL_LINK);
             cellDimensions = new Point();
 
             zowiCell = jsonCells.getInt(0);
@@ -156,17 +160,20 @@ public class GridActivity extends ActivityTemplate {
                             View lastMovementCell = grid.getChildAt(nextCells.get(arrowIndex)-1);
                             lastMovementCell.setBackgroundColor(ContextCompat.getColor(gameParameters, R.color.white));
                         }
-                        if (out != 0)
-                            out--;
 
                         nextCells.remove(arrowIndex);
                         directions.remove(arrowIndex-1);
                         movementsNumber--;
 
-                        zowiCell = nextCells.get((GridConstants.MAX_MOVEMENTS - 1) - lastMovementIndex);
-                        nextCell = zowiCell;
-                        if (zowiCell == nextCells.get(0))
-                            startedMoving = false;
+                        if (out == 0) {
+                            zowiCell = nextCells.get((GridConstants.MAX_MOVEMENTS - 1) - lastMovementIndex);
+                            nextCell = zowiCell;
+
+                            if (zowiCell == nextCells.get(0))
+                                startedMoving = false;
+                        }
+                        if (out != 0)
+                            out--;
                     }
                 }
                 else {
@@ -200,6 +207,13 @@ public class GridActivity extends ActivityTemplate {
 
             finishActivity(ActivityType.GRID, true);
             ZowiActions.sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+
+            if (!externalLink.isEmpty()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(externalLink));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setPackage("com.google.android.youtube");
+                gameParameters.startActivity(intent);
+            }
         }
         if (directionsIndex < directions.size()) {
             int nextCell = ((GridChecker) checker).checkMovement(gameParameters, gridSize, directions.get(directionsIndex), zowiCell, obstacles);

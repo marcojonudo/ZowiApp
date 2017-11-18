@@ -14,6 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.R;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
@@ -28,13 +30,9 @@ import zowiapp.zowi.marco.zowiapp.utils.Layout;
 
 public class FoodPyramidActivity extends ActivityTemplate {
 
-    static int imagesCounter;
     private Point imagesDimensions;
-    ImageView[] imageViews;
-
-    public static void setImagesCounter(int c) {
-        imagesCounter = c;
-    }
+    ArrayList<String[]> dynamicCorrection;
+    ArrayList<ImageView> imageViews;
 
     public FoodPyramidActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
@@ -53,14 +51,12 @@ public class FoodPyramidActivity extends ActivityTemplate {
 
             doubleArrayImages = new String[jsonImages.length()][];
             correction = new String[jsonCorrection.length()];
-            doubleArrayCorrection = new String[FoodPyramidConstants.NUMBER_OF_IMAGES][CommonConstants.AXIS_NUMBER];
+            dynamicCorrection = new ArrayList<>();
             dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];
-            imageViews = new ImageView[FoodPyramidConstants.NUMBER_OF_IMAGES];
+            imageViews = new ArrayList<>();
             containerCoordinates = Functions.createEmptyPointArray(FoodPyramidConstants.PYRAMID_COORDINATES_LENGTH);
             imagesCoordinates = Functions.createEmptyPointArray(FoodPyramidConstants.NUMBER_OF_IMAGES);
             imagesDimensions = new Point();
-
-            imagesCounter = -1;
 
             /* The different types of food are stored in different indexes of 'doubleArrayImages' */
             for (int i = 0; i< doubleArrayImages.length; i++) {
@@ -153,11 +149,13 @@ public class FoodPyramidActivity extends ActivityTemplate {
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean correctAnswer = ((FoodPyramidChecker) checker).check(gameParameters, doubleArrayCorrection, imageViews, imagesCoordinates);
+                boolean correctAnswer = ((FoodPyramidChecker) checker).check(gameParameters, dynamicCorrection, imageViews, imagesCoordinates);
                 if (correctAnswer)
                     finishActivity(ActivityType.FOODPYRAMID, true);
-                else
-                    imageViews = new ImageView[FoodPyramidConstants.NUMBER_OF_IMAGES];
+                else {
+                    imageViews.clear();
+                    dynamicCorrection.clear();
+                }
             }
         });
     }
