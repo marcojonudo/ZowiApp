@@ -32,14 +32,12 @@ import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
 
 public class LogicBlocksActivity extends ActivityTemplate {
 
-    private int state;
-    private boolean killThread, checkAnswers, correctAnswer;
     private String correctZowiDirection, zowiDirection;
     private String[] nextZowiDirection;
 
-    private static final int WAITING_ZOWI_MOVES = 0;
-    private static final int ZOWI_HAS_MOVED = 1;
     private static final int ZOWI_IMAGE_INDEX = 4;
+    private static String SMALL_SHAPE_WITH_N = "pequeno";
+    private static String SMALL_SHAPE_WITHOUT_N = "pequeño";
 
     public LogicBlocksActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
@@ -104,7 +102,10 @@ public class LogicBlocksActivity extends ActivityTemplate {
         }
 
         TextView description = (TextView) gameParameters.findViewById(R.id.activity_description);
-        String descriptionText = "¡Escoge el " + imageName[0] + " " + imageName[2] + " de color " + imageName[1] + "!";
+        if (imageName[1].equals(SMALL_SHAPE_WITH_N))
+            imageName[1] = SMALL_SHAPE_WITHOUT_N;
+
+        String descriptionText = "¡Ayuda a Zowi a encontrar el " + imageName[0] + " " + imageName[2] + " " + imageName[1] + "!";
 
         final ImageView zowi = (ImageView) grid.getChildAt(ZOWI_IMAGE_INDEX);
 

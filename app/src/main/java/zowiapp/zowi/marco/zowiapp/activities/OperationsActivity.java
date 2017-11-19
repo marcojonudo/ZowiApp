@@ -157,7 +157,9 @@ public class OperationsActivity extends ActivityTemplate {
 
                         if (correctAnswer) {
                             checkButton.setOnClickListener(null);
+                            checkButton.setBackgroundResource(R.drawable.radius_button_clicked);
                             correctResults++;
+
                             if (activityDescription.contains(ZOWI_TEETH_IDENTIFIER))
                                 changeMainImage();
 

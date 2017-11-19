@@ -20,6 +20,7 @@ import zowiapp.zowi.marco.zowiapp.errors.NullElement;
 import zowiapp.zowi.marco.zowiapp.listeners.LayoutListener;
 import zowiapp.zowi.marco.zowiapp.utils.Functions;
 import zowiapp.zowi.marco.zowiapp.utils.ImagesHandler;
+import zowiapp.zowi.marco.zowiapp.utils.Layout;
 
 public class GuideActivity extends ActivityTemplate {
 
@@ -102,6 +103,9 @@ public class GuideActivity extends ActivityTemplate {
 
             public void onFinish() {
                 ((GuideChecker) checker).check(gameParameters);
+
+                String text = gameParameters.getResources().getString(R.string.guide_zowi);
+                Layout.showGenericAlertDialog(gameParameters, true, text);
             }
         }.start();
     }

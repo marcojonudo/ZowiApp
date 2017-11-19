@@ -17,6 +17,7 @@
     <string name="container">CONTAINER</string>
 
     <string name="show_house">¡Enséñale las casas a Zowi!\n\n¡Él te indicará cuál es la suya!</string>
+    <string name="guide_zowi">Guía a Zowi situando tu mano delante de sus ojos.\nCuando llegue a su casa, ¡pulsa el botón A de su espalda!</string>
 
     <string name="correct_operation">¡Fantástico!\nLe has ahorrado a Zowi una visita al dentista.</string>
 
@@ -30,12 +31,12 @@
     <string name="display_operation">¡Enseñar!</string>
 
     <string name="zowi_not_found_title">¡Vaya!</string>
-    <string name="zowi_not_found_text">No hemos podido contactar con Zowi\n¿Está a tu lado?\n¡Haz clic en su carita para intentarlo de nuevo!"</string>
+    <string name="zowi_not_found_text">No hemos podido contactar con Zowi\n¿Está a tu lado?\n¡Haz clic en su cara para intentarlo de nuevo!"</string>
 
     <string name="restart_activity_text">¡Otra vez!</string>
     <string name="finish_activity_text">¡Volver al menú!</string>
     <string name="generic_dialog_button_text">¡Vale!</string>
-    <string name="zowi_checks_dialog_text">¡Enséñale la tablet a Zowi para que corrija!</string>
+    <string name="zowi_checks_dialog_text">¡Enséñale la tablet a Zowi para que corrija la actividad!</string>
 
     <string name="logic_blocks_turn_left">Girar\nizquierda</string>
     <string name="logic_blocks_turn_right">Girar\nderecha</string>
