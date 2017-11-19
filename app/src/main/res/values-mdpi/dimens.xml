@@ -28,6 +28,7 @@
     <dimen name="main_title_font_size">75sp</dimen>
     <dimen name="main_title_vertical_margin">50dp</dimen>
     <dimen name="button_border_width">10dp</dimen>
+    <dimen name="coloradd_images_side">40dp</dimen>
 
     <!-- Progess dialog dimensions -->
 

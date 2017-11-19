@@ -58,6 +58,31 @@
             android:layout_marginTop="@dimen/main_button_vertical_margin"
             android:layout_marginBottom="@dimen/main_button_vertical_margin"/>
 
+        <ImageView
+            android:contentDescription="@string/coloradd_green_content_description"
+            android:layout_width="@dimen/coloradd_images_side"
+            android:layout_height="@dimen/coloradd_images_side"
+            android:id="@+id/main_menu_coloradd_green"
+            android:src="@drawable/main_menu_coloradd_green"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/main_menu_coloradd_red"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintVertical_bias="0.3"/>
+
+        <ImageView
+            android:contentDescription="@string/coloradd_red_content_description"
+            android:layout_width="@dimen/coloradd_images_side"
+            android:layout_height="@dimen/coloradd_images_side"
+            android:id="@+id/main_menu_coloradd_red"
+            android:src="@drawable/main_menu_coloradd_red"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/main_menu_coloradd_green"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintVertical_bias="0.3"/>
+
     </android.support.constraint.ConstraintLayout>
 
 </LinearLayout>

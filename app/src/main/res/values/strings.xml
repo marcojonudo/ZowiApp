@@ -80,4 +80,6 @@
     <string name="seeds_container_4_content_description">Cuarto contenedor de semillas</string>
     <string name="zowi_eyes_image_content_description">Celda de la cuadrícula de imágenes</string>
     <string name="guide_image_content_description">Imágen de una casa</string>
+    <string name="coloradd_green_content_description">Código del color verde para daltónicos</string>
+    <string name="coloradd_red_content_description">Código del color rojo para daltónicos</string>
 </resources>
