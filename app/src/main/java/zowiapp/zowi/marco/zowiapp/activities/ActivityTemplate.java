@@ -237,6 +237,10 @@ public abstract class ActivityTemplate {
                     else
                         touchedZone = "LEFT";
                 }
+                String focusedControlName = "grid_outer_control_" + touchedZone.toLowerCase() + "_selected";
+                ImageView outerControl = (ImageView) gameParameters.findViewById(R.id.outer_control);
+                if (outerControl != null)
+                    outerControl.setImageResource(gameParameters.getResources().getIdentifier(focusedControlName, CommonConstants.DRAWABLE, gameParameters.getPackageName()));
 
                 return new String[]{touchedZone};
             default:
@@ -356,6 +360,9 @@ public abstract class ActivityTemplate {
             case MEMORY:
                 break;
             case GRID:
+                ImageView outerControl = (ImageView) gameParameters.findViewById(R.id.outer_control);
+                if (outerControl != null)
+                    outerControl.setImageResource(R.drawable.grid_outer_control);
                 break;
             default:
                 for (int i=0; i<containerCoordinates.length; i++) {
