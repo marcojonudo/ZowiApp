@@ -68,7 +68,7 @@ public class Layout {
             alertDialog.cancel();
     }
 
-    public static Button createFloatingCheckButton(GameParameters gameParameters, LayoutInflater inflater, ViewGroup contentContainer, boolean guidedActivity) {
+    public static Button createFloatingCheckButton(final GameParameters gameParameters, LayoutInflater inflater, ViewGroup contentContainer, boolean guidedActivity) {
         Point dimensions = new Point((int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_width),
                 (int)gameParameters.getResources().getDimension(R.dimen.floating_check_button_height));
         Point coordinates = new Point(contentContainer.getWidth() - dimensions.x,
@@ -117,6 +117,28 @@ public class Layout {
                 Intent intent = new Intent(gameParameters.getApplicationContext(), GameActivity.class);
                 intent.putExtra("type", guidedActivity ? "GUIDED" : "FREE");
                 gameParameters.startActivity(intent);
+            }
+        });
+    }
+
+    public static void showGenericAlertDialog(GameParameters gameParameters, boolean correct, String text) {
+        alertDialog = new Dialog(gameParameters, R.style.DialogTheme);
+        alertDialog.setContentView(R.layout.generic_alert_dialog);
+
+        TextView correctOperationText = (TextView) alertDialog.findViewById(R.id.generic_dialog_text);
+        correctOperationText.setText(text);
+
+        ImageView finishDialogImage = (ImageView) alertDialog.findViewById(R.id.generic_dialog_image);
+        finishDialogImage.setImageResource(
+                gameParameters.getResources().getIdentifier(correct ? "zowi_happy_open_small" : "zowi_sad_open_small", CommonConstants.DRAWABLE, gameParameters.getPackageName()));
+
+        alertDialog.show();
+
+        Button restartButton = (Button) alertDialog.findViewById(R.id.generic_dialog_button);
+        restartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.cancel();
             }
         });
     }

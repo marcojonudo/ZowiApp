@@ -1,5 +1,8 @@
 package zowiapp.zowi.marco.zowiapp;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +16,8 @@ import zowiapp.zowi.marco.zowiapp.utils.Layout;
 import zowiapp.zowi.marco.zowiapp.zowi.Zowi;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiSocket;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class MainActivity extends AppCompatActivity {
 
     private ZowiSocket zowiSocket;
@@ -23,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_main);
 
-//        Layout.drawProgressDialog(this);
+        Layout.drawProgressDialog(this);
 
         if (!ZowiSocket.isConnected()) {
             zowiSocket = new ZowiSocket(this);
@@ -31,6 +36,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Layout.drawOverlay(this, findViewById(R.id.main_activity_container));
+
+//            Intent mStartActivity = new Intent(getApplicationContext(), MainActivity.class);
+//            int mPendingIntentId = 123456;
+//            PendingIntent mPendingIntent = PendingIntent.getActivity(getApplicationContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+//            AlarmManager mgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+//            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+//            System.exit(0);
+
+//            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+//            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+//            intent.putExtra("type", "GUIDED");
+//            getApplicationContext().startActivity(intent);
+//            if (getApplicationContext() instanceof Activity) {
+//                ((Activity) getApplicationContext()).finish();
+//            }
+//
+//            Runtime.getRuntime().exit(0);
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.FoodPyramidConstants;
+import zowiapp.zowi.marco.zowiapp.utils.Layout;
 import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
@@ -29,6 +30,7 @@ public class FoodPyramidChecker extends CheckerTemplate {
 
         try {
             zowiSeeScreenThread.join();
+//            Layout.closeAlertDialog();
 
             boolean correctAnswer = true;
             for (int i=0; i<imageViews.size() && correctAnswer; i++) {

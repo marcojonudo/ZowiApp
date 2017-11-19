@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false">
         <shape>
             <solid android:color="@color/red" />
             <corners
@@ -12,4 +12,16 @@
                 android:right="@dimen/overlay_padding"/>
         </shape>
     </item>
-</layer-list>
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/darkRed" />
+            <corners
+                android:topLeftRadius="@dimen/overlay_radius" />
+            <padding
+                android:bottom="@dimen/overlay_padding"
+                android:top="@dimen/overlay_padding"
+                android:left="@dimen/overlay_padding"
+                android:right="@dimen/overlay_padding"/>
+        </shape>
+    </item>
+</selector>

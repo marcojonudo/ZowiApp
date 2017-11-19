@@ -34,6 +34,8 @@
 
     <string name="restart_activity_text">¡Otra vez!</string>
     <string name="finish_activity_text">¡Volver al menú!</string>
+    <string name="generic_dialog_button_text">¡Vale!</string>
+    <string name="zowi_checks_dialog_text">¡Enséñale la tablet a Zowi para que corrija!</string>
 
     <string name="logic_blocks_turn_left">Girar\nizquierda</string>
     <string name="logic_blocks_turn_right">Girar\nderecha</string>

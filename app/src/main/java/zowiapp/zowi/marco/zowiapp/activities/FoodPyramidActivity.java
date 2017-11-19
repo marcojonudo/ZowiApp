@@ -149,6 +149,8 @@ public class FoodPyramidActivity extends ActivityTemplate {
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String text = gameParameters.getResources().getString(R.string.zowi_checks_dialog_text);
+//                Layout.showGenericAlertDialog(gameParameters, true, "¡Enséñale la tablet a Zowi para que corrija!");
                 boolean correctAnswer = ((FoodPyramidChecker) checker).check(gameParameters, dynamicCorrection, imageViews, imagesCoordinates);
                 if (correctAnswer)
                     finishActivity(ActivityType.FOODPYRAMID, true);
