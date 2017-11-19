@@ -16,7 +16,7 @@ import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
 
 public class FoodPyramidChecker extends CheckerTemplate {
 
-    private static int totalCorrectAnswers = 0;
+    private int totalCorrectAnswers = 0;
 
     public FoodPyramidChecker() {}
 
