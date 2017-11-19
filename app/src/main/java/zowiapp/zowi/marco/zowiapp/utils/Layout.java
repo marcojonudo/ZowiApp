@@ -36,7 +36,7 @@ public class Layout {
         guidedGameScroller.post(new Runnable() {
             @Override
             public void run() {
-                        smallZowi.setBounds(guidedGameScroller.getWidth()-guidedGameScroller.getWidth()/ CommonConstants.OVERLAY_HORIZONTAL_RATIO, guidedGameScroller.getHeight()-guidedGameScroller.getWidth()/ CommonConstants.OVERLAY_HORIZONTAL_RATIO, guidedGameScroller.getWidth(), guidedGameScroller.getHeight());
+                smallZowi.setBounds(guidedGameScroller.getWidth()-guidedGameScroller.getWidth()/ CommonConstants.OVERLAY_HORIZONTAL_RATIO, guidedGameScroller.getHeight()-guidedGameScroller.getWidth()/ CommonConstants.OVERLAY_HORIZONTAL_RATIO, guidedGameScroller.getWidth(), guidedGameScroller.getHeight());
                 overlay.add(smallZowi);
             }
         });
