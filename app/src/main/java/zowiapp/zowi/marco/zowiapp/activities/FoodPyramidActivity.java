@@ -30,7 +30,6 @@ import zowiapp.zowi.marco.zowiapp.utils.Layout;
 
 public class FoodPyramidActivity extends ActivityTemplate {
 
-    private FoodPyramidActivity foodPyramidActivity;
     private Point imagesDimensions;
     ArrayList<String[]> dynamicCorrection;
     ArrayList<Point> dynamicCoordinates;
@@ -38,9 +37,8 @@ public class FoodPyramidActivity extends ActivityTemplate {
 
     public FoodPyramidActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
-        checker = new FoodPyramidChecker();
+        checker = new FoodPyramidChecker(this);
         imagesHandler = new ImagesHandler(gameParameters, this, FoodPyramidConstants.FOODPYRAMID_TYPE);
-        foodPyramidActivity = this;
 
         getParameters();
     }
@@ -155,7 +153,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
             public void onClick(View view) {
                 String text = gameParameters.getResources().getString(R.string.zowi_checks_dialog_text);
                 Layout.showGenericAlertDialog(gameParameters, true, text);
-                ((FoodPyramidChecker) checker).check(foodPyramidActivity, dynamicCorrection, imageViews, dynamicCoordinates);
+                ((FoodPyramidChecker) checker).check(dynamicCorrection, imageViews, dynamicCoordinates);
             }
         });
     }

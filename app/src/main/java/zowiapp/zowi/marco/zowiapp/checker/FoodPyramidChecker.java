@@ -1,7 +1,6 @@
 package zowiapp.zowi.marco.zowiapp.checker;
 
 import android.graphics.Point;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -22,10 +21,11 @@ public class FoodPyramidChecker extends CheckerTemplate {
     private ArrayList<ImageView> imageViews;
     private Point[] imagesCoordinates;
 
-    public FoodPyramidChecker() {}
-
-    public void check(FoodPyramidActivity foodPyramidActivity, ArrayList<String[]> dynamicCorrection, ArrayList<ImageView> imageViews, ArrayList<Point> dynamicCoordinates) {
+    public FoodPyramidChecker(FoodPyramidActivity foodPyramidActivity) {
         this.foodPyramidActivity = foodPyramidActivity;
+    }
+
+    public void check(ArrayList<String[]> dynamicCorrection, ArrayList<ImageView> imageViews, ArrayList<Point> dynamicCoordinates) {
         this.dynamicCorrection = dynamicCorrection;
         this.imageViews = imageViews;
         this.dynamicCoordinates = dynamicCoordinates;
@@ -56,8 +56,7 @@ public class FoodPyramidChecker extends CheckerTemplate {
             sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
             foodPyramidActivity.registerCorrectAnswer();
         }
-
-        if (!correctAnswer)
+        else
             sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
 
         resetValues();

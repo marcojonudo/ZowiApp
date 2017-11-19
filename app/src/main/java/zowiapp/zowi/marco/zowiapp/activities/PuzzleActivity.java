@@ -36,7 +36,7 @@ public class PuzzleActivity extends ActivityTemplate {
 
     public PuzzleActivity(final GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
-        checker = new PuzzleChecker();
+        checker = new PuzzleChecker(this);
         imagesHandler = new ImagesHandler(gameParameters, this, ActivityType.PUZZLE);
 
         getParameters();
@@ -153,14 +153,16 @@ public class PuzzleActivity extends ActivityTemplate {
     private void createCheckButton(ViewGroup contentContainer, boolean guidedActivity) {
         Button checkButton = Layout.createFloatingCheckButton(gameParameters, inflater, contentContainer, guidedActivity);
 
-        // TODO Revisar la mierda de la imagen arriba a la derecha
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean correctAnswer = ((PuzzleChecker) checker).check(gameParameters, piecesCoordinates, correction);
-                checkFinishActivity(ActivityType.PUZZLE, correctAnswer, 1, true);
+                ((PuzzleChecker) checker).check(piecesCoordinates, correction);
             }
         });
+    }
+
+    public void registerCorrectAnswer(boolean correctAnswer) {
+        checkFinishActivity(ActivityType.PUZZLE, correctAnswer, 1, true);
     }
 
     void processTouchEvent(View view, MotionEvent event) {

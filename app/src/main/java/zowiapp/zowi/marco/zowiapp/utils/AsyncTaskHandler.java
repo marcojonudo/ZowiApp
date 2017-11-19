@@ -6,6 +6,8 @@ import zowiapp.zowi.marco.zowiapp.GameParameters;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.checker.CheckerTemplate;
 import zowiapp.zowi.marco.zowiapp.checker.FoodPyramidChecker;
+import zowiapp.zowi.marco.zowiapp.checker.GuideChecker;
+import zowiapp.zowi.marco.zowiapp.checker.PuzzleChecker;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
 
@@ -44,6 +46,13 @@ public class AsyncTaskHandler extends AsyncTask<String, Integer, Boolean> {
         switch (activityType) {
             case FOODPYRAMID:
                 ((FoodPyramidChecker)checker).checkAnswers();
+                break;
+            case GUIDE:
+                ((GuideChecker)checker).checkAnswers();
+                break;
+            case PUZZLE:
+                ((PuzzleChecker)checker).checkAnsweres();
+                break;
         }
     }
 

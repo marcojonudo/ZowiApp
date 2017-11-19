@@ -2,38 +2,39 @@ package zowiapp.zowi.marco.zowiapp.checker;
 
 import android.graphics.Point;
 
-import zowiapp.zowi.marco.zowiapp.GameParameters;
-import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler;
-import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
+import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
+import zowiapp.zowi.marco.zowiapp.activities.PuzzleActivity;
+import zowiapp.zowi.marco.zowiapp.utils.AsyncTaskHandler;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.PuzzleConstants;
 
 public class PuzzleChecker extends CheckerTemplate {
 
-    public boolean check(GameParameters gameParameters, Point[] piecesCoordinates, Point[] correction) {
-        Thread zowiSeeScreenThread = ThreadHandler.createThread(ThreadType.SIMPLE_FEEDBACK);
-        zowiSeeScreenThread.start();
+    private PuzzleActivity puzzleActivity;
+    private Point[] piecesCoordinates, correction;
 
-        sendDataToZowi(ZowiActions.ZOWI_CHECKS_ANSWERS);
+    public PuzzleChecker(PuzzleActivity puzzleActivity) {
+        this.puzzleActivity = puzzleActivity;
+    }
 
-        try {
-            zowiSeeScreenThread.join();
+    public void check(Point[] piecesCoordinates, Point[] correction) {
+        this.piecesCoordinates = piecesCoordinates;
+        this.correction = correction;
 
-            double distance;
-            for (int i=0; i<piecesCoordinates.length; i++) {
-                distance = Math.sqrt(Math.pow(piecesCoordinates[i].x-correction[i].x, 2) + Math.pow(piecesCoordinates[i].y-correction[i].y, 2));
-                if (distance > PuzzleConstants.DISTANCE_LIMIT) {
-                    sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
-                    return false;
-                }
+        new AsyncTaskHandler(this, ActivityType.PUZZLE).execute(ZowiActions.ZOWI_CHECKS_ANSWERS);
+    }
+
+    public void checkAnsweres() {
+        double distance;
+        for (int i=0; i<piecesCoordinates.length; i++) {
+            distance = Math.sqrt(Math.pow(piecesCoordinates[i].x-correction[i].x, 2) + Math.pow(piecesCoordinates[i].y-correction[i].y, 2));
+            if (distance > PuzzleConstants.DISTANCE_LIMIT) {
+                sendDataToZowi(ZowiActions.WRONG_ANSWER_COMMAND);
+                puzzleActivity.registerCorrectAnswer(false);
             }
-            sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
-            return true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
-
-        return false;
+        sendDataToZowi(ZowiActions.CORRECT_ANSWER_COMMAND);
+        puzzleActivity.registerCorrectAnswer(true);
     }
 
 }
