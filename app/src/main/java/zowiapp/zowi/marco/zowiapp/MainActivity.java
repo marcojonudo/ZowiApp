@@ -36,23 +36,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Layout.drawOverlay(this, findViewById(R.id.main_activity_container));
-
-//            Intent mStartActivity = new Intent(getApplicationContext(), MainActivity.class);
-//            int mPendingIntentId = 123456;
-//            PendingIntent mPendingIntent = PendingIntent.getActivity(getApplicationContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-//            AlarmManager mgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-//            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-//            System.exit(0);
-
-//            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-//            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-//            intent.putExtra("type", "GUIDED");
-//            getApplicationContext().startActivity(intent);
-//            if (getApplicationContext() instanceof Activity) {
-//                ((Activity) getApplicationContext()).finish();
-//            }
-//
-//            Runtime.getRuntime().exit(0);
     }
 
     @Override

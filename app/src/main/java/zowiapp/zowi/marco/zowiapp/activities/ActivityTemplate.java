@@ -333,16 +333,25 @@ public abstract class ActivityTemplate {
                         step = 5;
 
                     boolean alreadyInArray = false;
+                    int alreadyInArrayIndex = 0;
                     for (int i=0; i<((FoodPyramidActivity)this).imageViews.size(); i++) {
-                        if (((FoodPyramidActivity)this).imageViews.get(i) == view)
+                        if (((FoodPyramidActivity)this).imageViews.get(i) == view) {
                             alreadyInArray = true;
+                            alreadyInArrayIndex = i;
+                        }
                     }
 
                     if (!alreadyInArray) {
                         ((FoodPyramidActivity)this).imageViews.add((ImageView)view);
+                        ((FoodPyramidActivity)this).dynamicCorrection.add(new String[]{imageCategory, correction[step]});
+                        ((FoodPyramidActivity)this).dynamicCoordinates.add(
+                                new Point(((FoodPyramidActivity)this).imagesCoordinates[index].x, ((FoodPyramidActivity)this).imagesCoordinates[index].y));
                     }
-
-                    ((FoodPyramidActivity)this).dynamicCorrection.add(new String[]{imageCategory, correction[step]});
+                    else {
+                        ((FoodPyramidActivity)this).dynamicCorrection.set(alreadyInArrayIndex, new String[]{imageCategory, correction[step]});
+                        ((FoodPyramidActivity)this).dynamicCoordinates.set(alreadyInArrayIndex,
+                                new Point(((FoodPyramidActivity)this).imagesCoordinates[index].x, ((FoodPyramidActivity)this).imagesCoordinates[index].y));
+                    }
                 }
                 else {
                     Animations.translateAnimation(view, imagesCoordinates, index);

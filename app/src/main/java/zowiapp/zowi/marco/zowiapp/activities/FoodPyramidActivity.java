@@ -30,14 +30,17 @@ import zowiapp.zowi.marco.zowiapp.utils.Layout;
 
 public class FoodPyramidActivity extends ActivityTemplate {
 
+    private FoodPyramidActivity foodPyramidActivity;
     private Point imagesDimensions;
     ArrayList<String[]> dynamicCorrection;
+    ArrayList<Point> dynamicCoordinates;
     ArrayList<ImageView> imageViews;
 
     public FoodPyramidActivity(GameParameters gameParameters, String activityTitle, JSONObject activityDetails) {
         initialiseCommonConstants(gameParameters, activityTitle, activityDetails);
         checker = new FoodPyramidChecker();
         imagesHandler = new ImagesHandler(gameParameters, this, FoodPyramidConstants.FOODPYRAMID_TYPE);
+        foodPyramidActivity = this;
 
         getParameters();
     }
@@ -52,6 +55,7 @@ public class FoodPyramidActivity extends ActivityTemplate {
             doubleArrayImages = new String[jsonImages.length()][];
             correction = new String[jsonCorrection.length()];
             dynamicCorrection = new ArrayList<>();
+            dynamicCoordinates = new ArrayList<>();
             dragLimits = new int[CommonConstants.DRAG_LIMITS_SIZE];
             imageViews = new ArrayList<>();
             containerCoordinates = Functions.createEmptyPointArray(FoodPyramidConstants.PYRAMID_COORDINATES_LENGTH);
@@ -150,16 +154,14 @@ public class FoodPyramidActivity extends ActivityTemplate {
             @Override
             public void onClick(View view) {
                 String text = gameParameters.getResources().getString(R.string.zowi_checks_dialog_text);
-//                Layout.showGenericAlertDialog(gameParameters, true, "¡Enséñale la tablet a Zowi para que corrija!");
-                boolean correctAnswer = ((FoodPyramidChecker) checker).check(gameParameters, dynamicCorrection, imageViews, imagesCoordinates);
-                if (correctAnswer)
-                    finishActivity(ActivityType.FOODPYRAMID, true);
-                else {
-                    imageViews.clear();
-                    dynamicCorrection.clear();
-                }
+                Layout.showGenericAlertDialog(gameParameters, true, text);
+                ((FoodPyramidChecker) checker).check(foodPyramidActivity, dynamicCorrection, imageViews, dynamicCoordinates);
             }
         });
+    }
+
+    public void registerCorrectAnswer() {
+        finishActivity(ActivityType.FOODPYRAMID, true);
     }
 
     void processTouchEvent(View view, MotionEvent event) {
