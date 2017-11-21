@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -445,7 +446,7 @@ public class GridActivity extends ActivityTemplate {
                 ImageView movementCell = (ImageView) movementsGrid.getChildAt(newDirectionIndex);
                 Picasso.with(gameParameters)
                         .load(resourceId)
-                        .into(movementCell);
+                        .fit().centerInside().memoryPolicy(MemoryPolicy.NO_CACHE).into(movementCell);
                 movementCell.setTag("USED");
             }
         }

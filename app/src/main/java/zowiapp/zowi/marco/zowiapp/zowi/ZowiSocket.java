@@ -267,6 +267,7 @@ public class ZowiSocket {
                     break;
                 case BluetoothDevice.ACTION_ACL_DISCONNECTED:
                     setDisconnected();
+                    // TODO Revisar
                     Layout.drawAlertDialog(mainActivity);
                     break;
             }

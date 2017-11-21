@@ -74,8 +74,8 @@ public class GuidedGameListAdapter extends BaseAdapter {
                 ViewGroup.LayoutParams l = unitContainer.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels - statusBarHeight + unitsSeparation;
                 unitContainer.setBackgroundResource(position % 2 == 0 ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom);
-//                Glide.with(context).load(position % 2 == 0 ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).into(unitContainer);
-//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).into(unitContainer);
+//                Glide.with(context).load(position % 2 == 0 ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).fit().centerInside().into(unitContainer);
+//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).fit().centerInside().into(unitContainer);
                 loadContent(unitContainer, position);
 
                 units[position] = unitContainer;
@@ -91,7 +91,7 @@ public class GuidedGameListAdapter extends BaseAdapter {
                 final CustomConstraintBackground unitContainer = (CustomConstraintBackground) inflater.inflate(R.layout.menu_guided_unit_container, viewGroup, false);
                 unitContainer.setLayoutParams(view.getLayoutParams());
                 unitContainer.setBackgroundResource((position == unitsNumber -1) ? R.drawable.menu_footprint_background_final : (position % 2 == 0) ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom);
-//                Glide.with(context).load((position == unitsNumber-1) ? R.drawable.menu_footprint_background_final : (position % 2 == 0) ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).into(unitContainer);
+//                Glide.with(context).load((position == unitsNumber-1) ? R.drawable.menu_footprint_background_final : (position % 2 == 0) ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).fit().centerInside().into(unitContainer);
 
                 loadContent(unitContainer, position);
                 units[position] = unitContainer;
@@ -115,7 +115,7 @@ public class GuidedGameListAdapter extends BaseAdapter {
             activityContainer.setTag(currentActivity);
             activityTitle.setText(activitiesTitles[currentActivity].split(":")[0]);
             int resourceId = context.getResources().getIdentifier(activitiesImages[currentActivity], CommonConstants.DRAWABLE, context.getPackageName());
-            Picasso.with(context).load(resourceId).into(activityImage);
+            Picasso.with(context).load(resourceId).fit().centerInside().into(activityImage);
 
             activityContainer.setOnClickListener(new View.OnClickListener() {
                 @Override

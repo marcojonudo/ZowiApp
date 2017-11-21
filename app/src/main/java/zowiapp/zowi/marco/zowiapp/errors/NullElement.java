@@ -3,17 +3,14 @@ package zowiapp.zowi.marco.zowiapp.errors;
 import android.util.Log;
 
 import zowiapp.zowi.marco.zowiapp.GameParameters;
-
-/**
- * Created by Marco on 03/04/2017.
- */
+import zowiapp.zowi.marco.zowiapp.utils.Layout;
 
 public class NullElement {
 
-    GameParameters gameParameters;
-
     public NullElement(GameParameters gameParameters, String className, String methodName, String objectName) {
-        this.gameParameters = gameParameters;
         Log.e("NullElement", className + " - " + methodName + " - " + objectName);
+
+        String text = "¡Vaya! ¡Ha habido un problema!\nAvisa a la maestra y pulsa el botón";
+        Layout.showErrorAlertDialog(gameParameters, "¡Solucionar!", text);
     }
 }

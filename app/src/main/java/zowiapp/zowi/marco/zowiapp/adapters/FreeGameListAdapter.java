@@ -65,7 +65,7 @@ public class FreeGameListAdapter extends BaseAdapter {
                 ViewGroup.LayoutParams l = groupFreeActivities.getLayoutParams();
                 l.height = context.getResources().getDisplayMetrics().heightPixels;//- statusBarHeight;
                 groupFreeActivities.setBackgroundResource((position >= activitiesNumber/ACTIVITIES_GROUP) ? R.drawable.menu_footprint_background_final : (position % 2 == 0 && groupsNumber > 2) ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom);
-//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).into(unitContainer);
+//                Picasso.with(context).load(position % 2 == 0 ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).fit().centerInside().into(unitContainer);
 
                 loadContent(groupFreeActivities);
 
@@ -82,7 +82,7 @@ public class FreeGameListAdapter extends BaseAdapter {
                 final CustomConstraintBackground groupFreeActivities = (CustomConstraintBackground) inflater.inflate(R.layout.menu_free_activities_container, viewGroup, false);
                 groupFreeActivities.setLayoutParams(view.getLayoutParams());
                 groupFreeActivities.setBackgroundResource((position >= activitiesNumber/ACTIVITIES_GROUP) ? R.drawable.menu_footprint_background_final : (position % 2 == 0 && groupsNumber > 2) ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom);
-//                Picasso.with(context).load((position == UNITS_NUMBER-1) ? R.drawable.menu_footprint_background_final : (position % 2 == 0) ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).into(groupFreeActivities);
+//                Picasso.with(context).load((position == UNITS_NUMBER-1) ? R.drawable.menu_footprint_background_final : (position % 2 == 0) ? R.drawable.menu_footprint_background_top : R.drawable.menu_footprint_background_bottom).fit().centerInside().into(groupFreeActivities);
 
                 loadContent(groupFreeActivities);
                 activitiesGroup[position] = groupFreeActivities;
@@ -105,7 +105,7 @@ public class FreeGameListAdapter extends BaseAdapter {
                 activityContainer.setTag(currentActivity);
                 activityTitle.setText(activitiesTitles[currentActivity]);
                 int resourceId = context.getResources().getIdentifier(activitiesImages[currentActivity], CommonConstants.DRAWABLE, context.getPackageName());
-                Picasso.with(context).load(resourceId).into(activityImage);
+                Picasso.with(context).load(resourceId).fit().centerInside().into(activityImage);
 
                 activityContainer.setOnClickListener(new View.OnClickListener() {
                     @Override

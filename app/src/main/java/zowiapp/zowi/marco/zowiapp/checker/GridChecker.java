@@ -28,7 +28,7 @@ public class GridChecker extends CheckerTemplate {
                     return nextCell;
                 }
                 else {
-                    String text = "¡Oh, no! ¡Zowi se ha encontrado un obstáculo y no puede avanzar!";
+                    String text = "¡Oh, no! ¡Zowi se ha despistado!";
                     Layout.showAlertDialog(gameParameters, true, false, text);
                 }
             }

@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -333,7 +334,7 @@ public class ImagesHandler {
         resizeImageView(imageView, dimensions, coordinates, index);
         /* The resource is loaded into the already resized ImageView */
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
-        Picasso.with(context).load(resourceId).into(imageView);
+        Picasso.with(context).load(resourceId).fit().centerInside().memoryPolicy(MemoryPolicy.NO_CACHE).into(imageView);
 
         setTag(imageView, index, UNUSED_INDEX, UNUSED_INDEX, correction, null);
         loadTouchListener(imageView);
@@ -342,7 +343,7 @@ public class ImagesHandler {
 
     private void loadSimpleImage(ImageView imageView, String imageName, int index, int secondIndex, int randomImageIndex, String correction) {
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
-        Picasso.with(context).load(resourceId).into(imageView);
+        Picasso.with(context).load(resourceId).fit().centerInside().memoryPolicy(MemoryPolicy.NO_CACHE).into(imageView);
         setTag(imageView, index, secondIndex, randomImageIndex, correction, imageName);
 
         loadTouchListener(imageView);
@@ -455,7 +456,7 @@ public class ImagesHandler {
 
         resizeImageView(image, dimensions[index], coordinates, index);
         int resourceId = context.getResources().getIdentifier(imageName, CommonConstants.DRAWABLE, context.getPackageName());
-        Picasso.with(context).load(resourceId).into(image, new Callback() {
+        Picasso.with(context).load(resourceId).fit().centerInside().memoryPolicy(MemoryPolicy.NO_CACHE).into(image, new Callback() {
             @Override
             public void onSuccess() {
                 float scaleFactorToPuzzle = dimensions[index].x > dimensions[index].y ?

@@ -129,8 +129,7 @@ public class Layout {
         correctOperationText.setText(text);
 
         ImageView finishDialogImage = (ImageView) alertDialog.findViewById(R.id.generic_dialog_image);
-        finishDialogImage.setImageResource(
-                gameParameters.getResources().getIdentifier(correct ? "zowi_happy_open_small" : "zowi_sad_open_small", CommonConstants.DRAWABLE, gameParameters.getPackageName()));
+        finishDialogImage.setImageResource(correct ? R.drawable.zowi_happy_open_small : R.drawable.zowi_sad_open_small);
 
         alertDialog.show();
 
@@ -139,6 +138,31 @@ public class Layout {
             @Override
             public void onClick(View view) {
                 alertDialog.cancel();
+            }
+        });
+    }
+
+    public static void showErrorAlertDialog(final GameParameters gameParameters, String buttonText, String text) {
+        alertDialog = new Dialog(gameParameters, R.style.DialogTheme);
+        alertDialog.setContentView(R.layout.generic_alert_dialog);
+
+        TextView correctOperationText = (TextView) alertDialog.findViewById(R.id.generic_dialog_text);
+        correctOperationText.setText(text);
+
+        ImageView finishDialogImage = (ImageView) alertDialog.findViewById(R.id.generic_dialog_image);
+        finishDialogImage.setImageResource(R.drawable.zowi_sad_open_small);
+        alertDialog.show();
+        alertDialog.setCancelable(false);
+
+        Button restartButton = (Button) alertDialog.findViewById(R.id.generic_dialog_button);
+        restartButton.setText(buttonText);
+        restartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = gameParameters.getBaseContext().getPackageManager()
+                        .getLaunchIntentForPackage(gameParameters.getBaseContext().getPackageName());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                gameParameters.startActivity(intent);
             }
         });
     }

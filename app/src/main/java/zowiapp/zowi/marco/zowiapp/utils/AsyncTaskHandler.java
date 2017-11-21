@@ -7,6 +7,7 @@ import zowiapp.zowi.marco.zowiapp.activities.ActivityType;
 import zowiapp.zowi.marco.zowiapp.checker.CheckerTemplate;
 import zowiapp.zowi.marco.zowiapp.checker.FoodPyramidChecker;
 import zowiapp.zowi.marco.zowiapp.checker.GuideChecker;
+import zowiapp.zowi.marco.zowiapp.checker.OperationsChecker;
 import zowiapp.zowi.marco.zowiapp.checker.PuzzleChecker;
 import zowiapp.zowi.marco.zowiapp.zowi.ZowiActions;
 import zowiapp.zowi.marco.zowiapp.utils.ThreadHandler.ThreadType;
@@ -28,7 +29,7 @@ public class AsyncTaskHandler extends AsyncTask<String, Integer, Boolean> {
             Thread zowiSeeScreenThread = ThreadHandler.createThread(ThreadType.SIMPLE_FEEDBACK);
             zowiSeeScreenThread.start();
 
-            ZowiActions.sendDataToZowi(ZowiActions.ZOWI_CHECKS_ANSWERS);
+            ZowiActions.sendDataToZowi(commands[0]);
 
             zowiSeeScreenThread.join();
             return true;
@@ -52,6 +53,9 @@ public class AsyncTaskHandler extends AsyncTask<String, Integer, Boolean> {
                 break;
             case PUZZLE:
                 ((PuzzleChecker)checker).checkAnsweres();
+                break;
+            case OPERATIONS:
+                ((OperationsChecker)checker).sendOperation(null);
                 break;
         }
     }

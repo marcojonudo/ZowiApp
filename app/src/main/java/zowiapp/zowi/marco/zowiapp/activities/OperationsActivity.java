@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -78,7 +79,7 @@ public class OperationsActivity extends ActivityTemplate {
         String mainImageName = activityDescription.contains(ZOWI_TEETH_IDENTIFIER) ? image + "_" + mainImageIdentifier : image;
         int resourceId = gameParameters.getResources().getIdentifier(mainImageName, CommonConstants.DRAWABLE, gameParameters.getPackageName());
         mainImage.setTag(activityDescription.contains(ZOWI_TEETH_IDENTIFIER) ? "TEETH" : "");
-        Picasso.with(gameParameters).load(resourceId).into(mainImage);
+        Picasso.with(gameParameters).load(resourceId).fit().centerInside().memoryPolicy(MemoryPolicy.NO_CACHE).into(mainImage);
 
         /* Array that will allow the correction of the operations */
         operationsResults = new int[OperationsConstants.NUMBER_OF_OPERATIONS];
@@ -138,7 +139,7 @@ public class OperationsActivity extends ActivityTemplate {
                         /* This operation selects automatically elements 2, 5 and 8, that correspond to the ImageViews */
                         ImageView operationsImage = (ImageView) operationContainer.getChildAt(j+(2*(j+1))-1);
                         resourceId = gameParameters.getResources().getIdentifier(arrayImages[i], CommonConstants.DRAWABLE, gameParameters.getPackageName());
-                        Picasso.with(gameParameters).load(resourceId).into(operationsImage);
+                        Picasso.with(gameParameters).load(resourceId).fit().centerInside().memoryPolicy(MemoryPolicy.NO_CACHE).into(operationsImage);
                     }
                     break;
                 default:
@@ -191,7 +192,7 @@ public class OperationsActivity extends ActivityTemplate {
                         @Override
                         public void onClick(View view) {
                             int index = (int)view.getTag();
-                            ZowiActions.sendOperation(operations[index]);
+                            ((OperationsChecker)checker).sendOperation(operations[index]);
                         }
                     });
                 }
@@ -217,7 +218,7 @@ public class OperationsActivity extends ActivityTemplate {
         int resourceId = gameParameters.getResources().getIdentifier(image + "_" + mainImageIdentifier, CommonConstants.DRAWABLE, gameParameters.getPackageName());
 
         if (mainImage != null)
-            Picasso.with(gameParameters).load(resourceId).into(mainImage);
+            Picasso.with(gameParameters).load(resourceId).fit().centerInside().memoryPolicy(MemoryPolicy.NO_CACHE).into(mainImage);
     }
 
 }

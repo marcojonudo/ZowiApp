@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -177,7 +178,7 @@ public class LogicBlocksActivity extends ActivityTemplate {
         /* Load a different image if answer is correct or not */
         if (zowi != null) {
             int resourceId = gameParameters.getResources().getIdentifier(correctAnswer ? LogicBlocksConstants.ZOWI_HAPPY : LogicBlocksConstants.ZOWI_SAD, CommonConstants.DRAWABLE, gameParameters.getPackageName());
-            Picasso.with(gameParameters).load(resourceId).into(zowi);
+            Picasso.with(gameParameters).load(resourceId).fit().centerInside().memoryPolicy(MemoryPolicy.NO_CACHE).into(zowi);
         }
     }
 
