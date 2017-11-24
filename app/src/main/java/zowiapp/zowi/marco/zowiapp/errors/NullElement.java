@@ -10,7 +10,7 @@ public class NullElement {
     public NullElement(GameParameters gameParameters, String className, String methodName, String objectName) {
         Log.e("NullElement", className + " - " + methodName + " - " + objectName);
 
-        String text = "¡Vaya! ¡Ha habido un problema!\nAvisa a la maestra y pulsa el botón";
+        String text = "¡Ha habido un error, avisa a tu profe!";
         Layout.showErrorAlertDialog(gameParameters, "¡Solucionar!", text);
     }
 }

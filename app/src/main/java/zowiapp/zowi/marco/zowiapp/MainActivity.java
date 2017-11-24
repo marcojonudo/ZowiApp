@@ -1,14 +1,10 @@
 package zowiapp.zowi.marco.zowiapp;
 
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import uk.co.chrisjenx.calligraphy. CalligraphyContextWrapper;
@@ -41,14 +37,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("Steps", "onResume");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        Log.i("Steps", "onDestroy");
         if (ZowiSocket.isConnected())
             ZowiSocket.closeConnection();
 
@@ -59,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i("Steps", "onStop");
-
     }
 
     @Override
@@ -82,25 +74,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toFreeGame(View v) {
-//        if (Zowi.getConnected()) {
-        Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-        intent.putExtra("type", "FREE");
-        startActivity(intent);
-//        }
-//        else {
-//            Layout.drawAlertDialog(this);
-//        }
+        if (Zowi.getConnected()) {
+            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+            intent.putExtra("type", "FREE");
+            startActivity(intent);
+        }
+        else {
+            Layout.drawAlertDialog(this);
+        }
     }
 
     public void toGuidedGame(View v) {
-//        if (Zowi.getConnected()) {
+        if (Zowi.getConnected()) {
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
             intent.putExtra("type", "GUIDED");
             startActivity(intent);
-//        }
-//        else {
-//            Layout.drawAlertDialog(this);
-//        }
+        }
+        else {
+            Layout.drawAlertDialog(this);
+        }
     }
 
     public void discoverZowi(View v) {

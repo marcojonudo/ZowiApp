@@ -167,10 +167,9 @@ public class GridActivity extends ActivityTemplate {
                         movementsNumber--;
 
                         if (out == 0) {
-                            zowiCell = nextCells.get((GridConstants.MAX_MOVEMENTS - 1) - lastMovementIndex);
-                            nextCell = zowiCell;
+                            nextCell = nextCells.get((GridConstants.MAX_MOVEMENTS - 1) - lastMovementIndex);
 
-                            if (zowiCell == nextCells.get(0))
+                            if (nextCell == nextCells.get(0))
                                 startedMoving = false;
                         }
                         if (out != 0)
@@ -255,6 +254,8 @@ public class GridActivity extends ActivityTemplate {
                         }
                     }
                 }
+                else
+                    new NullElement(gameParameters, this.getClass().getSimpleName(), Thread.currentThread().getStackTrace()[2].getMethodName(), "contentContainer");
             }
         }
     }
@@ -307,10 +308,10 @@ public class GridActivity extends ActivityTemplate {
             case "DOWN":
                 switch (actualDirection) {
                     case "LEFT":
-                        commands[0] = ZowiActions.TURN_RIGHT;
+                        commands[0] = ZowiActions.TURN_LEFT;
                         break;
                     case "RIGHT":
-                        commands[0] = ZowiActions.TURN_LEFT;
+                        commands[0] = ZowiActions.TURN_RIGHT;
                         break;
                     case "UP":
                         commands[0] = ZowiActions.TURN_LEFT;

@@ -123,7 +123,7 @@ public class Animations {
                 break;
             case "LEFT":
                 fromValue = -90;
-                toValue = nextDirection.equals(actualDirection) ? -90 : (nextDirection.equals("BOTTOM") ? -180 : 0);
+                toValue = nextDirection.equals(actualDirection) ? -90 : (nextDirection.equals("DOWN") ? -180 : 0);
                 break;
             case "DOWN":
                 fromValue = -180;

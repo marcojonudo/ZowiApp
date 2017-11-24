@@ -90,6 +90,7 @@ public class Layout {
     public static void showAlertDialog(final GameParameters gameParameters, final boolean guidedActivity, boolean correct, String text) {
         final Dialog alertDialog = new Dialog(gameParameters, R.style.DialogTheme);
         alertDialog.setContentView(R.layout.finish_alert_dialog);
+        alertDialog.setCancelable(false);
 
         TextView correctOperationText = (TextView) alertDialog.findViewById(R.id.correct_operation_text);
         correctOperationText.setText(text);

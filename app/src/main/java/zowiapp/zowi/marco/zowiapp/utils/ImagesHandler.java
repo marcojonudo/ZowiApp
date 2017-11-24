@@ -462,7 +462,6 @@ public class ImagesHandler {
                 float scaleFactorToPuzzle = dimensions[index].x > dimensions[index].y ?
                         ((float)puzzleContainerSide*(float)piecesToPuzzle[randomImagesIndex][0])/(float)dimensions[index].x :
                         ((float)puzzleContainerSide*(float)piecesToPuzzle[randomImagesIndex][1])/(float)dimensions[index].y;
-//                Log.i("dimensions", scaleFactorToPuzzle + " --- " + dimensions[index].x + ", " + dimensions[index].y + " | " + imageName + ": " + puzzleContainerSide + " - " + piecesToPuzzle[randomImagesIndex][0] + ", " + piecesToPuzzle[randomImagesIndex][1]);
 
                 scaleFactorsToPuzzle[index] = scaleFactorToPuzzle;
             }
