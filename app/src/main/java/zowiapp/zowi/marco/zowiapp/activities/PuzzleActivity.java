@@ -156,6 +156,8 @@ public class PuzzleActivity extends ActivityTemplate {
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String text = gameParameters.getResources().getString(R.string.zowi_checks_dialog_text);
+                Layout.showGenericAlertDialog(gameParameters, true, text);
                 ((PuzzleChecker) checker).check(piecesCoordinates, correction);
             }
         });

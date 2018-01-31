@@ -282,17 +282,23 @@ public class ImagesHandler {
 
         float scaleFactor;
         if (dimensions[index].x < dimensions[index].y) {
-            if (bitmapHeight < dimensions[index].y)
+            if (bitmapHeight < dimensions[index].y && (dimensions[index].y - bitmapHeight) > 100) {
                 scaleFactor = (float)dimensions[index].x/(float)bitmapWidth;
-            else
+            }
+            else {
                 scaleFactor = (float)dimensions[index].y/(float)bitmapHeight;
+            }
         }
         else {
-            if (bitmapWidth < dimensions[index].x && (dimensions[index].x - bitmapWidth) > 100)
+            if (bitmapWidth < dimensions[index].x && (dimensions[index].x - bitmapWidth) > 100) {
                 scaleFactor = (float)dimensions[index].y/(float)bitmapHeight;
-            else
+            }
+            else {
                 scaleFactor = (float)dimensions[index].x/(float)bitmapWidth;
+            }
         }
+//        Log.i("PuzzleImages", image + " " +a+" - " + scaleFactor + "  |  " + dimensions[index].x + ", " + dimensions[index].y +
+//                "  |  " + bitmapWidth + ", " + bitmapHeight);
 
         /* ImageView dimensions are scale to fit the content (and to avoid problems with correction later) */
         int width = (int)(bitmapWidth*scaleFactor);

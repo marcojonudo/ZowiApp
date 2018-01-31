@@ -132,14 +132,13 @@ public class ActivityConstants {
     }
 
     static class MusicConstants {
-        static final ActivityType MUSIC_TYPE = ActivityType.MUSIC;
         static final String JSON_PARAMETER_IMAGES = "images";
         static final int NUMBER_OF_DICTATIONS = 3;
         static final String[] DICTATION_PERIODS = {
-                "1 1 0.5 1 1 0.5 ",
-                "0.5 0 2 1 1",
-                "2 0 0 0.5 0.5",
-                "0.5 0 2 0 0.5",
+                "1 1 0.5 0.5 1 1 0.5 0.5",
+                "0.5 0.5 0 2 1 1",
+                "2 0 0 0.5 0.5 0.5 0.5",
+                "0.5 0.5 0 2 0 0.5 0.5",
                 "2 0 0 2",
         };
     }

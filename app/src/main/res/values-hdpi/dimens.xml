@@ -1,0 +1,115 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- Common dimensions -->
+    <dimen name="default_font_size">40sp</dimen>
+    <dimen name="dialog_title_font_size">70sp</dimen>
+    <dimen name="none">0dp</dimen>
+    <dimen name="main_button_vertical_margin">75dp</dimen>
+    <dimen name="overlay_radius">30dp</dimen>
+    <dimen name="overlay_padding">20dp</dimen>
+    <dimen name="dialog_width">850dp</dimen>
+    <dimen name="dialog_height">475dp</dimen>
+    <dimen name="dialog_padding">40dp</dimen>
+    <dimen name="operations_dialog_width">600dp</dimen>
+    <dimen name="operations_dialog_height">400dp</dimen>
+    <dimen name="operations_dialog_padding">40dp</dimen>
+    <dimen name="operations_dialog_text_size">40sp</dimen>
+    <dimen name="progress_dialog_width">475dp</dimen>
+    <dimen name="progress_dialog_height">300dp</dimen>
+    <dimen name="progress_dialog_padding">40dp</dimen>
+    <dimen name="floating_check_button_width">230dp</dimen>
+    <dimen name="floating_check_button_height">100dp</dimen>
+
+    <!-- Menu dimensions -->
+    <dimen name="menu_item_margin">3dp</dimen>
+    <dimen name="units_separation_vertical_margin">20dp</dimen>
+    <dimen name="menu_image_padding">3dp</dimen>
+
+    <!-- Main activity dimensions -->
+    <dimen name="main_title_font_size">50sp</dimen>
+    <dimen name="main_title_vertical_margin">50dp</dimen>
+    <dimen name="button_border_width">10dp</dimen>
+    <dimen name="coloradd_images_side">40dp</dimen>
+
+    <!-- Drag dimensions -->
+    <dimen name="drag_images_margin">20dp</dimen>
+    <dimen name="drag_images_container_margin">10dp</dimen>
+
+    <!-- Grid dimensions -->
+    <dimen name="control_vertical_margin">175dp</dimen>
+    <dimen name="control_horizontal_margin">20dp</dimen>
+
+    <dimen name="go_text_size">50sp</dimen>
+
+    <dimen name="grid_vertical_margin">25dp</dimen>
+    <dimen name="grid_horizontal_margin">20dp</dimen>
+    <dimen name="grid_cell_margin">4dp</dimen>
+
+    <dimen name="movements_vertical_margin">25dp</dimen>
+    <dimen name="movements_horizontal_margin">20dp</dimen>
+    <dimen name="movements_cell_margin">1dp</dimen>
+    <dimen name="paper_bin_left_margin">20dp</dimen>
+    <dimen name="paper_bin_top_margin">420dp</dimen>
+
+    <!-- Operations dimensions -->
+    <dimen name="main_image_margin">15dp</dimen>
+    <dimen name="operations_font_size">50sp</dimen>
+    <dimen name="operation_start_margin">50dp</dimen>
+    <dimen name="operation_2_start_margin">20dp</dimen>
+    <dimen name="operation_button_horizontal_margin">30dp</dimen>
+    <dimen name="operation_2_button_horizontal_margin">10dp</dimen>
+    <dimen name="operation_button_vertical_margin">3dp</dimen>
+    <dimen name="operation_2_edittext_margin">3dp</dimen>
+
+    <!-- ColouredGrid dimensions -->
+    <dimen name="coloured_grid_vertical_margin">15dp</dimen>
+    <dimen name="answer_edittext_horizontal_margin">20dp</dimen>
+    <dimen name="answer_button_horizontal_margin">15dp</dimen>
+
+    <!-- Music dimensions -->
+    <dimen name="dictation_button_horizontal_margin">50dp</dimen>
+
+    <!-- Memory dimensions -->
+    <dimen name="memory_images_container_margin">20dp</dimen>
+    <dimen name="memory_images_margin">15dp</dimen>
+
+    <!-- Pyramid dimensions -->
+    <dimen name="pyramid_image_side">265dp</dimen>
+    <dimen name="pyramid_text_side">300dp</dimen>
+    <dimen name="food_image_side">75dp</dimen>
+
+    <!-- Columns dimensions -->
+    <dimen name="columns_image_side">75dp</dimen>
+
+    <!-- Puzzle dimensions -->
+    <dimen name="elements_vertical_margin">15dp</dimen>
+    <dimen name="pieces_container_margin">10dp</dimen>
+    <dimen name="pieces_margin">2dp</dimen>
+
+    <!-- Seeds dimensions -->
+    <dimen name="seeds_container_horizontal_margin">150dp</dimen>
+    <dimen name="seeds_container_padding">2dp</dimen>
+    <dimen name="seeds_final_container_margin">15dp</dimen>
+    <dimen name="seeds_final_container_padding">10dp</dimen>
+    <dimen name="seed_margin">15dp</dimen>
+
+    <!-- ZowiEyes dimensions -->
+    <dimen name="zowi_eyes_images_margin">5dp</dimen>
+    <dimen name="zowi_eyes_hole_radius">200dp</dimen>
+
+    <!-- ZowiShape -->
+    <dimen name="zowi_shape_radius">50dp</dimen>
+    <dimen name="zowi_shape_bottom_left_radius">20dp</dimen>
+    <dimen name="zowi_shape_bottom_right_radius">20dp</dimen>
+
+    <!-- LogicBlocks dimensions -->
+    <dimen name="logic_grid_cell_margin">20dp</dimen>
+    <dimen name="logic_button_start_margin">10dp</dimen>
+    <dimen name="logic_button_end_margin">10dp</dimen>
+
+
+</resources>

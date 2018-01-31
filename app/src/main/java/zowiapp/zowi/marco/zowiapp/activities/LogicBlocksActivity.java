@@ -103,8 +103,8 @@ public class LogicBlocksActivity extends ActivityTemplate {
         }
 
         TextView description = (TextView) gameParameters.findViewById(R.id.activity_description);
-        if (imageName[1].equals(SMALL_SHAPE_WITH_N))
-            imageName[1] = SMALL_SHAPE_WITHOUT_N;
+        if (imageName[2].equals(SMALL_SHAPE_WITH_N))
+            imageName[2] = SMALL_SHAPE_WITHOUT_N;
 
         String descriptionText = "¡Ayuda a Zowi a encontrar el " + imageName[0] + " " + imageName[2] + " " + imageName[1] + "!";
 

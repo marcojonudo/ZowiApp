@@ -1,6 +1,7 @@
 package zowiapp.zowi.marco.zowiapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.LinearLayout;
@@ -41,6 +42,15 @@ public class GameActivity extends AppCompatActivity {
             Layout.drawOverlay(this, guidedGameScroller);
     }
 
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (!Zowi.getConnected()) {
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//        }
+//    }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -54,6 +64,13 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

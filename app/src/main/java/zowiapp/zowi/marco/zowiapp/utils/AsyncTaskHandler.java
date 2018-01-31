@@ -52,7 +52,7 @@ public class AsyncTaskHandler extends AsyncTask<String, Integer, Boolean> {
                 ((GuideChecker)checker).checkAnswers();
                 break;
             case PUZZLE:
-                ((PuzzleChecker)checker).checkAnsweres();
+                ((PuzzleChecker)checker).checkAnswers();
                 break;
             case OPERATIONS:
                 ((OperationsChecker)checker).sendOperation(null);

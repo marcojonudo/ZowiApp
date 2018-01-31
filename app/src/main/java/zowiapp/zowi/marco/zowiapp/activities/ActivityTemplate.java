@@ -492,6 +492,7 @@ public abstract class ActivityTemplate {
                 Intent intent = new Intent(gameParameters.getApplicationContext(), GameActivity.class);
                 intent.putExtra("type", guidedActivity ? "GUIDED" : "FREE");
                 gameParameters.startActivity(intent);
+                gameParameters.finish();
             }
         });
     }

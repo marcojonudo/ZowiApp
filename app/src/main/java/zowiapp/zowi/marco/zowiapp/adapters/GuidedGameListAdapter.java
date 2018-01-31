@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import zowiapp.zowi.marco.zowiapp.GameActivity;
 import zowiapp.zowi.marco.zowiapp.activities.ActivityConstants.CommonConstants;
 import zowiapp.zowi.marco.zowiapp.layout.CustomConstraintBackground;
 import zowiapp.zowi.marco.zowiapp.GameParameters;
